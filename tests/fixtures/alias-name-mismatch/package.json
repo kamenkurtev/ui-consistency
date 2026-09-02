@@ -1,0 +1,1 @@
+{ "name": "mismatch-root", "private": true, "workspaces": ["libs/*"] }

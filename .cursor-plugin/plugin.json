@@ -1,0 +1,21 @@
+{
+  "name": "ui-consistency",
+  "version": "0.14.79",
+  "description": "Establishes what screens of a kind already look like in your project, and checks the ones you write against it",
+  "author": {
+    "name": "Kamen Kurtev"
+  },
+  "homepage": "https://github.com/kamenkurtev/ui-consistency",
+  "repository": "https://github.com/kamenkurtev/ui-consistency",
+  "license": "MIT",
+  "keywords": [
+    "ui",
+    "design-system",
+    "consistency",
+    "screens",
+    "frontend"
+  ],
+  "skills": "./skills/",
+  "displayName": "UI consistency",
+  "hooks": "./hooks/hooks-cursor.json"
+}

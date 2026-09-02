@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@fixture/ui": ["libs/ui/src/index.ts"],
+      "@fixture/client-ui/common": ["libs/client-ui/common/src/index.ts"],
+      "@fixture/client-ui/customers/invoices": ["libs/client-ui/customers/invoices/src/index.ts"]
+    }
+  }
+}

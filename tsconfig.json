@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    // An unused import is how four dead ones and a 183-line orphaned module
+    // survived in `cli/index.ts` (#154). The compiler can say so.
+    //
+    // Locals only. An unused *parameter* is often a signature kept deliberately,
+    // and failing on those would trade one kind of noise for another.
+    "noUnusedLocals": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["src", "tests"],
+  // Fixtures stand in for someone else's repository; they name packages that
+  // are not installed here and are read as text, never compiled.
+  "exclude": ["tests/fixtures"]
+}

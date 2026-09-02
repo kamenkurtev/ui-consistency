@@ -1,0 +1,6 @@
+{
+  "name": "@fixture/orders",
+  "version": "1.0.0",
+  "source": "src/index.ts",
+  "dependencies": { "@fixture/core": "workspace:*" }
+}

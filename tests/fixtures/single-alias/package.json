@@ -1,0 +1,5 @@
+{
+  "name": "ui-web",
+  "version": "1.0.0",
+  "dependencies": { "some-ui-lib": "^5.0.0", "react": "^18.0.0" }
+}

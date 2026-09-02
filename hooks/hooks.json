@@ -1,0 +1,28 @@
+{
+  "description": "ui-consistency — reports code that does not match the project's own design system, in the same turn as the edit",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs\" session",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs\" hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
