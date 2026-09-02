@@ -85,6 +85,10 @@ model.
 
 ## Install
 
+**[Try it →](https://kamenkurtev.github.io/ui-consistency/)** — the short version of this
+section, plus what to expect on day one and how to tell whether it is doing
+anything. Hand that to somebody rather than this file.
+
 Installation differs per harness. The repository ships a manifest for each one
 it supports.
 
