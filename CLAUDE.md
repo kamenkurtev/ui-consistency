@@ -2,6 +2,25 @@
 
 Guidance for Claude Code when working in this repository.
 
+## Which repository this is
+
+**This is the public one, and it is the one that is worked in** (#265, cut
+2026-09-02). It has a single root commit on purpose: the project was developed
+privately, and cleaning the files does not clean past commits — names from
+private repositories survived in 10, 6, 7, 4 and 8 commits respectively when
+that was measured, as did the bodies of every issue and the prior revisions
+GitHub keeps of each edited body. A fresh copy makes all three moot in one move.
+
+`kamenkurtev/ui-consistency-archive` is private and holds that history and the
+old tracker. It is a record, not a place to work: nothing lands there, and an
+issue still relevant was **re-written** here rather than transferred, because a
+transfer moves the body verbatim.
+
+The rule that keeps this tree safe to publish is in `.claude/rules/uic-docs.md`
+— evidence from a private repository keeps its numbers and loses its names —
+and `tests/private-names.test.ts` enforces it against a list kept outside the
+repository.
+
 ## What this is
 
 A plugin — Claude Code first, with manifests for Codex, Cursor and Gemini CLI — that keeps AI-generated UI consistent with the project's **own** component vocabulary and prop conventions, **while the code is being written** — not in a pipeline afterwards.
