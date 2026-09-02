@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@_test/*": ["test/*"],
+      "@aria": ["src/ui-v2/aria/index.ts"],
+      "@aria/*": ["src/ui-v2/aria/*"]
+    }
+  }
+}

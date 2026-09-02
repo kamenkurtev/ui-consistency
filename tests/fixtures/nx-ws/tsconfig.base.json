@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@fixture/core": ["libs/core/src/index.ts"],
+      "@fixture/core/*": ["libs/core/src/*"],
+      "@fixture/orders": ["apps/orders/src/index.ts"],
+      "@vendor/typed": ["node_modules/@vendor/typed/dist/index.d.ts"]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  // A real tsconfig.base.json carries comments and trailing commas.
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@fixture/core": ["libs/core/src/index.ts"],
+      "@fixture/orders": ["apps/orders/src/index.ts"],
+      "@fixture/widgets": ["libs/widgets/src/index.ts"],
+    },
+  },
+}

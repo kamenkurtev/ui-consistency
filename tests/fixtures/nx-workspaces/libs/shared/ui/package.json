@@ -1,0 +1,7 @@
+{
+  "name": "@fixture/shared-ui",
+  "version": "0.0.0",
+  "private": true,
+  "exports": { ".": { "default": "./src/index.ts" } },
+  "devDependencies": { "some-ui-lib": "^5.0.0" }
+}

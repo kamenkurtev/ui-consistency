@@ -1,0 +1,6 @@
+{
+  "name": "@fixture/core",
+  "version": "1.0.0",
+  "source": "src/index.ts",
+  "dependencies": { "some-ui-lib": "^5.0.0" }
+}

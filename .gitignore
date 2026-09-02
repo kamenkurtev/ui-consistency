@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.DS_Store
+*.log
+.claude/settings.local.json
+
+# The CLI bundle is committed on purpose. A plugin is installed by cloning
+# this repository, with no build and no `npm install` on the user's side, so
+# an untracked bin/uic.mjs is a plugin whose hook points at a missing file.
+# `scripts/gate.sh` refuses to pass while the committed bundle is stale.
+*.tsbuildinfo
+
+# editors
+.idea/
+.vscode/

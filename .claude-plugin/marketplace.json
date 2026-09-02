@@ -1,0 +1,27 @@
+{
+  "name": "kkurtev-plugins",
+  "owner": {
+    "name": "Kamen Kurtev",
+    "url": "https://github.com/kamenkurtev"
+  },
+  "description": "Kamen Kurtev's plugins",
+  "plugins": [
+    {
+      "name": "ui-consistency",
+      "source": "./",
+      "description": "Establishes what screens of a kind already look like in your project, and checks the ones you write against it",
+      "version": "0.14.79",
+      "author": {
+        "name": "Kamen Kurtev"
+      },
+      "category": "code-quality",
+      "tags": [
+        "ui",
+        "design-system",
+        "consistency",
+        "screens",
+        "frontend"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+# ui-consistency
+
+A skills library plus a small deterministic CLI, for keeping the screens an
+agent writes consistent with the ones a project already has.
+
+It does not grade finished code. It establishes what screens of a kind already
+look like **here** — the holder and the order of the roles, which component
+fills each role, the props those components are always written with, what the
+layout already provides, and what belongs to the reference page alone — and
+writes that down as a contract to build from. Afterwards it compares the screens
+that changed against the same file.
+
+## The rules
+
+Plain Markdown under `rules/`, and **the portable half of this plugin**. They
+carry the knowledge that keeps breaking when it is written as a list in a
+program, they need no derived facts, and they work on every harness — including
+the three that have no hook.
+
+| Rule | What it settles |
+| --- | --- |
+| `anatomy.md` | the roles a screen has, in the order they are read, each as a question |
+| `what-a-screen-is.md` | how many files a screen is, per framework — Angular's is a pair, and a router's is a folder |
+| `family-and-particulars.md` | where a family comes from, and *reference minus invariant*: what must not be copied |
+| `roles-and-names.md` | roles are universal, names are local, and an empty answer is not a clean one |
+| `routes-and-breadcrumbs.md` | where a route and a trail come from, per router family |
+| `what-a-decision-is.md` | what belongs in a decisions file, and the one test for it |
+
+Read them directly if your harness has no skill mechanism: they are the
+instructions, and the CLI below is the fact supplier.
+
+## The skills
+
+| Skill | When |
+| --- | --- |
+| `pattern` | before writing or changing screens — establishes the contract |
+| `place` (via `uic place`) | where a new screen goes: folder, route, trail |
+| `screen` | writing one screen against the contract |
+| `rollout` | applying an agreed pattern across many screens |
+| `verify` | before handing the work over |
+| `review` | a second opinion on one screen |
+| `decide` | the first screen of a kind, when there is nothing to derive |
+| `reach` | which of three silences you are looking at |
+
+Each is invocable on its own and none requires another to have run — so an
+agent definition can order them by name (`ui-consistency:pattern`, and so on)
+beside whatever else it uses.
+
+**Only Claude Code runs the per-edit hook.** Under Codex, Cursor or Gemini CLI
+the same check is a command you place yourself, after each file rather than
+after the batch:
+
+```
+uic diff --contract <contract> <the file just written>
+``` Where an
+input is missing they degrade — deriving instead of refusing — rather than
+demanding a pipeline.
+
+## The CLI
+
+```
+uic pattern <screen> [--save]      what screens of this kind look like here
+uic diff --contract <c> <files>    where the screens you touched left it
+uic place <screen>                 route, trail, and where it is registered
+uic check <files>                  the deterministic findings; exits 1 on any
+uic scan                           the packages detected, and how
+uic review <screen>                the findings, plus evidence for a second opinion
+uic shapes <files>                 shapes rebuilt or repeated
+uic inventory <file>               the layer chain for one file, and what it exports
+uic log                            what has been found here while somebody worked
+```
+
+`check`, `diff` and `shapes` take **files, not glob patterns** — they rely on the
+shell to expand. A quoted `"src/**/*.tsx"` names no file, and is refused with
+exit 1 rather than checked and passed; use `$(git ls-files '*.tsx')`.
+
+`bin/uic.mjs` is a single bundle: Node 20, no install, no network, no
+credentials, no model call anywhere in it.
+
+## What it assumes about your project
+
+Nothing that has to be configured. Package layout is detected from manifests or
+`tsconfig` path aliases; screens, roles and routes are read from the code. No
+component name is hardcoded anywhere a finding can come from — a test enforces
+that — because every team names its own components.
