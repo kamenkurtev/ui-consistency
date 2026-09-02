@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Install and try ui-consistency — a plugin that checks the screens your agent writes against the screens your project already has.">
+<meta property="og:title" content="Try ui-consistency">
+<meta property="og:description" content="Install and try ui-consistency — a plugin that checks the screens your agent writes against the screens your project already has.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>📐</text></svg>">
+<title>Try ui-consistency</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+  :root {
+    --ground: #f6f8f7;
+    --raise: #ffffff;
+    --ink: #171b19;
+    --ink-soft: #4d5651;
+    --ink-faint: #79837d;
+    --rule: #dde3df;
+    --rule-soft: #e9eeeb;
+    --accent: #1c6b58;
+    --accent-soft: #e2efe9;
+    --warn: #8f5410;
+    --warn-soft: #f6ecdd;
+    --term-ground: #14201c;
+    --term-ink: #d5e3dc;
+    --term-faint: #7d928a;
+
+    --display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0f1412;
+      --raise: #161c19;
+      --ink: #e4eae6;
+      --ink-soft: #a7b3ad;
+      --ink-faint: #7c8a83;
+      --rule: #27302c;
+      --rule-soft: #1d2522;
+      --accent: #6dc0a6;
+      --accent-soft: #172a24;
+      --warn: #d79b52;
+      --warn-soft: #2a2015;
+      --term-ground: #0a100e;
+      --term-ink: #cfded7;
+      --term-faint: #6f847b;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0f1412;
+    --raise: #161c19;
+    --ink: #e4eae6;
+    --ink-soft: #a7b3ad;
+    --ink-faint: #7c8a83;
+    --rule: #27302c;
+    --rule-soft: #1d2522;
+    --accent: #6dc0a6;
+    --accent-soft: #172a24;
+    --warn: #d79b52;
+    --warn-soft: #2a2015;
+    --term-ground: #0a100e;
+    --term-ink: #cfded7;
+    --term-faint: #6f847b;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 45rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead { display: flex; flex-direction: column; gap: 1rem; }
+
+  .eyebrow {
+    font-family: var(--display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 6vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
+  .meta a:hover { color: var(--ink); }
+
+  /* ---- sections ---- */
+
+  section { display: flex; flex-direction: column; gap: 1rem; }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.32rem;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+
+  p { margin: 0; max-width: 38rem; }
+  p + p { margin-top: -0.2rem; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--rule-soft);
+    padding: 0.1em 0.34em;
+    border-radius: 3px;
+  }
+
+  a.link { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
+  a.link:hover { color: var(--ink); }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  /* ---- the numbered run: these really are a sequence ---- */
+
+  .steps { display: flex; flex-direction: column; gap: 2.25rem; list-style: none; margin: 0; padding: 0; }
+
+  .step { display: grid; grid-template-columns: 2.1rem 1fr; gap: 0 1rem; align-items: start; }
+
+  .step-n {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    padding-top: 0.28rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step-body { display: flex; flex-direction: column; gap: 0.7rem; min-width: 0; }
+
+  /* ---- terminal ---- */
+
+  .term {
+    background: var(--term-ground);
+    color: var(--term-ink);
+    font-family: var(--mono);
+    font-size: 0.79rem;
+    line-height: 1.75;
+    padding: 0.9rem 1.05rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 0;
+  }
+  .term .c { color: var(--term-faint); }
+  .term .p { color: #6dc0a6; }
+
+  .out {
+    font-family: var(--mono);
+    font-size: 0.79rem;
+    line-height: 1.7;
+    white-space: pre;
+    overflow-x: auto;
+    margin: 0;
+    padding: 0.85rem 1rem;
+    background: var(--raise);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--warn);
+    border-radius: 0 4px 4px 0;
+  }
+  .out .f { color: var(--ink-faint); }
+
+  /* ---- the three silences ---- */
+
+  .silences { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--rule); }
+  .silence {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.2rem 1.1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .silence dt {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .silence dd { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
+  .s-good dt { color: var(--accent); }
+  .s-quiet dt { color: var(--ink-faint); }
+  .s-blind dt { color: var(--warn); }
+
+  /* ---- skills ---- */
+
+  .skills { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .skill {
+    display: grid;
+    grid-template-columns: minmax(0, 12.5rem) 1fr;
+    gap: 0.15rem 1.1rem;
+    padding: 0.62rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+  }
+  .skill code { background: none; padding: 0; color: var(--accent); font-size: 0.82rem; }
+  .skill span { font-size: 0.93rem; color: var(--ink-soft); }
+
+  /* ---- notice ---- */
+
+  .notice {
+    background: var(--warn-soft);
+    border-radius: 5px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .notice h3 { color: var(--warn); }
+  .notice p { font-size: 0.95rem; }
+
+  .aside {
+    border-left: 2px solid var(--rule);
+    padding-left: 1.1rem;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  ul.plain { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  ul.plain li { padding-left: 0.15rem; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  @media (max-width: 34rem) {
+    .step { grid-template-columns: 1fr; gap: 0.5rem; }
+    .step-n { padding-top: 0; }
+    .silence, .skill { grid-template-columns: 1fr; }
+  }
+</style>
+<style>
+  html { color-scheme: light dark; }
+  body { margin: 0; }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Internal · install and try</div>
+    <h1>Try ui-consistency</h1>
+    <p class="standfirst">A plugin that checks the screens your agent writes against the screens your project already has — in the same turn as the edit, not in a pipeline two days later.</p>
+    <div class="meta">
+      <span>v0.14.79</span>
+      <span>Node 20+</span>
+      <span>No build step</span>
+      <span><a href="https://github.com/kamenkurtev/ui-consistency">github.com/kamenkurtev/ui-consistency</a></span>
+    </div>
+  </header>
+
+  <section>
+    <h2>What it actually does</h2>
+    <p>It works everything out from your repository. There is no built-in list of good components, no framework it prefers, and <strong>no model call anywhere in the tool</strong> — so it costs nothing per edit and works with whatever agent you already use.</p>
+    <p>A finding looks like this. <code>@acme/ui</code> is a placeholder for whatever your packages are called; the tool has never heard of it, it read your dependency graph:</p>
+    <pre class="out">apps/orders/src/OrderList.tsx:1
+Button is imported from @vendor/ui.
+@acme/ui exports Button and is nearer on this file's chain.
+→ import { Button } from '@acme/ui'</pre>
+  </section>
+
+  <section>
+    <h2>Install it</h2>
+    <ol class="steps">
+
+      <li class="step">
+        <div class="step-n">01</div>
+        <div class="step-body">
+          <h3>Add the marketplace and install</h3>
+          <p>In Claude Code, three commands:</p>
+          <pre class="term"><span class="p">/</span>plugin marketplace add kamenkurtev/ui-consistency
+<span class="p">/</span>plugin install ui-consistency@kkurtev-plugins
+<span class="p">/</span>reload-plugins</pre>
+          <p>Nothing to build and no <code>npm install</code> — the bundle ships committed. Node 20 or later is the only requirement.</p>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-n">02</div>
+        <div class="step-body">
+          <h3>Open a project and edit a screen</h3>
+          <p>That is the whole setup. The per-edit check registers itself as a <code>PostToolUse</code> hook and reports in the same turn, while the agent still has the file in its hands and changing it costs nothing.</p>
+          <p>You do not have to run anything for it to know what your screens look like. On the edit your agent is already making, it derives what screens of that kind look like here and hands back only what this one does differently — nothing saved, nothing approved, nothing failed.</p>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-n">03</div>
+        <div class="step-body">
+          <h3>Ask it whether it is doing anything</h3>
+          <p>This is the step worth not skipping, and the honest part. On day one, on a project that has written nothing down, what runs is the deterministic half — raw colours and lengths, an emoji standing in for an icon, imports resolving to the wrong layer — plus the derived advisories. The curated checks stay quiet <em>because nobody has curated anything yet</em>.</p>
+          <pre class="term"><span class="p">&gt;</span> use ui-consistency:reach</pre>
+          <p>It answers level by level, and there are only three answers:</p>
+          <dl class="silences">
+            <div class="silence s-good">
+              <dt>Works</dt>
+              <dd>and here is what it read</dd>
+            </div>
+            <div class="silence s-quiet">
+              <dt>Quiet</dt>
+              <dd>because your project has stated nothing — this is the design, not a fault</dd>
+            </div>
+            <div class="silence s-blind">
+              <dt>Blind</dt>
+              <dd>it cannot see here, and here is why</dd>
+            </div>
+          </dl>
+          <p>No score and no grade. A level is never called working just because it produced no findings — that distinction is the whole point of the command.</p>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+
+  <section>
+    <h2>What Tier 1 checks on every edit</h2>
+    <p>Seven deterministic checks, roughly 0.12 s, no model. It is silent unless it is <em>certain</em> — a check that guesses gets switched off within a week, and a switched-off check costs more than every finding it would have made.</p>
+    <p>Real output, from a throwaway project:</p>
+    <pre class="out">src/Card.tsx:1
+color: '#ff0000' is a hardcoded colour, not a design-system token.
+
+src/Card.tsx:1
+🔔 is an emoji used as an icon. Use the design system's icon component so it matches the others.</pre>
+    <p>Numbers on spacing keys in <code>sx</code> are left alone — <code>sx={{ mt: 2 }}</code> is a theme multiplier, which is the correct form. Fixed widths and heights are left alone too: almost no design system has a width token. Tests, stories and <code>__mocks__</code> are not checked at all.</p>
+    <p>There is deliberately <strong>no</strong> "that is a raw <code>&lt;button&gt;</code>, use <code>Button</code>" check. Saying that needs a built-in map from an element to a component name, which is a vocabulary — and on every project that names things differently it matched nothing and said nothing. Raw elements are checked against a contract derived from your own screens instead.</p>
+  </section>
+
+  <section>
+    <h2>The skills, when you want to drive it</h2>
+    <p>Invoke by name. None requires another to have run — where an input is missing they derive it or say so, rather than refusing, so you can start anywhere.</p>
+    <div class="skills">
+      <div class="skill"><code>ui-consistency:pattern</code><span>what screens of this kind look like here</span></div>
+      <div class="skill"><code>ui-consistency:screen</code><span>write one against that</span></div>
+      <div class="skill"><code>ui-consistency:rollout</code><span>apply it across many, one file per turn</span></div>
+      <div class="skill"><code>ui-consistency:verify</code><span>compare the finished set, before a PR</span></div>
+      <div class="skill"><code>ui-consistency:review</code><span>a second opinion on one screen</span></div>
+      <div class="skill"><code>ui-consistency:decide</code><span>the first screen of a kind, when there is nothing to derive</span></div>
+      <div class="skill"><code>ui-consistency:reach</code><span>which of the three silences you are looking at</span></div>
+    </div>
+    <div class="aside">
+      <p>There is also a CLI for a whole-project pass or a CI gate. It is not on your <code>PATH</code> — call the bundle directly:</p>
+      <pre class="term">node path/to/bin/uic.mjs check $(git ls-files '*.tsx')</pre>
+      <p>It exits 1 if anything is wrong. <code>check</code> takes files, not glob patterns, and relies on the shell to expand them — a quoted glob is refused rather than silently checking nothing.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="notice">
+      <h3>One thing to be careful about when you report back</h3>
+      <p>If you test this on our own codebase, <strong>keep the numbers and drop the names.</strong> When you file something, rename every component, screen, route file and test-id prefix to a neutral equivalent of the same shape — <code>OrdersGrid</code> for a PascalCase grid, <code>app-orders-grid</code> for its selector form, <code>acme-orders-page</code> for a test-id.</p>
+      <p>The repository is public now. The lesson and the counts are what make a report useful; the provenance is what you do not want in it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Reporting something</h2>
+    <p>The house style is a reproduction in an empty directory using the shipped bundle. It is worth the five minutes: it separates a defect in the tool from something about our repository, and it is what a fix gets tested against.</p>
+    <pre class="term"><span class="c"># copy bin/uic.mjs alone into an empty directory</span>
+mkdir -p /tmp/repro/src &amp;&amp; cd /tmp/repro
+echo '{"name":"r"}' &gt; package.json
+<span class="c"># ...the smallest files that show it...</span>
+node /path/to/uic.mjs check src/Thing.tsx</pre>
+    <ul class="plain">
+      <li>Say what you observed and what you expected, and paste the output unedited.</li>
+      <li>If the answer was <em>silence</em>, say which command was silent — that is the most valuable report there is, and the three silences above are why.</li>
+      <li>Issues go to <a class="link" href="https://github.com/kamenkurtev/ui-consistency/issues">the tracker</a>.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Only the Claude Code path has been run end to end. Cursor registers <code>sessionStart</code> only and Codex's hook file is empty, so everywhere except Claude Code what you get today is the skills and the CLI, not the per-edit gate.</p>
+    <p>Free and open source, MIT. No network, no telemetry, no account, no key.</p>
+  </footer>
+
+</div>
+</body>
+</html>
