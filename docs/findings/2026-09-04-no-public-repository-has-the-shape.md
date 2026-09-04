@@ -73,6 +73,34 @@ breadcrumb could point at it. This reaches the in-file walk with no mount
 involved, so it predates the mount mechanism entirely — and composing onto
 stated paths, which is what #1 asks for, would have multiplied it.
 
+## A third thing, which the change itself created
+
+Composing onto stated paths makes an entry's own path matter in a way a pathless
+one never could, and one shape of stated path may not be composed onto at all:
+
+```tsx
+{ path: 'customers', children: [{ path: '/admin/audit', element: <Audit /> }] }
+```
+
+Vue Router reads the leading slash as the root; React Router refuses a nested
+absolute path that does not already begin with its parent's. Either way the
+answer is `/admin/audit`, and the walk gave `/customers/admin/audit` — before
+this change, and without any mount, so it is one more wrong answer that predates
+the issue. A path the table wrote absolute is now answered whole, and, since
+nothing above it can apply, without sweeping the project to find out what is.
+
+## What it costs
+
+Whether something mounts a table is the question, and it cannot be answered
+without looking. So a screen whose registration states a *relative* path now
+pays the sweep that only a pathless one used to. Measured on the largest
+repository here, 24,752 files, one screen: **0.10 s to 2.8 s**.
+
+Paid by `uic place` alone — the only caller outside the module
+(`src/cli/index.ts:445`) — and never by the hook, which asks `declaredSiblings`
+for the registration and never for the path. A deliberate command may read a
+project. The alternative is the cheaper wrong answer.
+
 ## The before/after that could be produced
 
 600 screens across five repositories, the shipped bundle before and after:

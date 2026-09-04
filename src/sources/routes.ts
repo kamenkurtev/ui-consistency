@@ -196,6 +196,8 @@ async function declaredPath(
   declaredIn: { file: string; line: number };
   /** The array in that table the entry sits in, where exactly one contains it. */
   binding: string | null;
+  /** Whether the table wrote it whole — see `Found.absolute`. */
+  absolute: boolean;
 } | null> {
   const names = await namesOf(screen);
 
@@ -212,7 +214,12 @@ async function declaredPath(
 
     const entry = entryFor(ast.program as Node, names, []);
     if (entry !== null) {
-      return { path: entry.path, declaredIn: { file, line: entry.line }, binding: bindingOf(ast.program as Node, names, entry) };
+      return {
+        path: entry.path,
+        declaredIn: { file, line: entry.line },
+        binding: bindingOf(ast.program as Node, names, entry),
+        absolute: entry.absolute,
+      };
     }
   }
   return null;
@@ -348,6 +355,16 @@ interface Found {
    */
   path: string | null;
   line: number;
+  /**
+   * Did the table write this path, or one it is nested under, absolute?
+   *
+   * `{ path: '/settings/tokens' }` is a whole path and not a segment: Vue
+   * Router reads the leading slash as the root, and React Router refuses a
+   * nested absolute path that does not already begin with its parent's. Either
+   * way nothing above it may be composed on — including the path of a table
+   * that mounts it, which is why the answer has to travel this far.
+   */
+  absolute: boolean;
 }
 
 /**
@@ -416,17 +433,18 @@ function routeParts(node: ObjectExpression): Parts {
   return { own, binding, children, mounted };
 }
 
-function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
+function entryFor(node: Node, names: string[], prefix: string[], absolute = false): Found | null {
   if (node.type === 'ObjectExpression') {
     const { own, binding, children } = routeParts(node);
-    const here = [...prefix, ...own];
+    const rooted = own.some((one) => one.startsWith('/'));
+    const here = rooted ? [...own] : [...prefix, ...own];
     // The binding is checked before the children, so a parent that routes the
     // screen itself wins over a child that merely mentions it.
     if (binding !== null && namesScreen(binding, names, false)) {
-      return { path: joined(here), line: node.loc?.start.line ?? 1 };
+      return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
     }
     for (const child of children) {
-      const found = entryFor(child, names, asPrefix(here));
+      const found = entryFor(child, names, asPrefix(here), absolute || rooted);
       if (found !== null) return found;
     }
     return null;
@@ -450,7 +468,8 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
           bindings.push(value);
         }
       }
-      const here = [...prefix, ...own];
+      const rooted = own.some((one) => one.startsWith('/'));
+      const here = rooted ? [...own] : [...prefix, ...own];
 
       // Bound by an attribute, or by simply being rendered inside — which is how
       // react-router v5 and Ionic write it, and that line carries no attribute
@@ -459,10 +478,10 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
         bindings.some((one) => namesScreen(one, names, false)) ||
         namesScreen(node, names, true)
       ) {
-        return { path: joined(here), line: node.loc?.start.line ?? 1 };
+        return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
       }
       for (const child of node.children) {
-        const found = entryFor(child as Node, names, asPrefix(here));
+        const found = entryFor(child as Node, names, asPrefix(here), absolute || rooted);
         if (found !== null) return found;
       }
       return null;
@@ -470,7 +489,7 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
   }
 
   for (const child of inside(node)) {
-    const found = entryFor(child, names, prefix);
+    const found = entryFor(child, names, prefix, absolute);
     if (found !== null) return found;
   }
   return null;
@@ -484,6 +503,12 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
  * consumer outside this module — `uic place` — and `declaredSiblings`, which is
  * what the derived contract reaches, asks for the registration and never for
  * the path. A deliberate command may read a project; a hook may not.
+ *
+ * Since #1 every screen whose registration states a *relative* path pays it too,
+ * where before only a pathless one did: whether something mounts the table is
+ * exactly the question, and it cannot be answered without looking. Measured on a
+ * 24,752-file monorepo, one screen: 0.10 s to 2.8 s. A path the table wrote
+ * absolute is already whole, so it is answered without looking at all.
  *
  * Exhausting it answers null. A search that did not finish cannot say the mount
  * it found was the only one, and answering from an unfinished search is the
@@ -807,7 +832,7 @@ async function place(
   // and answering `/detail/:id` is a partial path presented as a whole one.
   // Where the mount cannot be established the stated path stands exactly as the
   // table wrote it: refusing to compose is not refusing to answer.
-  if (mounts && declared.binding !== null) {
+  if (mounts && declared.binding !== null && !declared.absolute) {
     const prefix = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
     if (prefix !== null) {
       const stated = path === null ? [] : path.split('/').filter((part) => part !== '');

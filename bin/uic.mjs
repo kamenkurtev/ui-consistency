@@ -21501,7 +21501,12 @@ async function declaredPath(screen, root) {
     if (ast === null) continue;
     const entry = entryFor(ast.program, names, []);
     if (entry !== null) {
-      return { path: entry.path, declaredIn: { file, line: entry.line }, binding: bindingOf(ast.program, names, entry) };
+      return {
+        path: entry.path,
+        declaredIn: { file, line: entry.line },
+        binding: bindingOf(ast.program, names, entry),
+        absolute: entry.absolute
+      };
     }
   }
   return null;
@@ -21597,15 +21602,16 @@ function routeParts(node) {
   }
   return { own, binding, children, mounted };
 }
-function entryFor(node, names, prefix2) {
+function entryFor(node, names, prefix2, absolute = false) {
   if (node.type === "ObjectExpression") {
     const { own, binding, children } = routeParts(node);
-    const here = [...prefix2, ...own];
+    const rooted = own.some((one) => one.startsWith("/"));
+    const here = rooted ? [...own] : [...prefix2, ...own];
     if (binding !== null && namesScreen(binding, names, false)) {
-      return { path: joined(here), line: node.loc?.start.line ?? 1 };
+      return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
     }
     for (const child of children) {
-      const found = entryFor(child, names, asPrefix(here));
+      const found = entryFor(child, names, asPrefix(here), absolute || rooted);
       if (found !== null) return found;
     }
     return null;
@@ -21625,19 +21631,20 @@ function entryFor(node, names, prefix2) {
           bindings.push(value);
         }
       }
-      const here = [...prefix2, ...own];
+      const rooted = own.some((one) => one.startsWith("/"));
+      const here = rooted ? [...own] : [...prefix2, ...own];
       if (bindings.some((one) => namesScreen(one, names, false)) || namesScreen(node, names, true)) {
-        return { path: joined(here), line: node.loc?.start.line ?? 1 };
+        return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
       }
       for (const child of node.children) {
-        const found = entryFor(child, names, asPrefix(here));
+        const found = entryFor(child, names, asPrefix(here), absolute || rooted);
         if (found !== null) return found;
       }
       return null;
     }
   }
   for (const child of inside(node)) {
-    const found = entryFor(child, names, prefix2);
+    const found = entryFor(child, names, prefix2, absolute);
     if (found !== null) return found;
   }
   return null;
@@ -21792,7 +21799,7 @@ async function place(screen, root, mounts, mountReads) {
   const declared = await declaredPath(screen, root);
   if (declared === null) return nothing;
   let path = declared.path;
-  if (mounts && declared.binding !== null) {
+  if (mounts && declared.binding !== null && !declared.absolute) {
     const prefix2 = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
     if (prefix2 !== null) {
       const stated = path === null ? [] : path.split("/").filter((part) => part !== "");

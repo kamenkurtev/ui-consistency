@@ -829,6 +829,55 @@ describe('a mounted table shifts the entries that state a path too', () => {
 });
 
 /**
+ * A path the table wrote absolute is already whole.
+ *
+ * `{ path: '/settings/tokens' }` is not a segment to be added to whatever sits
+ * above it: Vue Router reads a leading slash as the root, and React Router
+ * refuses a nested absolute path that does not already begin with its parent's.
+ * Composing either way produces a path the router never serves — and composing
+ * onto stated paths is what makes this reachable, since a pathless entry cannot
+ * be absolute.
+ */
+describe('a path the table wrote absolute', () => {
+  it('does not take the prefix of the entry it is nested under', async () => {
+    await file(
+      'src/routes.tsx',
+      [
+        "import { Audit } from './pages/Audit';",
+        'export const appRoutes = [',
+        "  { path: 'customers', children: [{ path: '/admin/audit', element: <Audit /> }] },",
+        '];',
+      ].join('\n'),
+    );
+    const screen = await file('src/pages/Audit.tsx', 'export const Audit = () => null;\n');
+
+    const placed = await placementOf(screen, root);
+    expect(placed.path).toBe('/admin/audit');
+    expect(placed.trail).toEqual(['admin', 'audit']);
+  });
+
+  it('does not take the path of the table that mounts it', async () => {
+    await file(
+      'src/Root.tsx',
+      [
+        "import { invoiceRoutes } from './invoices/Routes';",
+        "export const rootRoutes = [{ path: 'customers', children: invoiceRoutes }];",
+      ].join('\n'),
+    );
+    await file(
+      'src/invoices/Routes.tsx',
+      [
+        "import { Invoice } from './pages/Invoice';",
+        "export const invoiceRoutes = [{ path: '/settings/tokens', element: <Invoice /> }];",
+      ].join('\n'),
+    );
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    expect((await placementOf(screen, root)).path).toBe('/settings/tokens');
+  });
+});
+
+/**
  * A path that acts as a parent drops its splat.
  *
  * `{ path: 'orders/*', children: [...] }` is how a router says "and everything
