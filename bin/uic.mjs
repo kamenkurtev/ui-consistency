@@ -21526,6 +21526,10 @@ var joined = (segments) => {
   const parts = segments.flatMap((one) => one.split("/")).filter((one) => one !== "");
   return `/${parts.join("/")}`;
 };
+var asPrefix = (segments) => {
+  const parts = segments.flatMap((one) => one.split("/")).filter((one) => one !== "");
+  return parts[parts.length - 1] === "*" ? parts.slice(0, -1) : parts;
+};
 var stringOf = (node) => {
   if (node === null || node === void 0) return null;
   if (node.type === "StringLiteral") return node.value;
@@ -21601,7 +21605,7 @@ function entryFor(node, names, prefix2) {
       return { path: joined(here), line: node.loc?.start.line ?? 1 };
     }
     for (const child of children) {
-      const found = entryFor(child, names, here);
+      const found = entryFor(child, names, asPrefix(here));
       if (found !== null) return found;
     }
     return null;
@@ -21626,7 +21630,7 @@ function entryFor(node, names, prefix2) {
         return { path: joined(here), line: node.loc?.start.line ?? 1 };
       }
       for (const child of node.children) {
-        const found = entryFor(child, names, here);
+        const found = entryFor(child, names, asPrefix(here));
         if (found !== null) return found;
       }
       return null;
@@ -21670,8 +21674,8 @@ function mountsIn(node, identifier, prefix2, out) {
   if (node.type === "ObjectExpression") {
     const { own, children, mounted } = routeParts(node);
     const here = [...prefix2, ...own];
-    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(here));
-    for (const child of children) mountsIn(child, identifier, here, out);
+    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(asPrefix(here)));
+    for (const child of children) mountsIn(child, identifier, asPrefix(here), out);
     return;
   }
   for (const child of inside(node)) mountsIn(child, identifier, prefix2, out);
@@ -21705,7 +21709,6 @@ async function filesUnder(root, budget) {
 async function mountsFor(table, identifier, files, budget) {
   const found = /* @__PURE__ */ new Map();
   for (const file of files) {
-    if (file === table) continue;
     const remembered = sources.get(file);
     let source = remembered ?? null;
     if (remembered === void 0) {
@@ -21722,6 +21725,7 @@ async function mountsFor(table, identifier, files, budget) {
     const ast = parseModule(source, file);
     if (ast === null) continue;
     for (const array of tableArrays(ast.program)) {
+      if (file === table && array.name === identifier) continue;
       const paths = [];
       mountsIn(array.node, identifier, [], paths);
       for (const path of paths) {
@@ -21788,9 +21792,12 @@ async function place(screen, root, mounts, mountReads) {
   const declared = await declaredPath(screen, root);
   if (declared === null) return nothing;
   let path = declared.path;
-  if (mounts && path === null && declared.binding !== null) {
+  if (mounts && declared.binding !== null) {
     const prefix2 = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
-    if (prefix2 !== null) path = `/${prefix2.join("/")}`;
+    if (prefix2 !== null) {
+      const stated = path === null ? [] : path.split("/").filter((part) => part !== "");
+      path = `/${[...prefix2, ...stated].join("/")}`;
+    }
   }
   return {
     style: "declared",
@@ -23342,7 +23349,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join18 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.79";
+var VERSION = "0.14.80";
 
 // src/cli/session.ts
 function shapeFor(env, context) {

@@ -276,6 +276,23 @@ const joined = (segments: string[]): string | null => {
   return `/${parts.join('/')}`;
 };
 
+/**
+ * The same segments, read as a parent's prefix rather than as an entry's own path.
+ *
+ * `{ path: 'orders/*', children: [...] }` is a router saying "and everything
+ * below": the children continue from `orders`, and the splat is how the parent
+ * admits them rather than a segment of anybody's path. Left in, it composed
+ * into a child path with `*` in the middle and into a trail carrying `*` as
+ * though a breadcrumb could point at it.
+ *
+ * An entry's own path keeps its splat, because there it is the answer: `/docs/*`
+ * is genuinely where a screen routed for everything under `docs` lives.
+ */
+const asPrefix = (segments: string[]): string[] => {
+  const parts = segments.flatMap((one) => one.split('/')).filter((one) => one !== '');
+  return parts[parts.length - 1] === '*' ? parts.slice(0, -1) : parts;
+};
+
 const stringOf = (node: Node | null | undefined): string | null => {
   if (node === null || node === undefined) return null;
   if (node.type === 'StringLiteral') return node.value;
@@ -409,7 +426,7 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
       return { path: joined(here), line: node.loc?.start.line ?? 1 };
     }
     for (const child of children) {
-      const found = entryFor(child, names, here);
+      const found = entryFor(child, names, asPrefix(here));
       if (found !== null) return found;
     }
     return null;
@@ -445,7 +462,7 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
         return { path: joined(here), line: node.loc?.start.line ?? 1 };
       }
       for (const child of node.children) {
-        const found = entryFor(child as Node, names, here);
+        const found = entryFor(child as Node, names, asPrefix(here));
         if (found !== null) return found;
       }
       return null;
@@ -540,8 +557,8 @@ function mountsIn(node: Node, identifier: string, prefix: string[], out: (string
   if (node.type === 'ObjectExpression') {
     const { own, children, mounted } = routeParts(node);
     const here = [...prefix, ...own];
-    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(here));
-    for (const child of children) mountsIn(child, identifier, here, out);
+    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(asPrefix(here)));
+    for (const child of children) mountsIn(child, identifier, asPrefix(here), out);
     return;
   }
   for (const child of inside(node)) mountsIn(child, identifier, prefix, out);
@@ -622,7 +639,6 @@ async function mountsFor(
   const found = new Map<string, Mount>();
 
   for (const file of files) {
-    if (file === table) continue;
     const remembered = sources.get(file);
     let source = remembered ?? null;
     if (remembered === undefined) {
@@ -640,6 +656,11 @@ async function mountsFor(
     const ast = parseModule(source, file);
     if (ast === null) continue;
     for (const array of tableArrays(ast.program as Node)) {
+      // A parent and the array it mounts are often written in one file — the
+      // shape a single-file router has — so the file is read like any other.
+      // What may not be read is the table *itself*: an array walked looking for
+      // a mount of its own name would answer with its own entries' paths.
+      if (file === table && array.name === identifier) continue;
       const paths: (string | null)[] = [];
       mountsIn(array.node, identifier, [], paths);
       for (const path of paths) {
@@ -781,13 +802,17 @@ async function place(
   if (declared === null) return nothing;
 
   let path = declared.path;
-  // Only where the table states nothing. A table mounted under a path also
-  // shifts the entries that *do* state one, and composing those would rewrite
-  // answers this was never measured against — a separate change, and one that
-  // could turn a right answer into a wrong one.
-  if (mounts && path === null && declared.binding !== null) {
+  // Every entry in the table, and not only the pathless ones (#1). A table
+  // mounted under `orders` puts `{ path: 'detail/:id' }` at `/orders/detail/:id`,
+  // and answering `/detail/:id` is a partial path presented as a whole one.
+  // Where the mount cannot be established the stated path stands exactly as the
+  // table wrote it: refusing to compose is not refusing to answer.
+  if (mounts && declared.binding !== null) {
     const prefix = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
-    if (prefix !== null) path = `/${prefix.join('/')}`;
+    if (prefix !== null) {
+      const stated = path === null ? [] : path.split('/').filter((part) => part !== '');
+      path = `/${[...prefix, ...stated].join('/')}`;
+    }
   }
 
   return {

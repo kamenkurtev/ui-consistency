@@ -711,6 +711,189 @@ describe('a table mounted under a path by another table', () => {
   });
 });
 
+/**
+ * A mount shifts every entry in the table, not only the pathless ones (#1).
+ *
+ * #263 composed the mounting table's path onto a screen whose registration
+ * states none — an `index: true` child, a guard wrapper. It deliberately left
+ * the entries that *do* state a path, and those are shifted by the mount just
+ * as much: `{ path: 'detail/:id' }` inside a table mounted under `orders` is
+ * `/orders/detail/:id`, and answering `/detail/:id` is a partial path presented
+ * as a whole one — the direction `src/layers/cache.ts` says must never happen.
+ *
+ * The three refusals are unchanged in mechanism and change in consequence: for
+ * a pathless entry a refusal leaves `null`, and for one that states a path it
+ * leaves the stated path exactly as the table wrote it. Refusing to compose is
+ * never refusing to answer.
+ */
+describe('a mounted table shifts the entries that state a path too', () => {
+  const mounted = async (): Promise<void> => {
+    await file(
+      'src/Root.tsx',
+      [
+        "import { invoiceRoutes } from './invoices/Routes';",
+        "export const rootRoutes = [{ path: 'customers', children: invoiceRoutes }];",
+      ].join('\n'),
+    );
+    await file(
+      'src/invoices/Routes.tsx',
+      [
+        "import { Invoice } from './pages/Invoice';",
+        'export const invoiceRoutes = [',
+        "  { path: 'detail/:id', element: <Invoice /> },",
+        '];',
+      ].join('\n'),
+    );
+  };
+
+  it('composes the mount’s path onto a path the entry states', async () => {
+    await mounted();
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    const placed = await placementOf(screen, root);
+    expect(placed.path).toBe('/customers/detail/:id');
+    expect(placed.trail).toEqual(['customers', 'detail', ':id']);
+    // The registration is still the child table's, so the family does not move.
+    expect(placed.declaredIn?.file).toContain(join('invoices', 'Routes.tsx'));
+  });
+
+  it('composes onto a path the child table nests', async () => {
+    await file(
+      'src/Root.tsx',
+      [
+        "import { invoiceRoutes } from './invoices/Routes';",
+        "export const rootRoutes = [{ path: 'customers', children: invoiceRoutes }];",
+      ].join('\n'),
+    );
+    await file(
+      'src/invoices/Routes.tsx',
+      [
+        "import { Invoice } from './pages/Invoice';",
+        'export const invoiceRoutes = [',
+        "  { path: 'detail', children: [{ path: ':id', element: <Invoice /> }] },",
+        '];',
+      ].join('\n'),
+    );
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    expect((await placementOf(screen, root)).path).toBe('/customers/detail/:id');
+  });
+
+  it('leaves the stated path as the table wrote it when two tables mount it', async () => {
+    await mounted();
+    await file(
+      'src/Legacy.tsx',
+      "export const legacyRoutes = [{ path: 'billing', children: invoiceRoutes }];\n",
+    );
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    expect((await placementOf(screen, root)).path).toBe('/detail/:id');
+  });
+
+  it('leaves the stated path as the table wrote it when the export name is generic', async () => {
+    await file('src/Root.tsx', "export const rootRoutes = [{ path: 'customers', children: routes }];\n");
+    await file(
+      'src/invoices/Routes.tsx',
+      [
+        "import { Invoice } from './pages/Invoice';",
+        "export const routes = [{ path: 'detail/:id', element: <Invoice /> }];",
+      ].join('\n'),
+    );
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    expect((await placementOf(screen, root)).path).toBe('/detail/:id');
+  });
+
+  it('leaves the stated path as the table wrote it when the search runs out of budget', async () => {
+    await mounted();
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    expect((await placementOf(screen, root, { mountReads: 1 })).path).toBe('/detail/:id');
+  });
+
+  it('composes a parent written in the same file as the table it mounts', async () => {
+    // The shape a single-file router uses, and the one the sweep used to skip
+    // because it skipped the child table's own file.
+    await file(
+      'src/routes.tsx',
+      [
+        "import { Invoice } from './invoices/pages/Invoice';",
+        "const invoiceRoutes = [{ index: true, element: <Invoice /> }];",
+        "export const appRoutes = [{ path: 'customers', children: invoiceRoutes }];",
+      ].join('\n'),
+    );
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    expect((await placementOf(screen, root)).path).toBe('/customers');
+  });
+});
+
+/**
+ * A path that acts as a parent drops its splat.
+ *
+ * `{ path: 'orders/*', children: [...] }` is how a router says "and everything
+ * below"; the child's own path continues from `orders`, not from `orders/*`.
+ * Composing the splat in gave a path with `*` still in the middle of it, and a
+ * trail carrying `*` as though it were a segment — a wrong answer, reachable
+ * without any mount, and one that composing onto stated paths would multiply.
+ */
+describe('a splat on a parent', () => {
+  it('is not composed into a child’s path or trail', async () => {
+    await file(
+      'src/routes.tsx',
+      [
+        "import { Invoice } from './pages/Invoice';",
+        'export const appRoutes = [',
+        "  { path: 'customers/*', children: [{ path: 'detail', element: <Invoice /> }] },",
+        '];',
+      ].join('\n'),
+    );
+    const screen = await file('src/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    const placed = await placementOf(screen, root);
+    expect(placed.path).toBe('/customers/detail');
+    expect(placed.trail).toEqual(['customers', 'detail']);
+  });
+
+  it('is not composed into a mount prefix', async () => {
+    await file(
+      'src/Root.tsx',
+      [
+        "import { invoiceRoutes } from './invoices/Routes';",
+        "export const rootRoutes = [{ path: 'customers/*', children: invoiceRoutes }];",
+      ].join('\n'),
+    );
+    await file(
+      'src/invoices/Routes.tsx',
+      [
+        "import { Invoice } from './pages/Invoice';",
+        'export const invoiceRoutes = [{ index: true, element: <Invoice /> }];',
+      ].join('\n'),
+    );
+    const screen = await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
+
+    const placed = await placementOf(screen, root);
+    expect(placed.path).toBe('/customers');
+    expect(placed.trail).toEqual(['customers']);
+  });
+
+  it('stays on the entry that states it, where it is the screen’s own path', async () => {
+    // A leaf splat is the screen's real path — `/docs/*` routes everything
+    // under `docs` to one screen — and nothing here is composing it onto
+    // anything else.
+    await file(
+      'src/routes.tsx',
+      [
+        "import { Docs } from './pages/Docs';",
+        "export const appRoutes = [{ path: 'docs/*', element: <Docs /> }];",
+      ].join('\n'),
+    );
+    const screen = await file('src/pages/Docs.tsx', 'export const Docs = () => null;\n');
+
+    expect((await placementOf(screen, root)).path).toBe('/docs/*');
+  });
+});
+
 describe('what the sweep for a mount is not allowed to read', () => {
   it('does not follow a symlink out of the project', async () => {
     // The sweep walks the whole project, so what counts as a file in it is a
