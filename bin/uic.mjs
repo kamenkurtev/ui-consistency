@@ -21501,7 +21501,12 @@ async function declaredPath(screen, root) {
     if (ast === null) continue;
     const entry = entryFor(ast.program, names, []);
     if (entry !== null) {
-      return { path: entry.path, declaredIn: { file, line: entry.line }, binding: bindingOf(ast.program, names, entry) };
+      return {
+        path: entry.path,
+        declaredIn: { file, line: entry.line },
+        binding: bindingOf(ast.program, names, entry),
+        absolute: entry.absolute
+      };
     }
   }
   return null;
@@ -21521,11 +21526,13 @@ var PATH_KEYS = /* @__PURE__ */ new Set(["path"]);
 var BINDING_KEYS = /* @__PURE__ */ new Set(["component", "Component", "element", "lazy", "loadChildren"]);
 var CHILD_KEYS = /* @__PURE__ */ new Set(["children", "routes"]);
 var ROUTE_TAG = /Route$/;
-var joined = (segments) => {
-  if (segments.length === 0) return null;
-  const parts = segments.flatMap((one) => one.split("/")).filter((one) => one !== "");
-  return `/${parts.join("/")}`;
+var segmentsOf = (segments) => segments.flatMap((one) => one.split("/")).filter((one) => one !== "");
+var joined = (segments) => segments.length === 0 ? null : `/${segmentsOf(segments).join("/")}`;
+var asPrefix = (segments) => {
+  const parts = segmentsOf(segments);
+  return parts[parts.length - 1] === "*" ? parts.slice(0, -1) : parts;
 };
+var isRooted = (own) => own.some((one) => one.startsWith("/"));
 var stringOf = (node) => {
   if (node === null || node === void 0) return null;
   if (node.type === "StringLiteral") return node.value;
@@ -21593,15 +21600,16 @@ function routeParts(node) {
   }
   return { own, binding, children, mounted };
 }
-function entryFor(node, names, prefix2) {
+function entryFor(node, names, prefix2, absolute = false) {
   if (node.type === "ObjectExpression") {
     const { own, binding, children } = routeParts(node);
-    const here = [...prefix2, ...own];
+    const rooted = isRooted(own);
+    const here = rooted ? [...own] : [...prefix2, ...own];
     if (binding !== null && namesScreen(binding, names, false)) {
-      return { path: joined(here), line: node.loc?.start.line ?? 1 };
+      return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
     }
     for (const child of children) {
-      const found = entryFor(child, names, here);
+      const found = entryFor(child, names, asPrefix(here), absolute || rooted);
       if (found !== null) return found;
     }
     return null;
@@ -21621,19 +21629,20 @@ function entryFor(node, names, prefix2) {
           bindings.push(value);
         }
       }
-      const here = [...prefix2, ...own];
+      const rooted = isRooted(own);
+      const here = rooted ? [...own] : [...prefix2, ...own];
       if (bindings.some((one) => namesScreen(one, names, false)) || namesScreen(node, names, true)) {
-        return { path: joined(here), line: node.loc?.start.line ?? 1 };
+        return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
       }
       for (const child of node.children) {
-        const found = entryFor(child, names, here);
+        const found = entryFor(child, names, asPrefix(here), absolute || rooted);
         if (found !== null) return found;
       }
       return null;
     }
   }
   for (const child of inside(node)) {
-    const found = entryFor(child, names, prefix2);
+    const found = entryFor(child, names, prefix2, absolute);
     if (found !== null) return found;
   }
   return null;
@@ -21670,8 +21679,8 @@ function mountsIn(node, identifier, prefix2, out) {
   if (node.type === "ObjectExpression") {
     const { own, children, mounted } = routeParts(node);
     const here = [...prefix2, ...own];
-    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(here));
-    for (const child of children) mountsIn(child, identifier, here, out);
+    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(asPrefix(here)));
+    for (const child of children) mountsIn(child, identifier, asPrefix(here), out);
     return;
   }
   for (const child of inside(node)) mountsIn(child, identifier, prefix2, out);
@@ -21705,7 +21714,6 @@ async function filesUnder(root, budget) {
 async function mountsFor(table, identifier, files, budget) {
   const found = /* @__PURE__ */ new Map();
   for (const file of files) {
-    if (file === table) continue;
     const remembered = sources.get(file);
     let source = remembered ?? null;
     if (remembered === void 0) {
@@ -21722,6 +21730,7 @@ async function mountsFor(table, identifier, files, budget) {
     const ast = parseModule(source, file);
     if (ast === null) continue;
     for (const array of tableArrays(ast.program)) {
+      if (file === table && array.name === identifier) continue;
       const paths = [];
       mountsIn(array.node, identifier, [], paths);
       for (const path of paths) {
@@ -21762,7 +21771,7 @@ async function climb(table, identifier, root, reads) {
     if (mounts.length === 0) return hop === 0 ? null : segments;
     const one = mounts[0];
     if (one.path !== null) {
-      segments.unshift(...one.path.split("/").filter((part) => part !== ""));
+      segments.unshift(...segmentsOf([one.path]));
     }
     from = { file: one.file, name: one.binding };
   }
@@ -21788,16 +21797,18 @@ async function place(screen, root, mounts, mountReads) {
   const declared = await declaredPath(screen, root);
   if (declared === null) return nothing;
   let path = declared.path;
-  if (mounts && path === null && declared.binding !== null) {
+  if (mounts && declared.binding !== null && !declared.absolute) {
     const prefix2 = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
-    if (prefix2 !== null) path = `/${prefix2.join("/")}`;
+    if (prefix2 !== null) {
+      path = `/${[...prefix2, ...segmentsOf(path === null ? [] : [path])].join("/")}`;
+    }
   }
   return {
     style: "declared",
     path,
     // No path, no trail. Inventing one from the folder is the confident wrong
     // answer this whole module refuses to give.
-    trail: path === null ? [] : path.split("/").filter((part) => part !== ""),
+    trail: segmentsOf(path === null ? [] : [path]),
     declaredIn: declared.declaredIn
   };
 }
@@ -23342,7 +23353,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join18 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.79";
+var VERSION = "0.14.80";
 
 // src/cli/session.ts
 function shapeFor(env, context) {

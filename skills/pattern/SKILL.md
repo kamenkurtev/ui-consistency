@@ -129,9 +129,23 @@ that table registers; only the trail is unknown.
 
 Where the path *is* stated one table up — a routes array exported from one file
 and mounted under a path in another — it is composed from there and reported as
-the whole path (#263). Nothing partial is ever reported as whole: two tables
-mounting the same array under different paths answer `path: null`, and so does a
-mount the search could not finish looking for.
+the whole path (#263), ~~for a screen whose own registration states no path~~
+**for every entry in that table (#1)**: a mount under `orders` puts
+`{ path: 'detail/:id' }` at `/orders/detail/:id`, and answering `/detail/:id`
+would be the partial path this paragraph forbids. The parent and the array it
+mounts may be written in one file.
+
+Nothing partial is ever reported as whole: two tables mounting the same array
+under different paths answer `path: null`, and so does a mount the search could
+not finish looking for. For an entry that states a path those same refusals
+leave it **exactly as the table wrote it** — refusing to compose is not refusing
+to answer.
+
+Two things are never composed on. A parent's trailing `*` is how it admits its
+children, not a segment of their paths, so `{ path: 'settings/*' }` gives a child
+`/settings/…` and a trail with no `*` in it. And a path the table wrote absolute
+— `{ path: '/admin/audit' }` — is already whole: nothing above it applies, in a
+table or in the one that mounts it.
 
 **Three things this used to get wrong, so do not trust a remembered answer.** On a
 nested table it reported a *neighbouring* entry's route — 52 invented paths out

@@ -196,6 +196,8 @@ async function declaredPath(
   declaredIn: { file: string; line: number };
   /** The array in that table the entry sits in, where exactly one contains it. */
   binding: string | null;
+  /** Whether the table wrote it whole — see `Found.absolute`. */
+  absolute: boolean;
 } | null> {
   const names = await namesOf(screen);
 
@@ -212,7 +214,12 @@ async function declaredPath(
 
     const entry = entryFor(ast.program as Node, names, []);
     if (entry !== null) {
-      return { path: entry.path, declaredIn: { file, line: entry.line }, binding: bindingOf(ast.program as Node, names, entry) };
+      return {
+        path: entry.path,
+        declaredIn: { file, line: entry.line },
+        binding: bindingOf(ast.program as Node, names, entry),
+        absolute: entry.absolute,
+      };
     }
   }
   return null;
@@ -270,11 +277,31 @@ const ROUTE_TAG = /Route$/;
  * shape and it has no path of its own. Answering `/` for it would be inventing
  * one, and the entry below it in the file used to supply something worse.
  */
-const joined = (segments: string[]): string | null => {
-  if (segments.length === 0) return null;
-  const parts = segments.flatMap((one) => one.split('/')).filter((one) => one !== '');
-  return `/${parts.join('/')}`;
+const segmentsOf = (segments: string[]): string[] =>
+  segments.flatMap((one) => one.split('/')).filter((one) => one !== '');
+
+const joined = (segments: string[]): string | null =>
+  segments.length === 0 ? null : `/${segmentsOf(segments).join('/')}`;
+
+/**
+ * The same segments, read as a parent's prefix rather than as an entry's own path.
+ *
+ * `{ path: 'orders/*', children: [...] }` is a router saying "and everything
+ * below": the children continue from `orders`, and the splat is how the parent
+ * admits them rather than a segment of anybody's path. Left in, it composed
+ * into a child path with `*` in the middle and into a trail carrying `*` as
+ * though a breadcrumb could point at it.
+ *
+ * An entry's own path keeps its splat, because there it is the answer: `/docs/*`
+ * is genuinely where a screen routed for everything under `docs` lives.
+ */
+const asPrefix = (segments: string[]): string[] => {
+  const parts = segmentsOf(segments);
+  return parts[parts.length - 1] === '*' ? parts.slice(0, -1) : parts;
 };
+
+/** Did the table write this path whole, from the root? */
+const isRooted = (own: string[]): boolean => own.some((one) => one.startsWith('/'));
 
 const stringOf = (node: Node | null | undefined): string | null => {
   if (node === null || node === undefined) return null;
@@ -331,6 +358,16 @@ interface Found {
    */
   path: string | null;
   line: number;
+  /**
+   * Did the table write this path, or one it is nested under, absolute?
+   *
+   * `{ path: '/settings/tokens' }` is a whole path and not a segment: Vue
+   * Router reads the leading slash as the root, and React Router refuses a
+   * nested absolute path that does not already begin with its parent's. Either
+   * way nothing above it may be composed on — including the path of a table
+   * that mounts it, which is why the answer has to travel this far.
+   */
+  absolute: boolean;
 }
 
 /**
@@ -399,17 +436,18 @@ function routeParts(node: ObjectExpression): Parts {
   return { own, binding, children, mounted };
 }
 
-function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
+function entryFor(node: Node, names: string[], prefix: string[], absolute = false): Found | null {
   if (node.type === 'ObjectExpression') {
     const { own, binding, children } = routeParts(node);
-    const here = [...prefix, ...own];
+    const rooted = isRooted(own);
+    const here = rooted ? [...own] : [...prefix, ...own];
     // The binding is checked before the children, so a parent that routes the
     // screen itself wins over a child that merely mentions it.
     if (binding !== null && namesScreen(binding, names, false)) {
-      return { path: joined(here), line: node.loc?.start.line ?? 1 };
+      return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
     }
     for (const child of children) {
-      const found = entryFor(child, names, here);
+      const found = entryFor(child, names, asPrefix(here), absolute || rooted);
       if (found !== null) return found;
     }
     return null;
@@ -433,7 +471,8 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
           bindings.push(value);
         }
       }
-      const here = [...prefix, ...own];
+      const rooted = isRooted(own);
+      const here = rooted ? [...own] : [...prefix, ...own];
 
       // Bound by an attribute, or by simply being rendered inside — which is how
       // react-router v5 and Ionic write it, and that line carries no attribute
@@ -442,10 +481,10 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
         bindings.some((one) => namesScreen(one, names, false)) ||
         namesScreen(node, names, true)
       ) {
-        return { path: joined(here), line: node.loc?.start.line ?? 1 };
+        return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
       }
       for (const child of node.children) {
-        const found = entryFor(child as Node, names, here);
+        const found = entryFor(child as Node, names, asPrefix(here), absolute || rooted);
         if (found !== null) return found;
       }
       return null;
@@ -453,7 +492,7 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
   }
 
   for (const child of inside(node)) {
-    const found = entryFor(child, names, prefix);
+    const found = entryFor(child, names, prefix, absolute);
     if (found !== null) return found;
   }
   return null;
@@ -467,6 +506,12 @@ function entryFor(node: Node, names: string[], prefix: string[]): Found | null {
  * consumer outside this module — `uic place` — and `declaredSiblings`, which is
  * what the derived contract reaches, asks for the registration and never for
  * the path. A deliberate command may read a project; a hook may not.
+ *
+ * Since #1 every screen whose registration states a *relative* path pays it too,
+ * where before only a pathless one did: whether something mounts the table is
+ * exactly the question, and it cannot be answered without looking. Measured on a
+ * 24,752-file monorepo, one screen: 0.10 s to 2.8 s. A path the table wrote
+ * absolute is already whole, so it is answered without looking at all.
  *
  * Exhausting it answers null. A search that did not finish cannot say the mount
  * it found was the only one, and answering from an unfinished search is the
@@ -540,8 +585,8 @@ function mountsIn(node: Node, identifier: string, prefix: string[], out: (string
   if (node.type === 'ObjectExpression') {
     const { own, children, mounted } = routeParts(node);
     const here = [...prefix, ...own];
-    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(here));
-    for (const child of children) mountsIn(child, identifier, here, out);
+    if (mounted.some((one) => referencesTable(one, identifier))) out.push(joined(asPrefix(here)));
+    for (const child of children) mountsIn(child, identifier, asPrefix(here), out);
     return;
   }
   for (const child of inside(node)) mountsIn(child, identifier, prefix, out);
@@ -622,7 +667,6 @@ async function mountsFor(
   const found = new Map<string, Mount>();
 
   for (const file of files) {
-    if (file === table) continue;
     const remembered = sources.get(file);
     let source = remembered ?? null;
     if (remembered === undefined) {
@@ -640,6 +684,11 @@ async function mountsFor(
     const ast = parseModule(source, file);
     if (ast === null) continue;
     for (const array of tableArrays(ast.program as Node)) {
+      // A parent and the array it mounts are often written in one file — the
+      // shape a single-file router has — so the file is read like any other.
+      // What may not be read is the table *itself*: an array walked looking for
+      // a mount of its own name would answer with its own entries' paths.
+      if (file === table && array.name === identifier) continue;
       const paths: (string | null)[] = [];
       mountsIn(array.node, identifier, [], paths);
       for (const path of paths) {
@@ -720,7 +769,7 @@ async function climb(
 
     const one = mounts[0]!;
     if (one.path !== null) {
-      segments.unshift(...one.path.split('/').filter((part) => part !== ''));
+      segments.unshift(...segmentsOf([one.path]));
     }
     from = { file: one.file, name: one.binding };
   }
@@ -781,13 +830,16 @@ async function place(
   if (declared === null) return nothing;
 
   let path = declared.path;
-  // Only where the table states nothing. A table mounted under a path also
-  // shifts the entries that *do* state one, and composing those would rewrite
-  // answers this was never measured against — a separate change, and one that
-  // could turn a right answer into a wrong one.
-  if (mounts && path === null && declared.binding !== null) {
+  // Every entry in the table, and not only the pathless ones (#1). A table
+  // mounted under `orders` puts `{ path: 'detail/:id' }` at `/orders/detail/:id`,
+  // and answering `/detail/:id` is a partial path presented as a whole one.
+  // Where the mount cannot be established the stated path stands exactly as the
+  // table wrote it: refusing to compose is not refusing to answer.
+  if (mounts && declared.binding !== null && !declared.absolute) {
     const prefix = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
-    if (prefix !== null) path = `/${prefix.join('/')}`;
+    if (prefix !== null) {
+      path = `/${[...prefix, ...segmentsOf(path === null ? [] : [path])].join('/')}`;
+    }
   }
 
   return {
@@ -795,7 +847,7 @@ async function place(
     path,
     // No path, no trail. Inventing one from the folder is the confident wrong
     // answer this whole module refuses to give.
-    trail: path === null ? [] : path.split('/').filter((part) => part !== ''),
+    trail: segmentsOf(path === null ? [] : [path]),
     declaredIn: declared.declaredIn,
   };
 }
