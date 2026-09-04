@@ -277,11 +277,11 @@ const ROUTE_TAG = /Route$/;
  * shape and it has no path of its own. Answering `/` for it would be inventing
  * one, and the entry below it in the file used to supply something worse.
  */
-const joined = (segments: string[]): string | null => {
-  if (segments.length === 0) return null;
-  const parts = segments.flatMap((one) => one.split('/')).filter((one) => one !== '');
-  return `/${parts.join('/')}`;
-};
+const segmentsOf = (segments: string[]): string[] =>
+  segments.flatMap((one) => one.split('/')).filter((one) => one !== '');
+
+const joined = (segments: string[]): string | null =>
+  segments.length === 0 ? null : `/${segmentsOf(segments).join('/')}`;
 
 /**
  * The same segments, read as a parent's prefix rather than as an entry's own path.
@@ -296,9 +296,12 @@ const joined = (segments: string[]): string | null => {
  * is genuinely where a screen routed for everything under `docs` lives.
  */
 const asPrefix = (segments: string[]): string[] => {
-  const parts = segments.flatMap((one) => one.split('/')).filter((one) => one !== '');
+  const parts = segmentsOf(segments);
   return parts[parts.length - 1] === '*' ? parts.slice(0, -1) : parts;
 };
+
+/** Did the table write this path whole, from the root? */
+const isRooted = (own: string[]): boolean => own.some((one) => one.startsWith('/'));
 
 const stringOf = (node: Node | null | undefined): string | null => {
   if (node === null || node === undefined) return null;
@@ -436,7 +439,7 @@ function routeParts(node: ObjectExpression): Parts {
 function entryFor(node: Node, names: string[], prefix: string[], absolute = false): Found | null {
   if (node.type === 'ObjectExpression') {
     const { own, binding, children } = routeParts(node);
-    const rooted = own.some((one) => one.startsWith('/'));
+    const rooted = isRooted(own);
     const here = rooted ? [...own] : [...prefix, ...own];
     // The binding is checked before the children, so a parent that routes the
     // screen itself wins over a child that merely mentions it.
@@ -468,7 +471,7 @@ function entryFor(node: Node, names: string[], prefix: string[], absolute = fals
           bindings.push(value);
         }
       }
-      const rooted = own.some((one) => one.startsWith('/'));
+      const rooted = isRooted(own);
       const here = rooted ? [...own] : [...prefix, ...own];
 
       // Bound by an attribute, or by simply being rendered inside — which is how
@@ -766,7 +769,7 @@ async function climb(
 
     const one = mounts[0]!;
     if (one.path !== null) {
-      segments.unshift(...one.path.split('/').filter((part) => part !== ''));
+      segments.unshift(...segmentsOf([one.path]));
     }
     from = { file: one.file, name: one.binding };
   }
@@ -835,8 +838,7 @@ async function place(
   if (mounts && declared.binding !== null && !declared.absolute) {
     const prefix = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
     if (prefix !== null) {
-      const stated = path === null ? [] : path.split('/').filter((part) => part !== '');
-      path = `/${[...prefix, ...stated].join('/')}`;
+      path = `/${[...prefix, ...segmentsOf(path === null ? [] : [path])].join('/')}`;
     }
   }
 
@@ -845,7 +847,7 @@ async function place(
     path,
     // No path, no trail. Inventing one from the folder is the confident wrong
     // answer this whole module refuses to give.
-    trail: path === null ? [] : path.split('/').filter((part) => part !== ''),
+    trail: segmentsOf(path === null ? [] : [path]),
     declaredIn: declared.declaredIn,
   };
 }

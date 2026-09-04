@@ -21526,15 +21526,13 @@ var PATH_KEYS = /* @__PURE__ */ new Set(["path"]);
 var BINDING_KEYS = /* @__PURE__ */ new Set(["component", "Component", "element", "lazy", "loadChildren"]);
 var CHILD_KEYS = /* @__PURE__ */ new Set(["children", "routes"]);
 var ROUTE_TAG = /Route$/;
-var joined = (segments) => {
-  if (segments.length === 0) return null;
-  const parts = segments.flatMap((one) => one.split("/")).filter((one) => one !== "");
-  return `/${parts.join("/")}`;
-};
+var segmentsOf = (segments) => segments.flatMap((one) => one.split("/")).filter((one) => one !== "");
+var joined = (segments) => segments.length === 0 ? null : `/${segmentsOf(segments).join("/")}`;
 var asPrefix = (segments) => {
-  const parts = segments.flatMap((one) => one.split("/")).filter((one) => one !== "");
+  const parts = segmentsOf(segments);
   return parts[parts.length - 1] === "*" ? parts.slice(0, -1) : parts;
 };
+var isRooted = (own) => own.some((one) => one.startsWith("/"));
 var stringOf = (node) => {
   if (node === null || node === void 0) return null;
   if (node.type === "StringLiteral") return node.value;
@@ -21605,7 +21603,7 @@ function routeParts(node) {
 function entryFor(node, names, prefix2, absolute = false) {
   if (node.type === "ObjectExpression") {
     const { own, binding, children } = routeParts(node);
-    const rooted = own.some((one) => one.startsWith("/"));
+    const rooted = isRooted(own);
     const here = rooted ? [...own] : [...prefix2, ...own];
     if (binding !== null && namesScreen(binding, names, false)) {
       return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
@@ -21631,7 +21629,7 @@ function entryFor(node, names, prefix2, absolute = false) {
           bindings.push(value);
         }
       }
-      const rooted = own.some((one) => one.startsWith("/"));
+      const rooted = isRooted(own);
       const here = rooted ? [...own] : [...prefix2, ...own];
       if (bindings.some((one) => namesScreen(one, names, false)) || namesScreen(node, names, true)) {
         return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
@@ -21773,7 +21771,7 @@ async function climb(table, identifier, root, reads) {
     if (mounts.length === 0) return hop === 0 ? null : segments;
     const one = mounts[0];
     if (one.path !== null) {
-      segments.unshift(...one.path.split("/").filter((part) => part !== ""));
+      segments.unshift(...segmentsOf([one.path]));
     }
     from = { file: one.file, name: one.binding };
   }
@@ -21802,8 +21800,7 @@ async function place(screen, root, mounts, mountReads) {
   if (mounts && declared.binding !== null && !declared.absolute) {
     const prefix2 = await mountPrefix(declared.declaredIn.file, declared.binding, root, mountReads);
     if (prefix2 !== null) {
-      const stated = path === null ? [] : path.split("/").filter((part) => part !== "");
-      path = `/${[...prefix2, ...stated].join("/")}`;
+      path = `/${[...prefix2, ...segmentsOf(path === null ? [] : [path])].join("/")}`;
     }
   }
   return {
@@ -21811,7 +21808,7 @@ async function place(screen, root, mounts, mountReads) {
     path,
     // No path, no trail. Inventing one from the folder is the confident wrong
     // answer this whole module refuses to give.
-    trail: path === null ? [] : path.split("/").filter((part) => part !== ""),
+    trail: segmentsOf(path === null ? [] : [path]),
     declaredIn: declared.declaredIn
   };
 }
