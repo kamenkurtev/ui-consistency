@@ -591,7 +591,9 @@ async function group(rootDir: string, args: string[]): Promise<number> {
   }
 
   const grouped = await groupScreens(rootDir, absolute, depthIn(args));
-  const screens = grouped.groups.reduce((count, one) => count + one.members.length, 0);
+  const screens =
+    grouped.groups.reduce((count, one) => count + one.members.length, 0) +
+    grouped.ungrouped.length;
   console.log(
     `${screens} ${screens === 1 ? 'screen' : 'screens'}, read ${grouped.depth} ` +
       `${grouped.depth === 1 ? 'level' : 'levels'} — ${grouped.groups.length} ` +
@@ -602,6 +604,13 @@ async function group(rootDir: string, args: string[]): Promise<number> {
     console.log(`\n${one.members.length} ${one.members.length === 1 ? 'screen' : 'screens'}`);
     for (const line of one.signature) console.log(`  ${line}`);
     console.log(`  e.g. ${one.members[0]}`);
+  }
+  if (grouped.ungrouped.length > 0) {
+    const n = grouped.ungrouped.length;
+    console.log(
+      `\n${n} ${n === 1 ? 'screen shares' : 'screens share'} nothing with any of these\n  ` +
+        grouped.ungrouped.join('\n  '),
+    );
   }
   if (grouped.notScreens.length > 0) {
     console.log(`\nnot screens — nothing rendered in them\n  ${grouped.notScreens.join('\n  ')}`);

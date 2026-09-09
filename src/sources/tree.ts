@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { relative } from 'node:path';
 import { parseModule, walk } from '../parse/parse.js';
-import { templateKind } from '../parse/template.js';
+import { isTemplateComponent, templateKind } from '../parse/template.js';
 import { markupOf, pairOf, selectorOf } from './pair.js';
 import { shapeOf } from './extract.js';
 import { resolverFor, type Resolver } from './resolve.js';
@@ -58,7 +58,21 @@ export type Leaf =
   /** Used, and no import in the file leads anywhere we can read. */
   | 'unresolved'
   /** Inside the project, and the depth bound stopped the walk before reading it. */
-  | 'beyond';
+  | 'beyond'
+  /**
+   * Another package of this workspace — resolved, named, and not descended into.
+   *
+   * Distinct from `external`, which it used to be reported as, and the
+   * distinction is the whole of it: on a workspace monorepo the project's own
+   * design system is imported by package name, so labelling it `external` said
+   * *nothing below here is our business* about the project's own code, and the
+   * walk read depth 1 while reporting two levels.
+   *
+   * Still not descended into, and that is a decision rather than a limit:
+   * `Page / Header / Content` is the vocabulary a pattern wants, and that
+   * layout's internals are the library's business, not the screen's.
+   */
+  | 'package';
 
 export interface TreeNode {
   /** As written where it is used: a JSX name, or a template's selector. */
@@ -177,19 +191,27 @@ async function nodeFor(
     (selectors ??= await selectorMap(identity, file_.bindings, resolve, read));
 
   const next = new Set(seen).add(identity);
-  const children: TreeNode[] = [];
-  for (const name of surface.children) {
-    children.push(
-      await childNode(rootDir, file_, selectorsIn, name, kind, left, resolve, read, state, next),
-    );
-  }
 
-  return {
-    name: surface.holder,
-    file: relative(rootDir, identity),
-    at: 'project',
-    children,
-  };
+  // **A file whose whole output is one component is a wiring file**, and
+  // stopping at it describes the wiring rather than the screen. `ApiExplorerPage`
+  // on a real repository is `outlet || <DefaultApiExplorerPage {...props} />`:
+  // one true line, and everything that makes it a screen is inside the component
+  // it names.
+  //
+  // The root is followed *only* in that case. Following the root of
+  // `<Page><Header/><Content/></Page>` would walk into the design system's
+  // layout and describe the library instead of the screen — the holder of a
+  // screen that holds something is the boundary, not a step.
+  const wiring = surface.children.length === 0 && isTemplateComponent(surface.holder);
+  const children = wiring
+    ? await followRoot(rootDir, file_, selectorsIn, surface.holder, kind, left, resolve, read, state, next)
+    : await Promise.all(
+        surface.children.map((name) =>
+          childNode(rootDir, file_, selectorsIn, name, kind, left, resolve, read, state, next),
+        ),
+      );
+
+  return { name: surface.holder, file: relative(rootDir, identity), at: 'project', children };
 }
 
 /** One file, read once: where it is, what it imported, and what it declares. */
@@ -232,6 +254,10 @@ async function childNode(
     return { name, file: null, at: whyNot(from, name, kind, resolve), children: [] };
   }
 
+  if (resolve.packageOf(target) !== resolve.packageOf(from.path)) {
+    return { name, file: relative(rootDir, target), at: 'package', children: [] };
+  }
+
   if (left <= 1) {
     state.truncated = true;
     return { name, file: relative(rootDir, target), at: 'beyond', children: [] };
@@ -244,6 +270,40 @@ async function childNode(
   // The name at the call site is what the reader is looking at; the node's own
   // name is the element that file renders, which becomes its single child.
   return { name, file: relative(rootDir, target), at: 'project', children: [node] };
+}
+
+/**
+ * What a wiring file's single component turns out to be.
+ *
+ * Spliced in rather than wrapped. The node the walk wants under
+ * `ApiExplorerPage` is what `DefaultApiExplorerPage` renders — not a second
+ * node called `DefaultApiExplorerPage` holding it, which prints the same name
+ * on two consecutive lines and made five real screens read as `*Page / *Page`.
+ *
+ * Nothing where it could not be followed: the screen has already been read as
+ * one component with nothing in it, and a leaf repeating the root's own name
+ * says that twice.
+ */
+async function followRoot(
+  rootDir: string,
+  from: Reading,
+  selectorsIn: () => Promise<Map<string, string>>,
+  holder: string,
+  kind: ReturnType<typeof templateKind>,
+  left: number,
+  resolve: Resolver,
+  read: Set<string>,
+  state: State,
+  seen: Set<string>,
+): Promise<TreeNode[]> {
+  const node = await childNode(
+    rootDir, from, selectorsIn, holder, kind, left, resolve, read, state, seen,
+  );
+  if (node.children.length === 1) return node.children;
+  // Resolved and stopped for a stated reason — another package, the depth
+  // bound. That is worth one line, and it is the only case where the repeated
+  // name carries something the root did not.
+  return node.at === 'package' || node.at === 'beyond' ? [node] : [];
 }
 
 /**
