@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { readFile as readFile25, realpath as realpath2, stat as stat10, writeFile as writeFile7 } from "node:fs/promises";
-import { dirname as dirname13, relative as relative8, resolve as resolve7 } from "node:path";
+import { readFile as readFile26, realpath as realpath2, stat as stat10, writeFile as writeFile7 } from "node:fs/promises";
+import { dirname as dirname14, relative as relative9, resolve as resolve8 } from "node:path";
 
 // src/layers/detect.ts
 import { readFile as readFile2, readdir as readdir2, stat as stat2 } from "node:fs/promises";
@@ -21815,7 +21815,9 @@ async function place(screen, root, mounts, mountReads) {
 var MODULE_EXTENSIONS = [".tsx", ".ts", ".jsx", ".js", ".vue", ".svelte"];
 async function resolveRelative(from, spec) {
   if (!spec.startsWith(".")) return null;
-  const base = join11(from, spec);
+  return moduleAt(join11(from, spec));
+}
+async function moduleAt(base) {
   const isFile2 = (path) => stat6(path).then(
     (info) => info.isFile(),
     () => false
@@ -21978,6 +21980,7 @@ var TEMPLATE_FILE = /\.html$/;
 var DECORATED = /@Component\s*\(/;
 var TEMPLATE_URL = /templateUrl\s*:\s*['"`]([^'"`]+)['"`]/;
 var INLINE = /template\s*:\s*`([\s\S]*?)`/;
+var SELECTOR = /selector\s*:\s*['"`]([^'"`]+)['"`]/;
 var MAX_BYTES = 4e5;
 var isFile = (path) => stat7(path).then(
   (info) => info.isFile(),
@@ -22013,6 +22016,12 @@ async function markupOf(path, fallback) {
   if (pair.markup === null) return { path, source: fallback };
   const source = await readFile12(pair.markup, "utf8").catch(() => null);
   return source === null ? { path, source: fallback } : { path: pair.markup, source };
+}
+async function selectorOf(path) {
+  const source = await readFile12(path, "utf8").catch(() => null);
+  if (source === null || source.length > MAX_BYTES || !DECORATED.test(source)) return null;
+  const selector = SELECTOR.exec(source)?.[1] ?? null;
+  return selector !== null && /^[a-z][\w-]*$/i.test(selector) ? selector : null;
 }
 
 // src/sources/neighbours.ts
@@ -22537,6 +22546,153 @@ async function patternOf2(target) {
   };
 }
 
+// src/sources/tree.ts
+import { readFile as readFile17 } from "node:fs/promises";
+import { relative as relative6 } from "node:path";
+
+// src/sources/resolve.ts
+import { dirname as dirname11, resolve as resolve6, sep as sep4 } from "node:path";
+async function resolverFor(rootDir) {
+  const aliases = await tsconfigPaths(rootDir).catch(() => null);
+  return {
+    find: (fromFile, specifier) => resolveIn(rootDir, aliases, fromFile, specifier),
+    shape: (specifier) => {
+      if (specifier.startsWith(".")) return "relative";
+      const matched = Object.keys(aliases?.paths ?? {}).some(
+        (pattern2) => matchAlias(pattern2, specifier) !== null
+      );
+      return matched ? "aliased" : "package";
+    }
+  };
+}
+async function resolveIn(rootDir, aliases, fromFile, specifier) {
+  const found = specifier.startsWith(".") ? await resolveRelative(dirname11(fromFile), specifier) : await throughAliases(aliases, specifier);
+  if (found === null) return null;
+  if (found.split(sep4).includes("node_modules")) return null;
+  return await insideProject(rootDir, found) ? found : null;
+}
+async function throughAliases(aliases, specifier) {
+  if (aliases === null) return null;
+  const matches = Object.keys(aliases.paths).filter((pattern2) => matchAlias(pattern2, specifier) !== null).sort((a, b) => b.length - a.length);
+  for (const pattern2 of matches) {
+    const rest = matchAlias(pattern2, specifier);
+    if (rest === null) continue;
+    for (const target of aliases.paths[pattern2] ?? []) {
+      const found = await moduleAt(resolve6(aliases.baseUrl, target.replace("*", rest)));
+      if (found !== null) return found;
+    }
+  }
+  return null;
+}
+function matchAlias(pattern2, specifier) {
+  const star = pattern2.indexOf("*");
+  if (star === -1) return pattern2 === specifier ? "" : null;
+  const before = pattern2.slice(0, star);
+  const after = pattern2.slice(star + 1);
+  if (!specifier.startsWith(before) || !specifier.endsWith(after)) return null;
+  if (specifier.length < before.length + after.length) return null;
+  return specifier.slice(before.length, specifier.length - after.length);
+}
+
+// src/sources/tree.ts
+var DEFAULT_DEPTH = 2;
+var MAX_DEPTH = 5;
+async function screenTree(rootDir, file, options = {}) {
+  const depth = Math.min(Math.max(1, options.depth ?? DEFAULT_DEPTH), MAX_DEPTH);
+  const resolve9 = await resolverFor(rootDir);
+  const read = /* @__PURE__ */ new Set();
+  const state = { truncated: false };
+  const root = await nodeFor(rootDir, file, depth, resolve9, read, state, /* @__PURE__ */ new Set());
+  if (root === null) return null;
+  return { root, depth, truncated: state.truncated, read: [...read] };
+}
+async function nodeFor(rootDir, file, left, resolve9, read, state, seen) {
+  const pair = await pairOf(file);
+  const identity = pair?.identity ?? file;
+  if (seen.has(identity)) return null;
+  const own = await readFile17(identity, "utf8").catch(() => null);
+  if (own === null) return null;
+  read.add(identity);
+  const markup = pair === null ? { path: file, source: own } : await markupOf(identity, own);
+  if (pair?.markup != null) read.add(pair.markup);
+  const kind = templateKind(markup.path);
+  const shape = shapeOf(markup.source, kind ?? void 0);
+  if (shape === null || shape.holder === null) return null;
+  const surface = { holder: shape.holder, children: shape.body };
+  const file_ = { path: identity, bindings: importsIn(own), declared: declaredNames(own) };
+  let selectors = null;
+  const selectorsIn = async () => selectors ??= await selectorMap(identity, file_.bindings, resolve9, read);
+  const next = new Set(seen).add(identity);
+  const children = [];
+  for (const name of surface.children) {
+    children.push(
+      await childNode(rootDir, file_, selectorsIn, name, kind, left, resolve9, read, state, next)
+    );
+  }
+  return {
+    name: surface.holder,
+    file: relative6(rootDir, identity),
+    at: "project",
+    children
+  };
+}
+async function childNode(rootDir, from, selectorsIn, name, kind, left, resolve9, read, state, seen) {
+  const specifier = from.bindings.get(name);
+  const target = kind === null ? specifier === void 0 ? null : await resolve9.find(from.path, specifier) : (await selectorsIn()).get(name) ?? null;
+  if (target === null) {
+    return { name, file: null, at: whyNot(from, name, kind, resolve9), children: [] };
+  }
+  if (left <= 1) {
+    state.truncated = true;
+    return { name, file: relative6(rootDir, target), at: "beyond", children: [] };
+  }
+  const node = await nodeFor(rootDir, target, left - 1, resolve9, read, state, seen);
+  if (node === null) {
+    return { name, file: relative6(rootDir, target), at: "project", children: [] };
+  }
+  return { name, file: relative6(rootDir, target), at: "project", children: [node] };
+}
+async function selectorMap(from, bindings, resolve9, read) {
+  const found = /* @__PURE__ */ new Map();
+  for (const specifier of new Set(bindings.values())) {
+    const candidate = await resolve9.find(from, specifier);
+    if (candidate === null) continue;
+    read.add(candidate);
+    const selector = await selectorOf(candidate);
+    if (selector !== null && !found.has(selector)) found.set(selector, candidate);
+  }
+  return found;
+}
+function importsIn(source) {
+  const found = /* @__PURE__ */ new Map();
+  const ast = parseModule(source);
+  if (ast === null) return found;
+  walk(ast.program, (node) => {
+    if (node.type !== "ImportDeclaration") return;
+    for (const specifier of node.specifiers) {
+      found.set(specifier.local.name, node.source.value);
+    }
+  });
+  return found;
+}
+function declaredNames(source) {
+  const found = /* @__PURE__ */ new Set();
+  const ast = parseModule(source);
+  if (ast === null) return found;
+  walk(ast.program, (node) => {
+    if (node.type === "VariableDeclarator" && node.id.type === "Identifier") found.add(node.id.name);
+    if (node.type === "FunctionDeclaration" && node.id != null) found.add(node.id.name);
+    if (node.type === "ClassDeclaration" && node.id != null) found.add(node.id.name);
+  });
+  return found;
+}
+function whyNot(from, name, kind, resolve9) {
+  if (kind !== null) return "unresolved";
+  const specifier = from.bindings.get(name);
+  if (specifier === void 0) return from.declared.has(name) ? "local" : "unresolved";
+  return resolve9.shape(specifier) === "package" ? "external" : "unresolved";
+}
+
 // src/checks/contract.ts
 import { basename as basename7 } from "node:path";
 var SHAPE2 = {
@@ -22629,8 +22785,8 @@ function isContract(value) {
 }
 
 // src/cli/log.ts
-import { appendFile, readdir as readdir9, readFile as readFile17, rename, stat as stat8, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join14, relative as relative6 } from "node:path";
+import { appendFile, readdir as readdir9, readFile as readFile18, rename, stat as stat8, writeFile as writeFile4 } from "node:fs/promises";
+import { join as join14, relative as relative7 } from "node:path";
 var logPath = (rootDir) => join14(cacheRoot(), projectKey(rootDir), "findings.jsonl");
 var contractPathFor = (rootDir, kind) => join14(logPath(rootDir), "..", `contract-${kind.replace(/[^\w.-]+/g, "-")}.json`);
 var contractsFor = async (rootDir) => {
@@ -22644,7 +22800,7 @@ var statePath = (rootDir) => join14(logPath(rootDir), "..", "seen.jsonl");
 var MAX_STATE_BYTES = 512e3;
 var keyOf = (entry) => `${entry.file}|${entry.line}|${entry.level}|${entry.message}`;
 var readSeen = async (rootDir) => {
-  const raw = await readFile17(statePath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile18(statePath(rootDir), "utf8").catch(() => null);
   if (raw === null) return {};
   const folded = {};
   for (const line of raw.split("\n")) {
@@ -22690,7 +22846,7 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
     for (const finding of findings) {
       const entry = {
         at,
-        file: relative6(base, finding.file) || finding.file,
+        file: relative7(base, finding.file) || finding.file,
         line: finding.line,
         level: finding.level,
         message: finding.message,
@@ -22708,7 +22864,7 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
   }
 };
 var readLog = async (rootDir) => {
-  const raw = await readFile17(logPath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile18(logPath(rootDir), "utf8").catch(() => null);
   if (raw === null) return [];
   const entries = /* @__PURE__ */ new Map();
   for (const line of raw.split("\n")) {
@@ -22934,12 +23090,12 @@ function shapeReport(corpora) {
 }
 
 // src/sources/reference.ts
-import { readFile as readFile18 } from "node:fs/promises";
+import { readFile as readFile19 } from "node:fs/promises";
 function referenceSource(filePath) {
   return {
     kind: "reference",
     async describe() {
-      const source = await readFile18(filePath, "utf8").catch(() => null);
+      const source = await readFile19(filePath, "utf8").catch(() => null);
       if (source === null) return null;
       const shape = shapeOf(source);
       if (shape === null) return null;
@@ -22950,7 +23106,7 @@ function referenceSource(filePath) {
 }
 
 // src/sources/knowledge.ts
-import { readFile as readFile19 } from "node:fs/promises";
+import { readFile as readFile20 } from "node:fs/promises";
 var COMPONENT2 = /<([A-Z][\w]*)/g;
 var PROP = /<([A-Z][\w]*)\s+([^>]*)>/g;
 var ATTRIBUTE = /([a-zA-Z][\w]*)=['"]([^'"]+)['"]/g;
@@ -22959,7 +23115,7 @@ function knowledgeSource(knowledge) {
     kind: "knowledge",
     async describe(target) {
       if (knowledge.fragments.length === 0) return null;
-      const source = await readFile19(target, "utf8").catch(() => null);
+      const source = await readFile20(target, "utf8").catch(() => null);
       const fragments = source === null ? knowledge.fragments : retrieve(source, knowledge, { maxFragments: 8, maxChars: 8e3 });
       if (fragments.length === 0) return null;
       const components = [];
@@ -22986,7 +23142,7 @@ function knowledgeSource(knowledge) {
 }
 
 // src/sources/storybook.ts
-import { readdir as readdir10, readFile as readFile20 } from "node:fs/promises";
+import { readdir as readdir10, readFile as readFile21 } from "node:fs/promises";
 import { join as join15 } from "node:path";
 var STORIES = /\.stories\.[jt]sx?$/;
 async function storyFiles(dir, depth = 2) {
@@ -23080,7 +23236,7 @@ function storybookSource(dir, options = {}) {
       const components = [];
       const props = {};
       for (const file of files) {
-        const source = await readFile20(file, "utf8").catch(() => null);
+        const source = await readFile21(file, "utf8").catch(() => null);
         if (source === null) continue;
         const component = componentOf(source);
         if (component === null) continue;
@@ -23117,11 +23273,11 @@ function statedConventions(model) {
 }
 
 // src/cli/hook.ts
-import { dirname as dirname12, relative as relative7, resolve as resolve6 } from "node:path";
-import { readFile as readFile24 } from "node:fs/promises";
+import { dirname as dirname13, relative as relative8, resolve as resolve7 } from "node:path";
+import { readFile as readFile25 } from "node:fs/promises";
 
 // src/ai/settled.ts
-import { readFile as readFile21, writeFile as writeFile5 } from "node:fs/promises";
+import { readFile as readFile22, writeFile as writeFile5 } from "node:fs/promises";
 import { join as join16 } from "node:path";
 var WINDOW = 6e4;
 var settled = async (rootDir, filePath, options = {}) => {
@@ -23135,7 +23291,7 @@ var decide = async (rootDir, filePath, options) => {
   const now = options.now ?? (() => Date.now());
   const window = options.windowMs ?? WINDOW;
   const file = join16(cacheRoot(), projectKey(rootDir), "advised.json");
-  const raw = await readFile21(file, "utf8").catch(() => null);
+  const raw = await readFile22(file, "utf8").catch(() => null);
   let seen = {};
   if (raw !== null) {
     try {
@@ -23156,8 +23312,8 @@ var decide = async (rootDir, filePath, options) => {
 };
 
 // src/sources/pattern-cache.ts
-import { readFile as readFile22, stat as stat9, writeFile as writeFile6 } from "node:fs/promises";
-import { dirname as dirname11, join as join17 } from "node:path";
+import { readFile as readFile23, stat as stat9, writeFile as writeFile6 } from "node:fs/promises";
+import { dirname as dirname12, join as join17 } from "node:path";
 var CACHE_VERSION3 = 2;
 var fileIn3 = (dir) => join17(dir, "patterns.json");
 var mtimeOf3 = (path) => stat9(path).then(
@@ -23166,9 +23322,9 @@ var mtimeOf3 = (path) => stat9(path).then(
 );
 async function cachedPattern(rootDir, target, kind) {
   const dir = await cacheDirFor(rootDir);
-  const key = `${kind}|${dirname11(target)}`;
+  const key = `${kind}|${dirname12(target)}`;
   if (dir !== null) {
-    const raw2 = await readFile22(fileIn3(dir), "utf8").catch(() => null);
+    const raw2 = await readFile23(fileIn3(dir), "utf8").catch(() => null);
     if (raw2 !== null) {
       try {
         const parsed = JSON.parse(raw2);
@@ -23190,7 +23346,7 @@ async function cachedPattern(rootDir, target, kind) {
     const when = await mtimeOf3(path);
     if (when !== null) from[path] = when;
   }
-  const raw = await readFile22(fileIn3(dir), "utf8").catch(() => null);
+  const raw = await readFile23(fileIn3(dir), "utf8").catch(() => null);
   let existing = { version: CACHE_VERSION3, kinds: {} };
   if (raw !== null) {
     try {
@@ -23205,7 +23361,7 @@ async function cachedPattern(rootDir, target, kind) {
 }
 
 // src/cli/touched.ts
-import { readFile as readFile23 } from "node:fs/promises";
+import { readFile as readFile24 } from "node:fs/promises";
 function rangesOf(source, text) {
   if (text === "") return [];
   const found = [];
@@ -23230,7 +23386,7 @@ async function touchedBy(toolName, input, filePath) {
     }
   }
   if (written.length === 0) return null;
-  const source = await readFile23(filePath, "utf8").catch(() => null);
+  const source = await readFile24(filePath, "utf8").catch(() => null);
   if (source === null) return null;
   const ranges = written.flatMap((text) => rangesOf(source, text));
   return ranges.length === 0 ? null : ranges;
@@ -23257,8 +23413,8 @@ async function hookResponse(stdin) {
   }
   const filePath = filePathFrom(payload);
   if (filePath === null) return null;
-  const absolute = resolve6(typeof payload.cwd === "string" ? payload.cwd : ".", filePath);
-  const root = await findProjectRoot(dirname12(absolute)) ?? (typeof payload.cwd === "string" ? payload.cwd : null);
+  const absolute = resolve7(typeof payload.cwd === "string" ? payload.cwd : ".", filePath);
+  const root = await findProjectRoot(dirname13(absolute)) ?? (typeof payload.cwd === "string" ? payload.cwd : null);
   if (root === null) return null;
   const findings = await analyzeProject(root, [absolute]).catch(() => []);
   await record(root, findings, { rootDir: root });
@@ -23301,7 +23457,7 @@ async function hookResponse(stdin) {
       }
     };
   }
-  const text = said.map((finding) => formatFinding({ ...finding, file: relative7(root, finding.file) })).join("\n\n");
+  const text = said.map((finding) => formatFinding({ ...finding, file: relative8(root, finding.file) })).join("\n\n");
   return {
     hookSpecificOutput: {
       hookEventName: "PostToolUse",
@@ -23314,16 +23470,16 @@ Fix them in this turn.`
   };
 }
 function provenance(root, contract) {
-  const names = contract.family.map((one) => relative7(root, one));
+  const names = contract.family.map((one) => relative8(root, one));
   return contract.from === "routes" ? `derived just now from the ${names.length} screens the route table registers beside it \u2014 nobody approved it` : `derived just now from files in its folder \u2014 ${names.join(", ")} \u2014 nobody approved it`;
 }
 async function deviationsFromContract(root, file) {
   const nothing = { said: [], derived: null };
-  const source = await readFile24(file, "utf8").catch(() => null);
+  const source = await readFile25(file, "utf8").catch(() => null);
   if (source === null) return nothing;
   const approved = [];
   for (const path of await contractsFor(root)) {
-    const raw = await readFile24(path, "utf8").catch(() => null);
+    const raw = await readFile25(path, "utf8").catch(() => null);
     if (raw === null) continue;
     let parsed;
     try {
@@ -23339,7 +23495,7 @@ async function deviationsFromContract(root, file) {
   const contracts = fresh === null ? matching : [fresh];
   const said = [];
   for (const contract of contracts) {
-    const deviations = contractDeviations(relative7(root, file), source, contract);
+    const deviations = contractDeviations(relative8(root, file), source, contract);
     if (deviations === null) return nothing;
     if (deviations.length === 0) return nothing;
     said.push(...deviations.map((one) => one.message));
@@ -23352,7 +23508,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join18 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.81";
+var VERSION = "0.14.82";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -23445,7 +23601,7 @@ async function checkProject(rootDir, files, options = {}) {
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
     if (chain.length === 0) continue;
-    const source = await readFile25(file, "utf8").catch(() => null);
+    const source = await readFile26(file, "utf8").catch(() => null);
     if (source === null) continue;
     violations.push(...checkSource(file, source, chain, await inventoryFor(chain)));
   }
@@ -23468,9 +23624,9 @@ async function analyzeProject(rootDir, files, options = {}) {
   const findings = [];
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
-    const source = await readFile25(file, "utf8").catch(() => null);
+    const source = await readFile26(file, "utf8").catch(() => null);
     if (source === null) continue;
-    const model = await sourceFor(dirname13(file), file);
+    const model = await sourceFor(dirname14(file), file);
     const result = await runEngine(file, source, {
       chain,
       inventory: await inventoryFor(chain),
@@ -23485,7 +23641,7 @@ async function analyzeProject(rootDir, files, options = {}) {
 }
 async function adviseProject(rootDir, file) {
   const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-  const source = await readFile25(file, "utf8").catch(() => null);
+  const source = await readFile26(file, "utf8").catch(() => null);
   if (source === null) return null;
   const neighbours = await neighbourSource().describe(file).catch(() => null);
   const usage = await observeUsage(file).catch(() => null);
@@ -23511,10 +23667,10 @@ async function review(rootDir, args) {
     console.error("Usage: uic review <file...>");
     return 1;
   }
-  const absolute = files.map((file) => resolve7(rootDir, file));
+  const absolute = files.map((file) => resolve8(rootDir, file));
   const tier1 = await analyzeProject(rootDir, absolute);
   for (const finding of tier1) {
-    console.log(`${formatFinding({ ...finding, file: relative8(rootDir, finding.file) })}
+    console.log(`${formatFinding({ ...finding, file: relative9(rootDir, finding.file) })}
 `);
   }
   if (tier1.length > 0) return 1;
@@ -23548,10 +23704,10 @@ async function pattern(rootDir, args) {
     return 1;
   }
   if (decided?.stale != null) {
-    console.error(`${relative8(rootDir, decided.file)} points at ${decided.stale}, which is gone.`);
+    console.error(`${relative9(rootDir, decided.file)} points at ${decided.stale}, which is gone.`);
     return 1;
   }
-  const reference = decided?.canon ?? (file === void 0 ? void 0 : resolve7(rootDir, file));
+  const reference = decided?.canon ?? (file === void 0 ? void 0 : resolve8(rootDir, file));
   if (reference === void 0) {
     console.error("Usage: uic pattern <reference-screen> [--save]");
     console.error("   or: uic pattern --kind <kind> [--save]   (from a decisions file)");
@@ -23567,8 +23723,8 @@ async function pattern(rootDir, args) {
   const stated = decided ?? decisions.find((one) => one.kind === found.kind);
   const digest = {
     ...found,
-    family: found.family.map((path2) => relative8(rootDir, path2)),
-    ...stated === void 0 || stated.statements.length === 0 ? {} : { decided: { kind: stated.kind, from: relative8(rootDir, stated.file), statements: stated.statements } }
+    family: found.family.map((path2) => relative9(rootDir, path2)),
+    ...stated === void 0 || stated.statements.length === 0 ? {} : { decided: { kind: stated.kind, from: relative9(rootDir, stated.file), statements: stated.statements } }
   };
   if (!save) {
     console.log(JSON.stringify(digest, null, 2));
@@ -23594,7 +23750,7 @@ async function diff(rootDir, args) {
     console.error("Usage: uic diff --contract <contract.json> <file...>");
     return 1;
   }
-  const raw = await readFile25(resolve7(rootDir, contractPath), "utf8").catch(() => null);
+  const raw = await readFile26(resolve8(rootDir, contractPath), "utf8").catch(() => null);
   if (raw === null) {
     console.error(`Cannot read the contract: ${contractPath}`);
     return 1;
@@ -23614,13 +23770,13 @@ async function diff(rootDir, args) {
   let measured = 0;
   let unread = 0;
   for (const file of files) {
-    const absolute = resolve7(rootDir, file);
-    const source = await readFile25(absolute, "utf8").catch(() => null);
+    const absolute = resolve8(rootDir, file);
+    const source = await readFile26(absolute, "utf8").catch(() => null);
     if (source === null) {
       unread++;
       continue;
     }
-    const deviations = contractDeviations(relative8(rootDir, absolute), source, parsed);
+    const deviations = contractDeviations(relative9(rootDir, absolute), source, parsed);
     if (deviations === null) continue;
     measured++;
     if (deviations.length > 0) byFile.set(deviations[0].file, deviations);
@@ -23639,17 +23795,50 @@ async function diff(rootDir, args) {
   if (byFile.size === 0) console.log(`${measured} screen(s) match the contract.`);
   return byFile.size > 0 || unread > 0 ? 1 : 0;
 }
+async function tree(rootDir, args) {
+  const file = args.find((arg) => !arg.startsWith("-"));
+  if (file === void 0) {
+    console.error(`Usage: uic tree <screen> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
+    return 1;
+  }
+  const at = args.findIndex((arg) => arg === "--depth" || arg.startsWith("--depth="));
+  const stated = at === -1 ? void 0 : args[at]?.split("=")[1] ?? args[at + 1];
+  const depth = Number.parseInt(stated ?? "", 10);
+  const absolute = resolve8(rootDir, file);
+  const root = await findProjectRoot(dirname14(absolute)) ?? rootDir;
+  const walked = await screenTree(root, absolute, {
+    ...Number.isNaN(depth) ? {} : { depth }
+  });
+  if (walked === null) {
+    console.error(`Nothing to read in ${relative9(rootDir, absolute)}.`);
+    console.error("Either it renders no component, or it is not a screen file.");
+    return 0;
+  }
+  console.log(
+    `${relative9(root, absolute)} \u2014 ${walked.depth} ${walked.depth === 1 ? "level" : "levels"}, ${walked.read.length} ${walked.read.length === 1 ? "file" : "files"} read${walked.truncated ? ", stopped by the depth" : ""}`
+  );
+  for (const line of branch(walked.root, 0, null)) console.log(line);
+  return 0;
+}
+function branch(node, indent, from) {
+  const moved = node.file !== null && node.file !== from;
+  const where = node.at === "project" ? moved ? `  ${node.file}` : "" : `  (${node.at})`;
+  return [
+    `${"  ".repeat(indent)}${node.name}${where}`,
+    ...node.children.flatMap((child) => branch(child, indent + 1, node.file))
+  ];
+}
 async function place2(rootDir, args) {
   const file = args.find((arg) => !arg.startsWith("-"));
   if (file === void 0) {
     console.error("Usage: uic place <screen>");
     return 1;
   }
-  const absolute = resolve7(rootDir, file);
-  const root = await findProjectRoot(dirname13(absolute)) ?? rootDir;
+  const absolute = resolve8(rootDir, file);
+  const root = await findProjectRoot(dirname14(absolute)) ?? rootDir;
   const placed = await placementOf(absolute, root);
   if (placed.style === null) {
-    console.error(`Nothing routes ${relative8(rootDir, absolute)}.`);
+    console.error(`Nothing routes ${relative9(rootDir, absolute)}.`);
     console.error("Either it is not a screen, or its route is registered somewhere this cannot");
     console.error("read. Say where, rather than letting a path be guessed from the folder.");
     return 0;
@@ -23661,7 +23850,7 @@ async function place2(rootDir, args) {
         ...placed.declaredIn === null ? {} : {
           declaredIn: {
             ...placed.declaredIn,
-            file: relative8(rootDir, placed.declaredIn.file)
+            file: relative9(rootDir, placed.declaredIn.file)
           }
         }
       },
@@ -23722,7 +23911,7 @@ None of the ${files.length} file(s) given belongs to a detected package.`);
   } else {
     console.error("Detected packages, and where they are rooted:");
     for (const pkg of packages.slice(0, 10)) {
-      console.error(`  ${pkg.name} \u2192 ${relative8(rootDir, pkg.root) || "."}`);
+      console.error(`  ${pkg.name} \u2192 ${relative9(rootDir, pkg.root) || "."}`);
     }
     console.error("If none of those is where your application lives, that is the bug \u2014");
     console.error("please report it: https://github.com/kamenkurtev/ui-consistency/issues");
@@ -23733,7 +23922,7 @@ async function givenFiles(rootDir, files) {
   const absolute = [];
   const problems = [];
   for (const file of files) {
-    const path = resolve7(rootDir, file);
+    const path = resolve8(rootDir, file);
     const found = await stat10(path).catch(() => null);
     if (found === null) {
       problems.push(
@@ -23778,7 +23967,7 @@ async function check(rootDir, args) {
   if (listOnly) {
     const seen = /* @__PURE__ */ new Set();
     for (const finding of findings) {
-      const path = relative8(rootDir, finding.file);
+      const path = relative9(rootDir, finding.file);
       if (seen.has(path)) continue;
       seen.add(path);
       console.log(path);
@@ -23786,7 +23975,7 @@ async function check(rootDir, args) {
     return seen.size > 0 ? 1 : 0;
   }
   for (const finding of findings) {
-    console.log(`${formatFinding({ ...finding, file: relative8(rootDir, finding.file) })}
+    console.log(`${formatFinding({ ...finding, file: relative9(rootDir, finding.file) })}
 `);
   }
   return findings.length > 0 ? 1 : 0;
@@ -23799,7 +23988,7 @@ async function inventory(rootDir, args) {
   }
   const config = await readConfig(rootDir);
   const packages = applyConfig(await cachedPackages(rootDir), config);
-  const chain = resolveChain(resolve7(rootDir, file), packages, config?.prefer ?? []);
+  const chain = resolveChain(resolve8(rootDir, file), packages, config?.prefer ?? []);
   if (chain.length === 0) return 0;
   const built = await cachedInventory(rootDir, chain);
   for (const layer of chain) {
@@ -23847,18 +24036,18 @@ async function auditShapes(rootDir, args) {
   const library = [];
   const app = [];
   for (const file of files) {
-    const absolute = resolve7(rootDir, file);
-    const source = await readFile25(absolute, "utf8").catch(() => null);
+    const absolute = resolve8(rootDir, file);
+    const source = await readFile26(absolute, "utf8").catch(() => null);
     if (source === null) continue;
     const owner = packages.find((pkg) => contains(pkg.root, absolute));
     const shared2 = owner !== void 0 && dependedOn.has(owner.name);
     if (shared2) {
       const exported = [...exportedSymbolsFromSource(source)];
       if (exported.length === 1) {
-        library.push({ component: exported[0], file: relative8(rootDir, absolute), source });
+        library.push({ component: exported[0], file: relative9(rootDir, absolute), source });
       }
     }
-    app.push({ file: relative8(rootDir, absolute), source });
+    app.push({ file: relative9(rootDir, absolute), source });
   }
   const report = shapeReport({ library, app });
   const byComponent = /* @__PURE__ */ new Map();
@@ -23968,6 +24157,8 @@ async function main(argv) {
       return diff(rootDir, rest);
     case "place":
       return place2(rootDir, rest);
+    case "tree":
+      return tree(rootDir, rest);
     case "scan":
       return scan(rootDir);
     case "check":
@@ -23985,7 +24176,7 @@ async function main(argv) {
     case "session":
       return session();
     default:
-      console.error("Usage: uic <pattern|diff|place|scan|check|review|shapes|inventory|log>");
+      console.error("Usage: uic <pattern|diff|place|tree|scan|check|review|shapes|inventory|log>");
       return 1;
   }
 }

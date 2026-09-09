@@ -17,6 +17,7 @@ import { patternOf } from '../sources/pattern.js';
 import { readDecisions } from '../knowledge/decisions.js';
 import { placementOf } from '../sources/routes.js';
 import { markupOf, pairOf } from '../sources/pair.js';
+import { screenTree, DEFAULT_DEPTH, MAX_DEPTH, type TreeNode } from '../sources/tree.js';
 import { findProjectRoot } from '../layers/detect.js';
 import { contractDeviations, isContract, type Deviation } from '../checks/contract.js';
 import { contractPathFor, readLog, readSeen, summarise, logPath } from './log.js';
@@ -433,6 +434,74 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
  * the breadcrumb is the one got wrong nearly every time — because the trail
  * lives in the router, not in the file being edited.
  */
+/**
+ * What one screen renders, resolved through the repository.
+ *
+ * A fact supplier and nothing else: no verdict, no advice, exit 0 whatever it
+ * finds. It exists because answering *"what is this screen actually made of"*
+ * needed a script written from scratch every session and thrown away — and
+ * because the answer is not in the screen's own file. Reading the file alone
+ * put 11 of 132 screens in one bucket; following one hop put 26 there.
+ *
+ * Every leaf says why it is one. `external` is where the walk is meant to stop,
+ * `beyond` is the depth bound, `local` is declared in the file that uses it,
+ * and `unresolved` is a specifier that led nowhere — which is a gap in the
+ * reading and must never be mistaken for the bottom of the screen.
+ */
+async function tree(rootDir: string, args: string[]): Promise<number> {
+  const file = args.find((arg) => !arg.startsWith('-'));
+  if (file === undefined) {
+    console.error(`Usage: uic tree <screen> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
+    return 1;
+  }
+
+  const at = args.findIndex((arg) => arg === '--depth' || arg.startsWith('--depth='));
+  const stated = at === -1 ? undefined : (args[at]?.split('=')[1] ?? args[at + 1]);
+  const depth = Number.parseInt(stated ?? '', 10);
+
+  const absolute = resolve(rootDir, file);
+  const root = (await findProjectRoot(dirname(absolute))) ?? rootDir;
+  const walked = await screenTree(root, absolute, {
+    ...(Number.isNaN(depth) ? {} : { depth }),
+  });
+
+  if (walked === null) {
+    // Not a green result. A file with no component in it is not a screen, and
+    // saying nothing about it would read as a screen with nothing in it.
+    console.error(`Nothing to read in ${relative(rootDir, absolute)}.`);
+    console.error('Either it renders no component, or it is not a screen file.');
+    return 0;
+  }
+
+  console.log(
+    `${relative(root, absolute)} — ${walked.depth} ${walked.depth === 1 ? 'level' : 'levels'}, ` +
+      `${walked.read.length} ${walked.read.length === 1 ? 'file' : 'files'} read` +
+      `${walked.truncated ? ', stopped by the depth' : ''}`,
+  );
+  for (const line of branch(walked.root, 0, null)) console.log(line);
+  return 0;
+}
+
+/**
+ * One node per line, indented by its depth. Stable, so a diff of two runs is a
+ * diff of two screens.
+ *
+ * **A file is printed only where the walk moved to one**, which is the whole
+ * readability of this output. Every node carries the file it was read from, so
+ * printing it on all of them repeats the parent's path on the element that
+ * parent renders — `DataGrid  src/grids/OrdersGrid.tsx` reads as *DataGrid
+ * lives here*, which is not what it says. Printed on the hop alone, the column
+ * means one thing: this is where the walk went next.
+ */
+function branch(node: TreeNode, indent: number, from: string | null): string[] {
+  const moved = node.file !== null && node.file !== from;
+  const where = node.at === 'project' ? (moved ? `  ${node.file}` : '') : `  (${node.at})`;
+  return [
+    `${'  '.repeat(indent)}${node.name}${where}`,
+    ...node.children.flatMap((child) => branch(child, indent + 1, node.file)),
+  ];
+}
+
 async function place(rootDir: string, args: string[]): Promise<number> {
   const file = args.find((arg) => !arg.startsWith('-'));
   if (file === undefined) {
@@ -931,6 +1000,8 @@ export async function main(argv: string[]): Promise<number> {
       return diff(rootDir, rest);
     case 'place':
       return place(rootDir, rest);
+    case 'tree':
+      return tree(rootDir, rest);
     case 'scan':
       return scan(rootDir);
     case 'check':
@@ -948,7 +1019,7 @@ export async function main(argv: string[]): Promise<number> {
     case 'session':
       return session();
     default:
-      console.error('Usage: uic <pattern|diff|place|scan|check|review|shapes|inventory|log>');
+      console.error('Usage: uic <pattern|diff|place|tree|scan|check|review|shapes|inventory|log>');
       return 1;
   }
 }
