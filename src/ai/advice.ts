@@ -201,7 +201,7 @@ export function buildAdvice(input: AdviceInput): string | null {
         // `className` in JSX, `class` in a template, as the siblings wrote it.
         // Hard-coding `class` handed every React project an observation in a
         // dialect nobody there uses — and invalid JSX to copy.
-        ...(one.classes.length > 0
+        ...(one.classes.length > 0 && one.classAttribute !== null
           ? [`${one.classAttribute}="${quoted(one.classes.join(' '))}"`]
           : []),
       ].join(' ');

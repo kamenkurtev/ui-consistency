@@ -58,8 +58,16 @@ export interface ComponentUsage {
    * `className` in JSX and `class` in a template. Rendering the observation
    * with the wrong one hands the agent a dialect nobody in the project uses,
    * and in JSX it is not merely odd — it is invalid.
+   *
+   * **`null` where no use wrote one**, which is every component with no
+   * observed classes. ~~Falling back to `class` is safe because nothing is
+   * rendered with it.~~ That held inside this file and not at its boundary:
+   * this interface reaches `uic pattern`'s JSON, where a person reads `class`
+   * on a React project stated with the same confidence as a counted number
+   * (#42). Not observed and observed-to-be-`class` are two different facts and
+   * are no longer spelled the same.
    */
-  classAttribute: string;
+  classAttribute: string | null;
   /** How many sibling screens use it. */
   seenIn: number;
   /**
@@ -540,10 +548,10 @@ export const observeUsage = async (
       .sort((a, b) => b[1] - a[1])
       .slice(0, MAX_CLASSES);
     for (const [, count] of classes) agreedBy = Math.min(agreedBy, count);
-    // As the siblings spell it. Falling back to `class` would be a guess, and
-    // in JSX a wrong one, so a component with no observed classes reports the
-    // template spelling only because nothing is rendered with it.
-    const classAttribute = uses.find((use) => use.classAttribute !== null)?.classAttribute ?? 'class';
+    // As the siblings spell it, and `null` where none of them spelled it at
+    // all. There is no dialect to fall back to: a guess here is wrong on every
+    // project that writes the other one.
+    const classAttribute = uses.find((use) => use.classAttribute !== null)?.classAttribute ?? null;
 
     const written = always
       .sort((a, b) => b.writtenBy - a.writtenBy || a.name.localeCompare(b.name))

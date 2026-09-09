@@ -666,6 +666,48 @@ describe('the three silences a user has to be able to tell apart', () => {
     await rm(dir2, { recursive: true, force: true });
   });
 
+  /**
+   * Three is the smallest family that answers, and it is what a new area and a
+   * small project have. The props level is counted over the two beside the
+   * reference, below the three it takes to tell a convention from a copy — so
+   * it says nothing, and used to say nothing about saying nothing.
+   */
+  it('says the props level was not measured on the smallest family that answers', async () => {
+    const dir = await project({
+      'package.json': '{"name":"three"}',
+      'src/Routes.tsx': [
+        "import { OrdersPage } from './pages/OrdersPage';",
+        "import { InvoicesPage } from './pages/InvoicesPage';",
+        "import { ReportsPage } from './pages/ReportsPage';",
+        "export const routes = [{ path: 'orders', element: <OrdersPage /> },",
+        "  { path: 'invoices', element: <InvoicesPage /> },",
+        "  { path: 'reports', element: <ReportsPage /> }];",
+      ].join('\n'),
+      'src/pages/OrdersPage.tsx': page('Orders'),
+      'src/pages/InvoicesPage.tsx': page('Invoices'),
+      'src/pages/ReportsPage.tsx': page('Reports'),
+    });
+
+    const found = await uic(['pattern', 'src/pages/OrdersPage.tsx'], dir);
+    expect(found.stdout).toContain('"configuration": []');
+    // The fact that distinguishes "agrees on nothing" from "was never asked".
+    expect(found.stdout).toContain('"propsUnmeasured"');
+    expect(found.stdout).toContain('"siblings": 2');
+    expect(found.stdout).toContain('"needed": 3');
+
+    const wrote = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir);
+    expect(wrote.code).toBe(0);
+
+    const written = await readFile(join(dir, wrote.stdout.trim()), 'utf8');
+    // The section is present and says which of the three answers it is, rather
+    // than being absent and read as a family that writes no props.
+    expect(written).toContain('## Props');
+    expect(written).toContain('**Not measured.**');
+    expect(written).toContain('leaves 2 here, and 3 are needed');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
   it('asked to write a file and writing none exits non-zero', async () => {
     // Three commands answering with empty output and exit 0 is how 400 files
     // were reported clean without one of them being looked at (#37). A write

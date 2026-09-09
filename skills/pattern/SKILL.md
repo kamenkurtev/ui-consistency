@@ -259,8 +259,8 @@ be inventing it.~~
 so far.** Until the fix, the family of a page in its own folder was that
 page's own parts, so an empty `configuration` most often meant *the family was
 never assembled* — a different thing, and the one that invites somebody to
-conclude their project has no conventions. There are now three readings and
-they must be told apart:
+conclude their project has no conventions. ~~There are now three readings~~
+**four, since #41** — and they must be told apart:
 
 - **the family disagrees** — three or more real screens, written three ways.
   A convention reported here would be invented.
@@ -269,6 +269,15 @@ they must be told apart:
 - **the project states its conventions somewhere this does not read** — see the
   empty-`vocabulary` case, which is the commonest of the three on a
   holder-plus-child page.
+- **it was never measured** — `propsUnmeasured` is not `null`. The props of a
+  family are counted over the screens *beside* the reference, so a family of
+  exactly three is asked over two, below the three it takes to tell a
+  convention from a copy. The contract answered — a holder, a skeleton — and
+  this one level did not, which is not the same as the family having no family.
+  The field names both numbers, so one more screen of the kind is visibly what
+  would answer it. **This is the reading to check first on a small project**,
+  because three is the smallest family that answers at all and therefore what
+  a new area has.
 
 Say which one it is. An empty answer meaning *"your project is outside what I
 read"* must never be reported as if it meant *"nothing was found"*.

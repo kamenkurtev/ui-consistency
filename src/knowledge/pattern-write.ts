@@ -46,6 +46,15 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
     out.push('## Structure', '', '```', ...structure, '```', '');
   }
 
+  // Said, never omitted. An absent `## Props` is indistinguishable from a kind
+  // of screen whose family agrees on no props, and this is the one section with
+  // a grammar — the level the mistakes actually live at. Approving a silence as
+  // a clean result is the failure the whole tool is organised against (#41).
+  if (pattern.propsUnmeasured !== null) {
+    const { siblings, needed } = pattern.propsUnmeasured;
+    out.push('## Props', '', `**Not measured.** ${whyUnmeasured(siblings, needed)}`, '');
+  }
+
   const props = propsBlock(pattern);
   if (props.length > 0) {
     out.push(
@@ -209,7 +218,10 @@ function propsBlock(pattern: ScreenPattern): string[] {
       // in front of the count is how a measured number becomes a sentence.
       if (written.shape !== null) shapes.push(`\`${safe(written.name)}\` ${article(written.shape)}`);
     }
-    if (usage.classes.length > 0) {
+    // Both, and not just the tokens: a class attribute nobody was observed to
+    // write has no spelling to state, and inventing one hands the reader a
+    // dialect this project does not use (#42).
+    if (usage.classes.length > 0 && usage.classAttribute !== null) {
       bullets.push(
         `- \`${safe(usage.classAttribute)}\` = "${safe(usage.classes.join(' '))}" — ${usage.agreedBy} of ${usage.seenIn}`,
       );
@@ -286,6 +298,20 @@ const title = (name: string): string => {
   const words = name.replace(/[-_]+/g, ' ').trim();
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
+
+/**
+ * Why the props level was not measured, and there are two reasons.
+ *
+ * The family being too small is the common one and the one #41 is about. But
+ * the observer also declines where enough screens were named and too few could
+ * actually be read — a file that would not parse, or one rendering nothing —
+ * and reporting *"leaves 4 here, and 3 are needed"* for that would be a
+ * sentence that contradicts itself in its own numbers.
+ */
+const whyUnmeasured = (siblings: number, needed: number): string =>
+  siblings < needed
+    ? `The props of a family are counted over the screens *beside* the reference, which leaves ${siblings} here, and ${needed} are needed — below that a pair is a copy rather than an agreement. This is not a family that writes no props; it is a family too small to tell the two apart. One more screen of this kind, and this section answers.`
+    : `Of the ${siblings} screens beside the reference, fewer than ${needed} could be read for what they render, so there was nothing to count. This says nothing about what the family writes.`;
 
 /** `an expression`, `a literal` — the counts are read by people before programs. */
 const article = (word: string): string => `${/^[aeiou]/i.test(word) ? 'an' : 'a'} ${word}`;

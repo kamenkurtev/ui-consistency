@@ -60,6 +60,7 @@ folder. Three files in one folder answer for that folder.
 | **placement** | `place` returns a path and where it is declared | — | `place` says nothing routes any of the sample |
 | **the family** | `pattern` returns a family of three or more real screens | — | the family is one screen, or is the target's own parts |
 | **the contract** | `skeleton`, `configuration` or `body` carry something | fewer than three screens of the kind — this is the design, and `ui-consistency:decide` is the next step | `regionsIn` is `null` with a holder present |
+| **the contract's props** | `configuration` carries entries | `configuration` is empty and `propsUnmeasured` is `null` — the family was read and agrees on no props | `propsUnmeasured` is set: three screens, so the props were counted over two and never asked (#41) |
 
 Two readings that are easy to get backwards and are worth stating out loud:
 
