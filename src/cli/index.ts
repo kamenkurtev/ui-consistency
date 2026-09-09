@@ -20,6 +20,15 @@ import { markupOf, pairOf } from '../sources/pair.js';
 import { screenTree, DEFAULT_DEPTH, MAX_DEPTH, type TreeNode } from '../sources/tree.js';
 import { propsMatrix } from '../sources/matrix.js';
 import { groupScreens } from '../sources/grouping.js';
+import {
+  patternFiles,
+  patternForScreen,
+  staleIn,
+  type PatternFile,
+  type Stale,
+} from '../knowledge/pattern-file.js';
+import { regionsOf } from '../sources/regions.js';
+import { templateKind } from '../parse/template.js';
 import { findProjectRoot } from '../layers/detect.js';
 import { contractDeviations, isContract, type Deviation } from '../checks/contract.js';
 import { contractPathFor, readLog, readSeen, summarise, logPath } from './log.js';
@@ -30,7 +39,7 @@ import { formatFinding } from '../core/format.js';
 import { hookResponse } from './hook.js';
 import { sessionResponse } from './session.js';
 import type { Finding, Inventory, Layer, Violation } from '../types.js';
-import { KNOWLEDGE_DIR, knowledgeDir } from '../knowledge/paths.js';
+import { KNOWLEDGE_DIR, MOVED, knowledgeDir } from '../knowledge/paths.js';
 import { ownedDir, projectKey } from '../core/cache-dir.js';
 import { pathToFileURL } from 'node:url';
 
@@ -621,6 +630,92 @@ function depthIn(args: string[]): number | undefined {
   return Number.isNaN(depth) ? undefined : depth;
 }
 
+/**
+ * What the project has written down about its own patterns, and whether it is
+ * still true.
+ *
+ * Two questions, and the second is the one somebody asks in the middle of
+ * work: *which pattern is this screen of?* Answering "none" is a real answer
+ * and the useful one — it is the signal that a pattern has not been written
+ * yet, and it must not look like a screen that matches.
+ *
+ * The counts in a pattern file are evidence as at a date. Staleness is reported
+ * here, where the pattern is used, and never by an audit somebody has to
+ * remember to run.
+ */
+async function patterns(rootDir: string, args: string[]): Promise<number> {
+  const { patterns: found, legacy } = await patternFiles(rootDir);
+  if (legacy) console.error(MOVED);
+
+  const target = pathsIn(args)[0];
+  if (target !== undefined) return coveringOne(rootDir, found, target);
+
+  if (found.length === 0) {
+    console.log(`No pattern files in ${KNOWLEDGE_DIR}/patterns.`);
+    console.log('That is a project that has written nothing down, not a project with no patterns.');
+    return 0;
+  }
+
+  console.log(`${found.length} ${found.length === 1 ? 'pattern' : 'patterns'} in ${KNOWLEDGE_DIR}/patterns\n`);
+  for (const one of found) {
+    const members = one.members.length;
+    console.log(
+      `${one.name}  ${one.surface ?? '—'}  ${one.holder ?? '—'}  ` +
+        `${members} ${members === 1 ? 'file' : 'files'}` +
+        `${one.observed === null ? '' : `  observed ${one.observed}`}`,
+    );
+    for (const line of staleness(await staleIn(rootDir, one))) console.log(`  ${line}`);
+  }
+  return 0;
+}
+
+/** Which pattern covers one screen, and why it is that one or none. */
+async function coveringOne(
+  rootDir: string,
+  found: PatternFile[],
+  target: string,
+): Promise<number> {
+  const absolute = resolve(rootDir, target);
+  const where = relative(rootDir, absolute);
+  const pair = await pairOf(absolute);
+  const identity = pair?.identity ?? absolute;
+  const own = await readFile(identity, 'utf8').catch(() => null);
+  const markup = own === null ? null : pair === null ? { path: absolute, source: own } : await markupOf(identity, own);
+  const holder =
+    markup === null
+      ? null
+      : (regionsOf(markup.source, templateKind(markup.path) ?? undefined)?.holder ?? null);
+
+  const covering = patternForScreen(found, where, holder);
+  if (covering === null) {
+    console.log(`${where} — no pattern covers it.`);
+    console.log(
+      holder === null
+        ? '  Nothing readable holds it, so there is nothing to match a pattern on.'
+        : `  It sits in <${holder}>, and no pattern file names that holder or names this file.`,
+    );
+    return 0;
+  }
+
+  console.log(`${where} — ${covering.name} (${KNOWLEDGE_DIR}/patterns/${covering.file})`);
+  console.log(
+    covering.members.includes(where)
+      ? '  named by the pattern itself'
+      : `  sits in <${holder}>, which is the pattern's holder`,
+  );
+  for (const line of staleness(await staleIn(rootDir, covering))) console.log(`  ${line}`);
+  return 0;
+}
+
+/** What has moved under a pattern, said as the two different things it is. */
+function staleness(stale: Stale[]): string[] {
+  const say = (why: Stale['why'], text: string): string[] => {
+    const files = stale.filter((one) => one.why === why).map((one) => one.file);
+    return files.length === 0 ? [] : [`${text}: ${files.join(', ')}`];
+  };
+  return [...say('changed', 'changed since it was read'), ...say('gone', 'no longer there')];
+}
+
 async function place(rootDir: string, args: string[]): Promise<number> {
   const file = args.find((arg) => !arg.startsWith('-'));
   if (file === undefined) {
@@ -1125,6 +1220,8 @@ export async function main(argv: string[]): Promise<number> {
       return props(rootDir, rest);
     case 'group':
       return group(rootDir, rest);
+    case 'patterns':
+      return patterns(rootDir, rest);
     case 'scan':
       return scan(rootDir);
     case 'check':
@@ -1142,7 +1239,7 @@ export async function main(argv: string[]): Promise<number> {
     case 'session':
       return session();
     default:
-      console.error('Usage: uic <pattern|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
+      console.error('Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
       return 1;
   }
 }

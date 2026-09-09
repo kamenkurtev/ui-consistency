@@ -230,6 +230,98 @@ they must be told apart:
 Say which one it is. An empty answer meaning *"your project is outside what I
 read"* must never be reported as if it meant *"nothing was found"*.
 
+## 3d. Write the pattern down where the project keeps it
+
+The saved contract above is a working file: outside the repository, keyed to it,
+gone tomorrow. That is right for something derived on the spot and wrong for
+something the team agrees on. **A pattern the team keeps lives in the
+repository**, as one Markdown file per pattern in
+`.ui-consistency/patterns/<name>.md`, committed and reviewed in a pull request
+like any other change.
+
+Write one when the same shape is about to be applied across more than a couple
+of screens, or when somebody asks what the pattern is. One file per *pattern*,
+never per screen: nine list screens are one file.
+
+Three commands supply the facts. Read them, then write the sentences — they
+print facts and no judgement, and the judgement is the part that is yours:
+
+```
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" tree <screen> --depth 3
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" group <screens...>
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" props <Component> <screens...>
+```
+
+`tree` is what one screen renders, followed into its children — the anatomy is a
+level below the file that names it, so a pattern written from the screen file
+alone describes the wiring and not the screen. `group` says which screens share
+a shape. `props` says which props each of them writes on a component and which
+one is missing something the rest write.
+
+The file:
+
+~~~~markdown
+---
+pattern: list-screen
+surface: screen
+holder: PageShell
+observed: <today>
+---
+
+# List screen
+
+## Structure
+
+```
+PageShell                  9 of 9
+  FilterBar                9 of 9
+    <filter control>       exactly one
+  <content>                exactly one
+```
+
+## Slots
+
+### `<content>`
+One of: a grid named `*Grid` (7 of 9), a card list named `*Cards` (2 of 9).
+
+## Props
+
+`PageShell` — written by 9 of 9: `title`, `data-testid`. `breadcrumbs` by 6 of 9.
+
+## Rules
+
+- The filter's selection descends as props; no screen reads it from a store below
+  the filter bar.
+
+## Particular to one screen
+
+`src/pages/ReportsPage.tsx` renders a second content component. Deliberate: the
+report has a summary band above the grid.
+
+## Where it is used
+
+`src/pages/OrdersPage.tsx`, `src/pages/InvoicesPage.tsx`, …
+~~~~
+
+Four things about writing it, and each is a way it goes wrong:
+
+- **Every statement carries its strength.** `9 of 9`, `5 of 6`, `3 of 9`. Never a
+  sentence whose strength is implied — a slot with one common alternative and two
+  rare ones has to read as exactly that, and a family that agrees on twelve
+  things out of thirteen is more useful described than described as disagreeing.
+- **A slot is `<in angle brackets>` and may state alternatives.** A pattern that
+  allows three kinds of content must not be written as though it allows one.
+- **A rule is a sentence, and stays one.** *Actions are always rendered; gating
+  toggles `disabled` only.* Nothing evaluates it; it is there to be read by
+  whoever writes the next screen.
+- **Where it is used is an index.** The pattern is not defined by its members;
+  the list is there so a reader can go and look.
+
+Read it back with `uic patterns`, which lists what the project has and says which
+files have changed since a pattern was observed. `uic patterns <screen>` answers
+which pattern covers one screen — and *"no pattern covers it"* is a real answer,
+not a failure: it is the signal that this is a shape nobody has written down.
+
 ## 4. Offer to write down what could not be derived
 
 Anything the user corrects by hand is, by definition, something extraction could
