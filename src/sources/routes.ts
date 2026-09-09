@@ -862,7 +862,18 @@ export async function resolveRelative(from: string, spec: string): Promise<strin
   // at it would put a file in the family that the table never named.
   if (!spec.startsWith('.')) return null;
 
-  const base = join(from, spec);
+  return moduleAt(join(from, spec));
+}
+
+/**
+ * The file a specifier points at, once it has been made absolute.
+ *
+ * The extension and `index` probing a bundler does, and the only part of module
+ * resolution that is the same whether the specifier was written relative or
+ * through a `tsconfig` alias — so it lives once and both callers use it
+ * (`src/sources/resolve.ts` is the other).
+ */
+export async function moduleAt(base: string): Promise<string | null> {
   const isFile = (path: string): Promise<boolean> =>
     stat(path).then(
       (info) => info.isFile(),

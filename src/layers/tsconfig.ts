@@ -152,7 +152,7 @@ function isGenerated(base: string, resolved: string): boolean {
  * about what was typed. A path that does not exist cannot be read either, so it
  * falls back to the lexical test rather than being accepted.
  */
-async function insideProject(rootDir: string, target: string): Promise<boolean> {
+export async function insideProject(rootDir: string, target: string): Promise<boolean> {
   const real = await realpath(target).catch(() => null);
   if (real === null) return contains(rootDir, target);
 

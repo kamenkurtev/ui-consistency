@@ -31,6 +31,8 @@ const DECORATED = /@Component\s*\(/;
 const TEMPLATE_URL = /templateUrl\s*:\s*['"`]([^'"`]+)['"`]/;
 /** `template: \`…\`` — the inline form, which is how a small screen is written. */
 const INLINE = /template\s*:\s*`([\s\S]*?)`/;
+/** The tag a decorated class answers to, which is how a template names it. */
+const SELECTOR = /selector\s*:\s*['"`]([^'"`]+)['"`]/;
 
 /** A class file is big only when it is not a screen. */
 const MAX_BYTES = 400_000;
@@ -94,4 +96,26 @@ export async function markupOf(
   if (pair.markup === null) return { path, source: fallback };
   const source = await readFile(pair.markup, 'utf8').catch(() => null);
   return source === null ? { path, source: fallback } : { path: pair.markup, source };
+}
+
+/**
+ * The element name a decorated class is written as.
+ *
+ * An Angular template names its children by **selector**, not by the class it
+ * imported — `<app-orders-grid>` for `OrdersGridComponent` — so following a
+ * template into its children needs the mapping the class states about itself.
+ * Read from the file that declares it, never from a convention about how a
+ * class name becomes a tag: a project is free to prefix its selectors however
+ * it likes, and deriving one would be a hardcoded vocabulary with extra steps.
+ *
+ * Only the simple form. A selector that is an attribute or a compound
+ * (`[appHighlight]`, `button[app-icon]`) is not how a child component is
+ * rendered as an element, and answering for it would resolve a tag that is not
+ * there.
+ */
+export async function selectorOf(path: string): Promise<string | null> {
+  const source = await readFile(path, 'utf8').catch(() => null);
+  if (source === null || source.length > MAX_BYTES || !DECORATED.test(source)) return null;
+  const selector = SELECTOR.exec(source)?.[1] ?? null;
+  return selector !== null && /^[a-z][\w-]*$/i.test(selector) ? selector : null;
 }

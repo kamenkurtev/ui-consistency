@@ -55,6 +55,49 @@ describe('the built binary', () => {
     expect(run.stdout).toContain('LegacyButton is deprecated in @fixture/core.');
   });
 
+  it('prints the tree of a screen, and exits 0 whatever it finds', async () => {
+    // A fact supplier, never a gate: the exit code says the command ran, not
+    // that the screen is good. Run against the shipped bundle because that is
+    // where argument parsing and exit codes actually live.
+    const root = await mkdtemp(join(tmpdir(), 'uic-tree-bin-'));
+    await mkdir(join(root, 'src'), { recursive: true });
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    await writeFile(
+      join(root, 'src/OrdersPage.tsx'),
+      "import { OrdersGrid } from './OrdersGrid';\n" +
+        "import { Button } from '@acme/design';\n" +
+        'export const OrdersPage = () => (\n  <PageLayout>\n    <OrdersGrid />\n' +
+        '    <Button />\n  </PageLayout>\n);\n',
+    );
+    await writeFile(join(root, 'src/OrdersGrid.tsx'), 'export const OrdersGrid = () => <DataGrid />;\n');
+
+    const run = await uic(['tree', 'src/OrdersPage.tsx'], root);
+
+    expect(run.code).toBe(0);
+    expect(run.stdout).toContain('2 levels');
+    expect(run.stdout).toContain('OrdersGrid  src/OrdersGrid.tsx');
+    // The whole point of the walk: what the screen file names is not what it is
+    // made of, and the grid's own root is a level down.
+    expect(run.stdout).toContain('DataGrid');
+    expect(run.stdout).toContain('Button  (external)');
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('refuses a file that renders nothing rather than printing an empty tree', async () => {
+    // An empty answer and "this is not a screen" are different facts, and the
+    // second must not arrive as a clean-looking blank.
+    const root = await mkdtemp(join(tmpdir(), 'uic-tree-none-'));
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    await writeFile(join(root, 'notes.ts'), 'export const x = 1;\n');
+
+    const run = await uic(['tree', 'notes.ts'], root);
+
+    expect(run.code).toBe(0);
+    expect(run.stderr).toContain('Nothing to read');
+    expect(run.stdout).toBe('');
+    await rm(root, { recursive: true, force: true });
+  });
+
   it('exits 0 on a file with nothing to say about it', async () => {
     const run = await uic(['check', 'apps/orders/src/index.ts'], fixture);
     expect(run.code).toBe(0);
@@ -79,7 +122,7 @@ describe('the built binary', () => {
   it('refuses an unknown subcommand', async () => {
     const run = await uic(['frobnicate'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stderr).toContain('Usage: uic <pattern|diff|place|scan|check|review|shapes|inventory|log>');
+    expect(run.stderr).toContain('Usage: uic <pattern|diff|place|tree|scan|check|review|shapes|inventory|log>');
   });
 
   it('says what to do when given no files', async () => {
