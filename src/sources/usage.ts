@@ -108,10 +108,23 @@ const MAX_PROPS = 6;
 const MAX_CLASSES = 8;
 
 /**
- * Props whose value says nothing about the design system.
+ * Props whose **value** says nothing about the design system.
  *
- * A `key` or a `data-testid` repeated across pages is an artefact of the
- * files, not a convention anyone chose to follow.
+ * ~~A `key` or a `data-testid` repeated across pages is an artefact of the
+ * files, not a convention anyone chose to follow.~~
+ *
+ * **Half of that is right and the half that is wrong was load-bearing.** The
+ * *value* of a test id is an artefact — it differs on every page and nobody
+ * chose it as a convention. **That one is written at all is a convention**, and
+ * one teams actually have: measured across 209 usages of one dialog wrapper,
+ * `data-testid` is written on 190 of them, and it is among the thirteen props
+ * every one of six sibling screens writes on their shared table. Dropping it
+ * here dropped it for every consumer, so the screen that forgot it was the one
+ * thing the family agreed about that nothing could see.
+ *
+ * The filter stays, because a consumer comparing *values* is right to skip
+ * these. A consumer asking *which props are written* passes `all` and gets
+ * them — see `writtenIn`.
  *
  * Anchored where it has to be. As a bare prefix this ate `refreshInterval`,
  * `keyboardNavigation` and `idPrefix` — real props, and the first of those is
@@ -222,7 +235,7 @@ const usageNameOf = (element: JSXElement): string | null => {
 const tokens = (value: string): Set<string> =>
   new Set(value.split(/\s+/).filter((token) => token !== ''));
 
-const fromJsx = (source: string): Written[] => {
+const fromJsx = (source: string, all: boolean): Written[] => {
   const ast = parseModule(source);
   if (ast === null) return [];
 
@@ -250,7 +263,7 @@ const fromJsx = (source: string): Written[] => {
         classAttribute ??= key;
         continue;
       }
-      if (NOISE.test(key)) continue;
+      if (!all && NOISE.test(key)) continue;
       attributes.set(key, value);
     }
 
@@ -259,7 +272,7 @@ const fromJsx = (source: string): Written[] => {
   return written;
 };
 
-const fromTemplate = (source: string, path: string): Written[] => {
+const fromTemplate = (source: string, path: string, all: boolean): Written[] => {
   const kind = templateKind(path);
   if (kind === null) return [];
 
@@ -280,7 +293,10 @@ const fromTemplate = (source: string, path: string): Written[] => {
         classAttribute ??= key;
         continue;
       }
-      if (BINDING.test(key) || NOISE.test(key)) continue;
+      // `BINDING` stays whatever the caller asked for: `[rows]="x"` is a
+      // binding syntax, not a prop name, and admitting it would report the same
+      // prop under two spellings.
+      if (BINDING.test(key) || (!all && NOISE.test(key))) continue;
       if (EXPRESSION.test(value)) continue;
       // A bare attribute is the template form of `<Grid scrollable>`.
       attributes.set(
@@ -351,8 +367,21 @@ const perFile = (written: Written[]): Map<string, Written> => {
  * between them, and one of them would choose wrong — as the first version of
  * `pattern.ts` did, admitting four dialects and reading one.
  */
-export const writtenIn = (path: string, source: string): Written[] =>
-  templateKind(path) === null ? fromJsx(source) : fromTemplate(source, path);
+export const writtenIn = (path: string, source: string, options: WrittenOptions = {}): Written[] =>
+  templateKind(path) === null
+    ? fromJsx(source, options.all ?? false)
+    : fromTemplate(source, path, options.all ?? false);
+
+export interface WrittenOptions {
+  /**
+   * Keep the props whose *value* says nothing — `key`, `id`, `data-*`.
+   *
+   * For a caller asking which props are written rather than what they are
+   * written as. The default is the older behaviour, because a caller comparing
+   * values is right to skip them.
+   */
+  all?: boolean;
+}
 
 export interface UsageOptions {
   /** For tests, and for reading a directory that is not the target's own. */

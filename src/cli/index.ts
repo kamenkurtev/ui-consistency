@@ -18,6 +18,8 @@ import { readDecisions } from '../knowledge/decisions.js';
 import { placementOf } from '../sources/routes.js';
 import { markupOf, pairOf } from '../sources/pair.js';
 import { screenTree, DEFAULT_DEPTH, MAX_DEPTH, type TreeNode } from '../sources/tree.js';
+import { propsMatrix } from '../sources/matrix.js';
+import { groupScreens } from '../sources/grouping.js';
 import { findProjectRoot } from '../layers/detect.js';
 import { contractDeviations, isContract, type Deviation } from '../checks/contract.js';
 import { contractPathFor, readLog, readSeen, summarise, logPath } from './log.js';
@@ -449,21 +451,17 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
  * reading and must never be mistaken for the bottom of the screen.
  */
 async function tree(rootDir: string, args: string[]): Promise<number> {
-  const file = args.find((arg) => !arg.startsWith('-'));
+  const file = pathsIn(args)[0];
   if (file === undefined) {
     console.error(`Usage: uic tree <screen> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
     return 1;
   }
 
-  const at = args.findIndex((arg) => arg === '--depth' || arg.startsWith('--depth='));
-  const stated = at === -1 ? undefined : (args[at]?.split('=')[1] ?? args[at + 1]);
-  const depth = Number.parseInt(stated ?? '', 10);
+  const depth = depthIn(args);
 
   const absolute = resolve(rootDir, file);
   const root = (await findProjectRoot(dirname(absolute))) ?? rootDir;
-  const walked = await screenTree(root, absolute, {
-    ...(Number.isNaN(depth) ? {} : { depth }),
-  });
+  const walked = await screenTree(root, absolute, depth === undefined ? {} : { depth });
 
   if (walked === null) {
     // Not a green result. A file with no component in it is not a screen, and
@@ -500,6 +498,127 @@ function branch(node: TreeNode, indent: number, from: string | null): string[] {
     `${'  '.repeat(indent)}${node.name}${where}`,
     ...node.children.flatMap((child) => branch(child, indent + 1, node.file)),
   ];
+}
+
+/**
+ * Which props each of a set of files writes on one component.
+ *
+ * A fact supplier: no verdict, no advice, exit 0 whatever it finds. Props are
+ * where a family actually drifts — two screens can both sit in the right holder
+ * and differ because one left a prop off — and answering *"which"* needed a
+ * script written from scratch every session.
+ *
+ * The counts are evidence handed over, never a rule. A screen that legitimately
+ * differs must read as information, and several of the divergences this was
+ * measured against were deliberate.
+ */
+async function props(rootDir: string, args: string[]): Promise<number> {
+  const [component, ...rest] = args.filter((arg) => !arg.startsWith('-'));
+  if (component === undefined || rest.length === 0) {
+    console.error('Usage: uic props <Component> <file...>');
+    return 1;
+  }
+
+  const { absolute, problems } = await givenFiles(rootDir, rest);
+  for (const problem of problems) console.error(problem);
+  if (absolute.length === 0) {
+    console.error(`No file to read, so nothing is known about <${component}>.`);
+    return 1;
+  }
+
+  const matrix = await propsMatrix(rootDir, component, absolute);
+  const total = matrix.renders.length;
+  console.log(
+    `${component} — rendered by ${total} of ${absolute.length} ${absolute.length === 1 ? 'file' : 'files'} read`,
+  );
+  if (total === 0) return 0;
+
+  const all = matrix.rows.filter((row) => row.written.length === total);
+  const some = matrix.rows.filter((row) => row.written.length < total);
+
+  if (all.length > 0) {
+    console.log(`\nwritten by all ${total}`);
+    for (const row of all) console.log(`  ${row.name}${row.value === null ? '' : ` = ${JSON.stringify(row.value)}`}`);
+  }
+  if (some.length > 0) {
+    console.log('\nwritten by some');
+    for (const row of some) {
+      const missing = matrix.renders.filter((file) => !row.written.includes(file));
+      console.log(
+        `  ${row.name}${row.value === null ? '' : ` = ${JSON.stringify(row.value)}`}` +
+          `  —  ${row.written.length} of ${total}, not in ${missing.join(', ')}`,
+      );
+    }
+  }
+  if (matrix.absent.length > 0) {
+    console.log(`\ndoes not render it\n  ${matrix.absent.join('\n  ')}`);
+  }
+  if (matrix.unreadable.length > 0) {
+    console.log(`\ncould not be read\n  ${matrix.unreadable.join('\n  ')}`);
+  }
+  return 0;
+}
+
+/**
+ * A set of screens, grouped by what they are composed of.
+ *
+ * The third of the scans that were rewritten by hand every session. A name
+ * survives into a signature only where more than one screen renders it, so nine
+ * list screens that differ on the name of their grid are one group and not nine
+ * — derived from the set in hand, never from a list of layout components.
+ */
+async function group(rootDir: string, args: string[]): Promise<number> {
+  const files = pathsIn(args);
+  if (files.length === 0) {
+    console.error(`Usage: uic group <file...> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
+    return 1;
+  }
+
+  const { absolute, problems } = await givenFiles(rootDir, files);
+  for (const problem of problems) console.error(problem);
+  if (absolute.length === 0) {
+    console.error('No file to read, so there is nothing to group.');
+    return 1;
+  }
+
+  const grouped = await groupScreens(rootDir, absolute, depthIn(args));
+  const screens = grouped.groups.reduce((count, one) => count + one.members.length, 0);
+  console.log(
+    `${screens} ${screens === 1 ? 'screen' : 'screens'}, read ${grouped.depth} ` +
+      `${grouped.depth === 1 ? 'level' : 'levels'} — ${grouped.groups.length} ` +
+      `${grouped.groups.length === 1 ? 'group' : 'groups'}`,
+  );
+
+  for (const one of grouped.groups) {
+    console.log(`\n${one.members.length} ${one.members.length === 1 ? 'screen' : 'screens'}`);
+    for (const line of one.signature) console.log(`  ${line}`);
+    console.log(`  e.g. ${one.members[0]}`);
+  }
+  if (grouped.notScreens.length > 0) {
+    console.log(`\nnot screens — nothing rendered in them\n  ${grouped.notScreens.join('\n  ')}`);
+  }
+  return 0;
+}
+
+/**
+ * The paths in an argument list, with the flags and their values removed.
+ *
+ * `--depth`'s value is a bare word and would otherwise be taken as a file:
+ * `uic tree --depth 3 src/OrdersPage.tsx` read `3`. Written once because both
+ * commands that take a depth have the same hole.
+ */
+function pathsIn(args: string[]): string[] {
+  const at = args.findIndex((arg) => arg === '--depth');
+  const value = at === -1 ? -1 : at + 1;
+  return args.filter((arg, index) => !arg.startsWith('-') && index !== value);
+}
+
+/** `--depth 3` or `--depth=3`, and nothing where it was not asked for. */
+function depthIn(args: string[]): number | undefined {
+  const at = args.findIndex((arg) => arg === '--depth' || arg.startsWith('--depth='));
+  if (at === -1) return undefined;
+  const depth = Number.parseInt(args[at]?.split('=')[1] ?? args[at + 1] ?? '', 10);
+  return Number.isNaN(depth) ? undefined : depth;
 }
 
 async function place(rootDir: string, args: string[]): Promise<number> {
@@ -1002,6 +1121,10 @@ export async function main(argv: string[]): Promise<number> {
       return place(rootDir, rest);
     case 'tree':
       return tree(rootDir, rest);
+    case 'props':
+      return props(rootDir, rest);
+    case 'group':
+      return group(rootDir, rest);
     case 'scan':
       return scan(rootDir);
     case 'check':
@@ -1019,7 +1142,7 @@ export async function main(argv: string[]): Promise<number> {
     case 'session':
       return session();
     default:
-      console.error('Usage: uic <pattern|diff|place|tree|scan|check|review|shapes|inventory|log>');
+      console.error('Usage: uic <pattern|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
       return 1;
   }
 }
