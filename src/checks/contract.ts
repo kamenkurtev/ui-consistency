@@ -6,6 +6,7 @@ import { writtenIn, type ValueShape } from '../sources/usage.js';
 import { rawMarkupOf } from '../sources/extract.js';
 import type { ScreenPattern } from '../sources/pattern.js';
 import { quoted } from '../core/quote.js';
+import { trailingWord } from '../sources/names.js';
 
 /** How a value is written, in words. Syntax, never meaning. */
 const SHAPE: Record<ValueShape, string> = {
@@ -19,6 +20,23 @@ export interface Deviation {
   file: string;
   message: string;
 }
+
+/**
+ * Does this component fill the slot the contract names?
+ *
+ * A contract entry is either a component's own name or a **slot** — `*Grid`,
+ * written where a family fills one role under a different name in every screen.
+ * `OrdersGrid`, `InvoicesGrid` and `CustomersGrid` are one thing the family
+ * agrees about, and counted by name not one of them reaches a majority (#6).
+ *
+ * The trailing word is the project's own statement that they are one role, and
+ * it is read from the names in front of it — never from a list of what a grid
+ * is called.
+ */
+const fills = (configured: string, rendered: string): boolean =>
+  configured.startsWith('*')
+    ? trailingWord(rendered) === configured.slice(1)
+    : configured === rendered;
 
 /** The holder a contract is the contract *of*. */
 const holderOf = (contract: ScreenPattern): string | null =>
@@ -149,11 +167,19 @@ export function contractDeviations(
   // Only when there is something to compare: reading how every component is
   // written costs a second parse of the file, and a contract with no stated
   // configuration is an ordinary shape.
-  const written = contract.configuration.length === 0 ? [] : writtenIn(file, source);
+  const written =
+    contract.configuration.length === 0 ? [] : writtenIn(file, source, { all: true });
 
   for (const configured of contract.configuration) {
-    const uses = written.filter((one) => one.component === configured.component);
+    const uses = written.filter((one) => fills(configured.component, one.component));
     if (uses.length === 0) continue;
+
+    // A slot is named for the role, and the screen names its own component. The
+    // sentence has to use the screen's word: told *"writes `<*Grid>` without
+    // `density`"* a reader goes looking for a component called `*Grid`.
+    const spelt = configured.component.startsWith('*')
+      ? (uses[0]?.component ?? configured.component)
+      : configured.component;
 
     // How much of the family actually writes it. The contract carries both
     // numbers precisely so this is not overstated: told "every screen writes
@@ -182,14 +208,14 @@ export function contractDeviations(
 
       const values = uses.map((use) => use.attributes.get(always.name));
       if (values.every((value) => value === undefined)) {
-        say(`writes <${configured.component}> without ${always.name}, ${strength}`);
+        say(`writes <${spelt}> without ${always.name}, ${strength}`);
         continue;
       }
       if (always.shape === null) continue;
       const differs = values.find((value) => value !== undefined && value.shape !== always.shape);
       if (differs === undefined) continue;
       say(
-        `writes ${always.name} as ${SHAPE[differs.shape]} on <${configured.component}>, ` +
+        `writes ${always.name} as ${SHAPE[differs.shape]} on <${spelt}>, ` +
           `where ${always.writtenBy >= configured.seenIn ? 'every screen of this kind writes' : `${always.writtenBy} of the ${configured.seenIn} write it as`} ${SHAPE[always.shape]}`,
       );
     }
@@ -208,8 +234,8 @@ export function contractDeviations(
       )[0];
       say(
         other === undefined
-          ? `writes <${configured.component}> without ${how}, ${support}`
-          : `writes <${configured.component} ${prop.name}="${quoted(other)}">, where this kind writes ${how} — ${support}`,
+          ? `writes <${spelt}> without ${how}, ${support}`
+          : `writes <${spelt} ${prop.name}="${quoted(other)}">, where this kind writes ${how} — ${support}`,
       );
     }
   }

@@ -120,10 +120,17 @@ One of: a grid component named `*Grid` (7 of 9), a card list named `*Cards` (2 o
 
 ## Props
 
-`PageShell` — written by 9 of 9: `title`, `data-testid`. `breadcrumbs` by 6 of 9.
-`OrdersGrid` — written by 6 of 6 of the screens that render a grid: `columns`,
-`rows`, `rowCount`, `loading`, `paginationMode`, `sortModel`, `data-testid`.
-`density` by 5 of 6 — the sixth is a detail-panel table and is deliberate.
+### `PageShell`
+- `title` — 9 of 9
+- `data-testid` — 9 of 9
+- `breadcrumbs` — 6 of 9
+
+### `*Grid`
+- `columns` — 6 of 6
+- `rows` — 6 of 6
+- `density` = "compact" — 5 of 6
+
+The sixth is a detail-panel table and is deliberate.
 
 ## Rules
 
@@ -139,7 +146,11 @@ report has a summary band above the grid.
 
 ## Where it is used
 
-`src/pages/OrdersPage.tsx`, `src/pages/InvoicesPage.tsx`, … (9 files)
+`src/pages/OrdersPage.tsx`, `src/pages/InvoicesPage.tsx`,
+`src/pages/CustomersPage.tsx`, `src/pages/ReportsPage.tsx`,
+`src/pages/ShipmentsPage.tsx`, `src/pages/ReturnsPage.tsx`,
+`src/pages/PaymentsPage.tsx`, `src/pages/SuppliersPage.tsx`,
+`src/pages/ContractsPage.tsx`
 ~~~~
 
 ### The decisions inside that shape
@@ -164,8 +175,30 @@ cannot evaluate a sentence must not report the screen as matching it. It goes
 into the agent's context as evidence, which is how the advisory half already
 works.
 
-**"Where it is used" is an index and not a heading.** A pattern is not defined by
-its members; the list exists so a reader can go and look.
+**"Where it is used" is an index and not a heading, and it is complete.** A
+pattern is not defined by its members; the list exists so a reader can go and
+look — and because *selection and staleness both read it*. ~~An abbreviated
+list is fine, since it is only an index.~~ **It is not (#19):** a truncated list
+lets a screen the pattern really covers fall through to the holder match, or to
+nothing where two patterns claim the holder, and reports staleness on two files
+out of nine. The file is written by an agent that has just read all nine, so
+completeness is free.
+
+**The `## Props` section has a grammar, and it is the only one that does.**
+*"Writes the table without `density`, which 5 of the 6 screens of this kind
+write"* is the sentence the verifier exists to produce, and it cannot be
+produced from prose nobody agreed the shape of. A `###` per component or slot, a
+bullet per prop, the strength after a dash. Prose above and below the bullets
+stays prose and is handed over with the rest — the grammar is a way in, not a
+way of forbidding anything. A strength written as a count is parsed; one written
+as *most screens* is kept as the sentence a person wrote, because refusing it
+would make the format fight its author and pretending to have parsed it would
+make the verifier invent a number.
+
+**A slot may be a component too.** `*Grid` names a role the family fills under a
+different name in every screen. Counted by name, `OrdersGrid`, `InvoicesGrid`
+and `CustomersGrid` never reach a majority, and describing only what they have
+in common by name describes the holder alone (#6).
 
 ### What is stored, and what is derived every time
 

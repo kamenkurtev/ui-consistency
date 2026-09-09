@@ -608,3 +608,69 @@ export const ${name}Page = () => (
     await rm(join(dir, '..'), { recursive: true, force: true });
   });
 });
+
+describe('a role the family fills under a different name every time', () => {
+  const listScreen = (grid: string, extra: string): string => `
+export const Page = () => (
+  <PageShell title="x" ${extra}>
+    <${grid} columns={c} rows={r} density="compact" />
+  </PageShell>
+);
+`;
+
+  it('describes the slot, which counting by name cannot reach', async () => {
+    // Nine list screens render `OrdersGrid`, `InvoicesGrid`, `CustomersGrid`.
+    // Counted by name not one of them reaches a majority, so the contract
+    // described the holder alone — measured on a real family of four,
+    // `configuration` had exactly one entry. Props are where a family drifts,
+    // and every component it drifts on was invisible.
+    const dir = await screens({
+      'Orders.tsx': listScreen('OrdersGrid', ''),
+      'Invoices.tsx': listScreen('InvoicesGrid', ''),
+      'Customers.tsx': listScreen('CustomersGrid', ''),
+      'Reports.tsx': listScreen('ReportsGrid', ''),
+    });
+
+    const usage = await observeUsage(join(dir, 'Orders.tsx'));
+
+    const slot = usage?.find((one) => one.component === '*Grid');
+    expect(slot).toBeDefined();
+    expect(slot?.props.map((one) => one.name)).toContain('density');
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it('leaves a name the family already shares alone rather than reporting it twice', async () => {
+    const dir = await screens({
+      'Orders.tsx': listScreen('SharedGrid', ''),
+      'Invoices.tsx': listScreen('SharedGrid', ''),
+      'Customers.tsx': listScreen('SharedGrid', ''),
+      'Reports.tsx': listScreen('SharedGrid', ''),
+    });
+
+    const usage = await observeUsage(join(dir, 'Orders.tsx'));
+
+    expect(usage?.map((one) => one.component)).toContain('SharedGrid');
+    expect(usage?.map((one) => one.component)).not.toContain('*Grid');
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it('counts a test id as written without ever claiming its value is a convention', async () => {
+    // The value of a test id is an artefact of the page; that one is written at
+    // all is a convention. Filtering it where values are decided is right, and
+    // filtering it before the presence count is what made the one thing a
+    // family agreed about invisible.
+    const dir = await screens({
+      'Orders.tsx': listScreen('Grid', 'data-testid="orders"'),
+      'Invoices.tsx': listScreen('Grid', 'data-testid="invoices"'),
+      'Customers.tsx': listScreen('Grid', 'data-testid="customers"'),
+      'Reports.tsx': listScreen('Grid', 'data-testid="reports"'),
+    });
+
+    const usage = await observeUsage(join(dir, 'Orders.tsx'));
+
+    const shell = usage?.find((one) => one.component === 'PageShell');
+    expect(shell?.written.map((one) => one.name)).toContain('data-testid');
+    expect(shell?.props.map((one) => one.name)).not.toContain('data-testid');
+    await rm(dir, { recursive: true, force: true });
+  });
+});

@@ -5,6 +5,7 @@ import { regionsOf, type PageRegions, type Region } from './regions.js';
 import { rawMarkupOf, shapeOf } from './extract.js';
 import { parseModule, walk } from '../parse/parse.js';
 import { isTemplateComponent, parseTemplate, templateKind, type TemplateNode } from '../parse/template.js';
+import { trailingWord } from './names.js';
 
 import { MAJORITY, MAX_FAMILY, QUORUM, isScreenFile, siblingScreens } from './siblings.js';
 import { observeUsage, type ComponentUsage } from './usage.js';
@@ -312,19 +313,6 @@ async function readScreen(path: string): Promise<Reading | null> {
   };
 }
 
-/**
- * The last word of a component's name, in either spelling a project uses.
- *
- * `CustomerInvoicesGrid` → `Grid`, and `app-customer-invoices-grid` → `grid`.
- * A custom element is as much a component as a capitalised one, and reading
- * only the capitalised spelling left every template dialect with nothing to say
- * (#249).
- */
-export const trailingWord = (name: string): string | null => {
-  const words = name.includes('-') ? name.split('-') : name.match(/[A-Z][a-z0-9]*/g);
-  const last = words?.[words.length - 1];
-  return last === undefined || last.length < 3 ? null : last;
-};
 
 /**
  * The components the holder holds directly, out of a flat list of nodes.
