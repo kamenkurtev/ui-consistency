@@ -49,6 +49,40 @@ describe('what reaches the agent before it writes', () => {
     expect(said).toContain('ui-consistency:pattern');
   });
 
+  /**
+   * The half of the moment that #27 did not carry. A channel that only reports
+   * what a project has written down opens onto nothing on a fresh install, and
+   * the instruction there used to be a command to run and a question to answer
+   * — which is how an installation stays silent through a full day of real UI
+   * work.
+   */
+  it('instructs the agent to establish the pattern, not to ask for one', async () => {
+    const said = (await promptContext(root, 'build a settings dialog')) ?? '';
+
+    expect(said).toContain('Establish it first');
+    expect(said).toContain('Find a screen of that kind that already exists here');
+    expect(said).toContain('Do not ask the user for a reference');
+  });
+
+  it('names the decide path for a kind with too few screens to derive from', async () => {
+    // The commonest answer this tool gives, and a dead end until it named one.
+    const said = (await promptContext(root, 'build a settings dialog')) ?? '';
+
+    expect(said).toContain('fewer than three screens');
+    expect(said).toContain('ui-consistency:decide');
+  });
+
+  it('says the same where patterns exist but none covers the kind', async () => {
+    // A project with one pattern file and a second kind of screen is the same
+    // situation as a fresh install, for that kind.
+    await pattern('list-screen', '---\npattern: list-screen\nholder: PageShell\n---\n');
+
+    const said = (await promptContext(root, 'add a new orders page like the others')) ?? '';
+
+    expect(said).toContain('Where none of them covers that kind');
+    expect(said).toContain('Establish it first');
+  });
+
   it('warns where a pattern was read from screens that have since changed', async () => {
     // The moment it matters. A pattern derived from screens that have moved is
     // the one thing worse than no pattern, and this is the moment before the

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { execFile } from 'node:child_process';
-import { mkdtemp, rm, writeFile, mkdir, access, cp } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile, mkdir, access, cp, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -568,6 +568,72 @@ describe('the three silences a user has to be able to tell apart', () => {
 
     const found = await uic(['pattern', 'src/pages/OrdersPage.tsx'], dir);
     expect(found.stdout).toContain('"holder": "PageLayout"');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  /**
+   * The other half of the moment #27 opened: on a fresh install nothing has
+   * been written down, so a channel that only reports what exists opens onto
+   * nothing. The file is established from the code the agent is already
+   * reading, and nobody is asked anything.
+   */
+  it('establishes the pattern in the project, marked derived and dated', async () => {
+    const dir = await project({
+      'package.json': '{"name":"establish"}',
+      'src/Routes.tsx': [
+        "import { OrdersPage } from './pages/OrdersPage';",
+        "import { InvoicesPage } from './pages/InvoicesPage';",
+        "import { ReportsPage } from './pages/ReportsPage';",
+        "export const routes = [{ path: 'orders', element: <OrdersPage /> },",
+        "  { path: 'invoices', element: <InvoicesPage /> },",
+        "  { path: 'reports', element: <ReportsPage /> }];",
+      ].join('\n'),
+      'src/pages/OrdersPage.tsx': page('Orders'),
+      'src/pages/InvoicesPage.tsx': page('Invoices'),
+      'src/pages/ReportsPage.tsx': page('Reports'),
+    });
+
+    const wrote = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir);
+    expect(wrote.code).toBe(0);
+    expect(wrote.stdout.trim()).toBe('.ui-consistency/patterns/page-layout.md');
+
+    const written = await readFile(join(dir, wrote.stdout.trim()), 'utf8');
+    expect(written).toContain('derived: true');
+    expect(written).toContain(`observed: ${new Date().toISOString().slice(0, 10)}`);
+    expect(written).toContain('holder: PageLayout');
+    // Where the family came from, which is what makes it judgeable on sight.
+    expect(written).toContain("route table");
+    // And what it could not derive, named rather than invented.
+    expect(written).toContain('## Still to be written');
+
+    // It is now a pattern the project has written down, so the surface that
+    // reports them reads it back — the round trip that matters to a user.
+    const listed = await uic(['patterns'], dir);
+    expect(listed.stdout).toContain('page-layout');
+
+    // An existing file is never overwritten: it has been through a pull request.
+    const again = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir);
+    expect(again.code).toBe(1);
+    expect(again.stderr).toContain('already exists');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it('asked to write a file and writing none exits non-zero', async () => {
+    // Three commands answering with empty output and exit 0 is how 400 files
+    // were reported clean without one of them being looked at (#37). A write
+    // that did not happen must not read as a file the caller can now open.
+    const dir = await project({
+      'package.json': '{"name":"too-few"}',
+      'src/pages/OrdersPage.tsx': page('Orders'),
+      'src/pages/InvoicesPage.tsx': page('Invoices'),
+    });
+
+    const refused = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir);
+    expect(refused.code).toBe(1);
+    expect(refused.stderr).toContain('fewer than three screens of this kind');
+    expect(refused.stderr).toContain('ui-consistency:decide');
 
     await rm(dir, { recursive: true, force: true });
   });

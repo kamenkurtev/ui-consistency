@@ -377,6 +377,7 @@ The plugin installs a hook, not a command — it does not put anything on your
 uic=path/to/ui-consistency/bin/uic.mjs
 
 node $uic pattern src/orders/OrderList.tsx --save   # what screens of this kind look like here
+node $uic pattern src/orders/OrderList.tsx --establish  # write it down as a pattern file to review
 node $uic diff --contract <c> src/orders/*.tsx      # where the screens you touched left it — <c> is a pattern file or a saved contract
 node $uic place src/orders/OrderList.tsx            # folder, route, and the breadcrumb trail
 node $uic tree src/orders/OrderList.tsx             # what it renders, followed into its children
@@ -436,7 +437,11 @@ prose is for the people reading the file, and for the agent when it loads it.
 The other thing worth keeping is what a *pattern* is — the shape a kind of screen
 has here, which is more than a decision and less than a spec. One Markdown file
 per pattern in `.ui-consistency/patterns/`, written by the agent from reading
-your code and reviewed by you in a pull request:
+your code and reviewed by you in a pull request. Until you have reviewed it,
+it says so: a file the tool established carries `derived: true` and the date
+it was measured, and names under `## Still to be written` the parts no
+extraction can produce — which alternatives a slot allows, the rules no
+checker can evaluate, and whether a screen that differs does so deliberately:
 
 ~~~~markdown
 ---

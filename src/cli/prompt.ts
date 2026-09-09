@@ -44,9 +44,7 @@ export async function promptContext(rootDir: string, text: string): Promise<stri
     return [
       `ui-consistency: this project has written no patterns down (${KNOWLEDGE_DIR}/patterns/).`,
       '',
-      'Before writing or changing a screen, establish what screens of that kind',
-      'already look like here — ui-consistency:pattern reads them and writes it',
-      'down. Doing it afterwards means arguing with code that already works.',
+      ...ESTABLISH_IT,
     ].join('\n');
   }
 
@@ -60,10 +58,48 @@ export async function promptContext(rootDir: string, text: string): Promise<stri
   said.push(
     '',
     'Read the one for the kind you are about to touch before writing anything.',
-    'Where none covers it, ui-consistency:pattern establishes it first.',
+    'Where none of them covers that kind:',
+    '',
+    ...ESTABLISH_IT,
   );
   return said.join('\n');
 }
+
+/**
+ * What to do where nothing has been written down about the kind being touched.
+ *
+ * **The instruction is to establish it, not to ask for it.** A channel that
+ * reports what a project has written down opens onto nothing on a fresh
+ * install, and the first move used to be a command somebody had to run and a
+ * question somebody had to answer — which is how an installation stayed silent
+ * through a full day of real UI work. The agent is already reading the code
+ * this would be derived from, so it derives it and writes it down, and nothing
+ * is asked of the user.
+ *
+ * Two steps and not one, because at this moment there is no file yet: the
+ * prompt has been submitted and nothing has been opened. A command that needs
+ * a reference screen cannot be handed over without saying how to find one.
+ *
+ * The refusal is part of the instruction. `--establish` writes nothing where
+ * there are fewer than three screens to compare, and a pattern derived from one
+ * screen is that screen's particulars promoted to a rule for every screen after
+ * it. The decide path is the honest answer there, and it is the commonest
+ * answer this tool gives.
+ */
+const ESTABLISH_IT = [
+  'Establish it first, from the code you are about to read anyway:',
+  '',
+  '  1. Find a screen of that kind that already exists here.',
+  '  2. ui-consistency:pattern — derive what that family agrees on and write it',
+  '     down. Do not ask the user for a reference; take the screen from step 1.',
+  '  3. Fill in the parts the file says are still to be written, then build from it.',
+  '',
+  'Where there are fewer than three screens of the kind, nothing is derived and',
+  'ui-consistency:decide records what is decided instead — a pattern of one is',
+  "that screen's particulars turned into a rule for every screen after it.",
+  '',
+  'Doing any of this afterwards means arguing with code that already works.',
+];
 
 /**
  * How many to name.

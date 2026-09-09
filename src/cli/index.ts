@@ -1,5 +1,5 @@
-import { readFile, realpath, stat, writeFile } from 'node:fs/promises';
-import { basename, dirname, relative, resolve } from 'node:path';
+import { mkdir, readFile, realpath, stat, writeFile } from 'node:fs/promises';
+import { basename, dirname, join, relative, resolve } from 'node:path';
 import { detectionSources } from '../layers/detect.js';
 import { cachedPackages, clearPackageCache } from '../layers/cache.js';
 import { resolveChain, contains } from '../layers/chain.js';
@@ -37,6 +37,7 @@ import {
   type Deviation,
 } from '../checks/contract.js';
 import { patternDeviations } from '../checks/pattern-check.js';
+import { renderPattern } from '../knowledge/pattern-write.js';
 import type { ScreenPattern } from '../sources/pattern.js';
 import { parsePattern } from '../knowledge/pattern-file.js';
 import { contractPathFor, readLog, readSeen, summarise, logPath } from './log.js';
@@ -294,6 +295,7 @@ async function review(rootDir: string, args: string[]): Promise<number> {
 
 async function pattern(rootDir: string, args: string[]): Promise<number> {
   const save = args.includes('--save');
+  const establish = args.includes('--establish');
   const at = args.indexOf('--kind');
   const wanted = at < 0 ? undefined : args[at + 1];
   // `at < 0` guarded explicitly: without it `at + 1` is 0 and the *first*
@@ -333,7 +335,10 @@ async function pattern(rootDir: string, args: string[]): Promise<number> {
     // A dead end until #233: the honest answer, and then nothing to act on. The
     // skill walks the anatomy as questions and writes down only what was said.
     console.error('ui-consistency:decide walks the anatomy and records the decision.');
-    return 0;
+    // Asked to *write* a file, nothing was written, and a caller that reads the
+    // exit code has to be able to tell that apart from a file it can now read.
+    // The other two forms print an answer either way, so they stay at 0.
+    return establish ? 1 : 0;
   }
 
   // The statements a person wrote and no extraction could produce, carried
@@ -346,6 +351,8 @@ async function pattern(rootDir: string, args: string[]): Promise<number> {
       ? {}
       : { decided: { kind: stated.kind, from: relative(rootDir, stated.file), statements: stated.statements } }),
   };
+
+  if (establish) return establishPattern(rootDir, found, reference, decided?.kind);
 
   if (!save) {
     console.log(JSON.stringify(digest, null, 2));
@@ -374,6 +381,62 @@ async function pattern(rootDir: string, args: string[]): Promise<number> {
  * page and looking. It measures against something somebody approved, which is
  * why it may fail a build where nothing derived ever could.
  */
+/**
+ * Write the pattern down, in the project, as the artifact a person approves.
+ *
+ * The other half of the channel #27 opened. On a fresh install there is no
+ * pattern file for any kind, so a channel that only *reports* what has been
+ * written down opens onto nothing — and the user was being asked to run a
+ * command and answer questions before the tool said anything at all, which is
+ * how an installation stays silent through a full day of real UI work.
+ *
+ * So the facts are derived and written here, marked as derived and dated, and
+ * the prose the extraction cannot produce is named as missing. Nothing is
+ * approved by this: the file is a draft in the project's own directory, and
+ * the one place derived material may fail anything is still a person putting
+ * `uic diff --contract` in a build gate.
+ *
+ * **An existing file is never overwritten.** A pattern already committed has
+ * been through a pull request, and replacing a reviewed sentence with a derived
+ * one would be the tool overruling the person it works for.
+ */
+async function establishPattern(
+  rootDir: string,
+  found: ScreenPattern,
+  reference: string,
+  decidedKind: string | undefined,
+): Promise<number> {
+  const name = slug(decidedKind ?? found.kind ?? 'screens');
+  const { dir } = await knowledgeDir(rootDir, 'patterns');
+  const path = join(dir, `${name}.md`);
+
+  if ((await stat(path).catch(() => null)) !== null) {
+    console.error(`${relative(rootDir, path)} already exists, and was not overwritten.`);
+    console.error('Read it, and re-derive with `uic pattern <screen>` if it looks stale.');
+    return 1;
+  }
+
+  const rendered = renderPattern(found, {
+    name,
+    observed: new Date().toISOString().slice(0, 10),
+    files: found.family.map((one) => relative(rootDir, one)),
+    reference: relative(rootDir, reference),
+  });
+
+  await mkdir(dir, { recursive: true });
+  await writeFile(path, rendered, 'utf8');
+  console.log(relative(rootDir, path));
+  return 0;
+}
+
+/** `PageShell` → `page-shell`; a kind already written in words is left alone. */
+const slug = (kind: string): string =>
+  kind
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/[^A-Za-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase() || 'screens';
+
 async function diff(rootDir: string, args: string[]): Promise<number> {
   const at = args.indexOf('--contract');
   const contractPath = at < 0 ? undefined : args[at + 1];
