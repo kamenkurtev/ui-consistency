@@ -52,9 +52,9 @@ confirmation is how both mistakes get made:
   the defect. Fixing what a report *says* rather than what the code *does*
   produces a change nobody can review.
 - **Before dismissing.** This is the dangerous direction. An obvious check of
-  #149 came back green — the simplified Angular template used to reproduce it
+  one reported defect came back green — the simplified Angular template used to reproduce it
   was accidentally valid JSX, so Babel read it and the bug hid. A test written
-  for #155 passed against the unfixed code because `walk` returns siblings
+  for another passed against the unfixed code because `walk` returns siblings
   backwards and the element was in the wrong place. Both would have closed a
   true finding as a false positive.
 
@@ -80,10 +80,9 @@ with an explicit argument that path handling had only been made stricter.
 Then one `/security-review`, over a scope somebody had already declared safe —
 no `child_process`, no network, no credentials — returned four findings, all
 reproducible: a prop value from ordinary application code becoming an
-instruction the agent reads (#171), a predictable cache directory that follows a
-pre-planted symlink (#172), a documented "no source code, ever" promise the log
-does not keep (#173), and a `tsconfig` alias that reads outside the project
-(#174).
+instruction the agent reads, a predictable cache directory that follows a
+pre-planted symlink, a documented "no source code, ever" promise the log
+does not keep, and a `tsconfig` alias that reads outside the project.
 
 Every one of those was reachable from a change that had been argued into
 exemption. **A judgement about whether a review would find something is not
