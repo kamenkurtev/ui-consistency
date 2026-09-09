@@ -24,6 +24,7 @@ const contract = (over: Partial<ScreenPattern> = {}): ScreenPattern => ({
       agreedBy: 4,
     },
   ],
+  propsUnmeasured: null,
   particulars: { roles: [], components: [] },
   wiring: [],
   chrome: null,

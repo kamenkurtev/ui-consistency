@@ -53,6 +53,23 @@ export interface ScreenPattern {
    */
   configuration: ComponentUsage[];
   /**
+   * Why the props level says nothing, where it says nothing.
+   *
+   * `null` means it was measured, whatever it found. Otherwise it was **not
+   * measured**, and this says how many sibling screens there were and how many
+   * it takes — so a reader can see that one more screen of the kind would
+   * answer, rather than reading an empty list as *this family agrees on no
+   * props* (#41).
+   *
+   * The two guards that meet here are each right on their own. The reference is
+   * left out of its own counts, so a family of three is measured over two; and
+   * two files agreeing is a copy rather than an agreement, so two is refused.
+   * The props level therefore needs four screens where the pattern needs three,
+   * and nothing said so — on the smallest family that answers at all, `## Props`
+   * was simply absent. Neither number moved: what was missing was the sentence.
+   */
+  propsUnmeasured: { siblings: number; needed: number } | null;
+  /**
    * What the reference page has and the family does not.
    *
    * The list of things that must **not** be carried into the next screen. A
@@ -549,6 +566,7 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
       skeleton === null ? null : skeleton.regions.length > 0 ? 'components' : holderIsWritten ? 'holder' : null,
     body,
     configuration: observed ?? [],
+    propsUnmeasured: observed === null ? { siblings: others.length, needed: QUORUM } : null,
     particulars: {
       roles: [...new Set(rolesOf(reference))].filter((role) => !elsewhereRoles.has(role)),
       components: reference.components.filter((name) => !elsewhereComponents.has(name)),
