@@ -40,16 +40,33 @@ same.
 
 ## 1. Find out what the family is
 
-**You may not need this skill at all.** On Claude Code the hook already derives
+~~**You may not need this skill at all.** On Claude Code the hook already derives
 what screens of a kind look like here and hands the agent any deviation on the
-edit it is making — no command, nothing saved, nothing approved. Run this when
-somebody wants to *look* at the contract, decide it before writing, or save one
-for a batch to work from. It is the deliberate form, not the way the knowledge
-comes into being.
+edit it is making — no command, nothing saved, nothing approved.~~
 
-Ask the user for a reference screen — *"which page should this be built like?"* —
-and prefer their answer to anything derived. That one sentence is what they
-otherwise type fifteen times, one correction at a time, after the mistakes.
+**Half of that is still true and the other half was withdrawn.** The hook does
+still derive a contract on the edit it is making, and that is still nothing
+saved and nothing approved. But it says so *after* the write, and the pattern
+this project has written down is now put in front of the agent **before** it, on
+the prompt — and where nothing has been written down about the kind, that
+channel's instruction is to run this skill and write one. So this is no longer
+only the deliberate form: it is also the automatic first move on a fresh
+install, where a channel that merely reports what exists opens onto nothing.
+
+### Which of the two you are in, because the first move differs
+
+**Reached automatically** — the prompt channel said no pattern covers this kind,
+or you are about to write a screen and nothing is written down about it. **Ask
+the user nothing.** Take the screen being changed, or any existing screen of the
+same kind, and go straight to step 2 with `--establish`. The question below is
+what the automatic path exists to remove: a first move that is a question is a
+first move somebody has to answer, and a fresh install stayed silent through a
+full day of real UI work because nothing invited it in.
+
+**Invoked deliberately** — somebody asked for the contract, or named a
+reference. Ask for a reference screen — *"which page should this be built
+like?"* — and prefer their answer to anything derived. That one sentence is what
+they otherwise type fifteen times, one correction at a time, after the mistakes.
 
 If they have no answer, take any existing screen of the kind being built. The
 extractor finds the rest of the family itself — from the **route table**, which
@@ -66,7 +83,33 @@ names the canonical screen — use that and say so:
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" pattern --kind detail --save
 ```
 
-## 2. Extract, and save it where the work can find it
+## 2. Extract, and write it down
+
+**`--establish` is the one that lasts, and the one the automatic path uses.**
+
+```
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" pattern <reference-screen> --establish
+```
+
+It writes `.ui-consistency/patterns/<kind>.md` — the artifact this project
+commits — and prints the path. The file carries only what was measured, marked
+`derived: true` and dated, and it names in `## Still to be written` the three
+things no extraction can produce: which alternatives a slot allows, the rules no
+checker can evaluate, and whether a screen that differs does so deliberately.
+**Answer those before building from it**; a file left at the derived half is a
+draft, and it says so.
+
+It writes nothing and **exits 1** where there are fewer than three screens of
+the kind, or where the file already exists. An existing pattern has been through
+a pull request, and replacing a reviewed sentence with a derived one is the tool
+overruling the person it works for — read it instead, and re-derive without
+`--establish` if it looks stale.
+
+Nothing about this is approval. The file is a draft in the project's own
+directory; the one place derived material may fail anything is still a person
+putting `uic diff --contract` in a build gate.
+
+### `--save`, which is the ephemeral form
 
 ```
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" pattern <reference-screen> --save
