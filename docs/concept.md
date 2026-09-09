@@ -251,10 +251,20 @@ strength**, so a family agreeing about twelve things out of thirteen is
 described rather than described as disagreeing.
 
 It is the strongest source in that cascade for the reason nothing else on the
-list can match: it is a *person's sentence*, written down and reviewed, rather
-than a reading of the code. A route table states which screens are registered
-together; a folder states nothing at all. Only a pattern file says *these are
-one kind, and this is what they look like*.
+list can match: ~~it is a *person's sentence*, written down and reviewed, rather
+than a reading of the code.~~ **Once it has been reviewed.** Since #38 the tool
+writes the first draft of one itself, where the project has written nothing
+down about the kind — because a channel that only reports what exists opens
+onto nothing on a fresh install, and the first move used to be a command
+somebody had to run. Such a file carries `derived: true` and the date, states
+only what was measured, and names under `## Still to be written` the three
+things no extraction can produce. It is a reading of the code until somebody
+answers those; the sentence above describes what it becomes, not what it starts
+as, and the frontmatter is how the two are told apart.
+
+A route table states which screens are registered together; a folder states
+nothing at all. Only a pattern file says *these are one kind, and this is what
+they look like*.
 
 The facts in it are still derived every time. What is stored is the intent — the
 shape, the alternatives, the rules — and the file records the date it was

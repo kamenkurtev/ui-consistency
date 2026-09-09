@@ -51,6 +51,17 @@ export interface PatternFile {
   holder: string | null;
   /** The date the counts in it were observed, as written. */
   observed: string | null;
+  /**
+   * Whether the tool established this file rather than a person writing it.
+   *
+   * A field and not a sentence in the prose, because it is read: a pattern the
+   * tool derived on a prompt and one a person wrote and reviewed carry
+   * different weight, and the refresh has to be able to tell them apart
+   * without parsing English. Absent means a person wrote it — the older files
+   * predate the field and claiming they were derived would be inventing a
+   * provenance nobody stated.
+   */
+  derived: boolean;
   structure: StructureLine[];
   /** The files it says it describes, project-relative as written. */
   members: string[];
@@ -140,6 +151,7 @@ export function parsePattern(file: string, raw: string): PatternFile {
     surface: front.get('surface') ?? null,
     holder: front.get('holder') ?? null,
     observed: front.get('observed') ?? null,
+    derived: /^(true|yes)$/i.test(front.get('derived') ?? ''),
     structure: parseStructure(named(STRUCTURE)),
     props: parseProps(named(PROPS)),
     members: parseMembers(named(MEMBERS)),

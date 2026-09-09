@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { readFile as readFile28, realpath as realpath2, stat as stat11, writeFile as writeFile7 } from "node:fs/promises";
-import { basename as basename8, dirname as dirname14, relative as relative12, resolve as resolve9 } from "node:path";
+import { mkdir as mkdir2, readFile as readFile28, realpath as realpath2, stat as stat11, writeFile as writeFile7 } from "node:fs/promises";
+import { basename as basename8, dirname as dirname14, join as join21, relative as relative12, resolve as resolve9 } from "node:path";
 
 // src/layers/detect.ts
 import { readFile as readFile2, readdir as readdir2, stat as stat2 } from "node:fs/promises";
@@ -1729,13 +1729,13 @@ var exportSuggestions = {
   type: "export type",
   interface: "export interface"
 };
-function partition(list, test) {
+function partition(list2, test) {
   const list1 = [];
-  const list2 = [];
-  for (let i = 0; i < list.length; i++) {
-    (test(list[i], i, list) ? list1 : list2).push(list[i]);
+  const list22 = [];
+  for (let i = 0; i < list2.length; i++) {
+    (test(list2[i], i, list2) ? list1 : list22).push(list2[i]);
   }
-  return [list1, list2];
+  return [list1, list22];
 }
 var FLOW_PRAGMA_REGEX = /\*?\s*@((?:no)?flow)\b/;
 var flow = (superClass) => class FlowParserMixin extends superClass {
@@ -11342,8 +11342,8 @@ var typescript = (superClass) => class TypeScriptParserMixin extends superClass 
     }
   }
   tsParseBindingListForSignature() {
-    const list = super.parseBindingList(7, 41, 2);
-    for (const pattern2 of list) {
+    const list2 = super.parseBindingList(7, 41, 2);
+    for (const pattern2 of list2) {
       const {
         type
       } = pattern2;
@@ -11353,7 +11353,7 @@ var typescript = (superClass) => class TypeScriptParserMixin extends superClass 
         });
       }
     }
-    return list;
+    return list2;
   }
   tsParseTypeMemberSemicolon() {
     if (!this.eat(8) && !this.isLineTerminator()) {
@@ -14953,9 +14953,9 @@ async function readDecisions(rootDir) {
         named = pointer[1];
         continue;
       }
-      const list = /^\s*(prefer|ignore)\s*:\s*(.+?)\s*$/i.exec(line);
-      if (list !== null) {
-        listed[list[1].toLowerCase()] = list[2].split(",").map((name) => name.trim()).filter((name) => name !== "");
+      const list2 = /^\s*(prefer|ignore)\s*:\s*(.+?)\s*$/i.exec(line);
+      if (list2 !== null) {
+        listed[list2[1].toLowerCase()] = list2[2].split(",").map((name) => name.trim()).filter((name) => name !== "");
         continue;
       }
       const statement = /^\s*[-*]\s+(.+?)\s*$/.exec(line);
@@ -21039,10 +21039,10 @@ function regionOf(name, holder) {
   const stripped = bareName(name).slice(prefix2.length);
   return NAMES.find((entry) => entry.pattern.test(stripped))?.region ?? null;
 }
-function compareOrder(filled, stated) {
+function compareOrder(filled, stated2) {
   const present = [...new Set(filled)];
-  const missing = stated.filter((region) => !present.includes(region));
-  const expected = stated.filter((region) => present.includes(region));
+  const missing = stated2.filter((region) => !present.includes(region));
+  const expected = stated2.filter((region) => present.includes(region));
   const actual = present.filter((region) => expected.includes(region));
   return { present, missing, actual, expected, inOrder: actual.join(">") === expected.join(">") };
 }
@@ -22386,7 +22386,7 @@ function parsePattern(file, raw) {
   }
   keep();
   const named = (test) => {
-    for (const [title, text] of sections) if (test.test(title)) return text;
+    for (const [title2, text] of sections) if (test.test(title2)) return text;
     return null;
   };
   return {
@@ -22395,6 +22395,7 @@ function parsePattern(file, raw) {
     surface: front.get("surface") ?? null,
     holder: front.get("holder") ?? null,
     observed: front.get("observed") ?? null,
+    derived: /^(true|yes)$/i.test(front.get("derived") ?? ""),
     structure: parseStructure(named(STRUCTURE)),
     props: parseProps(named(PROPS)),
     members: parseMembers(named(MEMBERS)),
@@ -23111,11 +23112,11 @@ function contractDeviations(file, source, contract) {
       );
     }
     for (const prop of configured.props) {
-      const stated = uses.map((use) => use.attributes.get(prop.name)?.value);
-      if (stated.every((value) => value === prop.value)) continue;
-      if (stated.some((value) => value === null)) continue;
+      const stated2 = uses.map((use) => use.attributes.get(prop.name)?.value);
+      if (stated2.every((value) => value === prop.value)) continue;
+      if (stated2.some((value) => value === null)) continue;
       const how = prop.bare ? prop.name : `${prop.name}="${quoted(prop.value)}"`;
-      const other = stated.filter(
+      const other = stated2.filter(
         (value) => typeof value === "string" && value !== prop.value
       )[0];
       say(
@@ -23204,10 +23205,10 @@ function checkProps(file, source, pattern2, say) {
         continue;
       }
       if (prop.value === null) continue;
-      const stated = values.map((value) => value?.value);
-      if (stated.some((value) => value === null)) continue;
-      if (stated.every((value) => value === void 0 || value === prop.value)) continue;
-      const other = stated.find((value) => value !== void 0 && value !== prop.value);
+      const stated2 = values.map((value) => value?.value);
+      if (stated2.some((value) => value === null)) continue;
+      if (stated2.every((value) => value === void 0 || value === prop.value)) continue;
+      const other = stated2.find((value) => value !== void 0 && value !== prop.value);
       say(
         `writes <${spelt} ${prop.name}="${quoted(other)}">, where this kind writes ${prop.name}="${quoted(prop.value)}" \u2014 ${strength}`
       );
@@ -23221,6 +23222,172 @@ function handOver(pattern2) {
     ...slots.length === 0 ? [] : [`slots nothing here reads: ${slots.join(", ")}`]
   ];
 }
+
+// src/knowledge/pattern-write.ts
+function renderPattern(pattern2, options) {
+  const { name, observed, files } = options;
+  const total = pattern2.family.length;
+  const out = [
+    "---",
+    `pattern: ${safe(name)}`,
+    ...pattern2.kind === null ? [] : [`holder: ${safe(pattern2.kind)}`],
+    `read: ${total} ${total === 1 ? "file" : "files"}`,
+    `from: ${pattern2.from}`,
+    `observed: ${observed}`,
+    // The field #28's refresh reads. A sentence in the prose would have to be
+    // parsed as English to tell a derived file from an approved one.
+    "derived: true",
+    "---",
+    "",
+    `# ${title(safe(name))}`,
+    "",
+    derivedFrom(pattern2, total),
+    ""
+  ];
+  const structure = structureBlock(pattern2, total);
+  if (structure.length > 0) {
+    out.push("## Structure", "", "```", ...structure, "```", "");
+  }
+  const props2 = propsBlock(pattern2);
+  if (props2.length > 0) {
+    out.push(
+      "## Props",
+      "",
+      // Otherwise `4 of 4` under `read: 5 files` reads as an arithmetic slip.
+      // The reference is left out of its own counts on purpose: with a small
+      // family the page being asked about would otherwise settle the majority
+      // on whether what it does is what everyone does.
+      `_Counted over the ${total - 1} screens beside the reference, which is left out of its own counts._`,
+      "",
+      ...props2
+    );
+  }
+  if (pattern2.avoids.length > 0) {
+    out.push(
+      "## Avoided elements",
+      "",
+      `No screen of this kind renders ${list(pattern2.avoids.map((one) => `\`<${safe(one)}>\``))}.`,
+      // The element is named and the replacement is not: what replaces it is
+      // this project's own business, and the structure above already says what
+      // the family renders instead.
+      ""
+    );
+  }
+  if (pattern2.wiring.length > 0) {
+    out.push(
+      "## Wiring",
+      "",
+      `Most screens of this kind call ${list(pattern2.wiring.map((one) => `\`${safe(one)}()\``))}.`,
+      "",
+      "_Read from JavaScript only: a screen written as a template contributes nothing here._",
+      ""
+    );
+  }
+  const particulars = particularsBlock(pattern2, options);
+  if (particulars.length > 0) out.push("## Particular to one screen", "", ...particulars, "");
+  out.push("## Still to be written", "", ...gaps(pattern2), "");
+  out.push(
+    "## Where it is used",
+    "",
+    files.map((path) => `\`${safe(path)}\``).join(", "),
+    ""
+  );
+  return `${out.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd()}
+`;
+}
+function derivedFrom(pattern2, total) {
+  const where2 = {
+    pattern: "named together by a pattern file",
+    routes: "registered beside one another in the project's route table",
+    folder: "found in the folders around the reference, which is a guess about which of them are of a kind"
+  }[pattern2.from];
+  const built = pattern2.built === "markup" ? " These screens are built out of markup and classes rather than layout components, so there is no component to name for most roles." : "";
+  return `Derived by \`uic pattern\` from ${total} ${total === 1 ? "screen" : "screens"} ${where2}.${built} Nothing here has been approved by a person; the counts are evidence as at the date above, and \`uic patterns\` says what has moved since.`;
+}
+function structureBlock(pattern2, total) {
+  if (pattern2.skeleton === null) return [];
+  const width = 36;
+  const line = (indent, name, strength) => {
+    const written = `${"  ".repeat(indent)}${name}`;
+    return `${written.padEnd(width - 2)}  ${strength}`;
+  };
+  const out = [line(0, safe(pattern2.skeleton.holder), `majority of ${total}`)];
+  for (const region of pattern2.skeleton.regions) {
+    const filled = pattern2.vocabulary.find((one) => one.role === region);
+    out.push(
+      filled === void 0 ? line(1, `<${region}>`, `majority of ${total}`) : line(1, safe(filled.component), `majority of ${total}`)
+    );
+  }
+  if (pattern2.skeleton.regions.length === 0 && pattern2.body !== null) {
+    const held = pattern2.body.component === null ? pattern2.body.suffix === null ? "<body>" : `*${safe(pattern2.body.suffix)}` : safe(pattern2.body.component);
+    const count = pattern2.body.children;
+    out.push(line(1, held, `exactly ${count === 1 ? "one" : count}; ${total} of ${total}`));
+  }
+  return out;
+}
+function propsBlock(pattern2) {
+  const out = [];
+  for (const usage of pattern2.configuration) {
+    const bullets = [];
+    const shapes = [];
+    const valued = new Set(usage.props.map((one) => one.name));
+    for (const prop of usage.props) {
+      bullets.push(`- \`${safe(prop.name)}\`${stated(prop)} \u2014 ${usage.agreedBy} of ${usage.seenIn}`);
+    }
+    for (const written of usage.written) {
+      if (valued.has(written.name)) continue;
+      bullets.push(`- \`${safe(written.name)}\` \u2014 ${written.writtenBy} of ${usage.seenIn}`);
+      if (written.shape !== null) shapes.push(`\`${safe(written.name)}\` ${article(written.shape)}`);
+    }
+    if (usage.classes.length > 0) {
+      bullets.push(
+        `- \`${safe(usage.classAttribute)}\` = "${safe(usage.classes.join(" "))}" \u2014 ${usage.agreedBy} of ${usage.seenIn}`
+      );
+    }
+    if (bullets.length === 0) continue;
+    out.push(`### \`${safe(usage.component)}\``, "", ...bullets, "");
+    if (shapes.length > 0) out.push(`Written as: ${list(shapes)}.`, "");
+  }
+  return out;
+}
+var stated = (prop) => {
+  const value = safe(prop.value);
+  return prop.bare || value.includes('"') ? "" : ` = "${value}"`;
+};
+function particularsBlock(pattern2, options) {
+  const { roles, components } = pattern2.particulars;
+  if (roles.length === 0 && components.length === 0) return [];
+  const has = [
+    ...roles.length > 0 ? [`a ${list(roles.map((one) => `\`${safe(one)}\``))} region`] : [],
+    ...components.length > 0 ? [list(components.map((one) => `\`${safe(one)}\``))] : []
+  ];
+  return [
+    `\`${options.reference}\` renders ${list(has)}, which no other screen of this kind does.`,
+    "",
+    "_Whether that is deliberate is not readable from the code. Say which it is._"
+  ];
+}
+function gaps(pattern2) {
+  const slots = pattern2.skeleton?.regions.filter(
+    (region) => !pattern2.vocabulary.some((one) => one.role === region)
+  );
+  return [
+    "Derived facts only, so far. These are the parts of a pattern that no extraction can produce, and the file is not finished until somebody has answered them:",
+    "",
+    ...slots !== void 0 && slots.length > 0 ? [
+      `- **Slots.** ${list(slots.map((one) => `\`<${safe(one)}>\``))} ${slots.length === 1 ? "is" : "are"} filled by a different component on each screen. Which alternatives are allowed there, and what decides between them?`
+    ] : [],
+    "- **Rules.** What must a screen of this kind do that no checker can evaluate? *(\u201CActions are always rendered; permission toggles `disabled` only.\u201D)*",
+    "- **Exceptions.** Where a screen above departs from the rest, is that deliberate, and why?"
+  ];
+}
+var title = (name) => {
+  const words = name.replace(/[-_]+/g, " ").trim();
+  return words.charAt(0).toUpperCase() + words.slice(1);
+};
+var article = (word) => `${/^[aeiou]/i.test(word) ? "an" : "a"} ${word}`;
+var safe = (value) => quoted(value);
+var list = (items) => items.length <= 1 ? items[0] ?? "" : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 
 // src/cli/log.ts
 import { appendFile, readdir as readdir10, readFile as readFile20, rename, stat as stat9, writeFile as writeFile4 } from "node:fs/promises";
@@ -23949,7 +24116,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join20 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.91";
+var VERSION = "0.14.92";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24043,9 +24210,7 @@ async function promptContext(rootDir, text) {
     return [
       `ui-consistency: this project has written no patterns down (${KNOWLEDGE_DIR}/patterns/).`,
       "",
-      "Before writing or changing a screen, establish what screens of that kind",
-      "already look like here \u2014 ui-consistency:pattern reads them and writes it",
-      "down. Doing it afterwards means arguing with code that already works."
+      ...ESTABLISH_IT
     ].join("\n");
   }
   const said = [`ui-consistency: what this project has written down, before you write.`, ""];
@@ -24058,10 +24223,27 @@ async function promptContext(rootDir, text) {
   said.push(
     "",
     "Read the one for the kind you are about to touch before writing anything.",
-    "Where none covers it, ui-consistency:pattern establishes it first."
+    "Where none of them covers that kind:",
+    "",
+    ...ESTABLISH_IT
   );
   return said.join("\n");
 }
+var ESTABLISH_IT = [
+  "Establish it first, from the code you are about to read anyway:",
+  "",
+  "  1. Find a screen of that kind that already exists here.",
+  "  2. ui-consistency:pattern \u2014 derive what that family agrees on and write it",
+  "     down: `uic pattern <that screen> --establish`.",
+  "     Do not ask the user for a reference; take the screen from step 1.",
+  "  3. Fill in the parts the file says are still to be written, then build from it.",
+  "",
+  "Where there are fewer than three screens of the kind, nothing is derived and",
+  "ui-consistency:decide records what is decided instead \u2014 a pattern of one is",
+  "that screen's particulars turned into a rule for every screen after it.",
+  "",
+  "Doing any of this afterwards means arguing with code that already works."
+];
 var MAX_PATTERNS = 12;
 var describe2 = (one) => [one.name, one.surface ?? "\u2014", one.holder ?? "\u2014", `${one.members.length} files`].join("  ");
 async function freshness(rootDir, one) {
@@ -24209,6 +24391,7 @@ async function review(rootDir, args) {
 }
 async function pattern(rootDir, args) {
   const save = args.includes("--save");
+  const establish = args.includes("--establish");
   const at = args.indexOf("--kind");
   const wanted = at < 0 ? void 0 : args[at + 1];
   const file = args.find((arg, index) => !arg.startsWith("-") && (at < 0 || index !== at + 1));
@@ -24234,14 +24417,15 @@ async function pattern(rootDir, args) {
     console.error("No pattern found: fewer than three screens of this kind to compare.");
     console.error("Decide it here, and this screen becomes the first of its kind.");
     console.error("ui-consistency:decide walks the anatomy and records the decision.");
-    return 0;
+    return establish ? 1 : 0;
   }
-  const stated = decided ?? decisions.find((one) => one.kind === found.kind);
+  const stated2 = decided ?? decisions.find((one) => one.kind === found.kind);
   const digest = {
     ...found,
     family: found.family.map((path2) => relative12(rootDir, path2)),
-    ...stated === void 0 || stated.statements.length === 0 ? {} : { decided: { kind: stated.kind, from: relative12(rootDir, stated.file), statements: stated.statements } }
+    ...stated2 === void 0 || stated2.statements.length === 0 ? {} : { decided: { kind: stated2.kind, from: relative12(rootDir, stated2.file), statements: stated2.statements } }
   };
+  if (establish) return establishPattern(rootDir, found, reference, decided?.kind);
   if (!save) {
     console.log(JSON.stringify(digest, null, 2));
     return 0;
@@ -24256,6 +24440,30 @@ async function pattern(rootDir, args) {
   console.log(path);
   return 0;
 }
+async function establishPattern(rootDir, found, reference, decidedKind) {
+  const name = slug2(decidedKind ?? found.kind ?? "screens");
+  const path = join21(rootDir, KNOWLEDGE_DIR, "patterns", `${name}.md`);
+  const { dir: reading, legacy } = await knowledgeDir(rootDir, "patterns");
+  const existing = [path, join21(reading, `${name}.md`)];
+  if (legacy) console.error(`ui-consistency: ${MOVED}`);
+  for (const each of existing) {
+    if (await stat11(each).catch(() => null) === null) continue;
+    console.error(`${relative12(rootDir, each)} already exists, and was not overwritten.`);
+    console.error("Read it, and re-derive with `uic pattern <screen>` if it looks stale.");
+    return 1;
+  }
+  const rendered = renderPattern(found, {
+    name,
+    observed: (/* @__PURE__ */ new Date()).toISOString().slice(0, 10),
+    files: found.family.map((one) => relative12(rootDir, one)),
+    reference: relative12(rootDir, reference)
+  });
+  await mkdir2(dirname14(path), { recursive: true });
+  await writeFile7(path, rendered, "utf8");
+  console.log(relative12(rootDir, path));
+  return 0;
+}
+var slug2 = (kind) => kind.replace(/([a-z0-9])([A-Z])/g, "$1-$2").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase() || "screens";
 async function diff(rootDir, args) {
   const at = args.indexOf("--contract");
   const contractPath = at < 0 ? void 0 : args[at + 1];

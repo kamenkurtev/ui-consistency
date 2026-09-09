@@ -11,7 +11,11 @@ writes that down to build from. Afterwards it compares the screens that changed
 against the same thing.
 
 What it writes down is a **pattern file**: one Markdown file per pattern in
-`.ui-consistency/patterns/`, committed and reviewed. Prose with a structure
+`.ui-consistency/patterns/`, committed and reviewed. Where nothing has been
+written down about the kind, `uic pattern <screen> --establish` writes the
+measured half of one — marked `derived: true` and dated, with the parts no
+extraction can produce named as missing. Nobody is asked anything, and nothing
+about it is approval. Prose with a structure
 block, named slots, per-component props with the strength of each, and rules in
 sentences. `uic diff --contract <that file> <screens>` verifies a set against
 it and prints separately what it could not evaluate.
@@ -54,7 +58,10 @@ When the work is about screens, this is the order. **Do not wait to be asked.**
 
 1. `pattern` — BEFORE writing or changing a screen. A screen written first and
    corrected after is a screen somebody has to be persuaded to change, and a
-   correction declined teaches that the whole channel is skippable.
+   correction declined teaches that the whole channel is skippable. Where the
+   project has written nothing down about the kind, **establish it rather than
+   asking for it**: take the screen being changed or one beside it and write
+   the pattern down first.
 2. `decide` — where `pattern` finds fewer than three screens of the kind. It
    asks; it does not draft. The first screen of a kind is a decision, not a
    derivation.
@@ -89,6 +96,7 @@ demanding a pipeline.
 
 ```
 uic pattern <screen> [--save]      what screens of this kind look like here
+uic pattern <screen> --establish   write it down as a pattern file, derived and dated
 uic diff --contract <c> <files>    where the screens you touched left it (a pattern file or a saved contract)
 uic place <screen>                 route, trail, and where it is registered
 uic tree <screen> [--depth N]      what it renders, resolved through its children
