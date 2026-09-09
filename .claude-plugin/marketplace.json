@@ -10,7 +10,7 @@
       "name": "ui-consistency",
       "source": "./",
       "description": "Establishes what screens of a kind already look like in your project, and checks the ones you write against it",
-      "version": "0.14.88",
+      "version": "0.14.89",
       "author": {
         "name": "Kamen Kurtev"
       },

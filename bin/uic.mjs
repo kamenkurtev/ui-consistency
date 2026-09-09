@@ -23949,7 +23949,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join20 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.88";
+var VERSION = "0.14.89";
 
 // src/cli/session.ts
 function shapeFor(env, context) {

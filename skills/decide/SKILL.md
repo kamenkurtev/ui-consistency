@@ -110,8 +110,8 @@ Tell the user, plainly:
 
 ## What this must not do
 
-- **Not draft prose nobody asked for.** The setup command this project deleted
-  in #119 left a real repository with 285 lines of *"Use `<Alert>`. Say here
+- **Not draft prose nobody asked for.** A setup command this project once had
+  and deleted left a real repository with 285 lines of *"Use `<Alert>`. Say here
   when it applies and what it replaces."* — a skeleton for 700 components with
   no rule in it. Write the answers the user gave and nothing else.
 - **Not invent a kind.** The holder is a fact; a label is a guess.

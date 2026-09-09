@@ -45,7 +45,7 @@ what screens of a kind look like here and hands the agent any deviation on the
 edit it is making — no command, nothing saved, nothing approved. Run this when
 somebody wants to *look* at the contract, decide it before writing, or save one
 for a batch to work from. It is the deliberate form, not the way the knowledge
-comes into being (#231).
+comes into being.
 
 Ask the user for a reference screen — *"which page should this be built like?"* —
 and prefer their answer to anything derived. That one sentence is what they
@@ -57,7 +57,7 @@ is the only place a project *states* which screens are registered beside one
 another, and from the folders around the screen when nothing routes it. In that
 fallback a screen's own folder is not its family: a page and its grid, its
 dialog and its hooks are one screen, not four, so the search walks out to the
-pages beside it (#225).
+pages beside it.
 
 If the project has already decided — `.ui-consistency/decisions/<kind>.md`
 names the canonical screen — use that and say so:
@@ -129,8 +129,8 @@ that table registers; only the trail is unknown.
 
 Where the path *is* stated one table up — a routes array exported from one file
 and mounted under a path in another — it is composed from there and reported as
-the whole path (#263), ~~for a screen whose own registration states no path~~
-**for every entry in that table (#1)**: a mount under `orders` puts
+the whole path — ~~for a screen whose own registration states no path~~
+**for every entry in that table**: a mount under `orders` puts
 `{ path: 'detail/:id' }` at `/orders/detail/:id`, and answering `/detail/:id`
 would be the partial path this paragraph forbids. The parent and the array it
 mounts may be written in one file.
@@ -149,14 +149,14 @@ table or in the one that mounts it.
 
 **Three things this used to get wrong, so do not trust a remembered answer.** On a
 nested table it reported a *neighbouring* entry's route — 52 invented paths out
-of 117 screens on one real repository (#254). And it was silent for every screen
-in a monorepo (#224), whatever the project had written down: the search started at the repository root and
+of 117 screens on one real repository. And it was silent for every screen
+in a monorepo, whatever the project had written down: the search started at the repository root and
 stopped four directories down, and a route table in `libs/<area>/<pkg>/src/lib/`
 is five. It now walks outward from the screen itself on a read budget, prefers
 the nearest table when two name the screen, and reads Angular's
 `*-routing.module.ts`. And a screen whose table is mounted elsewhere reported
 `path: null` — 50 of those same 117 screens — because the two tables were never
-composed (#263). If you read this section before and concluded the project
+composed. If you read this section before and concluded the project
 registers its routes somewhere unreadable, or that it states no path for half
 its screens, that conclusion was about the tool.
 
@@ -173,10 +173,10 @@ When reading the contract back, do not read `vocabulary` alone.
   child. Read `regionsIn` before drawing any conclusion from a blank —
   `'holder'` means *this project does not express conventions the way this field
   expects*, and what carries them instead is `configuration` on the holder and
-  `body` (#228). An empty answer meaning **"your project is outside what I
+  `body`. An empty answer meaning **"your project is outside what I
   read"** must never be reported as if it meant **"nothing was found"**.
 
-- **`body`** — what the holder holds, in every dialect and not only JSX (#249):
+- **`body`** — what the holder holds, in every dialect and not only JSX:
   how many components, which one where they all hold the same, and the trailing
   word they share where they share one. *"Every screen of this kind renders
   exactly one `*Grid` inside its holder"* is a real convention and it needs no
@@ -187,11 +187,11 @@ When reading the contract back, do not read `vocabulary` alone.
   props is the commonest failure there is.
 
   It makes three claims, in increasing strength, and they are not the same
-  claim (#227):
+  claim:
 
   - `props` — **the same value.** `scrollable={false}` on every screen.
   - ~~`written` — **always written.** The prop is on every screen of the kind~~
-    — **widened to a majority, and the count is part of the claim (#257).**
+    — **widened to a majority, and the count is part of the claim.**
     Unanimity meant the more drift a family already had, the *less* was said
     about it: one screen omitting a prop silenced it for the whole kind, so the
     signal was weakest exactly where a consistency tool is needed most.
@@ -213,7 +213,7 @@ same component written three ways is not a convention, and reporting one would
 be inventing it.~~
 
 **"Usually" was wrong, and this reading has been applied to every empty contract
-so far (#225).** Until the fix, the family of a page in its own folder was that
+so far.** Until the fix, the family of a page in its own folder was that
 page's own parts, so an empty `configuration` most often meant *the family was
 never assembled* — a different thing, and the one that invites somebody to
 conclude their project has no conventions. There are now three readings and
@@ -392,7 +392,7 @@ them.
 paragraph: it walks the anatomy as questions, takes *"not applicable"* and
 *"undecided"* as real answers, and writes down only what the user actually said.
 This is the commonest answer on a real project, and it used to end the
-interaction (#233).
+interaction.
 
 ## What it will not tell you
 

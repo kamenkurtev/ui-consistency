@@ -46,7 +46,8 @@ tool has never heard of it — it read your dependency graph.
 
 > Every finding shown in this document is real output from a throwaway project,
 > pasted unedited. The previous version of this README printed a finding the code
-> cannot produce — for three days, until #143 — which is the reason for the rule.
+> cannot produce, and it stood for three days until somebody ran it — which is the
+> reason for the rule.
 
 ---
 
@@ -264,7 +265,7 @@ below.
 To say that, the check needed a built-in map from `<button>` to a component
 called `Button` — which is a vocabulary. On every project that names things
 differently it matched nothing and **said nothing**, and silence is
-indistinguishable from a clean result. So the built-in names went (#123).
+indistinguishable from a clean result. So the built-in names went.
 
 Raw elements are still checked. They are checked against the **contract**, where
 the answer is derived from your own screens rather than assumed:
@@ -330,8 +331,7 @@ what survives having no JavaScript semantics: hardcoded values in a literal
 substitutions — including custom element names, since `<app-action-grid>` is a
 component in every sense that matters here.~~
 
-**That list was the *deterministic* half, and it read as the whole of it
-(#251).** Those three still apply and are still the only checks that can *fail*
+**That list was the *deterministic* half, and it read as the whole of it.** Those three still apply and are still the only checks that can *fail*
 anything in a template. But the pattern half applies too: the holder, the family,
 what the holder holds, how the screens beside this one write the components they
 share, and the contract measured against all of it. It did not, and the reason
@@ -404,7 +404,7 @@ node $uic inventory src/orders/OrderList.tsx        # what this file's chain exp
 >
 > A directory and a path that is not there are refused the same way. Until
 > 0.14.28 all three checked nothing and exited 0, which made any CI line written
-> that way green forever (#144).
+> that way green forever.
 
 `shapes` answers a different question from the rest: *have you rebuilt something
 that already exists, and does this shape repeat often enough to be worth
@@ -431,9 +431,79 @@ ignore: @acme/scaffolding
 `canon:`, `prefer:` and `ignore:` are read; **a bare line, not a bullet.** The
 prose is for the people reading the file, and for the agent when it loads it.
 
+### Patterns, one file each
+
+The other thing worth keeping is what a *pattern* is — the shape a kind of screen
+has here, which is more than a decision and less than a spec. One Markdown file
+per pattern in `.ui-consistency/patterns/`, written by the agent from reading
+your code and reviewed by you in a pull request:
+
+~~~~markdown
+---
+pattern: list-screen
+surface: screen
+holder: PageShell
+observed: 2026-09-09
+---
+
+# List screen
+
+## Structure
+
+```
+PageShell                  9 of 9
+  FilterBar                9 of 9
+  <content>                exactly one
+```
+
+## Props
+
+### `PageShell`
+- `title` — 9 of 9
+- `data-testid` — 9 of 9
+
+### `*Grid`
+- `density` = "compact" — 5 of 6
+
+## Rules
+
+- Actions are always rendered; gating toggles `disabled` only, and never removes
+  an entry from the menu.
+
+## Where it is used
+
+`src/pages/OrdersPage.tsx`, `src/pages/InvoicesPage.tsx`,
+`src/pages/CustomersPage.tsx`, `src/pages/ReportsPage.tsx`, …and the rest
+~~~~
+
+Prose, because three of the things a pattern has to state cannot be data: an
+alternative a slot allows, a rule no checker can evaluate, and the reason one
+screen is allowed to differ. **Every statement carries its strength** — `9 of 9`,
+`5 of 6` — so a family that agrees about twelve things out of thirteen is
+described rather than described as disagreeing.
+
+`*Grid` is a slot: the role a family fills under a different name in every
+screen. `OrdersGrid`, `InvoicesGrid` and `CustomersGrid` are one thing your
+project agrees about, and counting by name never sees it.
+
+`uic diff --contract <that file> <screens>` verifies a finished set against it,
+exits 1 where something deviates, and **prints what it could not evaluate** — the
+prose rules, and any slot written for a person — because printing silence for
+those would let a screen pass against rules nobody checked.
+
+**List every member**, not a sample: that list is how a screen is matched to its
+pattern and how staleness is checked, so a truncated one quietly loses both.
+
+`uic patterns` lists what you have and says which files have changed since a
+pattern was read. Ask about one screen — `uic patterns src/pages/OrdersPage.tsx`
+— and *"no pattern covers it"* is a real answer: it means this is a shape nobody
+has written down yet.
+
 Every *fact* about the code is derived fresh every time, because a stored copy of
 what the code says can only be wrong — every staleness problem in this project
-came from such a copy.
+came from such a copy. That is why a pattern file states the date it was
+observed and the screens it was read from, and why the counts in it are checked
+against the code rather than trusted.
 
 But extraction cannot say which of two competing patterns you are moving
 *towards*, because the older one is always the more common. That has to be told
@@ -553,7 +623,7 @@ Findings that did not come back:
 
 ~~A finding that appears once and never again was acted on.~~
 
-**Withdrawn (#221), and the tool no longer says it either.** A finding appears
+**Withdrawn, and the tool no longer says it either.** A finding appears
 once and never again for two different reasons, and only one of them is good
 news: the file was checked again and the finding was gone, or the file was never
 checked again and nothing was learned. Measured over sixty files edited once
@@ -571,7 +641,7 @@ For imports that claim is made about the **source**, not the sentence: every
 import finding names its own symbol, so two files taking different things from
 the same wrong package never share a message, and this half used to be silent
 about them entirely — which on a project that has written nothing down is 93% of
-everything the tool produces (#223).
+everything the tool produces.
 
 Each finding is written once per edit, not once per save: the recurrence lives
 beside the log in `seen.jsonl`, so `3x` means three separate edits.

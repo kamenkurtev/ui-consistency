@@ -5,10 +5,16 @@ agent writes consistent with the ones a project already has.
 
 It does not grade finished code. It establishes what screens of a kind already
 look like **here** — the holder and the order of the roles, which component
-fills each role, the props those components are always written with, what the
+fills each role, the props most of them are written with and how many, what the
 layout already provides, and what belongs to the reference page alone — and
-writes that down as a contract to build from. Afterwards it compares the screens
-that changed against the same file.
+writes that down to build from. Afterwards it compares the screens that changed
+against the same thing.
+
+What it writes down is a **pattern file**: one Markdown file per pattern in
+`.ui-consistency/patterns/`, committed and reviewed. Prose with a structure
+block, named slots, per-component props with the strength of each, and rules in
+sentences. `uic diff --contract <that file> <screens>` verifies a set against
+it and prints separately what it could not evaluate.
 
 ## The rules
 
