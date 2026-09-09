@@ -1,5 +1,5 @@
 import { relative } from 'node:path';
-import { screenTree, type TreeNode } from './tree.js';
+import { flatLines, screenTree } from './tree.js';
 import { trailingWord } from './names.js';
 
 export interface Group {
@@ -65,7 +65,7 @@ export async function groupScreens(
       continue;
     }
     applied = tree.depth;
-    read.push({ file: relative(rootDir, file), lines: flatten(tree.root, 0) });
+    read.push({ file: relative(rootDir, file), lines: flatLines(tree.root) });
   }
 
   // How many *screens* render each name, which is the question. Counting
@@ -146,10 +146,3 @@ function abstract(
   return '<one>';
 }
 
-/** The tree as indented lines, which is both the signature and what is printed. */
-function flatten(node: TreeNode, indent: number): { indent: number; name: string }[] {
-  return [
-    { indent, name: node.name },
-    ...node.children.flatMap((child) => flatten(child, indent + 1)),
-  ];
-}
