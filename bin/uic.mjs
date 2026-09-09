@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { readFile as readFile27, realpath as realpath2, stat as stat10, writeFile as writeFile7 } from "node:fs/promises";
+import { readFile as readFile28, realpath as realpath2, stat as stat11, writeFile as writeFile7 } from "node:fs/promises";
 import { dirname as dirname14, relative as relative11, resolve as resolve8 } from "node:path";
 
 // src/layers/detect.ts
@@ -14607,9 +14607,9 @@ async function ownLayersAmong(rootDir, aliased) {
   return aliased.filter((pkg) => pkg.root !== sourceDir && !pkg.root.startsWith(`${sourceDir}${sep2}`));
 }
 async function declaredPackages(rootDir) {
-  const patterns = await workspacePatterns(rootDir);
-  if (patterns.length === 0) return [];
-  const dirs = (await Promise.all(patterns.map((p) => expandPattern(rootDir, p)))).flat();
+  const patterns2 = await workspacePatterns(rootDir);
+  if (patterns2.length === 0) return [];
+  const dirs = (await Promise.all(patterns2.map((p) => expandPattern(rootDir, p)))).flat();
   const found = await Promise.all(
     dirs.map(async (dir) => {
       const s = await stat2(dir).catch(() => null);
@@ -22042,7 +22042,7 @@ function neighbourSource() {
       const siblings = family.screens;
       if (siblings.length < QUORUM) return null;
       const seen = /* @__PURE__ */ new Map();
-      const patterns = [];
+      const patterns2 = [];
       const holders = /* @__PURE__ */ new Map();
       let read = 0;
       const seenPairs = /* @__PURE__ */ new Set();
@@ -22059,14 +22059,14 @@ function neighbourSource() {
         for (const component of new Set(shape.components)) {
           seen.set(component, (seen.get(component) ?? 0) + 1);
         }
-        if (shape.pattern.length > 0) patterns.push(shape.pattern);
+        if (shape.pattern.length > 0) patterns2.push(shape.pattern);
         if (shape.holder !== null) holders.set(shape.holder, (holders.get(shape.holder) ?? 0) + 1);
       }
       if (read < QUORUM) return null;
       const components = [...seen.entries()].filter(([, count]) => count / read >= MAJORITY).sort((a, b) => b[1] - a[1]).map(([name]) => name);
       if (components.length === 0) return null;
       const counted = /* @__PURE__ */ new Map();
-      for (const pattern3 of patterns) {
+      for (const pattern3 of patterns2) {
         const key = pattern3.join(">");
         counted.set(key, (counted.get(key) ?? 0) + 1);
       }
@@ -22807,6 +22807,116 @@ function flatten(node, indent) {
   ];
 }
 
+// src/knowledge/pattern-file.ts
+import { readdir as readdir9, readFile as readFile19, stat as stat8 } from "node:fs/promises";
+import { join as join14 } from "node:path";
+var MEMBERS = /^where it is used$|^used (?:by|in)$/i;
+var RULES = /^rules?$/i;
+var STRUCTURE = /^structure$/i;
+async function patternFiles(rootDir) {
+  const { dir, legacy } = await knowledgeDir(rootDir, "patterns");
+  const entries = await readdir9(dir).catch(() => null);
+  if (entries === null) return { patterns: [], legacy };
+  const patterns2 = [];
+  for (const entry of entries.filter((name) => name.endsWith(".md")).sort()) {
+    const raw = await readFile19(join14(dir, entry), "utf8").catch(() => null);
+    if (raw === null) continue;
+    patterns2.push(parsePattern(entry, raw));
+  }
+  return { patterns: patterns2, legacy };
+}
+function parsePattern(file, raw) {
+  const { front, body } = splitFrontmatter(raw);
+  const sections = /* @__PURE__ */ new Map();
+  let current = null;
+  let lines = [];
+  const keep = () => {
+    if (current !== null) sections.set(current, lines.join("\n").trim());
+  };
+  for (const line of body.split("\n")) {
+    const heading = /^##\s+(.+?)\s*$/.exec(line);
+    if (heading !== null) {
+      keep();
+      current = heading[1] ?? "";
+      lines = [];
+      continue;
+    }
+    lines.push(line);
+  }
+  keep();
+  const named = (test) => {
+    for (const [title, text] of sections) if (test.test(title)) return text;
+    return null;
+  };
+  return {
+    file,
+    name: front.get("pattern") ?? file.replace(/\.md$/, ""),
+    surface: front.get("surface") ?? null,
+    holder: front.get("holder") ?? null,
+    observed: front.get("observed") ?? null,
+    structure: parseStructure(named(STRUCTURE)),
+    members: parseMembers(named(MEMBERS)),
+    sections,
+    rules: (named(RULES) ?? "").split("\n").flatMap((line) => {
+      const bullet = /^\s*[-*]\s+(.*)$/.exec(line);
+      return bullet === null ? [] : [bullet[1].trim()];
+    }).filter((rule) => rule.length > 0)
+  };
+}
+function splitFrontmatter(raw) {
+  const front = /* @__PURE__ */ new Map();
+  const match = /^---\n([\s\S]*?)\n---\n?/.exec(raw);
+  if (match === null) return { front, body: raw };
+  for (const line of (match[1] ?? "").split("\n")) {
+    const pair = /^([\w-]+)\s*:\s*(.*)$/.exec(line);
+    if (pair !== null) front.set(pair[1], pair[2].trim());
+  }
+  return { front, body: raw.slice(match[0].length) };
+}
+function parseStructure(text) {
+  if (text === null) return [];
+  const fenced = /```[^\n]*\n([\s\S]*?)```/.exec(text);
+  const block = fenced?.[1] ?? text;
+  return block.split("\n").flatMap((line) => {
+    if (line.trim().length === 0) return [];
+    const indent = Math.floor((/^ */.exec(line)?.[0].length ?? 0) / 2);
+    const [name, ...rest] = line.trim().split(/\s{2,}/);
+    if (name === void 0 || name.length === 0) return [];
+    const strength = rest.join("  ").trim();
+    return [{ indent, name, strength: strength.length === 0 ? null : strength }];
+  });
+}
+function parseMembers(text) {
+  if (text === null) return [];
+  const found = /* @__PURE__ */ new Set();
+  for (const match of text.matchAll(/`([^`]+)`|(?:^|[\s,])([\w./-]+\.\w+)(?=[\s,.]|$)/gm)) {
+    const path = (match[1] ?? match[2] ?? "").trim();
+    if (path.includes(".") && !path.startsWith("#")) found.add(path);
+  }
+  return [...found];
+}
+function patternForScreen(patterns2, file, holder) {
+  const named = patterns2.filter((one) => one.members.includes(file));
+  if (named.length === 1) return named[0];
+  if (named.length > 1) return null;
+  if (holder === null) return null;
+  const byHolder = patterns2.filter((one) => one.holder === holder);
+  return byHolder.length === 1 ? byHolder[0] : null;
+}
+async function staleIn(rootDir, pattern2) {
+  if (pattern2.observed === null) return [];
+  const observed = Date.parse(pattern2.observed);
+  if (Number.isNaN(observed)) return [];
+  const until = observed + 24 * 60 * 60 * 1e3;
+  const moved = [];
+  for (const member of pattern2.members) {
+    const info = await stat8(join14(rootDir, member)).catch(() => null);
+    if (info === null) moved.push({ file: member, why: "gone" });
+    else if (info.mtimeMs > until) moved.push({ file: member, why: "changed" });
+  }
+  return moved;
+}
+
 // src/checks/contract.ts
 import { basename as basename7 } from "node:path";
 var SHAPE2 = {
@@ -22899,22 +23009,22 @@ function isContract(value) {
 }
 
 // src/cli/log.ts
-import { appendFile, readdir as readdir9, readFile as readFile19, rename, stat as stat8, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join14, relative as relative9 } from "node:path";
-var logPath = (rootDir) => join14(cacheRoot(), projectKey(rootDir), "findings.jsonl");
-var contractPathFor = (rootDir, kind) => join14(logPath(rootDir), "..", `contract-${kind.replace(/[^\w.-]+/g, "-")}.json`);
+import { appendFile, readdir as readdir10, readFile as readFile20, rename, stat as stat9, writeFile as writeFile4 } from "node:fs/promises";
+import { join as join15, relative as relative9 } from "node:path";
+var logPath = (rootDir) => join15(cacheRoot(), projectKey(rootDir), "findings.jsonl");
+var contractPathFor = (rootDir, kind) => join15(logPath(rootDir), "..", `contract-${kind.replace(/[^\w.-]+/g, "-")}.json`);
 var contractsFor = async (rootDir) => {
   const dir = await ownedDir(projectKey(rootDir));
   if (dir === null) return [];
-  const entries = await readdir9(dir).catch(() => null);
-  return (entries ?? []).filter((name) => /^contract-.*\.json$/.test(name)).sort().map((name) => join14(dir, name));
+  const entries = await readdir10(dir).catch(() => null);
+  return (entries ?? []).filter((name) => /^contract-.*\.json$/.test(name)).sort().map((name) => join15(dir, name));
 };
 var MAX_BYTES2 = 4e6;
-var statePath = (rootDir) => join14(logPath(rootDir), "..", "seen.jsonl");
+var statePath = (rootDir) => join15(logPath(rootDir), "..", "seen.jsonl");
 var MAX_STATE_BYTES = 512e3;
 var keyOf = (entry) => `${entry.file}|${entry.line}|${entry.level}|${entry.message}`;
 var readSeen = async (rootDir) => {
-  const raw = await readFile19(statePath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile20(statePath(rootDir), "utf8").catch(() => null);
   if (raw === null) return {};
   const folded = {};
   for (const line of raw.split("\n")) {
@@ -22943,16 +23053,16 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
     const path = logPath(rootDir);
     const dir = await ownedDir(projectKey(rootDir));
     if (dir === null) return;
-    await writeFile4(join14(dir, "repo.txt"), `${base}
+    await writeFile4(join15(dir, "repo.txt"), `${base}
 `, "utf8").catch(() => void 0);
-    const size = await stat8(path).then(
+    const size = await stat9(path).then(
       (info) => info.size,
       () => 0
     );
     if (size > MAX_BYTES2) await rename(path, `${path}.1`).catch(() => void 0);
     const seen = await readSeen(rootDir);
     const state = statePath(rootDir);
-    const stateSize = await stat8(state).then(
+    const stateSize = await stat9(state).then(
       (info) => info.size,
       () => 0
     );
@@ -22978,7 +23088,7 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
   }
 };
 var readLog = async (rootDir) => {
-  const raw = await readFile19(logPath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile20(logPath(rootDir), "utf8").catch(() => null);
   if (raw === null) return [];
   const entries = /* @__PURE__ */ new Map();
   for (const line of raw.split("\n")) {
@@ -23204,12 +23314,12 @@ function shapeReport(corpora) {
 }
 
 // src/sources/reference.ts
-import { readFile as readFile20 } from "node:fs/promises";
+import { readFile as readFile21 } from "node:fs/promises";
 function referenceSource(filePath) {
   return {
     kind: "reference",
     async describe() {
-      const source = await readFile20(filePath, "utf8").catch(() => null);
+      const source = await readFile21(filePath, "utf8").catch(() => null);
       if (source === null) return null;
       const shape = shapeOf(source);
       if (shape === null) return null;
@@ -23220,7 +23330,7 @@ function referenceSource(filePath) {
 }
 
 // src/sources/knowledge.ts
-import { readFile as readFile21 } from "node:fs/promises";
+import { readFile as readFile22 } from "node:fs/promises";
 var COMPONENT2 = /<([A-Z][\w]*)/g;
 var PROP = /<([A-Z][\w]*)\s+([^>]*)>/g;
 var ATTRIBUTE = /([a-zA-Z][\w]*)=['"]([^'"]+)['"]/g;
@@ -23229,7 +23339,7 @@ function knowledgeSource(knowledge) {
     kind: "knowledge",
     async describe(target) {
       if (knowledge.fragments.length === 0) return null;
-      const source = await readFile21(target, "utf8").catch(() => null);
+      const source = await readFile22(target, "utf8").catch(() => null);
       const fragments = source === null ? knowledge.fragments : retrieve(source, knowledge, { maxFragments: 8, maxChars: 8e3 });
       if (fragments.length === 0) return null;
       const components = [];
@@ -23256,16 +23366,16 @@ function knowledgeSource(knowledge) {
 }
 
 // src/sources/storybook.ts
-import { readdir as readdir10, readFile as readFile22 } from "node:fs/promises";
-import { join as join15 } from "node:path";
+import { readdir as readdir11, readFile as readFile23 } from "node:fs/promises";
+import { join as join16 } from "node:path";
 var STORIES = /\.stories\.[jt]sx?$/;
 async function storyFiles(dir, depth = 2) {
-  const entries = await readdir10(dir, { withFileTypes: true }).catch(() => null);
+  const entries = await readdir11(dir, { withFileTypes: true }).catch(() => null);
   if (entries === null) return [];
   const found = [];
   for (const entry of entries) {
     if (entry.name === "node_modules" || entry.name.startsWith(".")) continue;
-    const path = join15(dir, entry.name);
+    const path = join16(dir, entry.name);
     if (entry.isDirectory()) {
       if (depth > 0) found.push(...await storyFiles(path, depth - 1));
       continue;
@@ -23350,7 +23460,7 @@ function storybookSource(dir, options = {}) {
       const components = [];
       const props2 = {};
       for (const file of files) {
-        const source = await readFile22(file, "utf8").catch(() => null);
+        const source = await readFile23(file, "utf8").catch(() => null);
         if (source === null) continue;
         const component = componentOf(source);
         if (component === null) continue;
@@ -23388,11 +23498,11 @@ function statedConventions(model) {
 
 // src/cli/hook.ts
 import { dirname as dirname13, relative as relative10, resolve as resolve7 } from "node:path";
-import { readFile as readFile26 } from "node:fs/promises";
+import { readFile as readFile27 } from "node:fs/promises";
 
 // src/ai/settled.ts
-import { readFile as readFile23, writeFile as writeFile5 } from "node:fs/promises";
-import { join as join16 } from "node:path";
+import { readFile as readFile24, writeFile as writeFile5 } from "node:fs/promises";
+import { join as join17 } from "node:path";
 var WINDOW = 6e4;
 var settled = async (rootDir, filePath, options = {}) => {
   try {
@@ -23404,8 +23514,8 @@ var settled = async (rootDir, filePath, options = {}) => {
 var decide = async (rootDir, filePath, options) => {
   const now = options.now ?? (() => Date.now());
   const window = options.windowMs ?? WINDOW;
-  const file = join16(cacheRoot(), projectKey(rootDir), "advised.json");
-  const raw = await readFile23(file, "utf8").catch(() => null);
+  const file = join17(cacheRoot(), projectKey(rootDir), "advised.json");
+  const raw = await readFile24(file, "utf8").catch(() => null);
   let seen = {};
   if (raw !== null) {
     try {
@@ -23426,11 +23536,11 @@ var decide = async (rootDir, filePath, options) => {
 };
 
 // src/sources/pattern-cache.ts
-import { readFile as readFile24, stat as stat9, writeFile as writeFile6 } from "node:fs/promises";
-import { dirname as dirname12, join as join17 } from "node:path";
+import { readFile as readFile25, stat as stat10, writeFile as writeFile6 } from "node:fs/promises";
+import { dirname as dirname12, join as join18 } from "node:path";
 var CACHE_VERSION3 = 2;
-var fileIn3 = (dir) => join17(dir, "patterns.json");
-var mtimeOf3 = (path) => stat9(path).then(
+var fileIn3 = (dir) => join18(dir, "patterns.json");
+var mtimeOf3 = (path) => stat10(path).then(
   (info) => info.mtimeMs,
   () => null
 );
@@ -23438,7 +23548,7 @@ async function cachedPattern(rootDir, target, kind) {
   const dir = await cacheDirFor(rootDir);
   const key = `${kind}|${dirname12(target)}`;
   if (dir !== null) {
-    const raw2 = await readFile24(fileIn3(dir), "utf8").catch(() => null);
+    const raw2 = await readFile25(fileIn3(dir), "utf8").catch(() => null);
     if (raw2 !== null) {
       try {
         const parsed = JSON.parse(raw2);
@@ -23460,7 +23570,7 @@ async function cachedPattern(rootDir, target, kind) {
     const when = await mtimeOf3(path);
     if (when !== null) from[path] = when;
   }
-  const raw = await readFile24(fileIn3(dir), "utf8").catch(() => null);
+  const raw = await readFile25(fileIn3(dir), "utf8").catch(() => null);
   let existing = { version: CACHE_VERSION3, kinds: {} };
   if (raw !== null) {
     try {
@@ -23475,7 +23585,7 @@ async function cachedPattern(rootDir, target, kind) {
 }
 
 // src/cli/touched.ts
-import { readFile as readFile25 } from "node:fs/promises";
+import { readFile as readFile26 } from "node:fs/promises";
 function rangesOf(source, text) {
   if (text === "") return [];
   const found = [];
@@ -23500,7 +23610,7 @@ async function touchedBy(toolName, input, filePath) {
     }
   }
   if (written.length === 0) return null;
-  const source = await readFile25(filePath, "utf8").catch(() => null);
+  const source = await readFile26(filePath, "utf8").catch(() => null);
   if (source === null) return null;
   const ranges = written.flatMap((text) => rangesOf(source, text));
   return ranges.length === 0 ? null : ranges;
@@ -23589,11 +23699,11 @@ function provenance(root, contract) {
 }
 async function deviationsFromContract(root, file) {
   const nothing = { said: [], derived: null };
-  const source = await readFile26(file, "utf8").catch(() => null);
+  const source = await readFile27(file, "utf8").catch(() => null);
   if (source === null) return nothing;
   const approved = [];
   for (const path of await contractsFor(root)) {
-    const raw = await readFile26(path, "utf8").catch(() => null);
+    const raw = await readFile27(path, "utf8").catch(() => null);
     if (raw === null) continue;
     let parsed;
     try {
@@ -23618,11 +23728,11 @@ async function deviationsFromContract(root, file) {
 }
 
 // src/cli/session.ts
-import { readdir as readdir11, open } from "node:fs/promises";
-import { join as join18 } from "node:path";
+import { readdir as readdir12, open } from "node:fs/promises";
+import { join as join19 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.83";
+var VERSION = "0.14.84";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -23649,7 +23759,7 @@ async function firstBytes(path) {
 }
 async function sessionContext(rootDir) {
   const { dir, legacy } = await knowledgeDir(rootDir);
-  const entries = await readdir11(dir).catch(() => null);
+  const entries = await readdir12(dir).catch(() => null);
   const files = (entries ?? []).filter((name) => /\.md$/i.test(name)).sort();
   if (files.length === 0) {
     return [
@@ -23661,7 +23771,7 @@ async function sessionContext(rootDir) {
   }
   const versions = /* @__PURE__ */ new Set();
   for (const name of files.slice(0, MAX_FILES)) {
-    const head = await firstBytes(join18(dir, name));
+    const head = await firstBytes(join19(dir, name));
     if (head === null) continue;
     const version = generatedVersion(head);
     if (version !== null && version !== VERSION) versions.add(version);
@@ -23715,7 +23825,7 @@ async function checkProject(rootDir, files, options = {}) {
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
     if (chain.length === 0) continue;
-    const source = await readFile27(file, "utf8").catch(() => null);
+    const source = await readFile28(file, "utf8").catch(() => null);
     if (source === null) continue;
     violations.push(...checkSource(file, source, chain, await inventoryFor(chain)));
   }
@@ -23738,7 +23848,7 @@ async function analyzeProject(rootDir, files, options = {}) {
   const findings = [];
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
-    const source = await readFile27(file, "utf8").catch(() => null);
+    const source = await readFile28(file, "utf8").catch(() => null);
     if (source === null) continue;
     const model = await sourceFor(dirname14(file), file);
     const result = await runEngine(file, source, {
@@ -23755,7 +23865,7 @@ async function analyzeProject(rootDir, files, options = {}) {
 }
 async function adviseProject(rootDir, file) {
   const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-  const source = await readFile27(file, "utf8").catch(() => null);
+  const source = await readFile28(file, "utf8").catch(() => null);
   if (source === null) return null;
   const neighbours = await neighbourSource().describe(file).catch(() => null);
   const usage = await observeUsage(file).catch(() => null);
@@ -23864,7 +23974,7 @@ async function diff(rootDir, args) {
     console.error("Usage: uic diff --contract <contract.json> <file...>");
     return 1;
   }
-  const raw = await readFile27(resolve8(rootDir, contractPath), "utf8").catch(() => null);
+  const raw = await readFile28(resolve8(rootDir, contractPath), "utf8").catch(() => null);
   if (raw === null) {
     console.error(`Cannot read the contract: ${contractPath}`);
     return 1;
@@ -23885,7 +23995,7 @@ async function diff(rootDir, args) {
   let unread = 0;
   for (const file of files) {
     const absolute = resolve8(rootDir, file);
-    const source = await readFile27(absolute, "utf8").catch(() => null);
+    const source = await readFile28(absolute, "utf8").catch(() => null);
     if (source === null) {
       unread++;
       continue;
@@ -24025,6 +24135,57 @@ function depthIn(args) {
   const depth = Number.parseInt(args[at]?.split("=")[1] ?? args[at + 1] ?? "", 10);
   return Number.isNaN(depth) ? void 0 : depth;
 }
+async function patterns(rootDir, args) {
+  const { patterns: found, legacy } = await patternFiles(rootDir);
+  if (legacy) console.error(MOVED);
+  const target = pathsIn2(args)[0];
+  if (target !== void 0) return coveringOne(rootDir, found, target);
+  if (found.length === 0) {
+    console.log(`No pattern files in ${KNOWLEDGE_DIR}/patterns.`);
+    console.log("That is a project that has written nothing down, not a project with no patterns.");
+    return 0;
+  }
+  console.log(`${found.length} ${found.length === 1 ? "pattern" : "patterns"} in ${KNOWLEDGE_DIR}/patterns
+`);
+  for (const one of found) {
+    const members = one.members.length;
+    console.log(
+      `${one.name}  ${one.surface ?? "\u2014"}  ${one.holder ?? "\u2014"}  ${members} ${members === 1 ? "file" : "files"}${one.observed === null ? "" : `  observed ${one.observed}`}`
+    );
+    for (const line of staleness(await staleIn(rootDir, one))) console.log(`  ${line}`);
+  }
+  return 0;
+}
+async function coveringOne(rootDir, found, target) {
+  const absolute = resolve8(rootDir, target);
+  const where = relative11(rootDir, absolute);
+  const pair = await pairOf(absolute);
+  const identity = pair?.identity ?? absolute;
+  const own = await readFile28(identity, "utf8").catch(() => null);
+  const markup = own === null ? null : pair === null ? { path: absolute, source: own } : await markupOf(identity, own);
+  const holder = markup === null ? null : regionsOf(markup.source, templateKind(markup.path) ?? void 0)?.holder ?? null;
+  const covering = patternForScreen(found, where, holder);
+  if (covering === null) {
+    console.log(`${where} \u2014 no pattern covers it.`);
+    console.log(
+      holder === null ? "  Nothing readable holds it, so there is nothing to match a pattern on." : `  It sits in <${holder}>, and no pattern file names that holder or names this file.`
+    );
+    return 0;
+  }
+  console.log(`${where} \u2014 ${covering.name} (${KNOWLEDGE_DIR}/patterns/${covering.file})`);
+  console.log(
+    covering.members.includes(where) ? "  named by the pattern itself" : `  sits in <${holder}>, which is the pattern's holder`
+  );
+  for (const line of staleness(await staleIn(rootDir, covering))) console.log(`  ${line}`);
+  return 0;
+}
+function staleness(stale) {
+  const say = (why, text) => {
+    const files = stale.filter((one) => one.why === why).map((one) => one.file);
+    return files.length === 0 ? [] : [`${text}: ${files.join(", ")}`];
+  };
+  return [...say("changed", "changed since it was read"), ...say("gone", "no longer there")];
+}
 async function place2(rootDir, args) {
   const file = args.find((arg) => !arg.startsWith("-"));
   if (file === void 0) {
@@ -24120,7 +24281,7 @@ async function givenFiles(rootDir, files) {
   const problems = [];
   for (const file of files) {
     const path = resolve8(rootDir, file);
-    const found = await stat10(path).catch(() => null);
+    const found = await stat11(path).catch(() => null);
     if (found === null) {
       problems.push(
         GLOB.test(file) ? `${file} matched no file. Globs are expanded by your shell, so a quoted pattern arrives here literally.` : `${file} does not exist.`
@@ -24234,7 +24395,7 @@ async function auditShapes(rootDir, args) {
   const app = [];
   for (const file of files) {
     const absolute = resolve8(rootDir, file);
-    const source = await readFile27(absolute, "utf8").catch(() => null);
+    const source = await readFile28(absolute, "utf8").catch(() => null);
     if (source === null) continue;
     const owner = packages.find((pkg) => contains(pkg.root, absolute));
     const shared2 = owner !== void 0 && dependedOn.has(owner.name);
@@ -24360,6 +24521,8 @@ async function main(argv) {
       return props(rootDir, rest);
     case "group":
       return group(rootDir, rest);
+    case "patterns":
+      return patterns(rootDir, rest);
     case "scan":
       return scan(rootDir);
     case "check":
@@ -24377,7 +24540,7 @@ async function main(argv) {
     case "session":
       return session();
     default:
-      console.error("Usage: uic <pattern|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>");
+      console.error("Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>");
       return 1;
   }
 }
