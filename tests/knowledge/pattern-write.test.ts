@@ -33,6 +33,7 @@ const DERIVED: ScreenPattern = {
       agreedBy: 6,
     },
   ],
+  propsUnmeasured: null,
   particulars: { roles: ['footer'], components: ['ExportBar'] },
   wiring: ['useOrders'],
   chrome: null,
@@ -217,6 +218,45 @@ describe('a derived pattern, written down', () => {
 
     expect(back.structure[0]?.name).toBe(long);
     expect(back.structure[0]?.strength).toBe('majority of 2');
+  });
+
+  /**
+   * The smallest family that answers at all is three, and the props level is
+   * counted over the two beside the reference — below the three it takes to
+   * tell a convention from a copy. An absent `## Props` there is
+   * indistinguishable from a family that writes no props, and it is the one
+   * section with a grammar.
+   */
+  it('says the props level was not measured, rather than omitting it', () => {
+    const rendered = renderPattern(
+      { ...DERIVED, configuration: [], propsUnmeasured: { siblings: 2, needed: 3 } },
+      OPTIONS,
+    );
+
+    expect(rendered).toContain('## Props');
+    expect(rendered).toContain('**Not measured.**');
+    // The numbers, so a reader can see what would answer it.
+    expect(rendered).toContain('leaves 2 here, and 3 are needed');
+    expect(rendered).toContain('One more screen of this kind');
+    // And never as a claim that the family agrees on nothing.
+    expect(rendered).not.toContain('writes no props;\n');
+  });
+
+  it('states no class attribute where none of the family was seen to write one', () => {
+    // `class` on a React project is a guess, and in JSX a wrong one. Not
+    // observed and observed-to-be-`class` must not be spelled the same.
+    const rendered = renderPattern(
+      {
+        ...DERIVED,
+        configuration: [
+          { ...DERIVED.configuration[0]!, classes: ['x'], classAttribute: null },
+        ],
+      },
+      OPTIONS,
+    );
+
+    expect(rendered).not.toContain('`class`');
+    expect(rendered).not.toContain('null');
   });
 
   it('says a markup-built project has no component to name, rather than saying nothing', () => {

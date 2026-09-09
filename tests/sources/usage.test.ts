@@ -392,6 +392,33 @@ export const P = () => (
     await rm(join(html, '..'), { recursive: true, force: true });
   });
 
+  /**
+   * Not observed and observed-to-be-`class` are two different facts. The
+   * fallback was safe inside this file, where nothing reads the spelling
+   * without classes to spell — and not at the boundary, where it reaches
+   * `uic pattern`'s JSON and a person reads `class` on a React project stated
+   * with the same confidence as a counted number (#42).
+   */
+  it('states no class attribute where none of the family was seen to write one', async () => {
+    const bare = `
+export const Page = () => (
+  <PageLayout>
+    <DataGrid scrollable density="compact" />
+  </PageLayout>
+);
+`;
+    const dir = await screens({ 'A.tsx': bare, 'B.tsx': bare, 'C.tsx': bare });
+
+    const usage = await observeUsage(join(dir, 'New.tsx'));
+
+    const grid = usage!.find((one) => one.component === 'DataGrid');
+    expect(grid).toBeDefined();
+    expect(grid?.classes).toEqual([]);
+    expect(grid?.classAttribute).toBeNull();
+
+    await rm(join(dir, '..'), { recursive: true, force: true });
+  });
+
   it('ignores a value it cannot read rather than guessing at it', async () => {
     const dynamic = 'export const P = () => <DataGrid rows={rows} scrollable />;';
     const dir = await screens({ 'A.tsx': dynamic, 'B.tsx': dynamic, 'C.tsx': dynamic });

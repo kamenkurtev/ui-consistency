@@ -46,6 +46,20 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
     out.push('## Structure', '', '```', ...structure, '```', '');
   }
 
+  // Said, never omitted. An absent `## Props` is indistinguishable from a kind
+  // of screen whose family agrees on no props, and this is the one section with
+  // a grammar — the level the mistakes actually live at. Approving a silence as
+  // a clean result is the failure the whole tool is organised against (#41).
+  if (pattern.propsUnmeasured !== null) {
+    const { siblings, needed } = pattern.propsUnmeasured;
+    out.push(
+      '## Props',
+      '',
+      `**Not measured.** The props of a family are counted over the screens *beside* the reference, which leaves ${siblings} here, and ${needed} are needed — below that a pair is a copy rather than an agreement. This is not a family that writes no props; it is a family too small to tell the two apart. One more screen of this kind, and this section answers.`,
+      '',
+    );
+  }
+
   const props = propsBlock(pattern);
   if (props.length > 0) {
     out.push(
@@ -209,7 +223,10 @@ function propsBlock(pattern: ScreenPattern): string[] {
       // in front of the count is how a measured number becomes a sentence.
       if (written.shape !== null) shapes.push(`\`${safe(written.name)}\` ${article(written.shape)}`);
     }
-    if (usage.classes.length > 0) {
+    // Both, and not just the tokens: a class attribute nobody was observed to
+    // write has no spelling to state, and inventing one hands the reader a
+    // dialect this project does not use (#42).
+    if (usage.classes.length > 0 && usage.classAttribute !== null) {
       bullets.push(
         `- \`${safe(usage.classAttribute)}\` = "${safe(usage.classes.join(' '))}" — ${usage.agreedBy} of ${usage.seenIn}`,
       );

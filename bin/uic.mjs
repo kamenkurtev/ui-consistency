@@ -21375,7 +21375,7 @@ ${input.markup.source}`;
         // `className` in JSX, `class` in a template, as the siblings wrote it.
         // Hard-coding `class` handed every React project an observation in a
         // dialect nobody there uses — and invalid JSX to copy.
-        ...one.classes.length > 0 ? [`${one.classAttribute}="${quoted(one.classes.join(" "))}"`] : []
+        ...one.classes.length > 0 && one.classAttribute !== null ? [`${one.classAttribute}="${quoted(one.classes.join(" "))}"`] : []
       ].join(" ");
       const support = one.agreedBy === one.seenIn ? `on ${one.seenIn} of the screens beside it` : `used on ${one.seenIn} of the screens beside it, written this way on ${one.agreedBy}`;
       const opening = written === "" ? one.component : `${one.component} ${written}`;
@@ -22293,7 +22293,7 @@ var observeUsage = async (target, options = {}) => {
     }
     const classes = [...counted2.entries()].filter(([, count]) => count / uses.length >= MAJORITY && count >= MIN_FILES).sort((a, b) => b[1] - a[1]).slice(0, MAX_CLASSES);
     for (const [, count] of classes) agreedBy = Math.min(agreedBy, count);
-    const classAttribute = uses.find((use) => use.classAttribute !== null)?.classAttribute ?? "class";
+    const classAttribute = uses.find((use) => use.classAttribute !== null)?.classAttribute ?? null;
     const written = always.sort((a, b) => b.writtenBy - a.writtenBy || a.name.localeCompare(b.name)).slice(0, MAX_PROPS);
     if (props2.length === 0 && classes.length === 0 && written.length === 0) continue;
     usages.push({
@@ -22714,6 +22714,7 @@ async function patternOf2(target) {
     regionsIn: skeleton === null ? null : skeleton.regions.length > 0 ? "components" : holderIsWritten ? "holder" : null,
     body,
     configuration: observed ?? [],
+    propsUnmeasured: observed === null ? { siblings: others.length, needed: QUORUM } : null,
     particulars: {
       roles: [...new Set(rolesOf(reference))].filter((role) => !elsewhereRoles.has(role)),
       components: reference.components.filter((name) => !elsewhereComponents.has(name))
@@ -23248,6 +23249,15 @@ function renderPattern(pattern2, options) {
   if (structure.length > 0) {
     out.push("## Structure", "", "```", ...structure, "```", "");
   }
+  if (pattern2.propsUnmeasured !== null) {
+    const { siblings, needed } = pattern2.propsUnmeasured;
+    out.push(
+      "## Props",
+      "",
+      `**Not measured.** The props of a family are counted over the screens *beside* the reference, which leaves ${siblings} here, and ${needed} are needed \u2014 below that a pair is a copy rather than an agreement. This is not a family that writes no props; it is a family too small to tell the two apart. One more screen of this kind, and this section answers.`,
+      ""
+    );
+  }
   const props2 = propsBlock(pattern2);
   if (props2.length > 0) {
     out.push(
@@ -23339,7 +23349,7 @@ function propsBlock(pattern2) {
       bullets.push(`- \`${safe(written.name)}\` \u2014 ${written.writtenBy} of ${usage.seenIn}`);
       if (written.shape !== null) shapes.push(`\`${safe(written.name)}\` ${article(written.shape)}`);
     }
-    if (usage.classes.length > 0) {
+    if (usage.classes.length > 0 && usage.classAttribute !== null) {
       bullets.push(
         `- \`${safe(usage.classAttribute)}\` = "${safe(usage.classes.join(" "))}" \u2014 ${usage.agreedBy} of ${usage.seenIn}`
       );
@@ -24116,7 +24126,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join20 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.92";
+var VERSION = "0.14.93";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
