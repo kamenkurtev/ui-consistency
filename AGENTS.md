@@ -66,8 +66,10 @@ When the work is about screens, this is the order. **Do not wait to be asked.**
    blind here. Those look identical and are not.
 
 Nothing is spent until UI work starts. Under Claude Code the same text arrives
-from the session hook; here it arrives from this file, which is the whole
-difference between the harnesses.
+from the session hook, and a prompt about screens also gets the list of patterns
+the project has written down before anything is written; here both arrive from
+this file and from `uic patterns`, which is the whole difference between the
+harnesses.
 
 Each is invocable on its own and none requires another to have run — so an
 agent definition can order them by name (`ui-consistency:pattern`, and so on)

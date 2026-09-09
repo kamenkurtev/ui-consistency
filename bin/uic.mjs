@@ -23949,7 +23949,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join20 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.90";
+var VERSION = "0.14.91";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24032,6 +24032,65 @@ async function sessionResponse(stdin) {
   const context = await sessionContext(cwd).catch(() => null);
   if (context === null) return null;
   return shapeFor(process.env, context);
+}
+
+// src/cli/prompt.ts
+var ABOUT_SCREENS = /\b(screens?|pages?|dialogs?|modals?|drawers?|panels?|widgets?|forms?|grids?|tables?|layouts?|components?|views?|ui)\b/i;
+async function promptContext(rootDir, text) {
+  if (!ABOUT_SCREENS.test(text)) return null;
+  const { patterns: patterns2 } = await patternFiles(rootDir).catch(() => ({ patterns: [] }));
+  if (patterns2.length === 0) {
+    return [
+      `ui-consistency: this project has written no patterns down (${KNOWLEDGE_DIR}/patterns/).`,
+      "",
+      "Before writing or changing a screen, establish what screens of that kind",
+      "already look like here \u2014 ui-consistency:pattern reads them and writes it",
+      "down. Doing it afterwards means arguing with code that already works."
+    ].join("\n");
+  }
+  const said = [`ui-consistency: what this project has written down, before you write.`, ""];
+  for (const one of patterns2.slice(0, MAX_PATTERNS)) {
+    said.push(`  ${describe2(one)}${await freshness(rootDir, one)}`);
+  }
+  if (patterns2.length > MAX_PATTERNS) {
+    said.push(`  \u2026 and ${patterns2.length - MAX_PATTERNS} more in ${KNOWLEDGE_DIR}/patterns/`);
+  }
+  said.push(
+    "",
+    "Read the one for the kind you are about to touch before writing anything.",
+    "Where none covers it, ui-consistency:pattern establishes it first."
+  );
+  return said.join("\n");
+}
+var MAX_PATTERNS = 12;
+var describe2 = (one) => [one.name, one.surface ?? "\u2014", one.holder ?? "\u2014", `${one.members.length} files`].join("  ");
+async function freshness(rootDir, one) {
+  const stale = await staleIn(rootDir, one).catch(() => []);
+  if (stale.length === 0) return "";
+  const gone = stale.filter((each) => each.why === "gone").length;
+  const changed = stale.length - gone;
+  const parts = [
+    ...changed > 0 ? [`${changed} changed`] : [],
+    ...gone > 0 ? [`${gone} gone`] : []
+  ];
+  return `  (${parts.join(", ")} since it was read \u2014 re-derive before trusting it)`;
+}
+async function promptResponse(stdin) {
+  let cwd = process.cwd();
+  let text = "";
+  try {
+    const parsed = JSON.parse(stdin);
+    const payload = parsed;
+    if (typeof payload?.cwd === "string" && payload.cwd !== "") cwd = payload.cwd;
+    for (const key of ["prompt", "user_input"]) {
+      const value = payload?.[key];
+      if (typeof value === "string" && value !== "") text = value;
+    }
+  } catch {
+    return null;
+  }
+  if (text === "") return null;
+  return promptContext(cwd, text).catch(() => null);
 }
 
 // src/cli/index.ts
@@ -24641,17 +24700,23 @@ async function inventory(rootDir, args) {
   return 0;
 }
 async function hook() {
-  const chunks = [];
-  for await (const chunk of process.stdin) chunks.push(chunk);
-  const response = await hookResponse(Buffer.concat(chunks).toString("utf8")).catch(() => null);
+  const response = await hookResponse(await readStdin()).catch(() => null);
   if (response !== null) console.log(JSON.stringify(response));
   return 0;
 }
-async function session() {
+async function readStdin() {
   const chunks = [];
   for await (const chunk of process.stdin) chunks.push(chunk);
-  const response = await sessionResponse(Buffer.concat(chunks).toString("utf8")).catch(() => null);
+  return Buffer.concat(chunks).toString("utf8");
+}
+async function session() {
+  const response = await sessionResponse(await readStdin()).catch(() => null);
   if (response !== null) console.log(JSON.stringify(response));
+  return 0;
+}
+async function prompt() {
+  const said = await promptResponse(await readStdin()).catch(() => null);
+  if (said !== null) console.log(said);
   return 0;
 }
 async function auditShapes(rootDir, args) {
@@ -24817,6 +24882,8 @@ async function main(argv) {
       return hook();
     case "session":
       return session();
+    case "prompt":
+      return prompt();
     default:
       console.error("Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>");
       return 1;
