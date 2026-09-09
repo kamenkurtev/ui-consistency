@@ -380,6 +380,8 @@ node $uic pattern src/orders/OrderList.tsx --save   # what screens of this kind 
 node $uic diff --contract <c> src/orders/*.tsx      # where the screens you touched left it
 node $uic place src/orders/OrderList.tsx            # folder, route, and the breadcrumb trail
 node $uic tree src/orders/OrderList.tsx             # what it renders, followed into its children
+node $uic props OrdersGrid $(git ls-files 'src/orders/*.tsx')  # which props each file writes on it
+node $uic group $(git ls-files 'src/**/*Page.tsx')  # the screens grouped by what they are made of
 node $uic check $(git ls-files '*.tsx')             # exits 1 if anything is wrong — your CI gate
 node $uic scan                                      # the packages detected, how, and what each exports
 node $uic shapes $(git ls-files '*.tsx')            # shapes rebuilt or repeated

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { readFile as readFile26, realpath as realpath2, stat as stat10, writeFile as writeFile7 } from "node:fs/promises";
-import { dirname as dirname14, relative as relative9, resolve as resolve8 } from "node:path";
+import { readFile as readFile27, realpath as realpath2, stat as stat10, writeFile as writeFile7 } from "node:fs/promises";
+import { dirname as dirname14, relative as relative11, resolve as resolve8 } from "node:path";
 
 // src/layers/detect.ts
 import { readFile as readFile2, readdir as readdir2, stat as stat2 } from "node:fs/promises";
@@ -11618,11 +11618,11 @@ var typescript = (superClass) => class TypeScriptParserMixin extends superClass 
     this.expect(7);
     return this.finishNode(node, "TSParenthesizedType");
   }
-  tsParseFunctionOrConstructorType(type, abstract) {
+  tsParseFunctionOrConstructorType(type, abstract2) {
     const node = this.startNode();
     if (type === "TSConstructorType") {
-      node.abstract = !!abstract;
-      if (abstract) this.next();
+      node.abstract = !!abstract2;
+      if (abstract2) this.next();
       this.next();
     }
     this.tsInAllowConditionalTypesContext(() => this.tsFillSignature(15, node));
@@ -20941,7 +20941,7 @@ function shapeOf(source, kind) {
   const ast = parseModule(source);
   if (ast === null) return null;
   const components = [];
-  const props = {};
+  const props2 = {};
   const outermost = screenRoot(ast.program);
   walk(ast.program, (node) => {
     if (node.type !== "JSXElement") return;
@@ -20952,7 +20952,7 @@ function shapeOf(source, kind) {
       if (attribute.type !== "JSXAttribute") continue;
       if (attribute.name.type !== "JSXIdentifier") continue;
       if (attribute.value?.type !== "StringLiteral") continue;
-      const forComponent = props[name] ??= {};
+      const forComponent = props2[name] ??= {};
       const values = forComponent[attribute.name.name] ??= [];
       if (!values.includes(attribute.value.value)) values.push(attribute.value.value);
     }
@@ -20961,7 +20961,7 @@ function shapeOf(source, kind) {
   return {
     components,
     pattern: outermost === null ? [] : patternOf(outermost),
-    props,
+    props: props2,
     holder: outermost === null ? null : jsxNameOf(outermost),
     body: outermost === null ? [] : outermost.children.flatMap(
       (child) => child.type === "JSXElement" ? [nameOf(child)].filter(
@@ -22129,7 +22129,7 @@ var usageNameOf = (element) => {
   return null;
 };
 var tokens = (value) => new Set(value.split(/\s+/).filter((token) => token !== ""));
-var fromJsx2 = (source) => {
+var fromJsx2 = (source, all) => {
   const ast = parseModule(source);
   if (ast === null) return [];
   const written = [];
@@ -22152,14 +22152,14 @@ var fromJsx2 = (source) => {
         classAttribute ??= key;
         continue;
       }
-      if (NOISE.test(key)) continue;
+      if (!all && NOISE.test(key)) continue;
       attributes.set(key, value);
     }
     written.push({ component: name, attributes, classes, classAttribute });
   });
   return written;
 };
-var fromTemplate2 = (source, path) => {
+var fromTemplate2 = (source, path, all) => {
   const kind = templateKind(path);
   if (kind === null) return [];
   const written = [];
@@ -22175,7 +22175,7 @@ var fromTemplate2 = (source, path) => {
         classAttribute ??= key;
         continue;
       }
-      if (BINDING.test(key) || NOISE.test(key)) continue;
+      if (BINDING.test(key) || !all && NOISE.test(key)) continue;
       if (EXPRESSION.test(value)) continue;
       attributes.set(
         key,
@@ -22208,7 +22208,7 @@ var perFile = (written) => {
   }
   return byComponent;
 };
-var writtenIn = (path, source) => templateKind(path) === null ? fromJsx2(source) : fromTemplate2(source, path);
+var writtenIn = (path, source, options = {}) => templateKind(path) === null ? fromJsx2(source, options.all ?? false) : fromTemplate2(source, path, options.all ?? false);
 var observeUsage = async (target, options = {}) => {
   const read = options.readSource ?? ((path) => readFile14(path, "utf8").catch(() => null));
   const root = options.readDir === void 0 ? await findProjectRoot(dirname8(target)) : null;
@@ -22256,13 +22256,13 @@ var observeUsage = async (target, options = {}) => {
       }
     }
     let agreedBy = uses.length;
-    const agreed = [];
+    const agreed2 = [];
     const always = [];
     for (const [name, entry] of values) {
       const writtenBy = uses.filter((use) => use.attributes.has(name)).length;
       if (entry.seen.size === 1 && entry.unknown === 0) {
         if (writtenBy < MIN_FILES || writtenBy / uses.length < MAJORITY) continue;
-        agreed.push({ name, value: [...entry.seen][0], bare: entry.bare, writtenBy });
+        agreed2.push({ name, value: [...entry.seen][0], bare: entry.bare, writtenBy });
         continue;
       }
       if (writtenBy < MIN_FILES || writtenBy / uses.length < MAJORITY) continue;
@@ -22274,8 +22274,8 @@ var observeUsage = async (target, options = {}) => {
         writtenBy
       });
     }
-    const props = agreed.sort((a, b) => b.writtenBy - a.writtenBy).slice(0, MAX_PROPS);
-    for (const prop of props) agreedBy = Math.min(agreedBy, prop.writtenBy);
+    const props2 = agreed2.sort((a, b) => b.writtenBy - a.writtenBy).slice(0, MAX_PROPS);
+    for (const prop of props2) agreedBy = Math.min(agreedBy, prop.writtenBy);
     const counted = /* @__PURE__ */ new Map();
     for (const use of uses) {
       for (const token of use.classes ?? []) counted.set(token, (counted.get(token) ?? 0) + 1);
@@ -22284,10 +22284,10 @@ var observeUsage = async (target, options = {}) => {
     for (const [, count] of classes) agreedBy = Math.min(agreedBy, count);
     const classAttribute = uses.find((use) => use.classAttribute !== null)?.classAttribute ?? "class";
     const written = always.sort((a, b) => b.writtenBy - a.writtenBy || a.name.localeCompare(b.name)).slice(0, MAX_PROPS);
-    if (props.length === 0 && classes.length === 0 && written.length === 0) continue;
+    if (props2.length === 0 && classes.length === 0 && written.length === 0) continue;
     usages.push({
       component,
-      props: props.map(({ name, value, bare }) => ({ name, value, bare })),
+      props: props2.map(({ name, value, bare }) => ({ name, value, bare })),
       written,
       classes: classes.map(([token]) => token),
       classAttribute,
@@ -22515,8 +22515,8 @@ async function patternOf2(target) {
   const rendered = new Set(screens.flatMap((one) => one.intrinsics));
   const avoids = [...REPLACEABLE].filter((name) => !rendered.has(name));
   const layouts = await Promise.all(screens.map((one) => governingLayout(one.path, root)));
-  const agreed = commonest(layouts.filter((path) => path !== null));
-  const chrome = agreed === null || agreed.count / screens.length < MAJORITY ? null : await chromeOf(agreed.value);
+  const agreed2 = commonest(layouts.filter((path) => path !== null));
+  const chrome = agreed2 === null || agreed2.count / screens.length < MAJORITY ? null : await chromeOf(agreed2.value);
   const skeleton = skeletonOf(screens);
   if (family.from === "folder" && skeleton !== null && skeleton.holder !== reference.page.holder) {
     return null;
@@ -22693,6 +22693,120 @@ function whyNot(from, name, kind, resolve9) {
   return resolve9.shape(specifier) === "package" ? "external" : "unresolved";
 }
 
+// src/sources/matrix.ts
+import { readFile as readFile18 } from "node:fs/promises";
+import { relative as relative7 } from "node:path";
+async function propsMatrix(rootDir, component, files) {
+  const renders = [];
+  const absent = [];
+  const unreadable = [];
+  const written = /* @__PURE__ */ new Map();
+  for (const file of files) {
+    const where = relative7(rootDir, file);
+    const read = await sourceOf(file);
+    if (read === null) {
+      unreadable.push(where);
+      continue;
+    }
+    const one = writtenIn(read.path, read.source, { all: true }).find(
+      (each) => each.component === component
+    );
+    if (one === void 0) {
+      absent.push(where);
+      continue;
+    }
+    renders.push(where);
+    for (const [name, value] of one.attributes) {
+      const row = written.get(name) ?? { files: [], values: [] };
+      row.files.push(where);
+      row.values.push(value.value);
+      written.set(name, row);
+    }
+  }
+  const rows = [...written.entries()].map(([name, row]) => ({
+    name,
+    written: row.files,
+    value: agreed(row.values)
+  })).sort((a, b) => b.written.length - a.written.length || a.name.localeCompare(b.name));
+  return { component, renders, absent, unreadable, rows };
+}
+function agreed(values) {
+  const first = values[0];
+  if (first === null || first === void 0) return null;
+  return values.every((value) => value === first) ? first : null;
+}
+async function sourceOf(file) {
+  const pair = await pairOf(file);
+  const identity = pair?.identity ?? file;
+  const own = await readFile18(identity, "utf8").catch(() => null);
+  if (own === null) return null;
+  return pair === null ? { path: file, source: own } : markupOf(identity, own);
+}
+
+// src/sources/grouping.ts
+import { relative as relative8 } from "node:path";
+async function groupScreens(rootDir, files, depth) {
+  const read = [];
+  const notScreens = [];
+  let applied = 0;
+  for (const file of files) {
+    const tree2 = await screenTree(rootDir, file, depth === void 0 ? {} : { depth });
+    if (tree2 === null) {
+      notScreens.push(relative8(rootDir, file));
+      continue;
+    }
+    applied = tree2.depth;
+    read.push({ file: relative8(rootDir, file), lines: flatten(tree2.root, 0) });
+  }
+  const screensWith = /* @__PURE__ */ new Map();
+  for (const one of read) {
+    for (const name of new Set(one.lines.map((line) => line.name))) {
+      screensWith.set(name, (screensWith.get(name) ?? 0) + 1);
+    }
+  }
+  const singletonSuffixes = /* @__PURE__ */ new Map();
+  for (const [name, count] of screensWith) {
+    if (count > 1) continue;
+    const word = trailingWord(name);
+    if (word !== null) singletonSuffixes.set(word, (singletonSuffixes.get(word) ?? 0) + 1);
+  }
+  const groups = /* @__PURE__ */ new Map();
+  for (const one of read) {
+    const concrete = one.lines.map((line) => `${"  ".repeat(line.indent)}${line.name}`);
+    const signature = one.lines.map(
+      (line) => `${"  ".repeat(line.indent)}${abstract(line.name, screensWith, singletonSuffixes)}`
+    );
+    const key = signature.join("\n");
+    const group2 = groups.get(key) ?? { signature, members: [], concrete };
+    group2.members.push(one.file);
+    groups.set(key, group2);
+  }
+  return {
+    depth: applied,
+    // **A group of one is shown as it is written.** The placeholders exist to
+    // merge screens whose middles differ, and a group that merged nothing has
+    // nothing to hide behind them — `<one>` above `<one>` tells the reader less
+    // than `Dialog` above `DialogContent`, which is what the file says.
+    groups: [...groups.values()].sort((a, b) => b.members.length - a.members.length).map(({ signature, members, concrete }) => ({
+      signature: members.length === 1 ? concrete : signature,
+      members
+    })),
+    notScreens
+  };
+}
+function abstract(name, screensWith, singletonSuffixes) {
+  if ((screensWith.get(name) ?? 0) > 1) return name;
+  const word = trailingWord(name);
+  if (word !== null && (singletonSuffixes.get(word) ?? 0) > 1) return `*${word}`;
+  return "<one>";
+}
+function flatten(node, indent) {
+  return [
+    { indent, name: node.name },
+    ...node.children.flatMap((child) => flatten(child, indent + 1))
+  ];
+}
+
 // src/checks/contract.ts
 import { basename as basename7 } from "node:path";
 var SHAPE2 = {
@@ -22785,8 +22899,8 @@ function isContract(value) {
 }
 
 // src/cli/log.ts
-import { appendFile, readdir as readdir9, readFile as readFile18, rename, stat as stat8, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join14, relative as relative7 } from "node:path";
+import { appendFile, readdir as readdir9, readFile as readFile19, rename, stat as stat8, writeFile as writeFile4 } from "node:fs/promises";
+import { join as join14, relative as relative9 } from "node:path";
 var logPath = (rootDir) => join14(cacheRoot(), projectKey(rootDir), "findings.jsonl");
 var contractPathFor = (rootDir, kind) => join14(logPath(rootDir), "..", `contract-${kind.replace(/[^\w.-]+/g, "-")}.json`);
 var contractsFor = async (rootDir) => {
@@ -22800,7 +22914,7 @@ var statePath = (rootDir) => join14(logPath(rootDir), "..", "seen.jsonl");
 var MAX_STATE_BYTES = 512e3;
 var keyOf = (entry) => `${entry.file}|${entry.line}|${entry.level}|${entry.message}`;
 var readSeen = async (rootDir) => {
-  const raw = await readFile18(statePath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile19(statePath(rootDir), "utf8").catch(() => null);
   if (raw === null) return {};
   const folded = {};
   for (const line of raw.split("\n")) {
@@ -22846,7 +22960,7 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
     for (const finding of findings) {
       const entry = {
         at,
-        file: relative7(base, finding.file) || finding.file,
+        file: relative9(base, finding.file) || finding.file,
         line: finding.line,
         level: finding.level,
         message: finding.message,
@@ -22864,7 +22978,7 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
   }
 };
 var readLog = async (rootDir) => {
-  const raw = await readFile18(logPath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile19(logPath(rootDir), "utf8").catch(() => null);
   if (raw === null) return [];
   const entries = /* @__PURE__ */ new Map();
   for (const line of raw.split("\n")) {
@@ -22912,21 +23026,21 @@ var summarise = (entries, seenState = {}) => {
     existing.times = Math.max(existing.times, times);
     existing.last = existing.last === void 0 || last === void 0 ? void 0 : Math.max(existing.last, last);
   }
-  const said = (group) => group.imported === null ? group.entry.message : importSentence(
-    group.imported.symbols,
-    group.imported.importedFrom,
-    group.imported.expectedFrom
+  const said = (group2) => group2.imported === null ? group2.entry.message : importSentence(
+    group2.imported.symbols,
+    group2.imported.importedFrom,
+    group2.imported.expectedFrom
   );
   const byLevel = {};
   const perFile2 = /* @__PURE__ */ new Map();
   const across = /* @__PURE__ */ new Map();
   let acted = 0;
   let unknown = 0;
-  for (const group of groups.values()) {
-    const { entry } = group;
+  for (const group2 of groups.values()) {
+    const { entry } = group2;
     byLevel[entry.level] = (byLevel[entry.level] ?? 0) + 1;
     perFile2.set(entry.file, (perFile2.get(entry.file) ?? 0) + 1);
-    const spoken = group.imported === null ? said(group) : importSourceSentence(group.imported.importedFrom, group.imported.expectedFrom);
+    const spoken = group2.imported === null ? said(group2) : importSourceSentence(group2.imported.importedFrom, group2.imported.expectedFrom);
     const shape = `${entry.level}|${spoken}`;
     const spread = across.get(shape) ?? {
       level: entry.level,
@@ -22935,9 +23049,9 @@ var summarise = (entries, seenState = {}) => {
     };
     spread.files.add(entry.file);
     across.set(shape, spread);
-    if (group.times > 1) continue;
+    if (group2.times > 1) continue;
     const activity = lastOnFile.get(entry.file);
-    if (group.last !== void 0 && activity !== void 0 && group.last < activity) acted++;
+    if (group2.last !== void 0 && activity !== void 0 && group2.last < activity) acted++;
     else unknown++;
   }
   return {
@@ -22947,13 +23061,13 @@ var summarise = (entries, seenState = {}) => {
     advice,
     byLevel,
     byFile: [...perFile2.entries()].map(([file, count]) => ({ file, count })).sort((a, b) => b.count - a.count),
-    repeated: [...groups.values()].filter((group) => group.times > 1).map((group) => ({
-      file: group.entry.file,
-      line: group.entry.line,
-      message: said(group),
-      times: group.times
+    repeated: [...groups.values()].filter((group2) => group2.times > 1).map((group2) => ({
+      file: group2.entry.file,
+      line: group2.entry.line,
+      message: said(group2),
+      times: group2.times
     })).sort((a, b) => b.times - a.times),
-    spread: [...across.values()].filter((group) => group.files.size >= WORTH_A_RULE).map((group) => ({ level: group.level, message: group.message, files: group.files.size })).sort((a, b) => b.files - a.files),
+    spread: [...across.values()].filter((group2) => group2.files.size >= WORTH_A_RULE).map((group2) => ({ level: group2.level, message: group2.message, files: group2.files.size })).sort((a, b) => b.files - a.files),
     from: entries[0]?.at ?? null,
     to: entries[entries.length - 1]?.at ?? null
   };
@@ -23068,20 +23182,20 @@ function shapeReport(corpora) {
           });
         }
       }
-      const group = byHash.get(shape.hash) ?? [];
-      group.push(shape);
-      byHash.set(shape.hash, group);
+      const group2 = byHash.get(shape.hash) ?? [];
+      group2.push(shape);
+      byHash.set(shape.hash, group2);
     }
   }
   const repeated = [];
-  for (const [hash, group] of byHash) {
-    const files = [...new Set(group.map((shape) => shape.file))].sort();
+  for (const [hash, group2] of byHash) {
+    const files = [...new Set(group2.map((shape) => shape.file))].sort();
     if (files.length < QUORUM2) continue;
     const existing = known.get(hash);
     repeated.push({
       hash,
       files,
-      size: group[0].size,
+      size: group2[0].size,
       existsAs: existing === void 0 ? null : { component: existing.component, definedIn: existing.file }
     });
   }
@@ -23090,12 +23204,12 @@ function shapeReport(corpora) {
 }
 
 // src/sources/reference.ts
-import { readFile as readFile19 } from "node:fs/promises";
+import { readFile as readFile20 } from "node:fs/promises";
 function referenceSource(filePath) {
   return {
     kind: "reference",
     async describe() {
-      const source = await readFile19(filePath, "utf8").catch(() => null);
+      const source = await readFile20(filePath, "utf8").catch(() => null);
       if (source === null) return null;
       const shape = shapeOf(source);
       if (shape === null) return null;
@@ -23106,7 +23220,7 @@ function referenceSource(filePath) {
 }
 
 // src/sources/knowledge.ts
-import { readFile as readFile20 } from "node:fs/promises";
+import { readFile as readFile21 } from "node:fs/promises";
 var COMPONENT2 = /<([A-Z][\w]*)/g;
 var PROP = /<([A-Z][\w]*)\s+([^>]*)>/g;
 var ATTRIBUTE = /([a-zA-Z][\w]*)=['"]([^'"]+)['"]/g;
@@ -23115,11 +23229,11 @@ function knowledgeSource(knowledge) {
     kind: "knowledge",
     async describe(target) {
       if (knowledge.fragments.length === 0) return null;
-      const source = await readFile20(target, "utf8").catch(() => null);
+      const source = await readFile21(target, "utf8").catch(() => null);
       const fragments = source === null ? knowledge.fragments : retrieve(source, knowledge, { maxFragments: 8, maxChars: 8e3 });
       if (fragments.length === 0) return null;
       const components = [];
-      const props = {};
+      const props2 = {};
       for (const fragment of fragments) {
         for (const match of fragment.body.matchAll(COMPONENT2)) {
           const name = match[1];
@@ -23129,20 +23243,20 @@ function knowledgeSource(knowledge) {
         for (const element of fragment.body.matchAll(PROP)) {
           const name = element[1];
           for (const attribute of element[2].matchAll(ATTRIBUTE)) {
-            const forComponent = props[name] ??= {};
+            const forComponent = props2[name] ??= {};
             const values = forComponent[attribute[1]] ??= [];
             if (!values.includes(attribute[2])) values.push(attribute[2]);
           }
         }
       }
       if (components.length === 0) return null;
-      return { kind: "knowledge", components, pattern: [], props };
+      return { kind: "knowledge", components, pattern: [], props: props2 };
     }
   };
 }
 
 // src/sources/storybook.ts
-import { readdir as readdir10, readFile as readFile21 } from "node:fs/promises";
+import { readdir as readdir10, readFile as readFile22 } from "node:fs/promises";
 import { join as join15 } from "node:path";
 var STORIES = /\.stories\.[jt]sx?$/;
 async function storyFiles(dir, depth = 2) {
@@ -23234,22 +23348,22 @@ function storybookSource(dir, options = {}) {
       const files = await storyFiles(dir, options.depth ?? 2);
       if (files.length === 0) return null;
       const components = [];
-      const props = {};
+      const props2 = {};
       for (const file of files) {
-        const source = await readFile21(file, "utf8").catch(() => null);
+        const source = await readFile22(file, "utf8").catch(() => null);
         if (source === null) continue;
         const component = componentOf(source);
         if (component === null) continue;
         if (!components.includes(component)) components.push(component);
         const args = argsOf(source);
-        if (Object.keys(args).length > 0) props[component] = { ...props[component], ...args };
+        if (Object.keys(args).length > 0) props2[component] = { ...props2[component], ...args };
       }
       if (components.length === 0) return null;
-      for (const [component, byProp] of Object.entries(props)) {
-        props[component] = enumerable(byProp);
-        if (Object.keys(props[component]).length === 0) delete props[component];
+      for (const [component, byProp] of Object.entries(props2)) {
+        props2[component] = enumerable(byProp);
+        if (Object.keys(props2[component]).length === 0) delete props2[component];
       }
-      return { kind: "storybook", components, pattern: [], props };
+      return { kind: "storybook", components, pattern: [], props: props2 };
     }
   };
 }
@@ -23273,11 +23387,11 @@ function statedConventions(model) {
 }
 
 // src/cli/hook.ts
-import { dirname as dirname13, relative as relative8, resolve as resolve7 } from "node:path";
-import { readFile as readFile25 } from "node:fs/promises";
+import { dirname as dirname13, relative as relative10, resolve as resolve7 } from "node:path";
+import { readFile as readFile26 } from "node:fs/promises";
 
 // src/ai/settled.ts
-import { readFile as readFile22, writeFile as writeFile5 } from "node:fs/promises";
+import { readFile as readFile23, writeFile as writeFile5 } from "node:fs/promises";
 import { join as join16 } from "node:path";
 var WINDOW = 6e4;
 var settled = async (rootDir, filePath, options = {}) => {
@@ -23291,7 +23405,7 @@ var decide = async (rootDir, filePath, options) => {
   const now = options.now ?? (() => Date.now());
   const window = options.windowMs ?? WINDOW;
   const file = join16(cacheRoot(), projectKey(rootDir), "advised.json");
-  const raw = await readFile22(file, "utf8").catch(() => null);
+  const raw = await readFile23(file, "utf8").catch(() => null);
   let seen = {};
   if (raw !== null) {
     try {
@@ -23312,7 +23426,7 @@ var decide = async (rootDir, filePath, options) => {
 };
 
 // src/sources/pattern-cache.ts
-import { readFile as readFile23, stat as stat9, writeFile as writeFile6 } from "node:fs/promises";
+import { readFile as readFile24, stat as stat9, writeFile as writeFile6 } from "node:fs/promises";
 import { dirname as dirname12, join as join17 } from "node:path";
 var CACHE_VERSION3 = 2;
 var fileIn3 = (dir) => join17(dir, "patterns.json");
@@ -23324,7 +23438,7 @@ async function cachedPattern(rootDir, target, kind) {
   const dir = await cacheDirFor(rootDir);
   const key = `${kind}|${dirname12(target)}`;
   if (dir !== null) {
-    const raw2 = await readFile23(fileIn3(dir), "utf8").catch(() => null);
+    const raw2 = await readFile24(fileIn3(dir), "utf8").catch(() => null);
     if (raw2 !== null) {
       try {
         const parsed = JSON.parse(raw2);
@@ -23346,7 +23460,7 @@ async function cachedPattern(rootDir, target, kind) {
     const when = await mtimeOf3(path);
     if (when !== null) from[path] = when;
   }
-  const raw = await readFile23(fileIn3(dir), "utf8").catch(() => null);
+  const raw = await readFile24(fileIn3(dir), "utf8").catch(() => null);
   let existing = { version: CACHE_VERSION3, kinds: {} };
   if (raw !== null) {
     try {
@@ -23361,7 +23475,7 @@ async function cachedPattern(rootDir, target, kind) {
 }
 
 // src/cli/touched.ts
-import { readFile as readFile24 } from "node:fs/promises";
+import { readFile as readFile25 } from "node:fs/promises";
 function rangesOf(source, text) {
   if (text === "") return [];
   const found = [];
@@ -23386,7 +23500,7 @@ async function touchedBy(toolName, input, filePath) {
     }
   }
   if (written.length === 0) return null;
-  const source = await readFile24(filePath, "utf8").catch(() => null);
+  const source = await readFile25(filePath, "utf8").catch(() => null);
   if (source === null) return null;
   const ranges = written.flatMap((text) => rangesOf(source, text));
   return ranges.length === 0 ? null : ranges;
@@ -23457,7 +23571,7 @@ async function hookResponse(stdin) {
       }
     };
   }
-  const text = said.map((finding) => formatFinding({ ...finding, file: relative8(root, finding.file) })).join("\n\n");
+  const text = said.map((finding) => formatFinding({ ...finding, file: relative10(root, finding.file) })).join("\n\n");
   return {
     hookSpecificOutput: {
       hookEventName: "PostToolUse",
@@ -23470,16 +23584,16 @@ Fix them in this turn.`
   };
 }
 function provenance(root, contract) {
-  const names = contract.family.map((one) => relative8(root, one));
+  const names = contract.family.map((one) => relative10(root, one));
   return contract.from === "routes" ? `derived just now from the ${names.length} screens the route table registers beside it \u2014 nobody approved it` : `derived just now from files in its folder \u2014 ${names.join(", ")} \u2014 nobody approved it`;
 }
 async function deviationsFromContract(root, file) {
   const nothing = { said: [], derived: null };
-  const source = await readFile25(file, "utf8").catch(() => null);
+  const source = await readFile26(file, "utf8").catch(() => null);
   if (source === null) return nothing;
   const approved = [];
   for (const path of await contractsFor(root)) {
-    const raw = await readFile25(path, "utf8").catch(() => null);
+    const raw = await readFile26(path, "utf8").catch(() => null);
     if (raw === null) continue;
     let parsed;
     try {
@@ -23495,7 +23609,7 @@ async function deviationsFromContract(root, file) {
   const contracts = fresh === null ? matching : [fresh];
   const said = [];
   for (const contract of contracts) {
-    const deviations = contractDeviations(relative8(root, file), source, contract);
+    const deviations = contractDeviations(relative10(root, file), source, contract);
     if (deviations === null) return nothing;
     if (deviations.length === 0) return nothing;
     said.push(...deviations.map((one) => one.message));
@@ -23508,7 +23622,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join18 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.82";
+var VERSION = "0.14.83";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -23601,7 +23715,7 @@ async function checkProject(rootDir, files, options = {}) {
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
     if (chain.length === 0) continue;
-    const source = await readFile26(file, "utf8").catch(() => null);
+    const source = await readFile27(file, "utf8").catch(() => null);
     if (source === null) continue;
     violations.push(...checkSource(file, source, chain, await inventoryFor(chain)));
   }
@@ -23624,7 +23738,7 @@ async function analyzeProject(rootDir, files, options = {}) {
   const findings = [];
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
-    const source = await readFile26(file, "utf8").catch(() => null);
+    const source = await readFile27(file, "utf8").catch(() => null);
     if (source === null) continue;
     const model = await sourceFor(dirname14(file), file);
     const result = await runEngine(file, source, {
@@ -23641,7 +23755,7 @@ async function analyzeProject(rootDir, files, options = {}) {
 }
 async function adviseProject(rootDir, file) {
   const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-  const source = await readFile26(file, "utf8").catch(() => null);
+  const source = await readFile27(file, "utf8").catch(() => null);
   if (source === null) return null;
   const neighbours = await neighbourSource().describe(file).catch(() => null);
   const usage = await observeUsage(file).catch(() => null);
@@ -23670,7 +23784,7 @@ async function review(rootDir, args) {
   const absolute = files.map((file) => resolve8(rootDir, file));
   const tier1 = await analyzeProject(rootDir, absolute);
   for (const finding of tier1) {
-    console.log(`${formatFinding({ ...finding, file: relative9(rootDir, finding.file) })}
+    console.log(`${formatFinding({ ...finding, file: relative11(rootDir, finding.file) })}
 `);
   }
   if (tier1.length > 0) return 1;
@@ -23704,7 +23818,7 @@ async function pattern(rootDir, args) {
     return 1;
   }
   if (decided?.stale != null) {
-    console.error(`${relative9(rootDir, decided.file)} points at ${decided.stale}, which is gone.`);
+    console.error(`${relative11(rootDir, decided.file)} points at ${decided.stale}, which is gone.`);
     return 1;
   }
   const reference = decided?.canon ?? (file === void 0 ? void 0 : resolve8(rootDir, file));
@@ -23723,8 +23837,8 @@ async function pattern(rootDir, args) {
   const stated = decided ?? decisions.find((one) => one.kind === found.kind);
   const digest = {
     ...found,
-    family: found.family.map((path2) => relative9(rootDir, path2)),
-    ...stated === void 0 || stated.statements.length === 0 ? {} : { decided: { kind: stated.kind, from: relative9(rootDir, stated.file), statements: stated.statements } }
+    family: found.family.map((path2) => relative11(rootDir, path2)),
+    ...stated === void 0 || stated.statements.length === 0 ? {} : { decided: { kind: stated.kind, from: relative11(rootDir, stated.file), statements: stated.statements } }
   };
   if (!save) {
     console.log(JSON.stringify(digest, null, 2));
@@ -23750,7 +23864,7 @@ async function diff(rootDir, args) {
     console.error("Usage: uic diff --contract <contract.json> <file...>");
     return 1;
   }
-  const raw = await readFile26(resolve8(rootDir, contractPath), "utf8").catch(() => null);
+  const raw = await readFile27(resolve8(rootDir, contractPath), "utf8").catch(() => null);
   if (raw === null) {
     console.error(`Cannot read the contract: ${contractPath}`);
     return 1;
@@ -23771,12 +23885,12 @@ async function diff(rootDir, args) {
   let unread = 0;
   for (const file of files) {
     const absolute = resolve8(rootDir, file);
-    const source = await readFile26(absolute, "utf8").catch(() => null);
+    const source = await readFile27(absolute, "utf8").catch(() => null);
     if (source === null) {
       unread++;
       continue;
     }
-    const deviations = contractDeviations(relative9(rootDir, absolute), source, parsed);
+    const deviations = contractDeviations(relative11(rootDir, absolute), source, parsed);
     if (deviations === null) continue;
     measured++;
     if (deviations.length > 0) byFile.set(deviations[0].file, deviations);
@@ -23796,26 +23910,22 @@ async function diff(rootDir, args) {
   return byFile.size > 0 || unread > 0 ? 1 : 0;
 }
 async function tree(rootDir, args) {
-  const file = args.find((arg) => !arg.startsWith("-"));
+  const file = pathsIn2(args)[0];
   if (file === void 0) {
     console.error(`Usage: uic tree <screen> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
     return 1;
   }
-  const at = args.findIndex((arg) => arg === "--depth" || arg.startsWith("--depth="));
-  const stated = at === -1 ? void 0 : args[at]?.split("=")[1] ?? args[at + 1];
-  const depth = Number.parseInt(stated ?? "", 10);
+  const depth = depthIn(args);
   const absolute = resolve8(rootDir, file);
   const root = await findProjectRoot(dirname14(absolute)) ?? rootDir;
-  const walked = await screenTree(root, absolute, {
-    ...Number.isNaN(depth) ? {} : { depth }
-  });
+  const walked = await screenTree(root, absolute, depth === void 0 ? {} : { depth });
   if (walked === null) {
-    console.error(`Nothing to read in ${relative9(rootDir, absolute)}.`);
+    console.error(`Nothing to read in ${relative11(rootDir, absolute)}.`);
     console.error("Either it renders no component, or it is not a screen file.");
     return 0;
   }
   console.log(
-    `${relative9(root, absolute)} \u2014 ${walked.depth} ${walked.depth === 1 ? "level" : "levels"}, ${walked.read.length} ${walked.read.length === 1 ? "file" : "files"} read${walked.truncated ? ", stopped by the depth" : ""}`
+    `${relative11(root, absolute)} \u2014 ${walked.depth} ${walked.depth === 1 ? "level" : "levels"}, ${walked.read.length} ${walked.read.length === 1 ? "file" : "files"} read${walked.truncated ? ", stopped by the depth" : ""}`
   );
   for (const line of branch(walked.root, 0, null)) console.log(line);
   return 0;
@@ -23828,6 +23938,93 @@ function branch(node, indent, from) {
     ...node.children.flatMap((child) => branch(child, indent + 1, node.file))
   ];
 }
+async function props(rootDir, args) {
+  const [component, ...rest] = args.filter((arg) => !arg.startsWith("-"));
+  if (component === void 0 || rest.length === 0) {
+    console.error("Usage: uic props <Component> <file...>");
+    return 1;
+  }
+  const { absolute, problems } = await givenFiles(rootDir, rest);
+  for (const problem of problems) console.error(problem);
+  if (absolute.length === 0) {
+    console.error(`No file to read, so nothing is known about <${component}>.`);
+    return 1;
+  }
+  const matrix = await propsMatrix(rootDir, component, absolute);
+  const total = matrix.renders.length;
+  console.log(
+    `${component} \u2014 rendered by ${total} of ${absolute.length} ${absolute.length === 1 ? "file" : "files"} read`
+  );
+  if (total === 0) return 0;
+  const all = matrix.rows.filter((row) => row.written.length === total);
+  const some = matrix.rows.filter((row) => row.written.length < total);
+  if (all.length > 0) {
+    console.log(`
+written by all ${total}`);
+    for (const row of all) console.log(`  ${row.name}${row.value === null ? "" : ` = ${JSON.stringify(row.value)}`}`);
+  }
+  if (some.length > 0) {
+    console.log("\nwritten by some");
+    for (const row of some) {
+      const missing = matrix.renders.filter((file) => !row.written.includes(file));
+      console.log(
+        `  ${row.name}${row.value === null ? "" : ` = ${JSON.stringify(row.value)}`}  \u2014  ${row.written.length} of ${total}, not in ${missing.join(", ")}`
+      );
+    }
+  }
+  if (matrix.absent.length > 0) {
+    console.log(`
+does not render it
+  ${matrix.absent.join("\n  ")}`);
+  }
+  if (matrix.unreadable.length > 0) {
+    console.log(`
+could not be read
+  ${matrix.unreadable.join("\n  ")}`);
+  }
+  return 0;
+}
+async function group(rootDir, args) {
+  const files = pathsIn2(args);
+  if (files.length === 0) {
+    console.error(`Usage: uic group <file...> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
+    return 1;
+  }
+  const { absolute, problems } = await givenFiles(rootDir, files);
+  for (const problem of problems) console.error(problem);
+  if (absolute.length === 0) {
+    console.error("No file to read, so there is nothing to group.");
+    return 1;
+  }
+  const grouped = await groupScreens(rootDir, absolute, depthIn(args));
+  const screens = grouped.groups.reduce((count, one) => count + one.members.length, 0);
+  console.log(
+    `${screens} ${screens === 1 ? "screen" : "screens"}, read ${grouped.depth} ${grouped.depth === 1 ? "level" : "levels"} \u2014 ${grouped.groups.length} ${grouped.groups.length === 1 ? "group" : "groups"}`
+  );
+  for (const one of grouped.groups) {
+    console.log(`
+${one.members.length} ${one.members.length === 1 ? "screen" : "screens"}`);
+    for (const line of one.signature) console.log(`  ${line}`);
+    console.log(`  e.g. ${one.members[0]}`);
+  }
+  if (grouped.notScreens.length > 0) {
+    console.log(`
+not screens \u2014 nothing rendered in them
+  ${grouped.notScreens.join("\n  ")}`);
+  }
+  return 0;
+}
+function pathsIn2(args) {
+  const at = args.findIndex((arg) => arg === "--depth");
+  const value = at === -1 ? -1 : at + 1;
+  return args.filter((arg, index) => !arg.startsWith("-") && index !== value);
+}
+function depthIn(args) {
+  const at = args.findIndex((arg) => arg === "--depth" || arg.startsWith("--depth="));
+  if (at === -1) return void 0;
+  const depth = Number.parseInt(args[at]?.split("=")[1] ?? args[at + 1] ?? "", 10);
+  return Number.isNaN(depth) ? void 0 : depth;
+}
 async function place2(rootDir, args) {
   const file = args.find((arg) => !arg.startsWith("-"));
   if (file === void 0) {
@@ -23838,7 +24035,7 @@ async function place2(rootDir, args) {
   const root = await findProjectRoot(dirname14(absolute)) ?? rootDir;
   const placed = await placementOf(absolute, root);
   if (placed.style === null) {
-    console.error(`Nothing routes ${relative9(rootDir, absolute)}.`);
+    console.error(`Nothing routes ${relative11(rootDir, absolute)}.`);
     console.error("Either it is not a screen, or its route is registered somewhere this cannot");
     console.error("read. Say where, rather than letting a path be guessed from the folder.");
     return 0;
@@ -23850,7 +24047,7 @@ async function place2(rootDir, args) {
         ...placed.declaredIn === null ? {} : {
           declaredIn: {
             ...placed.declaredIn,
-            file: relative9(rootDir, placed.declaredIn.file)
+            file: relative11(rootDir, placed.declaredIn.file)
           }
         }
       },
@@ -23911,7 +24108,7 @@ None of the ${files.length} file(s) given belongs to a detected package.`);
   } else {
     console.error("Detected packages, and where they are rooted:");
     for (const pkg of packages.slice(0, 10)) {
-      console.error(`  ${pkg.name} \u2192 ${relative9(rootDir, pkg.root) || "."}`);
+      console.error(`  ${pkg.name} \u2192 ${relative11(rootDir, pkg.root) || "."}`);
     }
     console.error("If none of those is where your application lives, that is the bug \u2014");
     console.error("please report it: https://github.com/kamenkurtev/ui-consistency/issues");
@@ -23967,7 +24164,7 @@ async function check(rootDir, args) {
   if (listOnly) {
     const seen = /* @__PURE__ */ new Set();
     for (const finding of findings) {
-      const path = relative9(rootDir, finding.file);
+      const path = relative11(rootDir, finding.file);
       if (seen.has(path)) continue;
       seen.add(path);
       console.log(path);
@@ -23975,7 +24172,7 @@ async function check(rootDir, args) {
     return seen.size > 0 ? 1 : 0;
   }
   for (const finding of findings) {
-    console.log(`${formatFinding({ ...finding, file: relative9(rootDir, finding.file) })}
+    console.log(`${formatFinding({ ...finding, file: relative11(rootDir, finding.file) })}
 `);
   }
   return findings.length > 0 ? 1 : 0;
@@ -24037,34 +24234,34 @@ async function auditShapes(rootDir, args) {
   const app = [];
   for (const file of files) {
     const absolute = resolve8(rootDir, file);
-    const source = await readFile26(absolute, "utf8").catch(() => null);
+    const source = await readFile27(absolute, "utf8").catch(() => null);
     if (source === null) continue;
     const owner = packages.find((pkg) => contains(pkg.root, absolute));
     const shared2 = owner !== void 0 && dependedOn.has(owner.name);
     if (shared2) {
       const exported = [...exportedSymbolsFromSource(source)];
       if (exported.length === 1) {
-        library.push({ component: exported[0], file: relative9(rootDir, absolute), source });
+        library.push({ component: exported[0], file: relative11(rootDir, absolute), source });
       }
     }
-    app.push({ file: relative9(rootDir, absolute), source });
+    app.push({ file: relative11(rootDir, absolute), source });
   }
   const report = shapeReport({ library, app });
   const byComponent = /* @__PURE__ */ new Map();
   for (const entry of report.handRolled) {
-    const group = byComponent.get(entry.component) ?? { definedIn: entry.definedIn, places: [] };
-    group.places.push(`${entry.file}:${entry.line}`);
-    byComponent.set(entry.component, group);
+    const group2 = byComponent.get(entry.component) ?? { definedIn: entry.definedIn, places: [] };
+    group2.places.push(`${entry.file}:${entry.line}`);
+    byComponent.set(entry.component, group2);
   }
-  for (const [component, group] of [...byComponent].sort(
+  for (const [component, group2] of [...byComponent].sort(
     (a, b) => b[1].places.length - a[1].places.length
   )) {
     console.log(
-      `shape of ${component} (${group.definedIn})
-  appears in ${group.places.length} other place(s):`
+      `shape of ${component} (${group2.definedIn})
+  appears in ${group2.places.length} other place(s):`
     );
-    for (const place3 of group.places.slice(0, 5)) console.log(`    ${place3}`);
-    if (group.places.length > 5) console.log(`    \u2026 and ${group.places.length - 5} more`);
+    for (const place3 of group2.places.slice(0, 5)) console.log(`    ${place3}`);
+    if (group2.places.length > 5) console.log(`    \u2026 and ${group2.places.length - 5} more`);
   }
   for (const entry of report.repeated) {
     const backing = entry.existsAs === null ? "nothing exports this shape \u2014 a candidate for extraction" : `${entry.existsAs.component} already has this shape (${entry.existsAs.definedIn})`;
@@ -24159,6 +24356,10 @@ async function main(argv) {
       return place2(rootDir, rest);
     case "tree":
       return tree(rootDir, rest);
+    case "props":
+      return props(rootDir, rest);
+    case "group":
+      return group(rootDir, rest);
     case "scan":
       return scan(rootDir);
     case "check":
@@ -24176,7 +24377,7 @@ async function main(argv) {
     case "session":
       return session();
     default:
-      console.error("Usage: uic <pattern|diff|place|tree|scan|check|review|shapes|inventory|log>");
+      console.error("Usage: uic <pattern|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>");
       return 1;
   }
 }

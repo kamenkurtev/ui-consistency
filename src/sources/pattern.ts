@@ -320,7 +320,7 @@ async function readScreen(path: string): Promise<Reading | null> {
  * only the capitalised spelling left every template dialect with nothing to say
  * (#249).
  */
-const trailingWord = (name: string): string | null => {
+export const trailingWord = (name: string): string | null => {
   const words = name.includes('-') ? name.split('-') : name.match(/[A-Z][a-z0-9]*/g);
   const last = words?.[words.length - 1];
   return last === undefined || last.length < 3 ? null : last;
