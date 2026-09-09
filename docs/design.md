@@ -1,6 +1,12 @@
 # ui-consistency — design
 
-> **v1 is narrowed by [`docs/specs/2026-07-27-v1-mvp-resolution-design.md`](specs/2026-07-27-v1-mvp-resolution-design.md).** That document supersedes this one where they disagree — in particular on v1 scope, on injection, and on monetization. This document remains the record of the problem and of the two load-bearing decisions.
+> **A record, not a reading list.** This was the first statement of the problem
+> and of the two load-bearing decisions, and most of its particulars have been
+> overtaken — v1 scope, injection, monetization, the target stack, the shape of
+> the contract. It is kept, and kept out of `CLAUDE.md`'s reading list, because
+> the corrections in it are quoted elsewhere as the form a withdrawal takes.
+>
+> What is true now is in `docs/concept.md` and in `CLAUDE.md`.
 
 ## The problem
 
