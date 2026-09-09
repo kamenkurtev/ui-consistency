@@ -285,11 +285,20 @@ describe('which contract a screen is measured against', () => {
     skeleton: { holder: 'DetailLayout', regions: ['header'] },
   });
 
-  it('leaves a single contract alone, whatever holder the screen uses', () => {
-    // With one contract nothing is ambiguous, and a screen in the wrong holder
-    // is a finding that contract should make.
-    expect(contractsForScreen([list], 'SomethingElse')).toEqual([list]);
-    expect(contractsForScreen([list], null)).toEqual([list]);
+  it('measures a screen against a single contract when it sits in that holder', () => {
+    // The case the shortcut below was protecting, and the half of it that was
+    // right: one contract and a screen of its kind behaves exactly as before.
+    expect(contractsForScreen([list], 'PageLayout')).toEqual([list]);
+  });
+
+  it('picks none when the only contract is for another kind (#3)', () => {
+    // ~~With one contract nothing is ambiguous, and a screen in the wrong holder
+    // is a finding that contract should make.~~ One contract is what every
+    // project has the day it first saves one, and it was being applied to every
+    // dialog, panel and tile in the repository — with the approved wording, the
+    // one place derived material may become an imperative.
+    expect(contractsForScreen([list], 'Dialog')).toEqual([]);
+    expect(contractsForScreen([list], null)).toEqual([]);
   });
 
   it('picks the one whose holder the screen sits in', () => {
