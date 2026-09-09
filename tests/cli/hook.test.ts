@@ -154,8 +154,8 @@ describe('what the log records about an advisory', () => {
 });
 
 describe('what the hook says on an edit now', () => {
-  const screen = (holder: string): string =>
-    `export const P = () => (\n  <${holder}>\n    <PageHeader />\n    <Content />\n  </${holder}>\n);\n`;
+  const screen = (holder: string, header = 'PageHeader'): string =>
+    `export const P = () => (\n  <${holder}>\n    <${header} />\n    <Content />\n  </${holder}>\n);\n`;
 
   const contract = {
     skeleton: { holder: 'PageLayout', regions: ['header', 'content'] },
@@ -184,15 +184,42 @@ describe('what the hook says on an edit now', () => {
   it('names what has left the contract somebody approved', async () => {
     // The one thing worth saying on an edit: not an opinion about what a screen
     // usually looks like, but a fact about an artefact a person accepted.
+    //
+    // The screen is of the contract's kind — it sits in the holder — and departs
+    // inside it. Measuring one that sits somewhere else against this contract is
+    // what #3 withdrew.
     const root = await project();
     const file = join(root, 'src/Orders.tsx');
-    await writeFile(file, screen('Shell'));
+    await writeFile(file, screen('PageLayout', 'Banner'));
 
     const response = await hookResponse(
       JSON.stringify({ tool_name: 'Edit', tool_input: { file_path: file }, cwd: root }),
     );
 
-    expect(response?.hookSpecificOutput.additionalContext).toContain('PageLayout');
+    expect(response?.hookSpecificOutput.additionalContext).toContain('has no header');
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('says nothing about a screen of a kind the only contract is not for (#3)', async () => {
+    // Saving one contract is `skills/pattern` step 2, so this is the state every
+    // project is in on its first day with the tool. Before the save the dialog
+    // was silent; the save is the only thing that changed, and it must stay
+    // silent — the alternative is every dialog, panel and tile in the repository
+    // told it should be a page, in the approved imperative.
+    const root = await project();
+    await mkdir(join(root, 'src/pages'), { recursive: true });
+    await mkdir(join(root, 'src/parts'), { recursive: true });
+    for (const name of ['Orders', 'Invoices', 'Customers']) {
+      await writeFile(join(root, `src/pages/${name}.tsx`), screen('PageLayout'));
+    }
+    const file = join(root, 'src/parts/ConfirmDialog.tsx');
+    await writeFile(file, screen('Dialog', 'DialogButtons'));
+
+    const response = await hookResponse(
+      JSON.stringify({ tool_name: 'Edit', tool_input: { file_path: file }, cwd: root }),
+    );
+
+    expect(response).toBeNull();
     await rm(root, { recursive: true, force: true });
   });
 

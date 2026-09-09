@@ -22546,7 +22546,6 @@ var SHAPE2 = {
 };
 var holderOf = (contract) => contract.skeleton?.holder ?? contract.kind;
 function contractsForScreen(contracts, holder) {
-  if (contracts.length <= 1) return contracts;
   if (holder === null) return [];
   return contracts.filter((contract) => holderOf(contract) === holder);
 }
@@ -23353,7 +23352,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join18 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.80";
+var VERSION = "0.14.81";
 
 // src/cli/session.ts
 function shapeFor(env, context) {

@@ -38,16 +38,29 @@ const holderOf = (contract: ScreenPattern): string | null =>
  * `uic pattern` decides what a family is in the first place, because screens of
  * one kind are the ones that sit in the same holder.
  *
- * With one contract nothing is ambiguous and nothing changes — a screen in the
- * wrong holder is a finding that contract should make. With several, a screen
- * whose holder matches none of them is a kind nobody has agreed a contract for,
- * and the honest answer is nothing rather than the nearest guess.
+ * ~~With one contract nothing is ambiguous and nothing changes — a screen in
+ * the wrong holder is a finding that contract should make.~~
+ *
+ * **Withdrawn (#3), and it was the commonest state a project is ever in.** One
+ * saved contract is what every project has on the day it first follows
+ * `skills/pattern`, whose step 2 is `uic pattern <reference> --save`. From that
+ * moment the shortcut handed every dialog, panel, tile and card in the
+ * repository to the page contract — and handed it the *approved* wording,
+ * "has left the contract for its kind… fix them in this turn", which is the one
+ * place derived material is allowed to become an imperative. Seen in real work:
+ * a dialog nested four directories under a page's form field, told it should be
+ * a page. Deriving the pattern for that same file answers correctly, so how
+ * many contracts exist was never what made a screen measurable against one —
+ * its holder was.
+ *
+ * A screen whose holder matches no contract is a kind nobody has agreed one
+ * for, whether there is one contract or ten, and the honest answer is nothing
+ * rather than the nearest guess.
  */
 export function contractsForScreen(
   contracts: ScreenPattern[],
   holder: string | null,
 ): ScreenPattern[] {
-  if (contracts.length <= 1) return contracts;
   if (holder === null) return [];
   return contracts.filter((contract) => holderOf(contract) === holder);
 }
