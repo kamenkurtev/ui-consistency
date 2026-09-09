@@ -33,7 +33,8 @@ Read, in this order:
 1. `docs/design.md` — the problem and the two load-bearing decisions.
 2. `docs/specs/2026-07-27-v1-mvp-resolution-design.md` — narrows v1, supersedes `design.md` where they disagree, and holds the record of what real runs found. Authoritative for the resolution check and for layer detection.
 3. `docs/specs/2026-08-02-v2-design-system-consistency-design.md` — v2, a superset. Authoritative for everything beyond the import check.
-4. `docs/plans/2026-08-02-v2-design-system-consistency-plan.md` — the v2 build order.
+4. `docs/specs/2026-09-09-pattern-as-the-unit-of-knowledge.md` — what is written down, and in what form. Supersedes the *stored artifact* in the v2 spec above; everything else there stands.
+5. `docs/plans/2026-08-02-v2-design-system-consistency-plan.md` — the v2 build order.
 
 Read them before proposing anything. They record the problem, the decisions that shape the architecture, what is in scope, and what is deliberately excluded. Do not re-litigate those decisions without a reason.
 
