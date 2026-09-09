@@ -23949,7 +23949,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join20 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.89";
+var VERSION = "0.14.90";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -23974,18 +23974,32 @@ async function firstBytes(path) {
     await handle.close().catch(() => void 0);
   }
 }
+var STANDING = [
+  "ui-consistency \u2014 when the work is about screens, this is the order. Do not wait to be asked.",
+  "",
+  "1. ui-consistency:pattern \u2014 BEFORE writing or changing a screen. It reads what",
+  "   screens of that kind already look like here and writes it down. A screen",
+  "   written first and corrected after is a screen somebody has to be persuaded",
+  "   to change.",
+  "2. ui-consistency:decide \u2014 where pattern finds fewer than three screens of the",
+  "   kind. It asks; it does not draft. The first screen of a kind is a decision,",
+  "   not a derivation.",
+  "3. ui-consistency:screen \u2014 writing one screen against what pattern established.",
+  "   ui-consistency:rollout \u2014 the same change across many; it queues them and",
+  "   verifies the whole set rather than trusting thirty separate turns.",
+  "4. ui-consistency:verify \u2014 before handing the work over.",
+  "   ui-consistency:review \u2014 a second opinion on one screen, when asked.",
+  "5. ui-consistency:reach \u2014 when you cannot tell whether this project is clean or",
+  "   this tool is blind here. Those look identical and are not.",
+  "",
+  "Nothing is spent until UI work starts. This message is the whole of what a",
+  "session costs."
+].join("\n");
 async function sessionContext(rootDir) {
   const { dir, legacy } = await knowledgeDir(rootDir);
   const entries = await readdir12(dir).catch(() => null);
   const files = (entries ?? []).filter((name) => /\.md$/i.test(name)).sort();
-  if (files.length === 0) {
-    return [
-      "ui-consistency: when building or refactoring screens here, establish the",
-      "pattern first \u2014 ui-consistency:pattern reads what screens of that kind",
-      "already look like in this project and writes it down to build from.",
-      "Nothing is generated and nothing is spent until somebody asks."
-    ].join(" ");
-  }
+  const said = [STANDING];
   const versions = /* @__PURE__ */ new Set();
   for (const name of files.slice(0, MAX_FILES)) {
     const head = await firstBytes(join20(dir, name));
@@ -23993,17 +24007,19 @@ async function sessionContext(rootDir) {
     const version = generatedVersion(head);
     if (version !== null && version !== VERSION) versions.add(version);
   }
-  if (legacy) return `ui-consistency: ${MOVED}`;
+  if (legacy) said.push(`ui-consistency: ${MOVED}`);
   if (versions.size > 0) {
-    return [
-      `ui-consistency: the generated part of ${KNOWLEDGE_DIR}/ was written by`,
-      `plugin ${[...versions].sort().join(", ")}; this is ${VERSION}.`,
-      "Nothing generates those files any more. They are a stored copy of what the",
-      `code says, which is the thing that goes stale \u2014 keep whatever in them was`,
-      `intent, in ${KNOWLEDGE_DIR}/decisions/, and delete the rest.`
-    ].join(" ");
+    said.push(
+      [
+        `ui-consistency: the generated part of ${KNOWLEDGE_DIR}/ was written by`,
+        `plugin ${[...versions].sort().join(", ")}; this is ${VERSION}.`,
+        "Nothing generates those files any more. They are a stored copy of what the",
+        `code says, which is the thing that goes stale \u2014 keep whatever in them was`,
+        `intent, in ${KNOWLEDGE_DIR}/decisions/, and delete the rest.`
+      ].join(" ")
+    );
   }
-  return null;
+  return said.join("\n\n");
 }
 async function sessionResponse(stdin) {
   let cwd = process.cwd();

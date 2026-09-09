@@ -6,4 +6,4 @@
  * project and report their version, or nothing. Moved by `npm run bump` along
  * with the three manifests, and a test fails if they ever disagree.
  */
-export const VERSION = '0.14.89';
+export const VERSION = '0.14.90';

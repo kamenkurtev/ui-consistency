@@ -57,6 +57,50 @@ async function firstBytes(path: string): Promise<string | null> {
 }
 
 /**
+ * The standing instruction: when each skill fires, and the order between them.
+ *
+ * ~~"Nothing is generated and nothing is spent until somebody asks."~~ That
+ * sentence was written to promise a cost, and it **reads to an agent as *do not
+ * act unless asked*** — the opposite of the behaviour wanted. The promise is
+ * kept and stated as what it is: nothing is spent until UI work starts.
+ *
+ * It named **one** of the seven skills and left the other six to whatever the
+ * harness happened to match on. Every `SKILL.md` here already opens with *"Use
+ * when…"* and lists the sentences a person actually types, so the trigger half
+ * needs no change; what was missing is the rule and the ordering, which is the
+ * shape the reference implementation of a skills library uses on this same
+ * harness.
+ *
+ * Fixed text. It is not a scan, it parses nothing and it calls no model, so the
+ * session costs what it always cost: a directory listing and at most twelve
+ * short reads.
+ *
+ * The same words are in `AGENTS.md`, because three of the four supported
+ * harnesses have no hook and that file is how they reach it.
+ */
+const STANDING = [
+  'ui-consistency — when the work is about screens, this is the order. Do not wait to be asked.',
+  '',
+  '1. ui-consistency:pattern — BEFORE writing or changing a screen. It reads what',
+  '   screens of that kind already look like here and writes it down. A screen',
+  '   written first and corrected after is a screen somebody has to be persuaded',
+  '   to change.',
+  '2. ui-consistency:decide — where pattern finds fewer than three screens of the',
+  '   kind. It asks; it does not draft. The first screen of a kind is a decision,',
+  '   not a derivation.',
+  '3. ui-consistency:screen — writing one screen against what pattern established.',
+  '   ui-consistency:rollout — the same change across many; it queues them and',
+  '   verifies the whole set rather than trusting thirty separate turns.',
+  '4. ui-consistency:verify — before handing the work over.',
+  '   ui-consistency:review — a second opinion on one screen, when asked.',
+  '5. ui-consistency:reach — when you cannot tell whether this project is clean or',
+  '   this tool is blind here. Those look identical and are not.',
+  '',
+  'Nothing is spent until UI work starts. This message is the whole of what a',
+  'session costs.',
+].join('\n');
+
+/**
  * The one line a session may be told about this project's knowledge base.
  *
  * Two states are worth saying something about, and no others:
@@ -78,14 +122,7 @@ export async function sessionContext(rootDir: string): Promise<string | null> {
   const entries = await readdir(dir).catch(() => null);
   const files = (entries ?? []).filter((name) => /\.md$/i.test(name)).sort();
 
-  if (files.length === 0) {
-    return [
-      'ui-consistency: when building or refactoring screens here, establish the',
-      'pattern first — ui-consistency:pattern reads what screens of that kind',
-      'already look like in this project and writes it down to build from.',
-      'Nothing is generated and nothing is spent until somebody asks.',
-    ].join(' ');
-  }
+  const said = [STANDING];
 
   const versions = new Set<string>();
   for (const name of files.slice(0, MAX_FILES)) {
@@ -95,19 +132,21 @@ export async function sessionContext(rootDir: string): Promise<string | null> {
     if (version !== null && version !== VERSION) versions.add(version);
   }
 
-  if (legacy) return `ui-consistency: ${MOVED}`;
+  if (legacy) said.push(`ui-consistency: ${MOVED}`);
 
   if (versions.size > 0) {
-    return [
-      `ui-consistency: the generated part of ${DIR}/ was written by`,
-      `plugin ${[...versions].sort().join(', ')}; this is ${VERSION}.`,
-      'Nothing generates those files any more. They are a stored copy of what the',
-      `code says, which is the thing that goes stale — keep whatever in them was`,
-      `intent, in ${DIR}/decisions/, and delete the rest.`,
-    ].join(' ');
+    said.push(
+      [
+        `ui-consistency: the generated part of ${DIR}/ was written by`,
+        `plugin ${[...versions].sort().join(', ')}; this is ${VERSION}.`,
+        'Nothing generates those files any more. They are a stored copy of what the',
+        `code says, which is the thing that goes stale — keep whatever in them was`,
+        `intent, in ${DIR}/decisions/, and delete the rest.`,
+      ].join(' '),
+    );
   }
 
-  return null;
+  return said.join('\n\n');
 }
 
 interface Payload {

@@ -48,6 +48,27 @@ instructions, and the CLI below is the fact supplier.
 | `decide` | the first screen of a kind, when there is nothing to derive |
 | `reach` | which of three silences you are looking at |
 
+### The order, and it is not conditional
+
+When the work is about screens, this is the order. **Do not wait to be asked.**
+
+1. `pattern` — BEFORE writing or changing a screen. A screen written first and
+   corrected after is a screen somebody has to be persuaded to change, and a
+   correction declined teaches that the whole channel is skippable.
+2. `decide` — where `pattern` finds fewer than three screens of the kind. It
+   asks; it does not draft. The first screen of a kind is a decision, not a
+   derivation.
+3. `screen` for one, `rollout` for many. `rollout` queues them and verifies the
+   whole set rather than trusting thirty separate turns.
+4. `verify` before handing the work over. `review` for a second opinion on one
+   screen, when asked.
+5. `reach` when you cannot tell whether this project is clean or this tool is
+   blind here. Those look identical and are not.
+
+Nothing is spent until UI work starts. Under Claude Code the same text arrives
+from the session hook; here it arrives from this file, which is the whole
+difference between the harnesses.
+
 Each is invocable on its own and none requires another to have run — so an
 agent definition can order them by name (`ui-consistency:pattern`, and so on)
 beside whatever else it uses.
