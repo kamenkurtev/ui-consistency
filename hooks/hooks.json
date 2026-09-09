@@ -1,5 +1,5 @@
 {
-  "description": "ui-consistency — reports code that does not match the project's own design system, in the same turn as the edit",
+  "description": "ui-consistency \u2014 reports code that does not match the project's own design system, in the same turn as the edit",
   "hooks": {
     "SessionStart": [
       {
@@ -20,6 +20,17 @@
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs\" hook",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs\" prompt",
+            "timeout": 5
           }
         ]
       }
