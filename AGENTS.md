@@ -65,6 +65,7 @@ uic place <screen>                 route, trail, and where it is registered
 uic tree <screen> [--depth N]      what it renders, resolved through its children
 uic props <Component> <files>      which props each file writes on it, and where they diverge
 uic group <files> [--depth N]      the screens grouped by what they are composed of
+uic patterns [screen]              the patterns written down, and which one covers a screen
 uic check <files>                  the deterministic findings; exits 1 on any
 uic scan                           the packages detected, and how
 uic review <screen>                the findings, plus evidence for a second opinion

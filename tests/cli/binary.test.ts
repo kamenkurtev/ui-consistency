@@ -83,6 +83,41 @@ describe('the built binary', () => {
     await rm(root, { recursive: true, force: true });
   });
 
+  it('answers which pattern covers a screen, and says plainly when none does', async () => {
+    // "No pattern covers it" is a real answer and the useful one: it is the
+    // signal that this is a shape nobody has written down, and it must not look
+    // like a screen that matches.
+    const root = await mkdtemp(join(tmpdir(), 'uic-patterns-bin-'));
+    await mkdir(join(root, '.ui-consistency/patterns'), { recursive: true });
+    await mkdir(join(root, 'src'), { recursive: true });
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    await writeFile(
+      join(root, '.ui-consistency/patterns/list-screen.md'),
+      '---\npattern: list-screen\nsurface: screen\nholder: PageShell\n---\n\n# List screen\n',
+    );
+    await writeFile(
+      join(root, 'src/OrdersPage.tsx'),
+      'export const P = () => (\n  <PageShell>\n    <OrdersGrid />\n  </PageShell>\n);\n',
+    );
+    await writeFile(
+      join(root, 'src/ConfirmDialog.tsx'),
+      'export const P = () => (\n  <Dialog>\n    <DialogContent />\n  </Dialog>\n);\n',
+    );
+
+    const listed = await uic(['patterns'], root);
+    expect(listed.code).toBe(0);
+    expect(listed.stdout).toContain('list-screen');
+
+    const covered = await uic(['patterns', 'src/OrdersPage.tsx'], root);
+    expect(covered.stdout).toContain('list-screen');
+
+    const not = await uic(['patterns', 'src/ConfirmDialog.tsx'], root);
+    expect(not.code).toBe(0);
+    expect(not.stdout).toContain('no pattern covers it');
+    expect(not.stdout).toContain('<Dialog>');
+    await rm(root, { recursive: true, force: true });
+  });
+
   it('prints the props matrix, naming which files are missing a prop', async () => {
     const root = await mkdtemp(join(tmpdir(), 'uic-props-bin-'));
     await mkdir(join(root, 'src'), { recursive: true });
@@ -167,7 +202,7 @@ describe('the built binary', () => {
   it('refuses an unknown subcommand', async () => {
     const run = await uic(['frobnicate'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stderr).toContain('Usage: uic <pattern|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
+    expect(run.stderr).toContain('Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
   });
 
   it('says what to do when given no files', async () => {
