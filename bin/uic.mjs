@@ -23229,8 +23229,8 @@ function renderPattern(pattern2, options) {
   const total = pattern2.family.length;
   const out = [
     "---",
-    `pattern: ${name}`,
-    ...pattern2.kind === null ? [] : [`holder: ${pattern2.kind}`],
+    `pattern: ${safe(name)}`,
+    ...pattern2.kind === null ? [] : [`holder: ${safe(pattern2.kind)}`],
     `read: ${total} ${total === 1 ? "file" : "files"}`,
     `from: ${pattern2.from}`,
     `observed: ${observed}`,
@@ -23239,7 +23239,7 @@ function renderPattern(pattern2, options) {
     "derived: true",
     "---",
     "",
-    `# ${title(name)}`,
+    `# ${title(safe(name))}`,
     "",
     derivedFrom(pattern2, total),
     ""
@@ -23266,7 +23266,7 @@ function renderPattern(pattern2, options) {
     out.push(
       "## Avoided elements",
       "",
-      `No screen of this kind renders ${list(pattern2.avoids.map((one) => `\`<${one}>\``))}.`,
+      `No screen of this kind renders ${list(pattern2.avoids.map((one) => `\`<${safe(one)}>\``))}.`,
       // The element is named and the replacement is not: what replaces it is
       // this project's own business, and the structure above already says what
       // the family renders instead.
@@ -23277,7 +23277,7 @@ function renderPattern(pattern2, options) {
     out.push(
       "## Wiring",
       "",
-      `Most screens of this kind call ${list(pattern2.wiring.map((one) => `\`${one}()\``))}.`,
+      `Most screens of this kind call ${list(pattern2.wiring.map((one) => `\`${safe(one)}()\``))}.`,
       "",
       "_Read from JavaScript only: a screen written as a template contributes nothing here._",
       ""
@@ -23289,7 +23289,7 @@ function renderPattern(pattern2, options) {
   out.push(
     "## Where it is used",
     "",
-    files.map((path) => `\`${path}\``).join(", "),
+    files.map((path) => `\`${safe(path)}\``).join(", "),
     ""
   );
   return `${out.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd()}
@@ -23307,16 +23307,19 @@ function derivedFrom(pattern2, total) {
 function structureBlock(pattern2, total) {
   if (pattern2.skeleton === null) return [];
   const width = 36;
-  const line = (indent, name, strength) => `${"  ".repeat(indent)}${name}`.padEnd(width) + strength;
-  const out = [line(0, pattern2.skeleton.holder, `majority of ${total}`)];
+  const line = (indent, name, strength) => {
+    const written = `${"  ".repeat(indent)}${name}`;
+    return `${written.padEnd(width - 2)}  ${strength}`;
+  };
+  const out = [line(0, safe(pattern2.skeleton.holder), `majority of ${total}`)];
   for (const region of pattern2.skeleton.regions) {
     const filled = pattern2.vocabulary.find((one) => one.role === region);
     out.push(
-      filled === void 0 ? line(1, `<${region}>`, `majority of ${total}`) : line(1, filled.component, `majority of ${total}`)
+      filled === void 0 ? line(1, `<${region}>`, `majority of ${total}`) : line(1, safe(filled.component), `majority of ${total}`)
     );
   }
   if (pattern2.skeleton.regions.length === 0 && pattern2.body !== null) {
-    const held = pattern2.body.component ?? (pattern2.body.suffix === null ? "<body>" : `*${pattern2.body.suffix}`);
+    const held = pattern2.body.component === null ? pattern2.body.suffix === null ? "<body>" : `*${safe(pattern2.body.suffix)}` : safe(pattern2.body.component);
     const count = pattern2.body.children;
     out.push(line(1, held, `exactly ${count === 1 ? "one" : count}; ${total} of ${total}`));
   }
@@ -23329,31 +23332,34 @@ function propsBlock(pattern2) {
     const shapes = [];
     const valued = new Set(usage.props.map((one) => one.name));
     for (const prop of usage.props) {
-      bullets.push(`- \`${prop.name}\`${stated(prop)} \u2014 ${usage.agreedBy} of ${usage.seenIn}`);
+      bullets.push(`- \`${safe(prop.name)}\`${stated(prop)} \u2014 ${usage.agreedBy} of ${usage.seenIn}`);
     }
     for (const written of usage.written) {
       if (valued.has(written.name)) continue;
-      bullets.push(`- \`${written.name}\` \u2014 ${written.writtenBy} of ${usage.seenIn}`);
-      if (written.shape !== null) shapes.push(`\`${written.name}\` ${article(written.shape)}`);
+      bullets.push(`- \`${safe(written.name)}\` \u2014 ${written.writtenBy} of ${usage.seenIn}`);
+      if (written.shape !== null) shapes.push(`\`${safe(written.name)}\` ${article(written.shape)}`);
     }
     if (usage.classes.length > 0) {
       bullets.push(
-        `- \`${usage.classAttribute}\` = "${usage.classes.join(" ")}" \u2014 ${usage.agreedBy} of ${usage.seenIn}`
+        `- \`${safe(usage.classAttribute)}\` = "${safe(usage.classes.join(" "))}" \u2014 ${usage.agreedBy} of ${usage.seenIn}`
       );
     }
     if (bullets.length === 0) continue;
-    out.push(`### \`${usage.component}\``, "", ...bullets, "");
+    out.push(`### \`${safe(usage.component)}\``, "", ...bullets, "");
     if (shapes.length > 0) out.push(`Written as: ${list(shapes)}.`, "");
   }
   return out;
 }
-var stated = (prop) => prop.bare || prop.value.includes('"') ? "" : ` = "${prop.value}"`;
+var stated = (prop) => {
+  const value = safe(prop.value);
+  return prop.bare || value.includes('"') ? "" : ` = "${value}"`;
+};
 function particularsBlock(pattern2, options) {
   const { roles, components } = pattern2.particulars;
   if (roles.length === 0 && components.length === 0) return [];
   const has = [
-    ...roles.length > 0 ? [`a ${list(roles.map((one) => `\`${one}\``))} region`] : [],
-    ...components.length > 0 ? [list(components.map((one) => `\`${one}\``))] : []
+    ...roles.length > 0 ? [`a ${list(roles.map((one) => `\`${safe(one)}\``))} region`] : [],
+    ...components.length > 0 ? [list(components.map((one) => `\`${safe(one)}\``))] : []
   ];
   return [
     `\`${options.reference}\` renders ${list(has)}, which no other screen of this kind does.`,
@@ -23369,7 +23375,7 @@ function gaps(pattern2) {
     "Derived facts only, so far. These are the parts of a pattern that no extraction can produce, and the file is not finished until somebody has answered them:",
     "",
     ...slots !== void 0 && slots.length > 0 ? [
-      `- **Slots.** ${list(slots.map((one) => `\`<${one}>\``))} ${slots.length === 1 ? "is" : "are"} filled by a different component on each screen. Which alternatives are allowed there, and what decides between them?`
+      `- **Slots.** ${list(slots.map((one) => `\`<${safe(one)}>\``))} ${slots.length === 1 ? "is" : "are"} filled by a different component on each screen. Which alternatives are allowed there, and what decides between them?`
     ] : [],
     "- **Rules.** What must a screen of this kind do that no checker can evaluate? *(\u201CActions are always rendered; permission toggles `disabled` only.\u201D)*",
     "- **Exceptions.** Where a screen above departs from the rest, is that deliberate, and why?"
@@ -23380,6 +23386,7 @@ var title = (name) => {
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
 var article = (word) => `${/^[aeiou]/i.test(word) ? "an" : "a"} ${word}`;
+var safe = (value) => quoted(value);
 var list = (items) => items.length <= 1 ? items[0] ?? "" : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 
 // src/cli/log.ts
@@ -24434,10 +24441,12 @@ async function pattern(rootDir, args) {
 }
 async function establishPattern(rootDir, found, reference, decidedKind) {
   const name = slug2(decidedKind ?? found.kind ?? "screens");
-  const { dir } = await knowledgeDir(rootDir, "patterns");
-  const path = join21(dir, `${name}.md`);
-  if (await stat11(path).catch(() => null) !== null) {
-    console.error(`${relative12(rootDir, path)} already exists, and was not overwritten.`);
+  const path = join21(rootDir, KNOWLEDGE_DIR, "patterns", `${name}.md`);
+  const { dir: reading } = await knowledgeDir(rootDir, "patterns");
+  const existing = [path, join21(reading, `${name}.md`)];
+  for (const each of existing) {
+    if (await stat11(each).catch(() => null) === null) continue;
+    console.error(`${relative12(rootDir, each)} already exists, and was not overwritten.`);
     console.error("Read it, and re-derive with `uic pattern <screen>` if it looks stale.");
     return 1;
   }
@@ -24447,7 +24456,7 @@ async function establishPattern(rootDir, found, reference, decidedKind) {
     files: found.family.map((one) => relative12(rootDir, one)),
     reference: relative12(rootDir, reference)
   });
-  await mkdir2(dir, { recursive: true });
+  await mkdir2(dirname14(path), { recursive: true });
   await writeFile7(path, rendered, "utf8");
   console.log(relative12(rootDir, path));
   return 0;

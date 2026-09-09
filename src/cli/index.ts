@@ -375,13 +375,6 @@ async function pattern(rootDir: string, args: string[]): Promise<number> {
 }
 
 /**
- * Where a set of screens departs from the contract agreed for their kind.
- *
- * The end of the loop: the comparison a person makes today by opening every
- * page and looking. It measures against something somebody approved, which is
- * why it may fail a build where nothing derived ever could.
- */
-/**
  * Write the pattern down, in the project, as the artifact a person approves.
  *
  * The other half of the channel #27 opened. On a fresh install there is no
@@ -407,11 +400,20 @@ async function establishPattern(
   decidedKind: string | undefined,
 ): Promise<number> {
   const name = slug(decidedKind ?? found.kind ?? 'screens');
-  const { dir } = await knowledgeDir(rootDir, 'patterns');
-  const path = join(dir, `${name}.md`);
 
-  if ((await stat(path).catch(() => null)) !== null) {
-    console.error(`${relative(rootDir, path)} already exists, and was not overwritten.`);
+  // Written to the current directory always. `knowledgeDir` answers the *old*
+  // one where that is what holds the files, which is right for reading and
+  // wrong here: the legacy path is still read and never written, and a fallback
+  // that also wrote would leave everybody on it forever. Existence is still
+  // checked in whichever directory is being read, or a project on the old path
+  // would get a second pattern for a kind that already has one.
+  const path = join(rootDir, KNOWLEDGE_DIR, 'patterns', `${name}.md`);
+  const { dir: reading } = await knowledgeDir(rootDir, 'patterns');
+  const existing = [path, join(reading, `${name}.md`)];
+
+  for (const each of existing) {
+    if ((await stat(each).catch(() => null)) === null) continue;
+    console.error(`${relative(rootDir, each)} already exists, and was not overwritten.`);
     console.error('Read it, and re-derive with `uic pattern <screen>` if it looks stale.');
     return 1;
   }
@@ -423,7 +425,7 @@ async function establishPattern(
     reference: relative(rootDir, reference),
   });
 
-  await mkdir(dir, { recursive: true });
+  await mkdir(dirname(path), { recursive: true });
   await writeFile(path, rendered, 'utf8');
   console.log(relative(rootDir, path));
   return 0;
@@ -437,6 +439,13 @@ const slug = (kind: string): string =>
     .replace(/^-+|-+$/g, '')
     .toLowerCase() || 'screens';
 
+/**
+ * Where a set of screens departs from the contract agreed for their kind.
+ *
+ * The end of the loop: the comparison a person makes today by opening every
+ * page and looking. It measures against something somebody approved, which is
+ * why it may fail a build where nothing derived ever could.
+ */
 async function diff(rootDir: string, args: string[]): Promise<number> {
   const at = args.indexOf('--contract');
   const contractPath = at < 0 ? undefined : args[at + 1];

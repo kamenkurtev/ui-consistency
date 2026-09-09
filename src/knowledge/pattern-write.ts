@@ -1,4 +1,5 @@
 import type { ScreenPattern } from '../sources/pattern.js';
+import { quoted } from '../core/quote.js';
 
 /**
  * A derived pattern, rendered as the Markdown a project commits.
@@ -24,8 +25,8 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
 
   const out: string[] = [
     '---',
-    `pattern: ${name}`,
-    ...(pattern.kind === null ? [] : [`holder: ${pattern.kind}`]),
+    `pattern: ${safe(name)}`,
+    ...(pattern.kind === null ? [] : [`holder: ${safe(pattern.kind)}`]),
     `read: ${total} ${total === 1 ? 'file' : 'files'}`,
     `from: ${pattern.from}`,
     `observed: ${observed}`,
@@ -34,7 +35,7 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
     'derived: true',
     '---',
     '',
-    `# ${title(name)}`,
+    `# ${title(safe(name))}`,
     '',
     derivedFrom(pattern, total),
     '',
@@ -64,7 +65,7 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
     out.push(
       '## Avoided elements',
       '',
-      `No screen of this kind renders ${list(pattern.avoids.map((one) => `\`<${one}>\``))}.`,
+      `No screen of this kind renders ${list(pattern.avoids.map((one) => `\`<${safe(one)}>\``))}.`,
       // The element is named and the replacement is not: what replaces it is
       // this project's own business, and the structure above already says what
       // the family renders instead.
@@ -76,7 +77,7 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
     out.push(
       '## Wiring',
       '',
-      `Most screens of this kind call ${list(pattern.wiring.map((one) => `\`${one}()\``))}.`,
+      `Most screens of this kind call ${list(pattern.wiring.map((one) => `\`${safe(one)}()\``))}.`,
       '',
       '_Read from JavaScript only: a screen written as a template contributes nothing here._',
       '',
@@ -91,7 +92,7 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
   out.push(
     '## Where it is used',
     '',
-    files.map((path) => `\`${path}\``).join(', '),
+    files.map((path) => `\`${safe(path)}\``).join(', '),
     '',
   );
 
@@ -143,17 +144,23 @@ function structureBlock(pattern: ScreenPattern, total: number): string[] {
   if (pattern.skeleton === null) return [];
 
   const width = 36;
-  const line = (indent: number, name: string, strength: string): string =>
-    `${'  '.repeat(indent)}${name}`.padEnd(width) + strength;
+  // `parseStructure` splits a line on **two or more** spaces, so the padding is
+  // not cosmetic: a name at or past the column would be run straight into its
+  // strength, and the line would read back as one long name with no strength at
+  // all. `padEnd` alone cannot guarantee the gap, so the gap is guaranteed.
+  const line = (indent: number, name: string, strength: string): string => {
+    const written = `${'  '.repeat(indent)}${name}`;
+    return `${written.padEnd(width - 2)}  ${strength}`;
+  };
 
-  const out = [line(0, pattern.skeleton.holder, `majority of ${total}`)];
+  const out = [line(0, safe(pattern.skeleton.holder), `majority of ${total}`)];
 
   for (const region of pattern.skeleton.regions) {
     const filled = pattern.vocabulary.find((one) => one.role === region);
     out.push(
       filled === undefined
         ? line(1, `<${region}>`, `majority of ${total}`)
-        : line(1, filled.component, `majority of ${total}`),
+        : line(1, safe(filled.component), `majority of ${total}`),
     );
   }
 
@@ -162,7 +169,11 @@ function structureBlock(pattern: ScreenPattern, total: number): string[] {
   // "no convention here" when the convention is simply not expressed that way.
   if (pattern.skeleton.regions.length === 0 && pattern.body !== null) {
     const held =
-      pattern.body.component ?? (pattern.body.suffix === null ? '<body>' : `*${pattern.body.suffix}`);
+      pattern.body.component === null
+        ? pattern.body.suffix === null
+          ? '<body>'
+          : `*${safe(pattern.body.suffix)}`
+        : safe(pattern.body.component);
     const count = pattern.body.children;
     out.push(line(1, held, `exactly ${count === 1 ? 'one' : count}; ${total} of ${total}`));
   }
@@ -188,24 +199,24 @@ function propsBlock(pattern: ScreenPattern): string[] {
     const valued = new Set(usage.props.map((one) => one.name));
 
     for (const prop of usage.props) {
-      bullets.push(`- \`${prop.name}\`${stated(prop)} — ${usage.agreedBy} of ${usage.seenIn}`);
+      bullets.push(`- \`${safe(prop.name)}\`${stated(prop)} — ${usage.agreedBy} of ${usage.seenIn}`);
     }
     for (const written of usage.written) {
       if (valued.has(written.name)) continue;
-      bullets.push(`- \`${written.name}\` — ${written.writtenBy} of ${usage.seenIn}`);
+      bullets.push(`- \`${safe(written.name)}\` — ${written.writtenBy} of ${usage.seenIn}`);
       // Not on the bullet: everything after the dash is the strength, and a
       // strength is arithmetic only when it is exactly `N of M`. A parenthetical
       // in front of the count is how a measured number becomes a sentence.
-      if (written.shape !== null) shapes.push(`\`${written.name}\` ${article(written.shape)}`);
+      if (written.shape !== null) shapes.push(`\`${safe(written.name)}\` ${article(written.shape)}`);
     }
     if (usage.classes.length > 0) {
       bullets.push(
-        `- \`${usage.classAttribute}\` = "${usage.classes.join(' ')}" — ${usage.agreedBy} of ${usage.seenIn}`,
+        `- \`${safe(usage.classAttribute)}\` = "${safe(usage.classes.join(' '))}" — ${usage.agreedBy} of ${usage.seenIn}`,
       );
     }
 
     if (bullets.length === 0) continue;
-    out.push(`### \`${usage.component}\``, '', ...bullets, '');
+    out.push(`### \`${safe(usage.component)}\``, '', ...bullets, '');
     if (shapes.length > 0) out.push(`Written as: ${list(shapes)}.`, '');
   }
 
@@ -221,8 +232,10 @@ function propsBlock(pattern: ScreenPattern): string[] {
  * a value with a quote inside it cannot be written in this grammar, so it
  * states presence rather than being written as something read back wrong.
  */
-const stated = (prop: { value: string; bare: boolean }): string =>
-  prop.bare || prop.value.includes('"') ? '' : ` = "${prop.value}"`;
+const stated = (prop: { value: string; bare: boolean }): string => {
+  const value = safe(prop.value);
+  return prop.bare || value.includes('"') ? '' : ` = "${value}"`;
+};
 
 /**
  * What the reference has and the family does not — the list of things that must
@@ -233,8 +246,8 @@ function particularsBlock(pattern: ScreenPattern, options: RenderOptions): strin
   if (roles.length === 0 && components.length === 0) return [];
 
   const has = [
-    ...(roles.length > 0 ? [`a ${list(roles.map((one) => `\`${one}\``))} region`] : []),
-    ...(components.length > 0 ? [list(components.map((one) => `\`${one}\``))] : []),
+    ...(roles.length > 0 ? [`a ${list(roles.map((one) => `\`${safe(one)}\``))} region`] : []),
+    ...(components.length > 0 ? [list(components.map((one) => `\`${safe(one)}\``))] : []),
   ];
   return [
     `\`${options.reference}\` renders ${list(has)}, which no other screen of this kind does.`,
@@ -261,7 +274,7 @@ function gaps(pattern: ScreenPattern): string[] {
     '',
     ...(slots !== undefined && slots.length > 0
       ? [
-          `- **Slots.** ${list(slots.map((one) => `\`<${one}>\``))} ${slots.length === 1 ? 'is' : 'are'} filled by a different component on each screen. Which alternatives are allowed there, and what decides between them?`,
+          `- **Slots.** ${list(slots.map((one) => `\`<${safe(one)}>\``))} ${slots.length === 1 ? 'is' : 'are'} filled by a different component on each screen. Which alternatives are allowed there, and what decides between them?`,
         ]
       : []),
     '- **Rules.** What must a screen of this kind do that no checker can evaluate? *(“Actions are always rendered; permission toggles `disabled` only.”)*',
@@ -276,6 +289,31 @@ const title = (name: string): string => {
 
 /** `an expression`, `a literal` — the counts are read by people before programs. */
 const article = (word: string): string => `${/^[aeiou]/i.test(word) ? 'an' : 'a'} ${word}`;
+
+/**
+ * A value out of somebody's repository, made safe to write into a file an agent
+ * reads as authority.
+ *
+ * The same defect as #171 and in a worse place. There, values were interpolated
+ * raw into hook text and a string literal in ordinary application code could
+ * fabricate what looked like a second message from the tool. Here the file is
+ * *the pattern*: a `title` holding a newline and a `## Rules` heading writes a
+ * rule nobody agreed into the document the next screen is built from, and
+ * `parsePattern` reads it back as one. Reproduced before it was fixed, from the
+ * shipped bundle, on a family of five ordinary screens.
+ *
+ * `quoted` is the existing answer and does exactly what is needed: invisibles
+ * removed, whitespace collapsed to single spaces so nothing can start a new
+ * line, and the tool's own prefix broken in any colon that renders as one.
+ * Markdown's structural characters are all line-anchored — `#`, `-`, ``` — so
+ * a value that cannot contain a newline cannot open a section or a fence.
+ *
+ * Applied to names as well as values. A component name cannot hold a newline
+ * today, but which of these fields is an identifier and which is a string is
+ * the extractor's business and not this file's, and one exemption is how the
+ * next field added here arrives unquoted.
+ */
+const safe = (value: string): string => quoted(value);
 
 const list = (items: string[]): string =>
   items.length <= 1

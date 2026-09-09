@@ -620,6 +620,50 @@ describe('the three silences a user has to be able to tell apart', () => {
     await rm(dir, { recursive: true, force: true });
   });
 
+  /**
+   * The old knowledge directory is read and **never written**. A fallback that
+   * also wrote would leave everybody on it forever — and it must still be
+   * looked in, or a project on the old path gets a second pattern for a kind
+   * that already has one.
+   */
+  it('writes to the current knowledge directory even where the old one is in use', async () => {
+    const dir = await project({
+      'package.json': '{"name":"legacy"}',
+      '.claude/ui-consistency/patterns/other.md': '---\npattern: other\n---\n',
+      'src/Routes.tsx': [
+        "import { OrdersPage } from './pages/OrdersPage';",
+        "import { InvoicesPage } from './pages/InvoicesPage';",
+        "import { ReportsPage } from './pages/ReportsPage';",
+        "export const routes = [{ path: 'orders', element: <OrdersPage /> },",
+        "  { path: 'invoices', element: <InvoicesPage /> },",
+        "  { path: 'reports', element: <ReportsPage /> }];",
+      ].join('\n'),
+      'src/pages/OrdersPage.tsx': page('Orders'),
+      'src/pages/InvoicesPage.tsx': page('Invoices'),
+      'src/pages/ReportsPage.tsx': page('Reports'),
+    });
+
+    const wrote = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir);
+    expect(wrote.code).toBe(0);
+    expect(wrote.stdout.trim()).toBe('.ui-consistency/patterns/page-layout.md');
+
+    // And a kind the old directory already describes is not written twice.
+    const dir2 = await project({
+      'package.json': '{"name":"legacy2"}',
+      '.claude/ui-consistency/patterns/page-layout.md': '---\npattern: page-layout\n---\n',
+      'src/pages/OrdersPage.tsx': page('Orders'),
+      'src/pages/InvoicesPage.tsx': page('Invoices'),
+      'src/pages/ReportsPage.tsx': page('Reports'),
+    });
+
+    const refused = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir2);
+    expect(refused.code).toBe(1);
+    expect(refused.stderr).toContain('.claude/ui-consistency/patterns/page-layout.md already exists');
+
+    await rm(dir, { recursive: true, force: true });
+    await rm(dir2, { recursive: true, force: true });
+  });
+
   it('asked to write a file and writing none exits non-zero', async () => {
     // Three commands answering with empty output and exit 0 is how 400 files
     // were reported clean without one of them being looked at (#37). A write
