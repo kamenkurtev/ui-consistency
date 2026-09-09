@@ -99,6 +99,20 @@ export interface ScreenTree {
   read: string[];
 }
 
+/**
+ * The tree as an indented list — one entry per node, with how deep it sits.
+ *
+ * The shape both the structure block and the grouping signature are written in,
+ * so it lives here rather than beside either of them. It was written out twice
+ * and `tests/core/duplicates.test.ts` said so, which is what it is for.
+ */
+export function flatLines(node: TreeNode, indent = 0): { indent: number; name: string }[] {
+  return [
+    { indent, name: node.name },
+    ...node.children.flatMap((child) => flatLines(child, indent + 1)),
+  ];
+}
+
 export interface TreeOptions {
   depth?: number;
 }

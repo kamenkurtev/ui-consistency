@@ -377,7 +377,7 @@ The plugin installs a hook, not a command — it does not put anything on your
 uic=path/to/ui-consistency/bin/uic.mjs
 
 node $uic pattern src/orders/OrderList.tsx --save   # what screens of this kind look like here
-node $uic diff --contract <c> src/orders/*.tsx      # where the screens you touched left it
+node $uic diff --contract <c> src/orders/*.tsx      # where the screens you touched left it — <c> is a pattern file or a saved contract
 node $uic place src/orders/OrderList.tsx            # folder, route, and the breadcrumb trail
 node $uic tree src/orders/OrderList.tsx             # what it renders, followed into its children
 node $uic props OrdersGrid $(git ls-files 'src/orders/*.tsx')  # which props each file writes on it

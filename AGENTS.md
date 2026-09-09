@@ -60,7 +60,7 @@ demanding a pipeline.
 
 ```
 uic pattern <screen> [--save]      what screens of this kind look like here
-uic diff --contract <c> <files>    where the screens you touched left it
+uic diff --contract <c> <files>    where the screens you touched left it (a pattern file or a saved contract)
 uic place <screen>                 route, trail, and where it is registered
 uic tree <screen> [--depth N]      what it renders, resolved through its children
 uic props <Component> <files>      which props each file writes on it, and where they diverge
