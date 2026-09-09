@@ -23,8 +23,8 @@ why. `docs/design.md`'s "Target stack: MUI first" is the shape:
 > was not wrong about the risk. It was wrong about where the line falls.
 
 **Say where it came from and how far it went.** "Two months of documentation"
-was a figure of speech in the body of #147 that became a stated fact in four
-files, in a repository 24 days old (#183). The count is the useful part: it says
+was a figure of speech in one issue body that became a stated fact in four
+files, in a repository 24 days old. The count is the useful part: it says
 how many places to go and look.
 
 **Name the replacement.** A deprecation with no successor is a hole. This is the
@@ -60,7 +60,7 @@ This tool is dogfooded against private repositories, and the culture above —
 write down what real runs found — is why. The **numbers** are the value. The
 **names** came along with them: components, screens, route files, test-id
 prefixes and prop spellings now sit in docblocks, fixtures, findings documents
-and issue bodies, and the plan of record is to publish (`docs/design.md`, #7).
+and issue bodies, and the plan of record is to publish.
 
 **Before a measurement is written down anywhere, rename every project-specific
 identifier to a neutral equivalent of the same shape** — same casing, same word
@@ -75,7 +75,7 @@ Rename the segments, never collapse them.
 
 ## Why a rule and not care
 
-It reproduces every time. #263 was filed with a reproduction quoted verbatim
+It reproduces every time. One change was filed with a reproduction quoted verbatim
 from a private repository, and the PR that closed it carried five of those names
 into `src/`, the tests, `CLAUDE.md` and its own body — written by somebody who
 had read this file, one day before the scrub.
@@ -97,11 +97,11 @@ success over a real occurrence; the list carries every spelling, one per line.
 
 ## The documents this applies to
 
-`CLAUDE.md`, `docs/concept.md`, `docs/design.md`, `README.md`, `AGENTS.md`, and
-`skills/*/SKILL.md` — the method itself, not a description of it.
+`CLAUDE.md`, `docs/concept.md`, `README.md`, `AGENTS.md` and `skills/*/SKILL.md`
+— the method itself, not a description of it.
 
-`docs/specs/` and `docs/plans/` are excluded. They record what was decided at a
-date; being overtaken is what a record is for.
+`docs/specs/`, `docs/findings/` and `docs/design.md` are excluded. They record
+what was decided or found on a date; being overtaken is what a record is for.
 
 Before opening a PR, read them against the change and say in the body which were
 read and what was found. "Read, nothing false" is a result.

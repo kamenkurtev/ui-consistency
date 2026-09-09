@@ -14,7 +14,7 @@
   rather than widening the old one silently.
 - Work that starts as "while I'm here" is exactly what this rule is for. The
   version bump that decided whether a day of fixes reached anyone shipped with no
-  issue behind it (#35).
+  issue behind it.
 
 ## Branches
 - **Never commit directly to `main`.** Always branch first.
@@ -25,7 +25,7 @@
 
 ## Commits
 - Write clear, imperative messages: `Extract prop conventions from reference`, not `fixed stuff`.
-- Reference the issue when relevant (e.g. `#1`).
+- Reference the issue when relevant — `#12`, and the number is this repository's.
 - Commit or push only when the user asks.
 
 ## Versions
@@ -44,11 +44,12 @@
   or `.claude-plugin/` while leaving the version where `main` has it fails. Docs,
   tests and rules alone need no bump.
 - Writing it here was not enough on its own — it was missed twice in one day
-  before the gate existed (#36, #43).
+  before the gate existed.
 
 ## Pull requests
 - Open a PR against `main`; don't merge without review.
-- Before opening a PR, the full gate must pass. (Defined once the toolchain exists — see #2.)
+- Before opening a PR, the full gate must pass: `npm run gate`. What else has to
+  happen first, and in what order, is in `uic-pr.md`.
 
 ## Cleanup
 - After a branch is merged, delete it **only on the remote** (`origin`).

@@ -57,15 +57,15 @@ down.
 That check needed a built-in map from `<button>` to a component called `Button`,
 which is a vocabulary — and on every project naming things differently it
 matched nothing and said nothing, silence being indistinguishable from a clean
-result (#123). Raw elements are checked against the contract's `avoids`, where
+result. Raw elements are checked against the contract's `avoids`, where
 the answer is derived from the project's own screens and a person has approved
 it.
 
 It is silent unless it is **certain**. That is not modesty — see *the rule that
 governs everything*, below.
 
-**And Tier 2 now reaches the same turn, without anybody running anything**
-(#231). Where an approved contract covers the kind it wins — *covers*, which until #3
+**And Tier 2 now reaches the same turn, without anybody running anything.**
+Where an approved contract covers the kind it wins — *covers*, which until #3
 it did not have to, so one saved contract made every dialog and panel in the
 project a page that had left its contract; where none does, the
 pattern is derived from the edit being made and the sentence handed over says it
@@ -75,13 +75,13 @@ deriving it safe with no signature on it. Requiring a person to run `uic pattern
 per kind first is why a project that had written nothing down got, in effect, an
 import checker.
 
-**And what the hook says is scoped to what the tool call wrote** (#256). A
+**And what the hook says is scoped to what the tool call wrote.** A
 finding outside those lines is recorded in the log and not injected: telling an
 agent to fix a year-old line inside an unrelated change asks for churn it is
 right to refuse, and each refusal teaches that the imperative is skippable.
 
 That rule explains the silence and not how anybody tells one kind of silence
-from another (#234), which is the first question a real user has: *"it found
+from another, which is the first question a real user has: *"it found
 nothing — is that good?"* There are three answers, and only one of them means
 the project is fine — it works and here is what it read; it is quiet because you
 have stated nothing, which is the design; or it is blind here, and here is why.
@@ -117,7 +117,7 @@ looking at. They load only when invoked, so they cost nothing in an ordinary
 session.
 
 **Under the skills are the rules** — plain Markdown in `rules/`, and the
-portable half of this whole thing (#232). What a screen *is* per framework,
+portable half of this whole thing. What a screen *is* per framework,
 where a family comes from and what must not be copied from a reference, that
 roles are universal while names are local, where a route and a breadcrumb come
 from, and what belongs in a decisions file. Every one of them is knowledge about
@@ -129,11 +129,11 @@ So the shape is: **the program supplies facts, the rules and skills are the
 instructions.** That is also what makes it portable — a harness with no hook
 still gets the whole of the second half.
 
-There is nothing to set up and nothing to audit. Both existed and were deleted
-(#119): what the tool stores is a few lines of intent, and every fact about the
-code is derived fresh, so there is no stored copy to go stale.
+There is nothing to set up and nothing to audit. Both existed and were deleted:
+what the tool stores is a few lines of intent, and every fact about the code is
+derived fresh, so there is no stored copy to go stale.
 
-**Setting nothing up is the design; saying nothing is not** (#233). *"Fewer than
+**Setting nothing up is the design; saying nothing is not.** *"Fewer than
 three screens of this kind to compare"* is the commonest answer on a real
 project — every new area, every new project, and the first page of any refactor
 — and after it the tool used to stop. `ui-consistency:decide` is where the
@@ -209,7 +209,7 @@ in its hands and changing it costs nothing. That is the entire reason for the
 `PostToolUse` hook, and it is why speed is a hard constraint rather than a nice
 property.
 
-**Changing it costs nothing only for what the agent just wrote** (#256), and the
+**Changing it costs nothing only for what the agent just wrote**, and the
 hook used to ignore that: it ran every check over the whole file, so an agent
 editing line 40 for one reason was told to fix line 121 for another. Obeying
 means unrelated churn in an unrelated change, so a disciplined agent skips it —
@@ -233,17 +233,40 @@ Nothing is configured. Everything is detected:
   path aliases where libraries have no `package.json` (the normal Nx shape).
 - **What each layer exports** is scanned from the source, never hand-written —
   a hand-written inventory is stale in the week it is written.
-- **What "correct" is** comes from a cascade: the route table your project
-  writes, then a reference screen you point at, then your curated rules, then
-  Storybook, then the files next door. The first one that has an answer wins,
-  and when none does the tool is silent.
+- **What "correct" is** comes from a cascade: a **pattern file** your project
+  has written, then the route table it writes, then a reference screen you point
+  at, then your curated rules, then Storybook, then the files next door. The
+  first one that has an answer wins, and when none does the tool is silent.
+
+**The pattern file is the one thing worth writing down.** One Markdown file per
+pattern in `.ui-consistency/patterns/`, written by the agent from reading your
+code and reviewed by you like any other change: a structure block, named slots
+with the alternatives each allows, the props each component is written with and
+by how many screens, and the rules that hold across the pattern as sentences.
+
+Prose rather than data, because three of the things a pattern has to state
+cannot be data — an alternative a slot allows, a rule no checker can evaluate,
+and the reason one screen is allowed to differ. **Every statement carries its
+strength**, so a family agreeing about twelve things out of thirteen is
+described rather than described as disagreeing.
+
+It is the strongest source in that cascade for the reason nothing else on the
+list can match: it is a *person's sentence*, written down and reviewed, rather
+than a reading of the code. A route table states which screens are registered
+together; a folder states nothing at all. Only a pattern file says *these are
+one kind, and this is what they look like*.
+
+The facts in it are still derived every time. What is stored is the intent — the
+shape, the alternatives, the rules — and the file records the date it was
+observed and the screens it was read from, so anything that has moved underneath
+it is reported where the pattern is used.
 
 ~~a reference screen you point at, then your curated rules, then Storybook, then
 the files next door~~ — **the route table was missing from that list, and it is
-the strongest member of it** (#224). It is the one place a project *states*
+the strongest member of it.** It is the one place a project *states*
 which screens are siblings and what each one's path is; everything after it is
 either something a person nominated or something inferred. It was absent because
-until #224 the search for it started at the repository root and stopped four
+the search for it once started at the repository root and stopped four
 directories down — and in a monorepo every route table is five or more in, so
 nothing was ever routed and the source looked as though it did not exist.
 
@@ -264,16 +287,16 @@ reads all three dialects with no errors and costs 172 KB.
 What is lost is each framework's semantics, which no check reads. What the
 checks need — elements, attributes, text — is HTML in every dialect.
 
-**Each half is parsed by a different thing, and they fail differently (#253).**
+**Each half is parsed by a different thing, and they fail differently.**
 The template goes through the tolerant HTML parser; the `.component.ts` goes
-through Babel — and until #253 Babel had no decorators plugin, so *every* Angular
+through Babel — and Babel had no decorators plugin for a while, so *every* Angular
 component was a syntax error and every module-level reading of it returned
 nothing. That was wider than it sounds: the inventory is what the import and
 deprecated checks stand on, so v1's whole subject was blind to Angular. Measured
 in `docs/findings/2026-08-29-decorated-files-were-unread.md`.
 
 **And it used to read as coverage of Angular *screens*, which it was not
-(#229).** A React screen is a file. An **Angular
+.** A React screen is a file. An **Angular
 screen is a pair**: `orders.component.ts` carries the identity, the imports and
 the wiring — it is what a route module names — and `orders.component.html`
 carries the markup. The tool read them as two unrelated candidates, so the class

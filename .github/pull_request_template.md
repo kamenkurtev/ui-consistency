@@ -1,6 +1,6 @@
 <!--
 What changed, and why. If it fixes something, what the failure was.
-Link the issue: "Closes #123".
+Link the issue: `Closes #<number>`, and one `Closes` per issue — `Closes #6 and #19` only parses the first.
 -->
 
 ## Verification
