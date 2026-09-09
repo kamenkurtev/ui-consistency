@@ -83,6 +83,51 @@ describe('the built binary', () => {
     await rm(root, { recursive: true, force: true });
   });
 
+  it('prints the props matrix, naming which files are missing a prop', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'uic-props-bin-'));
+    await mkdir(join(root, 'src'), { recursive: true });
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    for (const [name, extra] of [['A', ' density="compact"'], ['B', ' density="compact"'], ['C', '']]) {
+      await writeFile(
+        join(root, `src/${name}.tsx`),
+        `export const P = () => (\n  <PageShell>\n    <OrdersGrid rows={r}${extra} />\n  </PageShell>\n);\n`,
+      );
+    }
+
+    const run = await uic(['props', 'OrdersGrid', 'src/A.tsx', 'src/B.tsx', 'src/C.tsx'], root);
+
+    expect(run.code).toBe(0);
+    expect(run.stdout).toContain('rendered by 3 of 3');
+    expect(run.stdout).toContain('written by all 3');
+    expect(run.stdout).toContain('2 of 3, not in src/C.tsx');
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('groups screens that differ only in the name of their grid', async () => {
+    // And reads every file it was given: the first path was being dropped by
+    // the flag filter, which a fixture would not have shown.
+    const root = await mkdtemp(join(tmpdir(), 'uic-group-bin-'));
+    await mkdir(join(root, 'src'), { recursive: true });
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    for (const grid of ['Orders', 'Invoices', 'Customers']) {
+      await writeFile(
+        join(root, `src/${grid}Page.tsx`),
+        `export const P = () => (\n  <PageShell>\n    <FilterBar />\n    <${grid}Grid />\n  </PageShell>\n);\n`,
+      );
+    }
+
+    const run = await uic(
+      ['group', 'src/OrdersPage.tsx', 'src/InvoicesPage.tsx', 'src/CustomersPage.tsx'],
+      root,
+    );
+
+    expect(run.code).toBe(0);
+    expect(run.stdout).toContain('3 screens');
+    expect(run.stdout).toContain('1 group');
+    expect(run.stdout).toContain('*Grid');
+    await rm(root, { recursive: true, force: true });
+  });
+
   it('refuses a file that renders nothing rather than printing an empty tree', async () => {
     // An empty answer and "this is not a screen" are different facts, and the
     // second must not arrive as a clean-looking blank.
@@ -122,7 +167,7 @@ describe('the built binary', () => {
   it('refuses an unknown subcommand', async () => {
     const run = await uic(['frobnicate'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stderr).toContain('Usage: uic <pattern|diff|place|tree|scan|check|review|shapes|inventory|log>');
+    expect(run.stderr).toContain('Usage: uic <pattern|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
   });
 
   it('says what to do when given no files', async () => {
