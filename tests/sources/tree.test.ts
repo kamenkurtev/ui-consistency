@@ -136,6 +136,25 @@ describe('why a branch ends', () => {
     expect(tree!.root.children[0]!.at).toBe('unresolved');
   });
 
+  it('reads a leaf that renders only raw markup as read, not as unresolved', async () => {
+    // `shapeOf` answers null for a file with no component in it, and a button
+    // built out of `<span>` is exactly that. The node is right — resolved,
+    // named, nothing below — but it is reached through the same null a parse
+    // failure returns, so it is pinned here rather than left to accident.
+    await write(
+      'src/pages/P.tsx',
+      "import { Chip } from '../grids/Chip';\n" +
+        'export const P = () => (\n  <PageLayout>\n    <Chip />\n  </PageLayout>\n);\n',
+    );
+    await write('src/grids/Chip.tsx', 'export const Chip = () => <span>ok</span>;\n');
+
+    const tree = await screenTree(root, join(root, 'src/pages/P.tsx'), { depth: 3 });
+
+    expect(tree!.root.children).toEqual([
+      { name: 'Chip', file: 'src/grids/Chip.tsx', at: 'project', children: [] },
+    ]);
+  });
+
   it('does not walk in a circle', async () => {
     await write(
       'src/pages/A.tsx',
