@@ -781,3 +781,77 @@ describe('what a family may not be', () => {
     expect(found!.skeleton?.holder).toBe('PageLayout');
   });
 });
+
+describe('a kind that no route table registers', () => {
+  it('refuses a folder that holds a mixture rather than assembling a family out of it', async () => {
+    // Measured: a dialog's family was 24 files — an amount cell, a currency
+    // field, an attachments panel, a history tab. Where the only evidence is
+    // that files sit near each other, screens of different kinds in one answer
+    // is a family assembled out of whatever was nearby. Fewer members or none.
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    const target = await screen('src/parts/ConfirmDialog.tsx', page('Dialog', ['DialogButtons']));
+    await screen('src/parts/AmountCell.tsx', page('Cell', ['Money']));
+    await screen('src/parts/AttachmentsPanel.tsx', page('Panel', ['FileList']));
+    await screen('src/parts/HistoryTab.tsx', page('Tab', ['Timeline']));
+
+    expect(await patternOf(target)).toBeNull();
+  });
+
+  it('answers for a dialog with three real siblings of its own kind', async () => {
+    // "A dialog is a screen: it has a holder, a content region, an action row,
+    // and a set of props its siblings all write. There are more of them than
+    // there are pages."
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    const target = await screen(
+      'src/parts/ConfirmDialog.tsx',
+      page('Dialog', ['DialogTitle', 'DialogButtons']),
+    );
+    for (const name of ['Session', 'Upload']) {
+      await screen(`src/parts/${name}Dialog.tsx`, page('Dialog', ['DialogTitle', 'DialogButtons']));
+    }
+
+    const derived = await patternOf(target);
+
+    expect(derived?.kind).toBe('Dialog');
+    expect(derived?.from).toBe('folder');
+    expect(derived?.family).toHaveLength(3);
+  });
+
+  it('never lets a hook into a family, however much JSX it returns', async () => {
+    // A hook that builds a column definition renders JSX and parses as a screen.
+    // `use` followed by a capital is the naming React itself enforces, not a
+    // guess about this project's vocabulary.
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    const target = await screen('src/parts/ConfirmDialog.tsx', page('Dialog', ['DialogButtons']));
+    for (const name of ['Session', 'Upload']) {
+      await screen(`src/parts/${name}Dialog.tsx`, page('Dialog', ['DialogButtons']));
+    }
+    await screen('src/parts/useGetColumns.tsx', page('Dialog', ['DialogButtons']));
+
+    const derived = await patternOf(target);
+
+    expect(derived?.family.some((one) => one.includes('useGetColumns'))).toBe(false);
+  });
+
+  it('takes the family a pattern file names, over anything read off the code', async () => {
+    // A route table states which screens are registered beside one another and a
+    // folder states nothing at all. A pattern file naming this screen is a
+    // person saying *these are one kind*, reviewed in a pull request.
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    await mkdir(join(root, '.ui-consistency/patterns'), { recursive: true });
+    const target = await screen('src/parts/ConfirmDialog.tsx', page('Dialog', ['DialogButtons']));
+    await screen('src/elsewhere/SessionDialog.tsx', page('Dialog', ['DialogButtons']));
+    await screen('src/far/UploadDialog.tsx', page('Dialog', ['DialogButtons']));
+    await writeFile(
+      join(root, '.ui-consistency/patterns/dialog.md'),
+      '---\npattern: dialog\nholder: Dialog\n---\n\n## Where it is used\n\n' +
+        '`src/parts/ConfirmDialog.tsx`, `src/elsewhere/SessionDialog.tsx`, `src/far/UploadDialog.tsx`\n',
+    );
+
+    const derived = await patternOf(target);
+
+    expect(derived?.from).toBe('pattern');
+    // Three folders, which no folder walk and no route table would have joined.
+    expect(derived?.family).toHaveLength(3);
+  });
+});

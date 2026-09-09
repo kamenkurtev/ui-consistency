@@ -207,6 +207,12 @@ export async function hookResponse(stdin: string): Promise<HookResponse | null> 
  */
 function provenance(root: string, contract: ScreenPattern): string {
   const names = contract.family.map((one) => relative(root, one));
+  // A pattern file is a person's sentence, reviewed in a pull request, so the
+  // "nobody approved it" that belongs on the other two would be false here —
+  // the *shape* was approved even though the reading of the code is fresh.
+  if (contract.from === 'pattern') {
+    return `read just now from the ${names.length} screens the project's pattern file names`;
+  }
   return contract.from === 'routes'
     ? `derived just now from the ${names.length} screens the route table registers beside it — nobody approved it`
     : `derived just now from files in its folder — ${names.join(', ')} — nobody approved it`;

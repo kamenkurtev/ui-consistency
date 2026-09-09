@@ -92,7 +92,23 @@ export const isScreenFile = (name: string): boolean =>
   // alone, each with no imports and no name a route could use (#229). Both
   // halves are candidates; `patternOf` folds them back into one screen.
   (/\.(?:[jt]sx|html|vue|svelte)$/.test(name) || /\.component\.[jt]s$/.test(name)) &&
-  !/\.(?:test|spec|stories|story)\.(?:[jt]sx?|html|vue|svelte)$/.test(name);
+  !/\.(?:test|spec|stories|story)\.(?:[jt]sx?|html|vue|svelte)$/.test(name) &&
+  !HOOK_FILE.test(name);
+
+/**
+ * A hook, which returns behaviour and is not a screen.
+ *
+ * Measured: a dialog's family came back as four files, one of them
+ * `useGetColumns.tsx` (#5). A hook that builds a column definition renders JSX
+ * and parses as a screen, and then a family of real screens is measured partly
+ * against something that has no screen in it.
+ *
+ * `use` followed by a capital is not a guess about this project's vocabulary —
+ * it is the naming React itself enforces, in the same class as `.test.` above
+ * and unlike any list of component names. A project whose hooks are named
+ * otherwise simply keeps the behaviour it has today.
+ */
+const HOOK_FILE = /^use[A-Z]/;
 
 /** The share of a family that must do a thing before it is the pattern. */
 export const MAJORITY = 0.6;
@@ -153,7 +169,17 @@ export interface SiblingOptions {
  */
 export interface Family {
   screens: string[];
-  from: 'routes' | 'folder';
+  /**
+   * `'pattern'` — a pattern file the project wrote names these screens. The
+   * strongest of the three: somebody said so, in a file reviewed in a pull
+   * request, and neither a route table nor a folder is a person's sentence.
+   *
+   * `'routes'` — the screens the project's own route table registers beside
+   * this one. Stated, but about registration rather than about kind.
+   *
+   * `'folder'` — the files around it, which is a guess.
+   */
+  from: 'pattern' | 'routes' | 'folder';
 }
 
 export async function siblingScreens(
