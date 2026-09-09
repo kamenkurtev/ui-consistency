@@ -1,6 +1,6 @@
 import { relative } from 'node:path';
 import { screenTree, type TreeNode } from './tree.js';
-import { trailingWord } from './pattern.js';
+import { trailingWord } from './names.js';
 
 export interface Group {
   /** The shared structure, one line per level, already indented. */

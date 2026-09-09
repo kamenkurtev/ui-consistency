@@ -286,7 +286,14 @@ One of: a grid named `*Grid` (7 of 9), a card list named `*Cards` (2 of 9).
 
 ## Props
 
-`PageShell` — written by 9 of 9: `title`, `data-testid`. `breadcrumbs` by 6 of 9.
+### `PageShell`
+- `title` — 9 of 9
+- `data-testid` — 9 of 9
+- `breadcrumbs` — 6 of 9
+
+### `*Grid`
+- `columns` — 6 of 6
+- `density` = "compact" — 5 of 6
 
 ## Rules
 
@@ -300,7 +307,7 @@ report has a summary band above the grid.
 
 ## Where it is used
 
-`src/pages/OrdersPage.tsx`, `src/pages/InvoicesPage.tsx`, …
+`src/pages/OrdersPage.tsx`, `src/pages/InvoicesPage.tsx`, `src/pages/CustomersPage.tsx`
 ~~~~
 
 Four things about writing it, and each is a way it goes wrong:
@@ -314,8 +321,18 @@ Four things about writing it, and each is a way it goes wrong:
 - **A rule is a sentence, and stays one.** *Actions are always rendered; gating
   toggles `disabled` only.* Nothing evaluates it; it is there to be read by
   whoever writes the next screen.
-- **Where it is used is an index.** The pattern is not defined by its members;
-  the list is there so a reader can go and look.
+- **Where it is used is an index, and list every one.** The pattern is not
+  defined by its members, but selection and staleness both read that list: a
+  truncated one lets a screen the pattern covers fall through to a holder match
+  or to nothing, and reports staleness on the files you happened to name. You
+  have just read them all, so writing them all costs nothing.
+- **Props go under a `###` per component, one bullet per prop, with the
+  strength.** That section is the only one with a shape, because *"writes the
+  table without `density`, which 5 of the 6 screens of this kind write"* cannot
+  be produced from prose nobody agreed the shape of. Write a count where you
+  counted; write a sentence where you did not, and it is kept as one. `*Grid`
+  is a slot — the role a family fills under a different name in every screen,
+  which counting by name never reaches.
 
 Read it back with `uic patterns`, which lists what the project has and says which
 files have changed since a pattern was observed. `uic patterns <screen>` answers

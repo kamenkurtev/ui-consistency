@@ -31,6 +31,18 @@ PageShell                  9 of 9
 ### \`<content>\`
 One of: a grid named \`*Grid\` (7 of 9), a card list (2 of 9).
 
+## Props
+
+### \`PageShell\`
+- \`title\` — 9 of 9
+- \`data-testid\` — 9 of 9
+- \`breadcrumbs\` — most screens
+
+### \`*Grid\`
+- \`density\` = "compact" — 5 of 6
+
+The sixth is a detail-panel table and is deliberate.
+
 ## Rules
 
 - The filter's selection descends as props.
@@ -67,6 +79,47 @@ describe('a pattern as a project has written it down', () => {
     // screen as matching a sentence it never read.
     expect(pattern.rules).toHaveLength(2);
     expect(pattern.rules[1]).toContain('gating toggles');
+  });
+
+  it('reads the props section, which is the one part with a grammar', () => {
+    // "Writes the table without `density`, which 5 of the 6 screens of this kind
+    // write" is the sentence the verifier exists to produce, and it cannot be
+    // produced from prose nobody agreed the shape of.
+    const shell = pattern.props.find((one) => one.component === 'PageShell');
+    expect(shell?.props.map((one) => one.name)).toEqual(['title', 'data-testid', 'breadcrumbs']);
+    expect(shell?.props[0]).toEqual({
+      name: 'title',
+      value: null,
+      strength: '9 of 9',
+      writtenBy: 9,
+      of: 9,
+    });
+  });
+
+  it('keeps a strength somebody wrote as a sentence, without inventing a number', () => {
+    // Refusing it would make the format fight its author; pretending to have
+    // parsed it would make the verifier state a count nobody counted.
+    const written = pattern.props
+      .find((one) => one.component === 'PageShell')
+      ?.props.find((one) => one.name === 'breadcrumbs');
+    expect(written).toEqual({
+      name: 'breadcrumbs',
+      value: null,
+      strength: 'most screens',
+      writtenBy: null,
+      of: null,
+    });
+  });
+
+  it('reads a slot as a component, and the value where one is stated', () => {
+    const slot = pattern.props.find((one) => one.component === '*Grid');
+    expect(slot?.props[0]).toEqual({
+      name: 'density',
+      value: 'compact',
+      strength: '5 of 6',
+      writtenBy: 5,
+      of: 6,
+    });
   });
 
   it('reads the files it says it describes', () => {

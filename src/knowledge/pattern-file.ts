@@ -22,6 +22,25 @@ export interface StructureLine {
  * that into a boolean would report a screen as matching a sentence it never
  * read.
  */
+/** One prop, as a pattern file states it. */
+export interface PatternProp {
+  name: string;
+  /** The value the pattern states, where it states one. */
+  value: string | null;
+  /** As written — `9 of 9`, `most screens`. Kept whether or not it is arithmetic. */
+  strength: string | null;
+  /** The two numbers, where the strength was written as a count. */
+  writtenBy: number | null;
+  of: number | null;
+}
+
+/** The props a pattern states for one component or slot. */
+export interface PatternComponent {
+  /** `PageShell`, or `*Grid` for a role the family fills under a different name. */
+  component: string;
+  props: PatternProp[];
+}
+
 export interface PatternFile {
   /** Where it was read from, project-relative. */
   file: string;
@@ -39,12 +58,23 @@ export interface PatternFile {
   sections: Map<string, string>;
   /** The bullets under `## Rules`, each as written. */
   rules: string[];
+  /**
+   * The props the pattern states, per component.
+   *
+   * The one section with a grammar, and it earns one: *"writes the table
+   * without `density`, which 5 of the 6 screens of this kind write"* is the
+   * sentence the verifier exists to produce, and it cannot be produced from
+   * prose nobody agreed the shape of. Everything around the list stays prose
+   * and is handed over with the rest.
+   */
+  props: PatternComponent[];
 }
 
 /** `## Where it is used`, and the two other spellings a person will write. */
 const MEMBERS = /^where it is used$|^used (?:by|in)$/i;
 const RULES = /^rules?$/i;
 const STRUCTURE = /^structure$/i;
+const PROPS = /^props$/i;
 
 /**
  * Every pattern a project has written down.
@@ -111,6 +141,7 @@ export function parsePattern(file: string, raw: string): PatternFile {
     holder: front.get('holder') ?? null,
     observed: front.get('observed') ?? null,
     structure: parseStructure(named(STRUCTURE)),
+    props: parseProps(named(PROPS)),
     members: parseMembers(named(MEMBERS)),
     sections,
     rules: (named(RULES) ?? '')
@@ -228,4 +259,58 @@ export async function staleIn(rootDir: string, pattern: PatternFile): Promise<St
 export interface Stale {
   file: string;
   why: 'changed' | 'gone';
+}
+
+/**
+ * The `## Props` section, which is the one part of a pattern file with a
+ * grammar.
+ *
+ * ```
+ * ### `PageShell`
+ * - `title` — 9 of 9
+ * - `data-testid` — 9 of 9
+ * - `density` = "compact" — 5 of 6
+ * ```
+ *
+ * A `###` per component or slot, a bullet per prop. Prose above and below the
+ * bullets is kept in the section and handed over like every other sentence in
+ * the file — the grammar is a way in, not a way of forbidding anything.
+ *
+ * The strength is kept as written *and* parsed where it is a count, because
+ * `5 of 6` is arithmetic a verifier can state and `most screens` is a sentence
+ * a person wrote. Refusing the second would make the format fight its author;
+ * pretending to have parsed it would make the verifier invent a number.
+ */
+function parseProps(text: string | null): PatternComponent[] {
+  if (text === null) return [];
+
+  const found: PatternComponent[] = [];
+  let current: PatternComponent | null = null;
+
+  for (const line of text.split('\n')) {
+    const heading = /^###\s+`?([^`\s]+)`?\s*$/.exec(line);
+    if (heading !== null) {
+      current = { component: heading[1]!, props: [] };
+      found.push(current);
+      continue;
+    }
+    if (current === null) continue;
+
+    const bullet = /^\s*[-*]\s+`([^`]+)`\s*(.*)$/.exec(line);
+    if (bullet === null) continue;
+
+    const rest = bullet[2] ?? '';
+    const value = /^=\s*"([^"]*)"/.exec(rest.trim())?.[1] ?? null;
+    const strength = rest.replace(/^=\s*"[^"]*"/, '').replace(/^\s*[—-]\s*/, '').trim();
+    const counted = /^(\d+)\s+of\s+(\d+)$/.exec(strength);
+
+    current.props.push({
+      name: bullet[1]!,
+      value,
+      strength: strength.length === 0 ? null : strength,
+      writtenBy: counted === null ? null : Number(counted[1]),
+      of: counted === null ? null : Number(counted[2]),
+    });
+  }
+  return found;
 }
