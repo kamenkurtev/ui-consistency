@@ -242,6 +242,23 @@ describe('a derived pattern, written down', () => {
     expect(rendered).not.toContain('writes no props;\n');
   });
 
+  /**
+   * The observer also declines where enough screens were named and too few
+   * could be read. Reporting the small-family reason there would be a sentence
+   * that contradicts itself in its own numbers.
+   */
+  it('does not blame the family size where the family was big enough', () => {
+    const rendered = renderPattern(
+      { ...DERIVED, configuration: [], propsUnmeasured: { siblings: 4, needed: 3 } },
+      OPTIONS,
+    );
+
+    expect(rendered).toContain('**Not measured.**');
+    expect(rendered).toContain('fewer than 3 could be read');
+    expect(rendered).not.toContain('3 are needed');
+    expect(rendered).not.toContain('too small');
+  });
+
   it('states no class attribute where none of the family was seen to write one', () => {
     // `class` on a React project is a guess, and in JSX a wrong one. Not
     // observed and observed-to-be-`class` must not be spelled the same.

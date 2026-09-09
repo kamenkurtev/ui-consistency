@@ -23251,12 +23251,7 @@ function renderPattern(pattern2, options) {
   }
   if (pattern2.propsUnmeasured !== null) {
     const { siblings, needed } = pattern2.propsUnmeasured;
-    out.push(
-      "## Props",
-      "",
-      `**Not measured.** The props of a family are counted over the screens *beside* the reference, which leaves ${siblings} here, and ${needed} are needed \u2014 below that a pair is a copy rather than an agreement. This is not a family that writes no props; it is a family too small to tell the two apart. One more screen of this kind, and this section answers.`,
-      ""
-    );
+    out.push("## Props", "", `**Not measured.** ${whyUnmeasured(siblings, needed)}`, "");
   }
   const props2 = propsBlock(pattern2);
   if (props2.length > 0) {
@@ -23395,6 +23390,7 @@ var title = (name) => {
   const words = name.replace(/[-_]+/g, " ").trim();
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
+var whyUnmeasured = (siblings, needed) => siblings < needed ? `The props of a family are counted over the screens *beside* the reference, which leaves ${siblings} here, and ${needed} are needed \u2014 below that a pair is a copy rather than an agreement. This is not a family that writes no props; it is a family too small to tell the two apart. One more screen of this kind, and this section answers.` : `Of the ${siblings} screens beside the reference, fewer than ${needed} could be read for what they render, so there was nothing to count. This says nothing about what the family writes.`;
 var article = (word) => `${/^[aeiou]/i.test(word) ? "an" : "a"} ${word}`;
 var safe = (value) => quoted(value);
 var list = (items) => items.length <= 1 ? items[0] ?? "" : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;

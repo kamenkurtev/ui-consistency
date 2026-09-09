@@ -52,12 +52,7 @@ export function renderPattern(pattern: ScreenPattern, options: RenderOptions): s
   // a clean result is the failure the whole tool is organised against (#41).
   if (pattern.propsUnmeasured !== null) {
     const { siblings, needed } = pattern.propsUnmeasured;
-    out.push(
-      '## Props',
-      '',
-      `**Not measured.** The props of a family are counted over the screens *beside* the reference, which leaves ${siblings} here, and ${needed} are needed — below that a pair is a copy rather than an agreement. This is not a family that writes no props; it is a family too small to tell the two apart. One more screen of this kind, and this section answers.`,
-      '',
-    );
+    out.push('## Props', '', `**Not measured.** ${whyUnmeasured(siblings, needed)}`, '');
   }
 
   const props = propsBlock(pattern);
@@ -303,6 +298,20 @@ const title = (name: string): string => {
   const words = name.replace(/[-_]+/g, ' ').trim();
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
+
+/**
+ * Why the props level was not measured, and there are two reasons.
+ *
+ * The family being too small is the common one and the one #41 is about. But
+ * the observer also declines where enough screens were named and too few could
+ * actually be read — a file that would not parse, or one rendering nothing —
+ * and reporting *"leaves 4 here, and 3 are needed"* for that would be a
+ * sentence that contradicts itself in its own numbers.
+ */
+const whyUnmeasured = (siblings: number, needed: number): string =>
+  siblings < needed
+    ? `The props of a family are counted over the screens *beside* the reference, which leaves ${siblings} here, and ${needed} are needed — below that a pair is a copy rather than an agreement. This is not a family that writes no props; it is a family too small to tell the two apart. One more screen of this kind, and this section answers.`
+    : `Of the ${siblings} screens beside the reference, fewer than ${needed} could be read for what they render, so there was nothing to count. This says nothing about what the family writes.`;
 
 /** `an expression`, `a literal` — the counts are read by people before programs. */
 const article = (word: string): string => `${/^[aeiou]/i.test(word) ? 'an' : 'a'} ${word}`;
