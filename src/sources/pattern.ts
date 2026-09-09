@@ -1,13 +1,21 @@
 import { readFile } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { dirname, relative, resolve } from 'node:path';
 import { findProjectRoot } from '../layers/detect.js';
 import { regionsOf, type PageRegions, type Region } from './regions.js';
 import { rawMarkupOf, shapeOf } from './extract.js';
 import { parseModule, walk } from '../parse/parse.js';
 import { isTemplateComponent, parseTemplate, templateKind, type TemplateNode } from '../parse/template.js';
 import { trailingWord } from './names.js';
+import { patternFiles } from '../knowledge/pattern-file.js';
 
-import { MAJORITY, MAX_FAMILY, QUORUM, isScreenFile, siblingScreens } from './siblings.js';
+import {
+  MAJORITY,
+  MAX_FAMILY,
+  QUORUM,
+  isScreenFile,
+  siblingScreens,
+  type Family,
+} from './siblings.js';
 import { observeUsage, type ComponentUsage } from './usage.js';
 import { markupOf, pairOf } from './pair.js';
 import { chromeOf, governingLayout, type Chrome } from './layouts.js';
@@ -147,9 +155,12 @@ export interface ScreenPattern {
   /**
    * Where the family came from.
    *
-   * `'routes'` — the screens the project's own route table registers beside
-   * this one. Stated, not inferred. `'folder'` — the files around it, which is
-   * a guess about which of them are of a kind.
+   * `'pattern'` — a pattern file the project has written names this screen.
+   * The strongest answer available and the only one that is a *person's*
+   * sentence rather than a reading of the code (#5). `'routes'` — the screens
+   * the project's own route table registers beside this one. Stated, not
+   * inferred. `'folder'` — the files around it, which is a guess about which of
+   * them are of a kind.
    *
    * It belongs in the contract because since #231 a derived contract reaches
    * the agent automatically, and *"derived from the 8 screens registered beside
@@ -157,7 +168,7 @@ export interface ScreenPattern {
    * sentences. An agent handed the second, with the names, can judge the family
    * nonsense on sight — which is this tool's own division of labour (#255).
    */
-  from: 'routes' | 'folder';
+  from: 'pattern' | 'routes' | 'folder';
 }
 
 /** Three screens of a kind, the reference among them. Two files are a copy. */
@@ -396,14 +407,24 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
   // whatever repository happens to sit beside this one on disk.
   const root = await findProjectRoot(dirname(target));
 
-  const family = await siblingScreens(target, {
-    ...(root === null ? {} : { root }),
-    isScreen: isScreenFile,
-    maxSiblings: MAX_FAMILY,
-    // The reference counts towards the quorum: three screens of a kind is a
-    // family, and one of the three is the page being asked about.
-    quorum: MIN_FAMILY - 1,
-  });
+  // What the project has *written down* comes first. A route table states which
+  // screens are registered beside one another, and a folder states nothing at
+  // all — but a pattern file naming this screen is a person saying *these are
+  // one kind*, reviewed in a pull request. Nothing read off the code outranks
+  // that, and a dialog that no router registers has no other way to have a kind
+  // (#5).
+  const named = root === null ? null : await familyFromPattern(root, target);
+
+  const family =
+    named ??
+    (await siblingScreens(target, {
+      ...(root === null ? {} : { root }),
+      isScreen: isScreenFile,
+      maxSiblings: MAX_FAMILY,
+      // The reference counts towards the quorum: three screens of a kind is a
+      // family, and one of the three is the page being asked about.
+      quorum: MIN_FAMILY - 1,
+    }));
 
   // Deduplicated by identity, because both halves of a pair are candidates and
   // they are one screen. Without this an Angular family counts every screen
@@ -439,6 +460,19 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
   // that matched nothing outside one library.
   const sameHolder = read.filter((one) => one.page.holder === reference.page.holder);
   const narrowed = sameHolder.length >= MIN_FAMILY;
+
+  // **A folder that holds a mixture is not a family** (#5). Where the project
+  // *states* the siblinghood — a route table, or a pattern file naming these
+  // screens — a set with several holders is still that set, and describing what
+  // it has in common is describing something somebody wrote down. Where the only
+  // evidence is that the files sit near each other, screens of different kinds
+  // in one answer is a family assembled out of whatever was nearby: a dialog was
+  // measured against an amount cell, a currency field, an attachments panel and
+  // a history tab.
+  //
+  // The honest answer is then fewer members or none. A miss, never an invention.
+  if (!narrowed && family.from === 'folder') return null;
+
   const screens = narrowed ? sameHolder : read;
   const kind = narrowed ? reference.page.holder : null;
 
@@ -527,4 +561,27 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
     kind,
     from: family.from,
   };
+}
+
+/**
+ * The family a pattern file names, where one names this screen.
+ *
+ * Only the members, and only where there are enough of them to measure
+ * agreement — the pattern file states the shape, and this level's job is still
+ * to read what the code does. A pattern with one member is a decision about a
+ * screen that does not have siblings yet, and deriving from it would report that
+ * one screen's own business as the pattern.
+ */
+async function familyFromPattern(root: string, target: string): Promise<Family | null> {
+  const { patterns } = await patternFiles(root).catch(() => ({ patterns: [] }));
+  if (patterns.length === 0) return null;
+
+  const where = relative(root, target);
+  const covering = patterns.find((one) => one.members.includes(where));
+  if (covering === undefined) return null;
+
+  const screens = covering.members
+    .filter((member) => member !== where)
+    .map((member) => resolve(root, member));
+  return screens.length + 1 < MIN_FAMILY ? null : { screens, from: 'pattern' };
 }
