@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
   "description": "Establishes what screens of a kind already look like in your project, and checks the ones you write against it",
-  "version": "0.14.90",
+  "version": "0.14.91",
   "contextFileName": "AGENTS.md"
 }
