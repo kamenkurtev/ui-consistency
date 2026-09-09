@@ -456,3 +456,59 @@ describe('a component written without what every screen of the kind writes', () 
     expect(contractDeviations('Orders.tsx', source, old)).toEqual([]);
   });
 });
+
+describe('a contract entry that names a slot rather than a component', () => {
+  it('matches the screen\'s own component by its trailing word', () => {
+    // `OrdersGrid`, `InvoicesGrid` and `CustomersGrid` are one thing the family
+    // agrees about. Counted by name none of them reaches a majority, so the
+    // contract carries the role — and a check that matched only literal names
+    // would find nothing in any of the screens it was derived from.
+    const withSlot = contract({
+      skeleton: { holder: 'PageShell', regions: [] },
+      configuration: [
+        {
+          component: '*Grid',
+          props: [],
+          written: [{ name: 'density', shape: 'literal' as const, writtenBy: 5 }],
+          classes: [],
+          classAttribute: 'className',
+          seenIn: 6,
+          agreedBy: 5,
+        },
+      ],
+    });
+
+    const source =
+      'export const P = () => (\n  <PageShell>\n    <ReportsGrid rows={r} />\n  </PageShell>\n);\n';
+
+    const found = contractDeviations('ReportsPage.tsx', source, withSlot) ?? [];
+
+    expect(found).toHaveLength(1);
+    // The screen's own word, not the role's. Told "writes <*Grid> without
+    // density" a reader goes looking for a component called `*Grid`.
+    expect(found[0]!.message).toContain('<ReportsGrid>');
+    expect(found[0]!.message).toContain('5 of the 6');
+  });
+
+  it('says nothing about a screen that renders nothing filling the slot', () => {
+    const withSlot = contract({
+      skeleton: { holder: 'PageShell', regions: [] },
+      configuration: [
+        {
+          component: '*Grid',
+          props: [],
+          written: [{ name: 'density', shape: 'literal' as const, writtenBy: 5 }],
+          classes: [],
+          classAttribute: 'className',
+          seenIn: 6,
+          agreedBy: 5,
+        },
+      ],
+    });
+
+    const source =
+      'export const P = () => (\n  <PageShell>\n    <SummaryBand />\n  </PageShell>\n);\n';
+
+    expect(contractDeviations('SummaryPage.tsx', source, withSlot)).toEqual([]);
+  });
+});

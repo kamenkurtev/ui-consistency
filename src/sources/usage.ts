@@ -7,6 +7,7 @@ import { parseTemplate, templateKind } from '../parse/template.js';
 
 import { MAJORITY, MAX_FAMILY, QUORUM, siblingScreens } from './siblings.js';
 import { markupOf, pairOf } from './pair.js';
+import { trailingWord } from './names.js';
 
 /**
  * How a component is written on the screens beside this one.
@@ -448,7 +449,12 @@ export const observeUsage = async (
     if (pair !== null) seen.add(pair.identity);
     const markup =
       pair === null ? { path, source } : await markupOf(pair.identity, source);
-    const written = writtenIn(markup.path, markup.source);
+    // `all`, because *whether* a prop is written is the fact a family agrees
+    // on. The value of a test id is an artefact of the page and is filtered
+    // below, where values are decided — filtering it here filtered it from the
+    // presence count too, and `data-testid` at 190 of 209 usages was the one
+    // thing a family agreed about that nothing could see.
+    const written = writtenIn(markup.path, markup.source, { all: true });
     if (written.length === 0) continue;
     files.push(perFile(written));
   }
@@ -456,6 +462,7 @@ export const observeUsage = async (
 
   const usages: ComponentUsage[] = [];
   const components = new Set(files.flatMap((file) => [...file.keys()]));
+  for (const slot of slotsIn(files)) components.add(slot);
 
   for (const component of components) {
     const uses = files.map((file) => file.get(component)).filter((one) => one !== undefined);
@@ -500,7 +507,7 @@ export const observeUsage = async (
       // A value nobody states is not a value agreed on, and one file writing
       // `title="Orders"` while three write `title={t(…)}` is not agreement
       // either — before this, those three were simply not recorded.
-      if (entry.seen.size === 1 && entry.unknown === 0) {
+      if (entry.seen.size === 1 && entry.unknown === 0 && !NOISE.test(name)) {
         if (writtenBy < MIN_FILES || writtenBy / uses.length < MAJORITY) continue;
         agreed.push({ name, value: [...entry.seen][0]!, bare: entry.bare, writtenBy });
         continue;
@@ -557,3 +564,60 @@ export const observeUsage = async (
   if (usages.length === 0) return null;
   return usages.sort((a, b) => b.seenIn - a.seenIn).slice(0, MAX_COMPONENTS);
 };
+
+/**
+ * The roles a family fills under a different name in every screen.
+ *
+ * **Names differ across a family more often than they repeat.** Nine list
+ * screens render `OrdersGrid`, `InvoicesGrid`, `CustomersGrid`; counted by name
+ * not one of them reaches a majority, so the contract described the holder alone
+ * — measured on a real family of four, `configuration` had exactly one entry
+ * (#6). Props are where a family drifts, and every component it drifts on was
+ * invisible.
+ *
+ * A shared trailing word is the project's own statement that these fill one
+ * role, and it is the same evidence `uic group` abstracts on. Two names at
+ * minimum: one name used once is that screen's own component, not a slot.
+ *
+ * The concrete names are left alone. A component whose own name already carries
+ * the family is described under it, and adding a slot beside it would report one
+ * thing twice.
+ */
+function slotsIn(files: Map<string, Written>[]): string[] {
+  const carries = (name: string): boolean => {
+    const count = files.filter((file) => file.has(name)).length;
+    return count >= MIN_FILES && count / files.length >= MAJORITY;
+  };
+
+  const byWord = new Map<string, Set<string>>();
+  for (const file of files) {
+    for (const name of file.keys()) {
+      if (name.startsWith('*') || carries(name)) continue;
+      const word = trailingWord(name);
+      if (word === null) continue;
+      const names = byWord.get(word) ?? new Set<string>();
+      names.add(name);
+      byWord.set(word, names);
+    }
+  }
+
+  const added: string[] = [];
+  for (const [word, names] of byWord) {
+    if (names.size < 2) continue;
+    const slot = `*${word}`;
+    for (const file of files) {
+      const mine = [...names].flatMap((name) => {
+        const one = file.get(name);
+        return one === undefined ? [] : [{ ...one, component: slot }];
+      });
+      if (mine.length === 0) continue;
+      // Merged by the same fold that merges two uses of one component in a
+      // file. A second implementation of it here would be a fourth copy of a
+      // merge this repository already has.
+      const merged = perFile(mine).get(slot);
+      if (merged !== undefined) file.set(slot, merged);
+    }
+    added.push(slot);
+  }
+  return added;
+}

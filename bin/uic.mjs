@@ -22092,6 +22092,15 @@ function neighbourSource() {
 // src/sources/usage.ts
 import { readFile as readFile14 } from "node:fs/promises";
 import { dirname as dirname8 } from "node:path";
+
+// src/sources/names.ts
+var trailingWord = (name) => {
+  const words = name.includes("-") ? name.split("-") : name.match(/[A-Z][a-z0-9]*/g);
+  const last = words?.[words.length - 1];
+  return last === void 0 || last.length < 3 ? null : last;
+};
+
+// src/sources/usage.ts
 var CHECKABLE2 = /\.(?:[jt]sx|html|vue|svelte)$/;
 var PAIRED2 = /\.component\.[jt]s$/;
 var GENERATED3 = /\.(?:test|spec|stories|story)\.(?:[jt]sx?|html|vue|svelte)$/;
@@ -22229,13 +22238,14 @@ var observeUsage = async (target, options = {}) => {
     if (pair !== null && seen.has(pair.identity)) continue;
     if (pair !== null) seen.add(pair.identity);
     const markup = pair === null ? { path, source } : await markupOf(pair.identity, source);
-    const written = writtenIn(markup.path, markup.source);
+    const written = writtenIn(markup.path, markup.source, { all: true });
     if (written.length === 0) continue;
     files.push(perFile(written));
   }
   if (files.length < QUORUM) return null;
   const usages = [];
   const components = new Set(files.flatMap((file) => [...file.keys()]));
+  for (const slot of slotsIn(files)) components.add(slot);
   for (const component of components) {
     const uses = files.map((file) => file.get(component)).filter((one) => one !== void 0);
     if (uses.length < MIN_FILES || uses.length / files.length < MAJORITY) continue;
@@ -22260,7 +22270,7 @@ var observeUsage = async (target, options = {}) => {
     const always = [];
     for (const [name, entry] of values) {
       const writtenBy = uses.filter((use) => use.attributes.has(name)).length;
-      if (entry.seen.size === 1 && entry.unknown === 0) {
+      if (entry.seen.size === 1 && entry.unknown === 0 && !NOISE.test(name)) {
         if (writtenBy < MIN_FILES || writtenBy / uses.length < MAJORITY) continue;
         agreed2.push({ name, value: [...entry.seen][0], bare: entry.bare, writtenBy });
         continue;
@@ -22298,6 +22308,39 @@ var observeUsage = async (target, options = {}) => {
   if (usages.length === 0) return null;
   return usages.sort((a, b) => b.seenIn - a.seenIn).slice(0, MAX_COMPONENTS);
 };
+function slotsIn(files) {
+  const carries = (name) => {
+    const count = files.filter((file) => file.has(name)).length;
+    return count >= MIN_FILES && count / files.length >= MAJORITY;
+  };
+  const byWord = /* @__PURE__ */ new Map();
+  for (const file of files) {
+    for (const name of file.keys()) {
+      if (name.startsWith("*") || carries(name)) continue;
+      const word = trailingWord(name);
+      if (word === null) continue;
+      const names = byWord.get(word) ?? /* @__PURE__ */ new Set();
+      names.add(name);
+      byWord.set(word, names);
+    }
+  }
+  const added = [];
+  for (const [word, names] of byWord) {
+    if (names.size < 2) continue;
+    const slot = `*${word}`;
+    for (const file of files) {
+      const mine = [...names].flatMap((name) => {
+        const one = file.get(name);
+        return one === void 0 ? [] : [{ ...one, component: slot }];
+      });
+      if (mine.length === 0) continue;
+      const merged = perFile(mine).get(slot);
+      if (merged !== void 0) file.set(slot, merged);
+    }
+    added.push(slot);
+  }
+  return added;
+}
 
 // src/sources/pattern.ts
 import { readFile as readFile16 } from "node:fs/promises";
@@ -22438,11 +22481,6 @@ async function readScreen(path) {
     body: shape?.body ?? []
   };
 }
-var trailingWord = (name) => {
-  const words = name.includes("-") ? name.split("-") : name.match(/[A-Z][a-z0-9]*/g);
-  const last = words?.[words.length - 1];
-  return last === void 0 || last.length < 3 ? null : last;
-};
 function bodyIn(nodes, holder) {
   const at = nodes.findIndex((node) => node.name === holder);
   if (at < 0) return [];
@@ -22854,6 +22892,7 @@ import { join as join15 } from "node:path";
 var MEMBERS = /^where it is used$|^used (?:by|in)$/i;
 var RULES = /^rules?$/i;
 var STRUCTURE = /^structure$/i;
+var PROPS = /^props$/i;
 async function patternFiles(rootDir) {
   const { dir, legacy } = await knowledgeDir(rootDir, "patterns");
   const entries = await readdir9(dir).catch(() => null);
@@ -22896,6 +22935,7 @@ function parsePattern(file, raw) {
     holder: front.get("holder") ?? null,
     observed: front.get("observed") ?? null,
     structure: parseStructure(named(STRUCTURE)),
+    props: parseProps(named(PROPS)),
     members: parseMembers(named(MEMBERS)),
     sections,
     rules: (named(RULES) ?? "").split("\n").flatMap((line) => {
@@ -22957,6 +22997,34 @@ async function staleIn(rootDir, pattern2) {
   }
   return moved;
 }
+function parseProps(text) {
+  if (text === null) return [];
+  const found = [];
+  let current = null;
+  for (const line of text.split("\n")) {
+    const heading = /^###\s+`?([^`\s]+)`?\s*$/.exec(line);
+    if (heading !== null) {
+      current = { component: heading[1], props: [] };
+      found.push(current);
+      continue;
+    }
+    if (current === null) continue;
+    const bullet = /^\s*[-*]\s+`([^`]+)`\s*(.*)$/.exec(line);
+    if (bullet === null) continue;
+    const rest = bullet[2] ?? "";
+    const value = /^=\s*"([^"]*)"/.exec(rest.trim())?.[1] ?? null;
+    const strength = rest.replace(/^=\s*"[^"]*"/, "").replace(/^\s*[—-]\s*/, "").trim();
+    const counted = /^(\d+)\s+of\s+(\d+)$/.exec(strength);
+    current.props.push({
+      name: bullet[1],
+      value,
+      strength: strength.length === 0 ? null : strength,
+      writtenBy: counted === null ? null : Number(counted[1]),
+      of: counted === null ? null : Number(counted[2])
+    });
+  }
+  return found;
+}
 
 // src/checks/contract.ts
 import { basename as basename7 } from "node:path";
@@ -22965,6 +23033,7 @@ var SHAPE2 = {
   call: "a call",
   expression: "an expression"
 };
+var fills = (configured, rendered) => configured.startsWith("*") ? trailingWord(rendered) === configured.slice(1) : configured === rendered;
 var holderOf = (contract) => contract.skeleton?.holder ?? contract.kind;
 function contractsForScreen(contracts, holder) {
   if (holder === null) return [];
@@ -23009,23 +23078,24 @@ function contractDeviations(file, source, contract) {
       say(`renders a raw <${element}>; no screen of this kind does`);
     }
   }
-  const written = contract.configuration.length === 0 ? [] : writtenIn(file, source);
+  const written = contract.configuration.length === 0 ? [] : writtenIn(file, source, { all: true });
   for (const configured of contract.configuration) {
-    const uses = written.filter((one) => one.component === configured.component);
+    const uses = written.filter((one) => fills(configured.component, one.component));
     if (uses.length === 0) continue;
+    const spelt = configured.component.startsWith("*") ? uses[0]?.component ?? configured.component : configured.component;
     const support = configured.agreedBy >= configured.seenIn ? "which every screen of this kind writes" : `which ${configured.agreedBy} of the ${configured.seenIn} screens of this kind write`;
     for (const always of configured.written ?? []) {
       const strength = always.writtenBy >= configured.seenIn ? "which every screen of this kind writes" : `which ${always.writtenBy} of the ${configured.seenIn} screens of this kind write`;
       const values = uses.map((use) => use.attributes.get(always.name));
       if (values.every((value) => value === void 0)) {
-        say(`writes <${configured.component}> without ${always.name}, ${strength}`);
+        say(`writes <${spelt}> without ${always.name}, ${strength}`);
         continue;
       }
       if (always.shape === null) continue;
       const differs = values.find((value) => value !== void 0 && value.shape !== always.shape);
       if (differs === void 0) continue;
       say(
-        `writes ${always.name} as ${SHAPE2[differs.shape]} on <${configured.component}>, where ${always.writtenBy >= configured.seenIn ? "every screen of this kind writes" : `${always.writtenBy} of the ${configured.seenIn} write it as`} ${SHAPE2[always.shape]}`
+        `writes ${always.name} as ${SHAPE2[differs.shape]} on <${spelt}>, where ${always.writtenBy >= configured.seenIn ? "every screen of this kind writes" : `${always.writtenBy} of the ${configured.seenIn} write it as`} ${SHAPE2[always.shape]}`
       );
     }
     for (const prop of configured.props) {
@@ -23037,7 +23107,7 @@ function contractDeviations(file, source, contract) {
         (value) => typeof value === "string" && value !== prop.value
       )[0];
       say(
-        other === void 0 ? `writes <${configured.component}> without ${how}, ${support}` : `writes <${configured.component} ${prop.name}="${quoted(other)}">, where this kind writes ${how} \u2014 ${support}`
+        other === void 0 ? `writes <${spelt}> without ${how}, ${support}` : `writes <${spelt} ${prop.name}="${quoted(other)}">, where this kind writes ${how} \u2014 ${support}`
       );
     }
   }
@@ -23773,7 +23843,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join20 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.85";
+var VERSION = "0.14.86";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
