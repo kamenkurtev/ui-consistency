@@ -28,36 +28,12 @@ fi
 # the code changes. Shipping behaviour without a bump reaches nobody who
 # already installed it, and nothing fails to say so — which is why this is a
 # gate and not a note in the rules. It happened twice in one day before it was.
+#
+# Its own script so a test can drive it. Every guard in this repository that was
+# written without one has since been found not to fire, and this one was found
+# not to fire the day it mattered.
 echo "==> version"
-SHIPPED='src/ bin/ hooks/ skills/ .claude-plugin/'
-if ! git rev-parse --verify --quiet origin/main >/dev/null; then
-  # No network, a fresh clone, a detached head. A gate that cannot run offline
-  # is a gate that gets skipped.
-  echo "no origin/main to compare against; skipping the version check"
-elif [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ]; then
-  echo "on origin/main; nothing to compare"
-else
-  # Against the working tree rather than HEAD, on both sides: a bump you have
-  # made but not yet committed is a bump, and a gate that says otherwise sends
-  # you round a pointless loop. The first version of this check did exactly
-  # that.
-  # shellcheck disable=SC2086
-  CHANGED=$(git diff --name-only origin/main -- $SHIPPED)
-  if [ -z "$CHANGED" ]; then
-    echo "nothing shipped changed; no bump needed"
-  else
-    HERE=$(grep -o '"version": "[^"]*"' .claude-plugin/plugin.json || true)
-    THERE=$(git show origin/main:.claude-plugin/plugin.json 2>/dev/null | grep -o '"version": "[^"]*"' || true)
-    if [ "$HERE" = "$THERE" ]; then
-      echo "this branch changes what ships but leaves the version at $THERE." >&2
-      echo "Anyone who has already installed the plugin will not receive it." >&2
-      echo "  npm run bump          # patch" >&2
-      echo "  npm run bump minor    # new capability" >&2
-      exit 1
-    fi
-    echo "version moved: $THERE -> $HERE"
-  fi
-fi
+bash "$(dirname "$0")/version-check.sh"
 
 echo "==> tests"
 npm run test
