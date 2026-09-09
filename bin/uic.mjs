@@ -2,7 +2,7 @@
 
 // src/cli/index.ts
 import { readFile as readFile28, realpath as realpath2, stat as stat11, writeFile as writeFile7 } from "node:fs/promises";
-import { dirname as dirname14, relative as relative11, resolve as resolve8 } from "node:path";
+import { basename as basename8, dirname as dirname14, relative as relative11, resolve as resolve8 } from "node:path";
 
 // src/layers/detect.ts
 import { readFile as readFile2, readdir as readdir2, stat as stat2 } from "node:fs/promises";
@@ -1756,11 +1756,11 @@ var flow = (superClass) => class FlowParserMixin extends superClass {
   }
   addComment(comment) {
     if (this.flowPragma === void 0) {
-      const matches = FLOW_PRAGMA_REGEX.exec(comment.value);
-      if (!matches) ;
-      else if (matches[1] === "flow") {
+      const matches2 = FLOW_PRAGMA_REGEX.exec(comment.value);
+      if (!matches2) ;
+      else if (matches2[1] === "flow") {
         this.flowPragma = "flow";
-      } else if (matches[1] === "noflow") {
+      } else if (matches2[1] === "noflow") {
         this.flowPragma = "noflow";
       } else {
         throw new Error("Unexpected flow pragma");
@@ -22065,12 +22065,12 @@ function neighbourSource() {
       if (read < QUORUM) return null;
       const components = [...seen.entries()].filter(([, count]) => count / read >= MAJORITY).sort((a, b) => b[1] - a[1]).map(([name]) => name);
       if (components.length === 0) return null;
-      const counted = /* @__PURE__ */ new Map();
+      const counted2 = /* @__PURE__ */ new Map();
       for (const pattern3 of patterns2) {
         const key = pattern3.join(">");
-        counted.set(key, (counted.get(key) ?? 0) + 1);
+        counted2.set(key, (counted2.get(key) ?? 0) + 1);
       }
-      const [best] = [...counted.entries()].sort((a, b) => b[1] - a[1]);
+      const [best] = [...counted2.entries()].sort((a, b) => b[1] - a[1]);
       const pattern2 = best !== void 0 && best[1] / read >= MAJORITY ? best[0].split(">") : [];
       const [commonest2] = [...holders.entries()].sort((a, b) => b[1] - a[1]);
       const holder = commonest2 !== void 0 && commonest2[1] / read >= MAJORITY ? commonest2[0] : void 0;
@@ -22286,11 +22286,11 @@ var observeUsage = async (target, options = {}) => {
     }
     const props2 = agreed2.sort((a, b) => b.writtenBy - a.writtenBy).slice(0, MAX_PROPS);
     for (const prop of props2) agreedBy = Math.min(agreedBy, prop.writtenBy);
-    const counted = /* @__PURE__ */ new Map();
+    const counted2 = /* @__PURE__ */ new Map();
     for (const use of uses) {
-      for (const token of use.classes ?? []) counted.set(token, (counted.get(token) ?? 0) + 1);
+      for (const token of use.classes ?? []) counted2.set(token, (counted2.get(token) ?? 0) + 1);
     }
-    const classes = [...counted.entries()].filter(([, count]) => count / uses.length >= MAJORITY && count >= MIN_FILES).sort((a, b) => b[1] - a[1]).slice(0, MAX_CLASSES);
+    const classes = [...counted2.entries()].filter(([, count]) => count / uses.length >= MAJORITY && count >= MIN_FILES).sort((a, b) => b[1] - a[1]).slice(0, MAX_CLASSES);
     for (const [, count] of classes) agreedBy = Math.min(agreedBy, count);
     const classAttribute = uses.find((use) => use.classAttribute !== null)?.classAttribute ?? "class";
     const written = always.sort((a, b) => b.writtenBy - a.writtenBy || a.name.localeCompare(b.name)).slice(0, MAX_PROPS);
@@ -22396,17 +22396,17 @@ function namesInJsx(source) {
 var MIN_FAMILY = QUORUM;
 var rolesOf = (reading) => reading.page.order.map((one) => one.region);
 function commonest(values) {
-  const counted = /* @__PURE__ */ new Map();
-  for (const value of values) counted.set(value, (counted.get(value) ?? 0) + 1);
-  const [best] = [...counted.entries()].sort((a, b) => b[1] - a[1]);
+  const counted2 = /* @__PURE__ */ new Map();
+  for (const value of values) counted2.set(value, (counted2.get(value) ?? 0) + 1);
+  const [best] = [...counted2.entries()].sort((a, b) => b[1] - a[1]);
   return best === void 0 ? null : { value: best[0], count: best[1] };
 }
 function shared(perScreen) {
-  const counted = /* @__PURE__ */ new Map();
+  const counted2 = /* @__PURE__ */ new Map();
   for (const screen of perScreen) {
-    for (const value of new Set(screen)) counted.set(value, (counted.get(value) ?? 0) + 1);
+    for (const value of new Set(screen)) counted2.set(value, (counted2.get(value) ?? 0) + 1);
   }
-  return [...counted.entries()].filter(([, count]) => count / perScreen.length >= MAJORITY).sort((a, b) => b[1] - a[1]).map(([value]) => value);
+  return [...counted2.entries()].filter(([, count]) => count / perScreen.length >= MAJORITY).sort((a, b) => b[1] - a[1]).map(([value]) => value);
 }
 function vocabularyOf(screens) {
   const byRole = /* @__PURE__ */ new Map();
@@ -22617,8 +22617,8 @@ async function resolveIn(rootDir, aliases, packages, fromFile, specifier) {
 }
 async function throughAliases(aliases, specifier) {
   if (aliases === null) return null;
-  const matches = Object.keys(aliases.paths).filter((pattern2) => matchAlias(pattern2, specifier) !== null).sort((a, b) => b.length - a.length);
-  for (const pattern2 of matches) {
+  const matches2 = Object.keys(aliases.paths).filter((pattern2) => matchAlias(pattern2, specifier) !== null).sort((a, b) => b.length - a.length);
+  for (const pattern2 of matches2) {
     const rest = matchAlias(pattern2, specifier);
     if (rest === null) continue;
     for (const target of aliases.paths[pattern2] ?? []) {
@@ -22653,6 +22653,12 @@ function packageFor(packages, specifier) {
 // src/sources/tree.ts
 var DEFAULT_DEPTH = 2;
 var MAX_DEPTH = 5;
+function flatLines(node, indent = 0) {
+  return [
+    { indent, name: node.name },
+    ...node.children.flatMap((child) => flatLines(child, indent + 1))
+  ];
+}
 async function screenTree(rootDir, file, options = {}) {
   const depth = Math.min(Math.max(1, options.depth ?? DEFAULT_DEPTH), MAX_DEPTH);
   const resolve9 = await resolverFor(rootDir);
@@ -22772,23 +22778,23 @@ async function propsMatrix(rootDir, component, files) {
   const unreadable = [];
   const written = /* @__PURE__ */ new Map();
   for (const file of files) {
-    const where = relative7(rootDir, file);
+    const where2 = relative7(rootDir, file);
     const read = await sourceOf(file);
     if (read === null) {
-      unreadable.push(where);
+      unreadable.push(where2);
       continue;
     }
     const one = writtenIn(read.path, read.source, { all: true }).find(
       (each) => each.component === component
     );
     if (one === void 0) {
-      absent.push(where);
+      absent.push(where2);
       continue;
     }
-    renders.push(where);
+    renders.push(where2);
     for (const [name, value] of one.attributes) {
       const row = written.get(name) ?? { files: [], values: [] };
-      row.files.push(where);
+      row.files.push(where2);
       row.values.push(value.value);
       written.set(name, row);
     }
@@ -22826,7 +22832,7 @@ async function groupScreens(rootDir, files, depth) {
       continue;
     }
     applied = tree2.depth;
-    read.push({ file: relative8(rootDir, file), lines: flatten(tree2.root, 0) });
+    read.push({ file: relative8(rootDir, file), lines: flatLines(tree2.root) });
   }
   const screensWith = /* @__PURE__ */ new Map();
   for (const one of read) {
@@ -22878,12 +22884,6 @@ function abstract(name, screensWith, singletonSuffixes) {
   const word = trailingWord(name);
   if (word !== null && (singletonSuffixes.get(word) ?? 0) > 1) return `*${word}`;
   return "<one>";
-}
-function flatten(node, indent) {
-  return [
-    { indent, name: node.name },
-    ...node.children.flatMap((child) => flatten(child, indent + 1))
-  ];
 }
 
 // src/knowledge/pattern-file.ts
@@ -23014,13 +23014,13 @@ function parseProps(text) {
     const rest = bullet[2] ?? "";
     const value = /^=\s*"([^"]*)"/.exec(rest.trim())?.[1] ?? null;
     const strength = rest.replace(/^=\s*"[^"]*"/, "").replace(/^\s*[—-]\s*/, "").trim();
-    const counted = /^(\d+)\s+of\s+(\d+)$/.exec(strength);
+    const counted2 = /^(\d+)\s+of\s+(\d+)$/.exec(strength);
     current.props.push({
       name: bullet[1],
       value,
       strength: strength.length === 0 ? null : strength,
-      writtenBy: counted === null ? null : Number(counted[1]),
-      of: counted === null ? null : Number(counted[2])
+      writtenBy: counted2 === null ? null : Number(counted2[1]),
+      of: counted2 === null ? null : Number(counted2[2])
     });
   }
   return found;
@@ -23117,6 +23117,97 @@ function isContract(value) {
   if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
   const candidate = value;
   return Array.isArray(candidate.vocabulary) && Array.isArray(candidate.configuration) && candidate.skeleton !== void 0;
+}
+
+// src/checks/pattern-check.ts
+var counted = (strength) => {
+  const match = /^(\d+)\s+of\s+(\d+)\b/.exec(strength ?? "");
+  return match === null ? null : { by: Number(match[1]), of: Number(match[2]) };
+};
+var required = (line) => {
+  const count = counted(line.strength);
+  return line.strength === null || count !== null && count.by === count.of;
+};
+var matches = (line, rendered) => {
+  if (line.startsWith("*")) return trailingWord(rendered) === line.slice(1);
+  return line === rendered;
+};
+var isProse = (name) => name.startsWith("<") && name.endsWith(">");
+function patternDeviations(file, source, pattern2, tree2) {
+  const deviations = [];
+  const say = (message) => {
+    deviations.push({ file, message });
+  };
+  if (tree2 !== null) checkStructure(pattern2, tree2, say);
+  checkProps(file, source, pattern2, say);
+  return { deviations, handedOver: handOver(pattern2) };
+}
+function checkStructure(pattern2, tree2, say) {
+  const [root, ...rest] = pattern2.structure;
+  if (root === void 0) return;
+  if (!isProse(root.name) && !matches(root.name, tree2.root.name)) {
+    say(`sits in <${tree2.root.name}>; screens of this kind sit in <${root.name}>`);
+    return;
+  }
+  const rendered = flatLines(tree2.root);
+  for (const line of rest) {
+    if (isProse(line.name) || !required(line)) continue;
+    const found = rendered.some(
+      (one) => one.indent === line.indent && matches(line.name, one.name)
+    );
+    if (!found) {
+      const anywhere = rendered.some((one) => matches(line.name, one.name));
+      say(
+        anywhere ? `renders <${line.name}> somewhere else; screens of this kind hold it ${where(line.indent)}` : `does not render <${line.name}>, which every screen of this kind has`
+      );
+    }
+  }
+  const order = rest.filter((line) => line.indent === 1 && !isProse(line.name) && required(line));
+  const at = (name) => rendered.findIndex((one) => one.indent === 1 && matches(name, one.name));
+  const places = order.map((line) => at(line.name));
+  if (places.every((one) => one >= 0)) {
+    for (let i = 1; i < places.length; i++) {
+      if (places[i] < places[i - 1]) {
+        say(
+          `renders <${order[i].name}> before <${order[i - 1].name}>; screens of this kind write them the other way round`
+        );
+        break;
+      }
+    }
+  }
+}
+var where = (indent) => indent === 1 ? "directly inside the holder" : `${indent} levels in`;
+function checkProps(file, source, pattern2, say) {
+  if (pattern2.props.length === 0) return;
+  const written = writtenIn(file, source, { all: true });
+  for (const component of pattern2.props) {
+    const uses = written.filter((one) => matches(component.component, one.component));
+    if (uses.length === 0) continue;
+    const spelt = uses[0]?.component ?? component.component;
+    for (const prop of component.props) {
+      const strength = prop.writtenBy !== null && prop.of !== null ? prop.writtenBy >= prop.of ? "which every screen of this kind writes" : `which ${prop.writtenBy} of the ${prop.of} screens of this kind write` : prop.strength === null ? "which this kind of screen writes" : `which the pattern states as: ${prop.strength}`;
+      const values = uses.map((use) => use.attributes.get(prop.name));
+      if (values.every((value) => value === void 0)) {
+        say(`writes <${spelt}> without ${prop.name}, ${strength}`);
+        continue;
+      }
+      if (prop.value === null) continue;
+      const stated = values.map((value) => value?.value);
+      if (stated.some((value) => value === null)) continue;
+      if (stated.every((value) => value === void 0 || value === prop.value)) continue;
+      const other = stated.find((value) => value !== void 0 && value !== prop.value);
+      say(
+        `writes <${spelt} ${prop.name}="${quoted(other)}">, where this kind writes ${prop.name}="${quoted(prop.value)}" \u2014 ${strength}`
+      );
+    }
+  }
+}
+function handOver(pattern2) {
+  const slots = pattern2.structure.filter((line) => isProse(line.name)).map((line) => `${line.name}${line.strength === null ? "" : ` \u2014 ${line.strength}`}`);
+  return [
+    ...pattern2.rules,
+    ...slots.length === 0 ? [] : [`slots nothing here reads: ${slots.join(", ")}`]
+  ];
 }
 
 // src/cli/log.ts
@@ -23843,7 +23934,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join20 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.86";
+var VERSION = "0.14.87";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24090,31 +24181,59 @@ async function diff(rootDir, args) {
     console.error(`Cannot read the contract: ${contractPath}`);
     return 1;
   }
-  let parsed;
+  let parsed = null;
   try {
     parsed = JSON.parse(raw);
   } catch {
-    console.error(`${contractPath} is not JSON.`);
+  }
+  const pattern2 = isContract(parsed) ? null : parsePattern(basename8(contractPath), raw);
+  if (pattern2 !== null && pattern2.structure.length === 0 && pattern2.props.length === 0) {
+    console.error(
+      `${contractPath} is neither the JSON \`uic pattern\` emits nor a pattern file with a \`## Structure\` or \`## Props\` section.`
+    );
     return 1;
   }
-  if (!isContract(parsed)) {
-    console.error(`${contractPath} is not a contract \u2014 expected the JSON \`uic pattern\` emits.`);
-    return 1;
-  }
+  console.error(
+    pattern2 === null ? `Read as a saved JSON contract. The pattern file is the form this is moving to.` : `Read as a pattern file: ${pattern2.name}.`
+  );
   const byFile = /* @__PURE__ */ new Map();
   let measured = 0;
   let unread = 0;
+  const handedOver = /* @__PURE__ */ new Set();
+  const otherKind = [];
   for (const file of files) {
     const absolute = resolve8(rootDir, file);
-    const source = await readFile28(absolute, "utf8").catch(() => null);
+    const where2 = relative11(rootDir, absolute);
+    const pair = await pairOf(absolute);
+    const identity = pair?.identity ?? absolute;
+    const source = await readFile28(identity, "utf8").catch(() => null);
     if (source === null) {
       unread++;
       continue;
     }
-    const deviations = contractDeviations(relative11(rootDir, absolute), source, parsed);
-    if (deviations === null) continue;
+    const markup = pair === null ? { path: absolute, source } : await markupOf(identity, source);
+    const holder = regionsOf(markup.source, templateKind(markup.path) ?? void 0)?.holder ?? null;
+    if (pattern2 === null) {
+      if (contractsForScreen([parsed], holder).length === 0) {
+        otherKind.push(where2);
+        continue;
+      }
+      const deviations = contractDeviations(where2, markup.source, parsed);
+      if (deviations === null) continue;
+      measured++;
+      if (deviations.length > 0) byFile.set(deviations[0].file, deviations);
+      continue;
+    }
+    if (patternForScreen([pattern2], where2, holder) === null) {
+      otherKind.push(where2);
+      continue;
+    }
+    const deep = Math.max(...pattern2.structure.map((line) => line.indent), 0) + 1;
+    const tree2 = await screenTree(rootDir, identity, { depth: deep }).catch(() => null);
+    const report = patternDeviations(where2, markup.source, pattern2, tree2);
     measured++;
-    if (deviations.length > 0) byFile.set(deviations[0].file, deviations);
+    for (const one of report.handedOver) handedOver.add(one);
+    if (report.deviations.length > 0) byFile.set(where2, report.deviations);
   }
   const SHOWN = 20;
   for (const [file, deviations] of [...byFile].slice(0, SHOWN)) {
@@ -24123,11 +24242,20 @@ async function diff(rootDir, args) {
   }
   if (byFile.size > SHOWN) console.log(`\u2026 and ${byFile.size - SHOWN} more screen(s)`);
   if (unread > 0) console.error(`${unread} path(s) could not be read.`);
+  if (otherKind.length > 0) {
+    console.error(
+      `${otherKind.length} path(s) are of another kind and were not compared: ${otherKind.slice(0, 5).join(", ")}${otherKind.length > 5 ? ", \u2026" : ""}`
+    );
+  }
+  if (handedOver.size > 0) {
+    console.log("\nStated by the pattern and evaluated by nothing here \u2014 read them:");
+    for (const one of handedOver) console.log(`  - ${one}`);
+  }
   if (measured === 0) {
     console.error(`None of the ${files.length} path(s) given is a screen, so nothing was compared.`);
     return 1;
   }
-  if (byFile.size === 0) console.log(`${measured} screen(s) match the contract.`);
+  if (byFile.size === 0) console.log(`${measured} screen(s) match everything checked here.`);
   return byFile.size > 0 || unread > 0 ? 1 : 0;
 }
 async function tree(rootDir, args) {
@@ -24153,9 +24281,9 @@ async function tree(rootDir, args) {
 }
 function branch(node, indent, from) {
   const moved = node.file !== null && node.file !== from;
-  const where = node.at === "project" ? moved ? `  ${node.file}` : "" : `  (${node.at})`;
+  const where2 = node.at === "project" ? moved ? `  ${node.file}` : "" : `  (${node.at})`;
   return [
-    `${"  ".repeat(indent)}${node.name}${where}`,
+    `${"  ".repeat(indent)}${node.name}${where2}`,
     ...node.children.flatMap((child) => branch(child, indent + 1, node.file))
   ];
 }
@@ -24277,23 +24405,23 @@ async function patterns(rootDir, args) {
 }
 async function coveringOne(rootDir, found, target) {
   const absolute = resolve8(rootDir, target);
-  const where = relative11(rootDir, absolute);
+  const where2 = relative11(rootDir, absolute);
   const pair = await pairOf(absolute);
   const identity = pair?.identity ?? absolute;
   const own = await readFile28(identity, "utf8").catch(() => null);
   const markup = own === null ? null : pair === null ? { path: absolute, source: own } : await markupOf(identity, own);
   const holder = markup === null ? null : regionsOf(markup.source, templateKind(markup.path) ?? void 0)?.holder ?? null;
-  const covering = patternForScreen(found, where, holder);
+  const covering = patternForScreen(found, where2, holder);
   if (covering === null) {
-    console.log(`${where} \u2014 no pattern covers it.`);
+    console.log(`${where2} \u2014 no pattern covers it.`);
     console.log(
       holder === null ? "  Nothing readable holds it, so there is nothing to match a pattern on." : `  It sits in <${holder}>, and no pattern file names that holder or names this file.`
     );
     return 0;
   }
-  console.log(`${where} \u2014 ${covering.name} (${KNOWLEDGE_DIR}/patterns/${covering.file})`);
+  console.log(`${where2} \u2014 ${covering.name} (${KNOWLEDGE_DIR}/patterns/${covering.file})`);
   console.log(
-    covering.members.includes(where) ? "  named by the pattern itself" : `  sits in <${holder}>, which is the pattern's holder`
+    covering.members.includes(where2) ? "  named by the pattern itself" : `  sits in <${holder}>, which is the pattern's holder`
   );
   for (const line of staleness(await staleIn(rootDir, covering))) console.log(`  ${line}`);
   return 0;

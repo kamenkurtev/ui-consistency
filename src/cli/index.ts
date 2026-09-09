@@ -1,5 +1,5 @@
 import { readFile, realpath, stat, writeFile } from 'node:fs/promises';
-import { dirname, relative, resolve } from 'node:path';
+import { basename, dirname, relative, resolve } from 'node:path';
 import { detectionSources } from '../layers/detect.js';
 import { cachedPackages, clearPackageCache } from '../layers/cache.js';
 import { resolveChain, contains } from '../layers/chain.js';
@@ -30,7 +30,15 @@ import {
 import { regionsOf } from '../sources/regions.js';
 import { templateKind } from '../parse/template.js';
 import { findProjectRoot } from '../layers/detect.js';
-import { contractDeviations, isContract, type Deviation } from '../checks/contract.js';
+import {
+  contractDeviations,
+  contractsForScreen,
+  isContract,
+  type Deviation,
+} from '../checks/contract.js';
+import { patternDeviations } from '../checks/pattern-check.js';
+import type { ScreenPattern } from '../sources/pattern.js';
+import { parsePattern } from '../knowledge/pattern-file.js';
 import { contractPathFor, readLog, readSeen, summarise, logPath } from './log.js';
 import { shapeReport } from '../checks/shapes.js';
 import { resolveSource, statedConventions } from '../sources/adapter.js';
@@ -385,17 +393,30 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
     return 1;
   }
 
-  let parsed: unknown;
+  // Two forms, and **which one was read is said out loud.** A JSON contract
+  // keeps working — people have them saved — and silently accepting both
+  // forever is how everybody stays on the old one, which is the lesson
+  // `src/knowledge/paths.ts` already carries about the old knowledge directory.
+  let parsed: unknown = null;
   try {
     parsed = JSON.parse(raw);
   } catch {
-    console.error(`${contractPath} is not JSON.`);
+    // Not JSON. A pattern file, or nothing.
+  }
+
+  const pattern = isContract(parsed) ? null : parsePattern(basename(contractPath), raw);
+  if (pattern !== null && pattern.structure.length === 0 && pattern.props.length === 0) {
+    console.error(
+      `${contractPath} is neither the JSON \`uic pattern\` emits nor a pattern file with a` +
+        ' `## Structure` or `## Props` section.',
+    );
     return 1;
   }
-  if (!isContract(parsed)) {
-    console.error(`${contractPath} is not a contract — expected the JSON \`uic pattern\` emits.`);
-    return 1;
-  }
+  console.error(
+    pattern === null
+      ? `Read as a saved JSON contract. The pattern file is the form this is moving to.`
+      : `Read as a pattern file: ${pattern.name}.`,
+  );
 
   // Grouped by screen, because the question being answered is "which pages did
   // I get wrong", not "how many deviations exist".
@@ -403,18 +424,52 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
   let measured = 0;
   let unread = 0;
 
+  const handedOver = new Set<string>();
+  const otherKind: string[] = [];
+
   for (const file of files) {
     const absolute = resolve(rootDir, file);
-    const source = await readFile(absolute, 'utf8').catch(() => null);
+    const where = relative(rootDir, absolute);
+    const pair = await pairOf(absolute);
+    const identity = pair?.identity ?? absolute;
+    const source = await readFile(identity, 'utf8').catch(() => null);
     if (source === null) {
       unread++;
       continue;
     }
-    const deviations = contractDeviations(relative(rootDir, absolute), source, parsed);
-    // Null means "not a screen": not measured, and so not a match either.
-    if (deviations === null) continue;
+    const markup = pair === null ? { path: absolute, source } : await markupOf(identity, source);
+    const holder =
+      regionsOf(markup.source, templateKind(markup.path) ?? undefined)?.holder ?? null;
+
+    if (pattern === null) {
+      // Per file, not per run. A set of thirty screens is not guaranteed to be
+      // one kind, and reporting every dialog in it against a page contract is
+      // the defect #3 fixed on the hook path and left standing here.
+      if (contractsForScreen([parsed as ScreenPattern], holder).length === 0) {
+        otherKind.push(where);
+        continue;
+      }
+      const deviations = contractDeviations(where, markup.source, parsed as ScreenPattern);
+      // Null means "not a screen": not measured, and so not a match either.
+      if (deviations === null) continue;
+      measured++;
+      if (deviations.length > 0) byFile.set(deviations[0]!.file, deviations);
+      continue;
+    }
+
+    if (patternForScreen([pattern], where, holder) === null) {
+      otherKind.push(where);
+      continue;
+    }
+
+    // As deep as the pattern speaks, and no deeper. A pattern that states two
+    // levels is not a reason to read four.
+    const deep = Math.max(...pattern.structure.map((line) => line.indent), 0) + 1;
+    const tree = await screenTree(rootDir, identity, { depth: deep }).catch(() => null);
+    const report = patternDeviations(where, markup.source, pattern, tree);
     measured++;
-    if (deviations.length > 0) byFile.set(deviations[0]!.file, deviations);
+    for (const one of report.handedOver) handedOver.add(one);
+    if (report.deviations.length > 0) byFile.set(where, report.deviations);
   }
 
   const SHOWN = 20;
@@ -425,6 +480,19 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
   if (byFile.size > SHOWN) console.log(`… and ${byFile.size - SHOWN} more screen(s)`);
 
   if (unread > 0) console.error(`${unread} path(s) could not be read.`);
+  if (otherKind.length > 0) {
+    console.error(
+      `${otherKind.length} path(s) are of another kind and were not compared: ` +
+        `${otherKind.slice(0, 5).join(', ')}${otherKind.length > 5 ? ', …' : ''}`,
+    );
+  }
+
+  // **Said, never passed.** A pattern states sentences no program evaluates, and
+  // printing nothing for them lets a screen pass against rules nobody checked.
+  if (handedOver.size > 0) {
+    console.log('\nStated by the pattern and evaluated by nothing here — read them:');
+    for (const one of handedOver) console.log(`  - ${one}`);
+  }
 
   // Never "they all match" about files nothing looked at. A green result over
   // unmeasured work is the failure this repository keeps meeting (#110).
@@ -433,7 +501,7 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
     return 1;
   }
 
-  if (byFile.size === 0) console.log(`${measured} screen(s) match the contract.`);
+  if (byFile.size === 0) console.log(`${measured} screen(s) match everything checked here.`);
   return byFile.size > 0 || unread > 0 ? 1 : 0;
 }
 
