@@ -171,6 +171,96 @@ describe('why a branch ends', () => {
   });
 });
 
+describe('a file whose whole output is one component', () => {
+  it('follows its root, because the anatomy is inside what it names', async () => {
+    // `ApiExplorerPage` on a real repository is `outlet || <DefaultApiExplorerPage
+    // {...props} />`. One true line, and everything that makes it a screen is in
+    // the component it names — which is exactly the hop this walk exists for and
+    // the one it was not taking, because it follows children and a wiring file
+    // has none.
+    await write(
+      'src/pages/OrdersPage.tsx',
+      "import { DefaultOrdersPage } from './DefaultOrdersPage';\n" +
+        'export const OrdersPage = () => <DefaultOrdersPage />;\n',
+    );
+    await write(
+      'src/pages/DefaultOrdersPage.tsx',
+      'export const DefaultOrdersPage = () => (\n  <PageShell>\n    <OrdersGrid />\n  </PageShell>\n);\n',
+    );
+
+    const tree = await screenTree(root, join(root, 'src/pages/OrdersPage.tsx'), { depth: 3 });
+
+    // Spliced, not wrapped: a second node under the same name printed the name
+    // on two consecutive lines and made five real screens read as `*Page / *Page`.
+    expect(spine(tree!.root)).toEqual(['DefaultOrdersPage', 'PageShell', 'OrdersGrid']);
+  });
+
+  it('does not follow the root of a screen that holds something', async () => {
+    // Following the root of `<Page><Header/><Content/></Page>` walks into the
+    // design system's layout and describes the library instead of the screen.
+    await write(
+      'src/pages/OrdersPage.tsx',
+      "import { PageShell } from './PageShell';\n" +
+        'export const OrdersPage = () => (\n  <PageShell>\n    <OrdersGrid />\n  </PageShell>\n);\n',
+    );
+    await write('src/pages/PageShell.tsx', 'export const PageShell = () => <InternalLayout />;\n');
+
+    const tree = await screenTree(root, join(root, 'src/pages/OrdersPage.tsx'), { depth: 3 });
+
+    expect(tree!.root.name).toBe('PageShell');
+    expect(spine(tree!.root)).toEqual(['PageShell', 'OrdersGrid']);
+  });
+
+  it('leaves no phantom child where the root could not be followed', async () => {
+    // The screen has already been read as one component with nothing in it, and
+    // a leaf repeating the root's own name says that twice.
+    await write('src/pages/OrdersPage.tsx', 'export const OrdersPage = () => <Mystery />;\n');
+
+    const tree = await screenTree(root, join(root, 'src/pages/OrdersPage.tsx'), { depth: 3 });
+
+    expect(tree!.root).toEqual({
+      name: 'Mystery',
+      file: 'src/pages/OrdersPage.tsx',
+      at: 'project',
+      children: [],
+    });
+  });
+});
+
+describe('another package of the same workspace', () => {
+  it('is named as one, and not called external', async () => {
+    // On a workspace monorepo the project's own design system is imported by
+    // package name. Labelled `external` it said *nothing below here is our
+    // business* about the project's own code, and the walk read one level while
+    // reporting two: 53 of 62 children on a real repository.
+    await writeFile(join(root, 'package.json'), '{"name":"app","workspaces":["packages/*"]}');
+    await mkdir(join(root, 'packages/core/src'), { recursive: true });
+    await writeFile(
+      join(root, 'packages/core/package.json'),
+      '{"name":"@acme/core","main":"src/index.ts"}',
+    );
+    await writeFile(join(root, 'packages/core/src/index.ts'), 'export const PageShell = 1;\n');
+    await mkdir(join(root, 'packages/app/src'), { recursive: true });
+    await writeFile(
+      join(root, 'packages/app/package.json'),
+      '{"name":"@acme/app","dependencies":{"@acme/core":"*"}}',
+    );
+    await writeFile(
+      join(root, 'packages/app/src/OrdersPage.tsx'),
+      "import { PageShell } from '@acme/core';\n" +
+        'export const OrdersPage = () => (\n  <Holder>\n    <PageShell />\n  </Holder>\n);\n',
+    );
+
+    const tree = await screenTree(root, join(root, 'packages/app/src/OrdersPage.tsx'), {
+      depth: 3,
+    });
+
+    const child = tree!.root.children[0]!;
+    expect(child.at).toBe('package');
+    expect(child.file).toBe('packages/core/src/index.ts');
+  });
+});
+
 describe('through a tsconfig alias', () => {
   it('follows the specifier most real children are written as', async () => {
     // `resolveRelative` answers only for `./OrdersGrid` and says so. On a real

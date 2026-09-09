@@ -15,6 +15,17 @@ export interface Grouping {
   groups: Group[];
   /** Read and not a screen — no component in them at all. Never silently dropped. */
   notScreens: string[];
+  /**
+   * Screens whose shape matched nothing anybody else renders.
+   *
+   * Not a group, and reported as its own thing. Every name in their signature
+   * was a placeholder, so what they had in common was *nothing* — and on a real
+   * repository seven unrelated screens were being presented as one pattern,
+   * the largest entry after the real one and the first place a reader's eye
+   * lands. Over-splitting sends somebody to look at two entries; this asserted
+   * a pattern that does not exist.
+   */
+  ungrouped: string[];
 }
 
 /**
@@ -79,10 +90,26 @@ export async function groupScreens(
   }
 
   const groups = new Map<string, Group & { concrete: string[] }>();
+  const ungrouped: string[] = [];
   for (const one of read) {
     const concrete = one.lines.map((line) => `${'  '.repeat(line.indent)}${line.name}`);
+    const abstracted = one.lines.map((line) =>
+      abstract(line.name, screensWith, singletonSuffixes),
+    );
+
+    // A signature is evidence only where something in it came from more than one
+    // screen. `<one>` is the token for *nobody else renders this*, and a
+    // signature made entirely of them says these screens have nothing in common
+    // — which is the opposite of what a group claims. A shared trailing word is
+    // weaker evidence than a shared name and is still evidence, so `*Grid`
+    // counts.
+    if (abstracted.every((name) => name === '<one>')) {
+      ungrouped.push(one.file);
+      continue;
+    }
+
     const signature = one.lines.map(
-      (line) => `${'  '.repeat(line.indent)}${abstract(line.name, screensWith, singletonSuffixes)}`,
+      (line, at) => `${'  '.repeat(line.indent)}${abstracted[at]!}`,
     );
     const key = signature.join('\n');
     const group = groups.get(key) ?? { signature, members: [], concrete };
@@ -103,6 +130,7 @@ export async function groupScreens(
         members,
       })),
     notScreens,
+    ungrouped,
   };
 }
 
