@@ -646,6 +646,8 @@ describe('the three silences a user has to be able to tell apart', () => {
     const wrote = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir);
     expect(wrote.code).toBe(0);
     expect(wrote.stdout.trim()).toBe('.ui-consistency/patterns/page-layout.md');
+    // Said out loud, or the project quietly ends up with two directories.
+    expect(wrote.stderr).toContain('is the old location');
 
     // And a kind the old directory already describes is not written twice.
     const dir2 = await project({

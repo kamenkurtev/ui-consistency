@@ -408,8 +408,14 @@ async function establishPattern(
   // checked in whichever directory is being read, or a project on the old path
   // would get a second pattern for a kind that already has one.
   const path = join(rootDir, KNOWLEDGE_DIR, 'patterns', `${name}.md`);
-  const { dir: reading } = await knowledgeDir(rootDir, 'patterns');
+  const { dir: reading, legacy } = await knowledgeDir(rootDir, 'patterns');
   const existing = [path, join(reading, `${name}.md`)];
+
+  // Said, because writing somewhere other than where the rest of the knowledge
+  // lives is exactly the moment a project ends up with two directories and no
+  // reason to notice. The old path is read and never written, and a fallback
+  // nobody is told about leaves everybody on it forever.
+  if (legacy) console.error(`ui-consistency: ${MOVED}`);
 
   for (const each of existing) {
     if ((await stat(each).catch(() => null)) === null) continue;

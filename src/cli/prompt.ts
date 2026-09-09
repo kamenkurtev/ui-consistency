@@ -80,6 +80,11 @@ export async function promptContext(rootDir: string, text: string): Promise<stri
  * prompt has been submitted and nothing has been opened. A command that needs
  * a reference screen cannot be handed over without saying how to find one.
  *
+ * The flag is named here and not left to the skill. Without it an agent that
+ * does not load the skill runs `uic pattern <screen>`, which prints JSON and
+ * writes nothing — the channel opens, the instruction is followed, and still
+ * nothing lands.
+ *
  * The refusal is part of the instruction. `--establish` writes nothing where
  * there are fewer than three screens to compare, and a pattern derived from one
  * screen is that screen's particulars promoted to a rule for every screen after
@@ -91,7 +96,8 @@ const ESTABLISH_IT = [
   '',
   '  1. Find a screen of that kind that already exists here.',
   '  2. ui-consistency:pattern — derive what that family agrees on and write it',
-  '     down. Do not ask the user for a reference; take the screen from step 1.',
+  '     down: `uic pattern <that screen> --establish`.',
+  '     Do not ask the user for a reference; take the screen from step 1.',
   '  3. Fill in the parts the file says are still to be written, then build from it.',
   '',
   'Where there are fewer than three screens of the kind, nothing is derived and',

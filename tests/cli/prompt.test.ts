@@ -62,6 +62,10 @@ describe('what reaches the agent before it writes', () => {
     expect(said).toContain('Establish it first');
     expect(said).toContain('Find a screen of that kind that already exists here');
     expect(said).toContain('Do not ask the user for a reference');
+    // The flag, not just the skill name: without it an agent that does not load
+    // the skill runs `uic pattern <screen>`, which prints JSON and writes
+    // nothing — the channel opens and still nothing lands.
+    expect(said).toContain('--establish');
   });
 
   it('names the decide path for a kind with too few screens to derive from', async () => {

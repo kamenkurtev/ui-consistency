@@ -24234,7 +24234,8 @@ var ESTABLISH_IT = [
   "",
   "  1. Find a screen of that kind that already exists here.",
   "  2. ui-consistency:pattern \u2014 derive what that family agrees on and write it",
-  "     down. Do not ask the user for a reference; take the screen from step 1.",
+  "     down: `uic pattern <that screen> --establish`.",
+  "     Do not ask the user for a reference; take the screen from step 1.",
   "  3. Fill in the parts the file says are still to be written, then build from it.",
   "",
   "Where there are fewer than three screens of the kind, nothing is derived and",
@@ -24442,8 +24443,9 @@ async function pattern(rootDir, args) {
 async function establishPattern(rootDir, found, reference, decidedKind) {
   const name = slug2(decidedKind ?? found.kind ?? "screens");
   const path = join21(rootDir, KNOWLEDGE_DIR, "patterns", `${name}.md`);
-  const { dir: reading } = await knowledgeDir(rootDir, "patterns");
+  const { dir: reading, legacy } = await knowledgeDir(rootDir, "patterns");
   const existing = [path, join21(reading, `${name}.md`)];
+  if (legacy) console.error(`ui-consistency: ${MOVED}`);
   for (const each of existing) {
     if (await stat11(each).catch(() => null) === null) continue;
     console.error(`${relative12(rootDir, each)} already exists, and was not overwritten.`);
