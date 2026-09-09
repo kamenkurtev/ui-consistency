@@ -65,7 +65,9 @@ It is silent unless it is **certain**. That is not modesty — see *the rule tha
 governs everything*, below.
 
 **And Tier 2 now reaches the same turn, without anybody running anything**
-(#231). Where an approved contract covers the kind it wins; where none does, the
+(#231). Where an approved contract covers the kind it wins — *covers*, which until #3
+it did not have to, so one saved contract made every dialog and panel in the
+project a page that had left its contract; where none does, the
 pattern is derived from the edit being made and the sentence handed over says it
 was derived and where the family came from. Nothing derived can fail an edit —
 it goes into the agent's context, never into a failure — which is what makes
