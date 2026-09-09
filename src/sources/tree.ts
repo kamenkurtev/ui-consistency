@@ -25,11 +25,11 @@ export const DEFAULT_DEPTH = 2;
  * shared, nothing external — because that is the shape the ceiling exists for:
  *
  * ```
- * depth 1     1 file        13 ms
- * depth 2     2 files        8 ms
- * depth 3    10 files       26 ms
- * depth 4    74 files      140 ms
- * depth 5   138 files      179 ms
+ * depth 1     1 file        14 ms   (the parser warming up)
+ * depth 2     2 files        6 ms
+ * depth 3    10 files       20 ms
+ * depth 4    74 files      115 ms
+ * depth 5   138 files      180 ms
  * ```
  *
  * The knee is between 3 and 4, and it is the fan-out rather than the depth: a
@@ -152,7 +152,11 @@ async function nodeFor(
   read.add(identity);
 
   const markup = pair === null ? { path: file, source: own } : await markupOf(identity, own);
-  if (markup.path !== identity) read.add(markup.path);
+  // The template only where it is a file. `markupOf` names an inline template
+  // `<identity>.html` so the right parser is chosen for it, and that name is not
+  // a path — putting it in `read` would give a cache key an mtime that can
+  // never be read, which is a key that never matches.
+  if (pair?.markup != null) read.add(pair.markup);
 
   // One reader for both dialects. `shapeOf` already dispatches on the kind and
   // already computes the holder and what it directly holds — a second copy of
@@ -162,11 +166,21 @@ async function nodeFor(
   if (shape === null || shape.holder === null) return null;
   const surface = { holder: shape.holder, children: shape.body };
 
+  // Read once per file, not once per child. Both of these parse the source, and
+  // a screen with eight children parsed its own file eight times over — the
+  // cost that decides whether a walk is affordable at all.
+  const file_ = { path: identity, bindings: importsIn(own), declared: declaredNames(own) };
+  // Built lazily and once: matching a selector reads every file this one
+  // imports, and doing that per child is the same multiplication again.
+  let selectors: Map<string, string> | null = null;
+  const selectorsIn = async (): Promise<Map<string, string>> =>
+    (selectors ??= await selectorMap(identity, file_.bindings, resolve, read));
+
   const next = new Set(seen).add(identity);
   const children: TreeNode[] = [];
   for (const name of surface.children) {
     children.push(
-      await childNode(rootDir, identity, own, name, kind, left, resolve, read, state, next),
+      await childNode(rootDir, file_, selectorsIn, name, kind, left, resolve, read, state, next),
     );
   }
 
@@ -176,6 +190,13 @@ async function nodeFor(
     at: 'project',
     children,
   };
+}
+
+/** One file, read once: where it is, what it imported, and what it declares. */
+interface Reading {
+  path: string;
+  bindings: Map<string, string>;
+  declared: Set<string>;
 }
 
 /**
@@ -189,8 +210,8 @@ async function nodeFor(
  */
 async function childNode(
   rootDir: string,
-  from: string,
-  source: string,
+  from: Reading,
+  selectorsIn: () => Promise<Map<string, string>>,
   name: string,
   kind: ReturnType<typeof templateKind>,
   left: number,
@@ -199,14 +220,16 @@ async function childNode(
   state: State,
   seen: Set<string>,
 ): Promise<TreeNode> {
-  const specifiers = importsIn(source);
+  const specifier = from.bindings.get(name);
   const target =
     kind === null
-      ? await throughImport(from, name, specifiers, resolve)
-      : await throughSelector(from, name, specifiers, resolve, read);
+      ? specifier === undefined
+        ? null
+        : await resolve.find(from.path, specifier)
+      : ((await selectorsIn()).get(name) ?? null);
 
   if (target === null) {
-    return { name, file: null, at: whyNot(source, name, specifiers, kind, resolve), children: [] };
+    return { name, file: null, at: whyNot(from, name, kind, resolve), children: [] };
   }
 
   if (left <= 1) {
@@ -223,40 +246,28 @@ async function childNode(
   return { name, file: relative(rootDir, target), at: 'project', children: [node] };
 }
 
-/** A JSX child is an imported binding, or it is not ours to follow. */
-async function throughImport(
-  from: string,
-  name: string,
-  specifiers: Map<string, string>,
-  resolve: Resolver,
-): Promise<string | null> {
-  const specifier = specifiers.get(name);
-  if (specifier === undefined) return null;
-  return resolve.find(from, specifier);
-}
-
 /**
- * A template child is a selector, and the class that answers to it is one of
- * the files this file imports.
+ * The selectors the classes this file imports answer to.
  *
  * Bounded by the importing file's own imports, which is both cheap and the
  * right scope: a component that is not imported here cannot be rendered here,
  * standalone or through a module.
  */
-async function throughSelector(
+async function selectorMap(
   from: string,
-  selector: string,
-  specifiers: Map<string, string>,
+  bindings: Map<string, string>,
   resolve: Resolver,
   read: Set<string>,
-): Promise<string | null> {
-  for (const specifier of new Set(specifiers.values())) {
+): Promise<Map<string, string>> {
+  const found = new Map<string, string>();
+  for (const specifier of new Set(bindings.values())) {
     const candidate = await resolve.find(from, specifier);
     if (candidate === null) continue;
     read.add(candidate);
-    if ((await selectorOf(candidate)) === selector) return candidate;
+    const selector = await selectorOf(candidate);
+    if (selector !== null && !found.has(selector)) found.set(selector, candidate);
   }
-  return null;
+  return found;
 }
 
 /** Local binding name → the specifier it was imported from. */
@@ -275,22 +286,20 @@ function importsIn(source: string): Map<string, string> {
 }
 
 /**
- * Is this name declared in the file that uses it?
+ * What this file declares by name.
  *
  * Only to tell `local` from `unresolved`, which is the difference between *we
  * know where this is and chose not to walk it* and *we could not tell*.
  */
-function declares(source: string, name: string): boolean {
+function declaredNames(source: string): Set<string> {
+  const found = new Set<string>();
   const ast = parseModule(source);
-  if (ast === null) return false;
+  if (ast === null) return found;
 
-  let found = false;
   walk(ast.program, (node) => {
-    if (node.type === 'VariableDeclarator' && node.id.type === 'Identifier') {
-      if (node.id.name === name) found = true;
-    }
-    if (node.type === 'FunctionDeclaration' && node.id?.name === name) found = true;
-    if (node.type === 'ClassDeclaration' && node.id?.name === name) found = true;
+    if (node.type === 'VariableDeclarator' && node.id.type === 'Identifier') found.add(node.id.name);
+    if (node.type === 'FunctionDeclaration' && node.id != null) found.add(node.id.name);
+    if (node.type === 'ClassDeclaration' && node.id != null) found.add(node.id.name);
   });
   return found;
 }
@@ -305,9 +314,8 @@ function declares(source: string, name: string): boolean {
  * depth it did not reach.
  */
 function whyNot(
-  source: string,
+  from: Reading,
   name: string,
-  specifiers: Map<string, string>,
   kind: ReturnType<typeof templateKind>,
   resolve: Resolver,
 ): Leaf {
@@ -315,7 +323,7 @@ function whyNot(
   // classify: either a class in the imports answered to it or nothing did.
   if (kind !== null) return 'unresolved';
 
-  const specifier = specifiers.get(name);
-  if (specifier === undefined) return declares(source, name) ? 'local' : 'unresolved';
+  const specifier = from.bindings.get(name);
+  if (specifier === undefined) return from.declared.has(name) ? 'local' : 'unresolved';
   return resolve.shape(specifier) === 'package' ? 'external' : 'unresolved';
 }

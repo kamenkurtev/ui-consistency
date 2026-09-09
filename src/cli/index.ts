@@ -455,8 +455,8 @@ async function tree(rootDir: string, args: string[]): Promise<number> {
     return 1;
   }
 
-  const asked = args.find((arg) => arg.startsWith('--depth'));
-  const stated = asked?.includes('=') === true ? asked.split('=')[1] : args[args.indexOf(asked ?? '') + 1];
+  const at = args.findIndex((arg) => arg === '--depth' || arg.startsWith('--depth='));
+  const stated = at === -1 ? undefined : (args[at]?.split('=')[1] ?? args[at + 1]);
   const depth = Number.parseInt(stated ?? '', 10);
 
   const absolute = resolve(rootDir, file);

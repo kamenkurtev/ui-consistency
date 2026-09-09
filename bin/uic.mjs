@@ -22614,16 +22614,19 @@ async function nodeFor(rootDir, file, left, resolve9, read, state, seen) {
   if (own === null) return null;
   read.add(identity);
   const markup = pair === null ? { path: file, source: own } : await markupOf(identity, own);
-  if (markup.path !== identity) read.add(markup.path);
+  if (pair?.markup != null) read.add(pair.markup);
   const kind = templateKind(markup.path);
   const shape = shapeOf(markup.source, kind ?? void 0);
   if (shape === null || shape.holder === null) return null;
   const surface = { holder: shape.holder, children: shape.body };
+  const file_ = { path: identity, bindings: importsIn(own), declared: declaredNames(own) };
+  let selectors = null;
+  const selectorsIn = async () => selectors ??= await selectorMap(identity, file_.bindings, resolve9, read);
   const next = new Set(seen).add(identity);
   const children = [];
   for (const name of surface.children) {
     children.push(
-      await childNode(rootDir, identity, own, name, kind, left, resolve9, read, state, next)
+      await childNode(rootDir, file_, selectorsIn, name, kind, left, resolve9, read, state, next)
     );
   }
   return {
@@ -22633,11 +22636,11 @@ async function nodeFor(rootDir, file, left, resolve9, read, state, seen) {
     children
   };
 }
-async function childNode(rootDir, from, source, name, kind, left, resolve9, read, state, seen) {
-  const specifiers = importsIn(source);
-  const target = kind === null ? await throughImport(from, name, specifiers, resolve9) : await throughSelector(from, name, specifiers, resolve9, read);
+async function childNode(rootDir, from, selectorsIn, name, kind, left, resolve9, read, state, seen) {
+  const specifier = from.bindings.get(name);
+  const target = kind === null ? specifier === void 0 ? null : await resolve9.find(from.path, specifier) : (await selectorsIn()).get(name) ?? null;
   if (target === null) {
-    return { name, file: null, at: whyNot(source, name, specifiers, kind, resolve9), children: [] };
+    return { name, file: null, at: whyNot(from, name, kind, resolve9), children: [] };
   }
   if (left <= 1) {
     state.truncated = true;
@@ -22649,19 +22652,16 @@ async function childNode(rootDir, from, source, name, kind, left, resolve9, read
   }
   return { name, file: relative6(rootDir, target), at: "project", children: [node] };
 }
-async function throughImport(from, name, specifiers, resolve9) {
-  const specifier = specifiers.get(name);
-  if (specifier === void 0) return null;
-  return resolve9.find(from, specifier);
-}
-async function throughSelector(from, selector, specifiers, resolve9, read) {
-  for (const specifier of new Set(specifiers.values())) {
+async function selectorMap(from, bindings, resolve9, read) {
+  const found = /* @__PURE__ */ new Map();
+  for (const specifier of new Set(bindings.values())) {
     const candidate = await resolve9.find(from, specifier);
     if (candidate === null) continue;
     read.add(candidate);
-    if (await selectorOf(candidate) === selector) return candidate;
+    const selector = await selectorOf(candidate);
+    if (selector !== null && !found.has(selector)) found.set(selector, candidate);
   }
-  return null;
+  return found;
 }
 function importsIn(source) {
   const found = /* @__PURE__ */ new Map();
@@ -22675,23 +22675,21 @@ function importsIn(source) {
   });
   return found;
 }
-function declares(source, name) {
+function declaredNames(source) {
+  const found = /* @__PURE__ */ new Set();
   const ast = parseModule(source);
-  if (ast === null) return false;
-  let found = false;
+  if (ast === null) return found;
   walk(ast.program, (node) => {
-    if (node.type === "VariableDeclarator" && node.id.type === "Identifier") {
-      if (node.id.name === name) found = true;
-    }
-    if (node.type === "FunctionDeclaration" && node.id?.name === name) found = true;
-    if (node.type === "ClassDeclaration" && node.id?.name === name) found = true;
+    if (node.type === "VariableDeclarator" && node.id.type === "Identifier") found.add(node.id.name);
+    if (node.type === "FunctionDeclaration" && node.id != null) found.add(node.id.name);
+    if (node.type === "ClassDeclaration" && node.id != null) found.add(node.id.name);
   });
   return found;
 }
-function whyNot(source, name, specifiers, kind, resolve9) {
+function whyNot(from, name, kind, resolve9) {
   if (kind !== null) return "unresolved";
-  const specifier = specifiers.get(name);
-  if (specifier === void 0) return declares(source, name) ? "local" : "unresolved";
+  const specifier = from.bindings.get(name);
+  if (specifier === void 0) return from.declared.has(name) ? "local" : "unresolved";
   return resolve9.shape(specifier) === "package" ? "external" : "unresolved";
 }
 
@@ -23803,8 +23801,8 @@ async function tree(rootDir, args) {
     console.error(`Usage: uic tree <screen> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
     return 1;
   }
-  const asked = args.find((arg) => arg.startsWith("--depth"));
-  const stated = asked?.includes("=") === true ? asked.split("=")[1] : args[args.indexOf(asked ?? "") + 1];
+  const at = args.findIndex((arg) => arg === "--depth" || arg.startsWith("--depth="));
+  const stated = at === -1 ? void 0 : args[at]?.split("=")[1] ?? args[at + 1];
   const depth = Number.parseInt(stated ?? "", 10);
   const absolute = resolve8(rootDir, file);
   const root = await findProjectRoot(dirname14(absolute)) ?? rootDir;

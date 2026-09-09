@@ -220,6 +220,23 @@ describe('an Angular screen, which is a pair', () => {
     expect(spine(tree!.root)).toEqual(['app-page-layout', 'app-orders-grid', 'app-data-grid']);
   });
 
+  it('does not put an inline template in the list of files it read', async () => {
+    // `markupOf` names an inline template `<identity>.html` so the right parser
+    // is chosen for it. That name is not a path, and a cache key holding it
+    // asks for an mtime that can never be read — a key that never matches, so
+    // the answer is derived every time and the cache is decoration.
+    await write(
+      'src/pages/orders.component.ts',
+      "@Component({ selector: 'app-orders', template: `<app-page-layout></app-page-layout>` })\n" +
+        'export class OrdersComponent {}\n',
+    );
+
+    const tree = await screenTree(root, join(root, 'src/pages/orders.component.ts'));
+
+    expect(tree!.read).toEqual([join(root, 'src/pages/orders.component.ts')]);
+    expect(tree!.root.name).toBe('app-page-layout');
+  });
+
   it('reads the same screen from either half of the pair', async () => {
     await write(
       'src/pages/orders.component.ts',
