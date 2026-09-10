@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { mkdir as mkdir2, readFile as readFile29, realpath as realpath3, stat as stat12, writeFile as writeFile7 } from "node:fs/promises";
+import { mkdir as mkdir2, readFile as readFile30, realpath as realpath3, stat as stat12, writeFile as writeFile7 } from "node:fs/promises";
 import { basename as basename8, dirname as dirname15, join as join23, relative as relative12, resolve as resolve9 } from "node:path";
 
 // src/layers/detect.ts
@@ -24154,12 +24154,86 @@ function statedConventions(model) {
   return model.kind === "reference" || model.kind === "knowledge" ? model.props : {};
 }
 
+// src/core/coverage.ts
+import { readFile as readFile25 } from "node:fs/promises";
+var SX = /\bsx=\{/;
+var INLINE2 = /\bstyle=\{\{/;
+var CLASSES = /\b(?:className|class)=["'{]/;
+var TEMPLATE = /\b(?:styled|css|createGlobalStyle|keyframes)\b[\s\S]{0,40}?`/;
+async function coverageOf(rootDir, files) {
+  const config = await readConfig(rootDir);
+  const packages = applyConfig(await cachedPackages(rootDir), config);
+  const prefer = config?.prefer ?? [];
+  const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir).catch(() => null);
+  const found = {
+    given: files.length,
+    read: 0,
+    onAChain: 0,
+    packages: packages.length,
+    styledWith: { sx: 0, style: 0, classes: 0, template: 0 },
+    stated: knowledge?.fragments.length ?? 0
+  };
+  for (const file of files) {
+    if (resolveChain(file, packages, prefer).length > 0) found.onAChain++;
+    const source = await readFile25(file, "utf8").catch(() => null);
+    if (source === null) continue;
+    found.read++;
+    if (SX.test(source)) found.styledWith.sx++;
+    if (INLINE2.test(source)) found.styledWith.style++;
+    if (CLASSES.test(source)) found.styledWith.classes++;
+    if (TEMPLATE.test(source)) found.styledWith.template++;
+  }
+  return found;
+}
+function sayCoverage(found) {
+  const said = [];
+  const { styledWith: styled } = found;
+  said.push(`No findings. ${found.read} of ${found.given} file(s) read.`);
+  if (found.read === 0) {
+    said.push("None of them could be read, so nothing was checked at all.");
+    return said;
+  }
+  if (found.onAChain === 0) {
+    said.push(
+      found.packages === 0 ? "No package was detected, so imports and deprecated usage did not run." : `No file belongs to any of the ${found.packages} detected package(s), so imports and deprecated usage did not run.`
+    );
+    said.push("That is a detection gap, not a clean result \u2014 `uic scan` shows what was looked for.");
+  } else if (found.onAChain < found.read) {
+    said.push(
+      `${found.onAChain} of them belong to a detected package; imports and deprecated usage did not run on the other ${found.read - found.onAChain}.`
+    );
+  }
+  const seen = styled.sx + styled.style;
+  if (seen === 0 && (styled.classes > 0 || styled.template > 0)) {
+    const how = [
+      ...styled.classes > 0 ? [`${styled.classes} with class strings`] : [],
+      ...styled.template > 0 ? [`${styled.template} with CSS in template literals`] : []
+    ].join(" and ");
+    said.push(
+      `The style check reads \`sx\` and inline \`style\` objects, and no file uses either \u2014 ${how}.`
+    );
+    said.push("Those are out of reach of a per-file AST check by construction, not clean.");
+  } else if (seen > 0) {
+    const how = [
+      ...styled.sx > 0 ? [`${styled.sx} with \`sx\``] : [],
+      ...styled.style > 0 ? [`${styled.style} with inline \`style\``] : []
+    ].join(" and ");
+    said.push(`The style check read ${how}, and found no hardcoded value in them.`);
+  }
+  if (found.stated === 0) {
+    said.push(
+      `Nothing is written down in ${KNOWLEDGE_DIR}/, so the page rules and substitution checks had nothing to apply.`
+    );
+  }
+  return said;
+}
+
 // src/cli/hook.ts
 import { dirname as dirname14, relative as relative11, resolve as resolve8 } from "node:path";
-import { readFile as readFile28 } from "node:fs/promises";
+import { readFile as readFile29 } from "node:fs/promises";
 
 // src/ai/settled.ts
-import { readFile as readFile25, writeFile as writeFile5 } from "node:fs/promises";
+import { readFile as readFile26, writeFile as writeFile5 } from "node:fs/promises";
 import { join as join20 } from "node:path";
 var WINDOW = 6e4;
 var settled = async (rootDir, filePath, options = {}) => {
@@ -24173,7 +24247,7 @@ var decide = async (rootDir, filePath, options) => {
   const now = options.now ?? (() => Date.now());
   const window = options.windowMs ?? WINDOW;
   const file = join20(cacheRoot(), projectKey(rootDir), "advised.json");
-  const raw = await readFile25(file, "utf8").catch(() => null);
+  const raw = await readFile26(file, "utf8").catch(() => null);
   let seen = {};
   if (raw !== null) {
     try {
@@ -24194,7 +24268,7 @@ var decide = async (rootDir, filePath, options) => {
 };
 
 // src/sources/pattern-cache.ts
-import { readFile as readFile26, stat as stat11, writeFile as writeFile6 } from "node:fs/promises";
+import { readFile as readFile27, stat as stat11, writeFile as writeFile6 } from "node:fs/promises";
 import { dirname as dirname13, join as join21 } from "node:path";
 var CACHE_VERSION3 = 2;
 var fileIn3 = (dir) => join21(dir, "patterns.json");
@@ -24206,7 +24280,7 @@ async function cachedPattern(rootDir, target, kind) {
   const dir = await cacheDirFor(rootDir);
   const key = `${kind}|${dirname13(target)}`;
   if (dir !== null) {
-    const raw2 = await readFile26(fileIn3(dir), "utf8").catch(() => null);
+    const raw2 = await readFile27(fileIn3(dir), "utf8").catch(() => null);
     if (raw2 !== null) {
       try {
         const parsed = JSON.parse(raw2);
@@ -24228,7 +24302,7 @@ async function cachedPattern(rootDir, target, kind) {
     const when = await mtimeOf3(path);
     if (when !== null) from[path] = when;
   }
-  const raw = await readFile26(fileIn3(dir), "utf8").catch(() => null);
+  const raw = await readFile27(fileIn3(dir), "utf8").catch(() => null);
   let existing = { version: CACHE_VERSION3, kinds: {} };
   if (raw !== null) {
     try {
@@ -24243,7 +24317,7 @@ async function cachedPattern(rootDir, target, kind) {
 }
 
 // src/cli/touched.ts
-import { readFile as readFile27 } from "node:fs/promises";
+import { readFile as readFile28 } from "node:fs/promises";
 function rangesOf(source, text) {
   if (text === "") return [];
   const found = [];
@@ -24268,7 +24342,7 @@ async function touchedBy(toolName, input, filePath) {
     }
   }
   if (written.length === 0) return null;
-  const source = await readFile27(filePath, "utf8").catch(() => null);
+  const source = await readFile28(filePath, "utf8").catch(() => null);
   if (source === null) return null;
   const ranges = written.flatMap((text) => rangesOf(source, text));
   return ranges.length === 0 ? null : ranges;
@@ -24360,11 +24434,11 @@ function provenance(root, contract) {
 }
 async function deviationsFromContract(root, file) {
   const nothing = { said: [], derived: null };
-  const source = await readFile28(file, "utf8").catch(() => null);
+  const source = await readFile29(file, "utf8").catch(() => null);
   if (source === null) return nothing;
   const approved = [];
   for (const path of await contractsFor(root)) {
-    const raw = await readFile28(path, "utf8").catch(() => null);
+    const raw = await readFile29(path, "utf8").catch(() => null);
     if (raw === null) continue;
     let parsed;
     try {
@@ -24393,7 +24467,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join22 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.95";
+var VERSION = "0.14.96";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24576,7 +24650,7 @@ async function checkProject(rootDir, files, options = {}) {
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
     if (chain.length === 0) continue;
-    const source = await readFile29(file, "utf8").catch(() => null);
+    const source = await readFile30(file, "utf8").catch(() => null);
     if (source === null) continue;
     violations.push(...checkSource(file, source, chain, await inventoryFor(chain)));
   }
@@ -24599,7 +24673,7 @@ async function analyzeProject(rootDir, files, options = {}) {
   const findings = [];
   for (const file of files) {
     const chain = resolveChain(file, packages, prefer);
-    const source = await readFile29(file, "utf8").catch(() => null);
+    const source = await readFile30(file, "utf8").catch(() => null);
     if (source === null) continue;
     const model = await sourceFor(dirname15(file), file);
     const result = await runEngine(file, source, {
@@ -24616,7 +24690,7 @@ async function analyzeProject(rootDir, files, options = {}) {
 }
 async function adviseProject(rootDir, file) {
   const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-  const source = await readFile29(file, "utf8").catch(() => null);
+  const source = await readFile30(file, "utf8").catch(() => null);
   if (source === null) return null;
   const neighbours = await neighbourSource().describe(file).catch(() => null);
   const usage = await observeUsage(file).catch(() => null);
@@ -24751,7 +24825,7 @@ async function diff(rootDir, args) {
     console.error("Usage: uic diff --contract <contract.json> <file...>");
     return 1;
   }
-  const raw = await readFile29(resolve9(rootDir, contractPath), "utf8").catch(() => null);
+  const raw = await readFile30(resolve9(rootDir, contractPath), "utf8").catch(() => null);
   if (raw === null) {
     console.error(`Cannot read the contract: ${contractPath}`);
     return 1;
@@ -24781,7 +24855,7 @@ async function diff(rootDir, args) {
     const where2 = relative12(rootDir, absolute);
     const pair = await pairOf(absolute);
     const identity = pair?.identity ?? absolute;
-    const source = await readFile29(identity, "utf8").catch(() => null);
+    const source = await readFile30(identity, "utf8").catch(() => null);
     if (source === null) {
       unread++;
       continue;
@@ -24983,7 +25057,7 @@ async function coveringOne(rootDir, found, target) {
   const where2 = relative12(rootDir, absolute);
   const pair = await pairOf(absolute);
   const identity = pair?.identity ?? absolute;
-  const own = await readFile29(identity, "utf8").catch(() => null);
+  const own = await readFile30(identity, "utf8").catch(() => null);
   const markup = own === null ? null : pair === null ? { path: absolute, source: own } : await markupOf(identity, own);
   const holder = markup === null ? null : regionsOf(markup.source, templateKind(markup.path) ?? void 0)?.holder ?? null;
   const covering = patternForScreen(found, where2, holder);
@@ -25144,6 +25218,17 @@ async function check(rootDir, args) {
   }
   const findings = await analyzeProject(rootDir, absolute, { withinLayer });
   if (!listOnly) await warnIfNothingWasChecked(rootDir, absolute);
+  let coverage = null;
+  if (findings.length === 0) {
+    coverage = await coverageOf(rootDir, absolute).catch(() => null);
+    if (coverage !== null && !listOnly) {
+      for (const line of sayCoverage(coverage)) console.error(line);
+    }
+  }
+  if (coverage !== null && coverage.given > 0 && coverage.read === 0) {
+    if (listOnly) console.error(`None of the ${coverage.given} file(s) given could be read.`);
+    return 1;
+  }
   if (listOnly) {
     const seen = /* @__PURE__ */ new Set();
     for (const finding of findings) {
@@ -25151,6 +25236,9 @@ async function check(rootDir, args) {
       if (seen.has(path)) continue;
       seen.add(path);
       console.log(path);
+    }
+    if (seen.size === 0 && coverage !== null) {
+      for (const line of sayCoverage(coverage)) console.error(line);
     }
     return seen.size > 0 ? 1 : 0;
   }
@@ -25169,18 +25257,34 @@ async function inventory(rootDir, args) {
   const config = await readConfig(rootDir);
   const packages = applyConfig(await cachedPackages(rootDir), config);
   const chain = resolveChain(resolve9(rootDir, file), packages, config?.prefer ?? []);
-  if (chain.length === 0) return 0;
+  const named2 = relative12(rootDir, resolve9(rootDir, file));
+  if (chain.length === 0) {
+    console.error(`${named2} belongs to no detected package.`);
+    console.error(
+      packages.length === 0 ? "No package was detected at all \u2014 `uic scan` shows what was looked for." : `${packages.length} package(s) were detected, and none of them owns this file.`
+    );
+    console.error("There is no inventory to print, which is a detection gap and not a clean result.");
+    return 1;
+  }
   const built = await cachedInventory(rootDir, chain);
+  let printed = 0;
   for (const layer of chain) {
     const symbols = built.layers[layer.name] ?? {};
     const names = Object.keys(symbols).sort();
     if (names.length === 0) continue;
+    printed++;
     console.log(`# ${layer.name}`);
     for (const name of names) {
       const entry = symbols[name];
       const note = entry.deprecated ? ` \u2014 deprecated${entry.replacement === null ? "" : `, use ${entry.replacement}`}` : "";
       console.log(`  ${name}${note}`);
     }
+  }
+  if (printed === 0) {
+    console.error(`Nothing readable on the ${chain.length} layer(s) ${named2} sits on:`);
+    for (const layer of chain.slice(0, 10)) console.error(`  ${layer.name}`);
+    console.error("Every one of them is external, or its entry point could not be read.");
+    return 1;
   }
   return 0;
 }
@@ -25223,7 +25327,7 @@ async function auditShapes(rootDir, args) {
   const app = [];
   for (const file of files) {
     const absolute = resolve9(rootDir, file);
-    const source = await readFile29(absolute, "utf8").catch(() => null);
+    const source = await readFile30(absolute, "utf8").catch(() => null);
     if (source === null) continue;
     const owner = packages.find((pkg) => contains(pkg.root, absolute));
     const shared2 = owner !== void 0 && dependedOn.has(owner.name);
