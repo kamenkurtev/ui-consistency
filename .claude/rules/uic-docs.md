@@ -14,7 +14,7 @@ they still read as true, and nobody has been given a reason to doubt them.
 
 **Strike it through and put the correction beside it.** The wrong version stays
 visible, and anybody who meets a copy elsewhere can see it was withdrawn and
-why. `docs/design.md`'s "Target stack: MUI first" is the shape:
+why. The shape a withdrawal takes, from a document since deleted:
 
 > ~~Target stack: **MUI first.** Framework-agnostic sounds more ambitious and
 > usually means working well nowhere.~~
@@ -100,8 +100,12 @@ success over a real occurrence; the list carries every spelling, one per line.
 `CLAUDE.md`, `docs/concept.md`, `README.md`, `AGENTS.md` and `skills/*/SKILL.md`
 — the method itself, not a description of it.
 
-`docs/specs/`, `docs/findings/` and `docs/design.md` are excluded. They record
-what was decided or found on a date; being overtaken is what a record is for.
+~~`docs/specs/`, `docs/findings/` and `docs/design.md` are excluded. They record
+what was decided or found on a date; being overtaken is what a record is for.~~
+
+**There is nothing to exclude any more (#48).** Those directories are deleted,
+so every tracked document is one of the documents above, and the scrub applies
+to all of them without an exception to remember.
 
 Before opening a PR, read them against the change and say in the body which were
 read and what was found. "Read, nothing false" is a result.

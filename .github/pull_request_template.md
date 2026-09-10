@@ -25,7 +25,7 @@ result** and belongs here.
 
 ## Documents
 
-Which of `CLAUDE.md`, `docs/concept.md`, `docs/design.md`, `README.md`,
+Which of `CLAUDE.md`, `docs/concept.md`, `README.md`,
 `AGENTS.md` and `skills/*/SKILL.md` you read against this change, and what you
 found. **"Read, nothing false" is a result.**
 

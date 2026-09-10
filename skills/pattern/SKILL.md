@@ -25,6 +25,8 @@ so it can be re-read rather than remembered.
   answer is not a clean one.
 - **`routes-and-breadcrumbs.md`** — where a route and a trail come from, per
   router family. The breadcrumb is the one got wrong nearly every time.
+- **`pattern-file.md`** — what a pattern file states and how, which is the
+  artifact step 2 writes. Read it before writing one, not after.
 
 ## 0b. A named reference is not the same as a derived family
 
