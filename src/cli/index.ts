@@ -37,7 +37,7 @@ import {
   type Deviation,
 } from '../checks/contract.js';
 import { patternDeviations } from '../checks/pattern-check.js';
-import { renderPattern } from '../knowledge/pattern-write.js';
+import { renderPattern, refreshPattern } from '../knowledge/pattern-write.js';
 import type { ScreenPattern } from '../sources/pattern.js';
 import { parsePattern } from '../knowledge/pattern-file.js';
 import { contractPathFor, readLog, readSeen, summarise, logPath } from './log.js';
@@ -297,12 +297,18 @@ async function review(rootDir: string, args: string[]): Promise<number> {
 async function pattern(rootDir: string, args: string[]): Promise<number> {
   const save = args.includes('--save');
   const establish = args.includes('--establish');
+  const refresh = args.includes('--refresh');
   const at = args.indexOf('--kind');
   const wanted = at < 0 ? undefined : args[at + 1];
   // `at < 0` guarded explicitly: without it `at + 1` is 0 and the *first*
   // argument is discarded as if it were the flag's value, so `uic pattern
   // <file>` printed its own usage. The same slip the review caught in `diff`.
   const file = args.find((arg, index) => !arg.startsWith('-') && (at < 0 || index !== at + 1));
+
+  if (establish && refresh) {
+    console.error('`--establish` writes a pattern file and `--refresh` updates one; pick one.');
+    return 1;
+  }
 
   const decisions = await readDecisions(rootDir);
   const decided = wanted === undefined ? undefined : decisions.find((one) => one.kind === wanted);
@@ -322,10 +328,15 @@ async function pattern(rootDir: string, args: string[]): Promise<number> {
 
   const reference = decided?.canon ?? (file === undefined ? undefined : resolve(rootDir, file));
   if (reference === undefined) {
-    console.error('Usage: uic pattern <reference-screen> [--save]');
+    console.error('Usage: uic pattern <reference-screen> [--save|--establish|--refresh]');
     console.error('   or: uic pattern --kind <kind> [--save]   (from a decisions file)');
     return 1;
   }
+
+  // Before the derivation, not after: a refresh must know which file it is
+  // refreshing in order to derive *without* reading it, and deriving first is
+  // what made the loop closed.
+  if (refresh) return refreshFile(rootDir, reference, decided?.kind);
 
   // The holder channel is asked for here and nowhere else. It reads files
   // rather than directories and costs 376 ms on an 808-screen application,
@@ -424,7 +435,8 @@ async function establishPattern(
   for (const each of existing) {
     if ((await stat(each).catch(() => null)) === null) continue;
     console.error(`${relative(rootDir, each)} already exists, and was not overwritten.`);
-    console.error('Read it, and re-derive with `uic pattern <screen>` if it looks stale.');
+    console.error('If it looks stale, `uic pattern <screen> --refresh` brings its counts up to');
+    console.error('date and leaves every sentence in it alone.');
     return 1;
   }
 
@@ -439,6 +451,124 @@ async function establishPattern(
   await writeFile(path, rendered, 'utf8');
   console.log(relative(rootDir, path));
   return 0;
+}
+
+/**
+ * Bring the counts in an existing pattern file up to date.
+ *
+ * A pattern goes stale the moment the screens under it change, and until now
+ * nothing refreshed one: `uic patterns` reported what had moved and the only
+ * ways forward were to edit the file by hand or delete it and re-establish it,
+ * which throws away every sentence somebody wrote (#28).
+ *
+ * **What is counted is rewritten and what was decided is not.** The frontmatter
+ * dates and counts, and the sections that are arithmetic over the family;
+ * everything else survives verbatim, `## Still to be written` included —
+ * `refreshPattern` carries the whole of that rule and the reasoning for it.
+ *
+ * **The file is found before the family is derived, and not after.** A pattern
+ * file naming this screen outranks every channel read off the code, so
+ * re-deriving with the file in place reads the file's own member list back as
+ * the family: the counts are recomputed over exactly the screens the pattern
+ * already named, and a fifth screen of the kind can never join. That was
+ * measured on the shipped bundle before this order was imposed — `read: 4
+ * files` and an unchanged member list after a fifth screen was added, with
+ * `from` flipping from `holder` to `pattern` as the tell.
+ *
+ * **A file a person wrote is refused outright.** Without `derived: true` there
+ * is no derived half to regenerate: every section might be a sentence somebody
+ * chose, and a refresh that guessed which would be the tool overruling the
+ * person it works for. The older files predate the field, so absent means
+ * person-written — claiming otherwise would invent a provenance nobody stated.
+ *
+ * It writes the file it read, the legacy directory included. `--establish`
+ * writes the current directory always because it is creating a file and a
+ * silent fallback would leave everybody on the old path forever; this is
+ * updating one that is already there, and moving it under cover of a refresh
+ * would lose the file a project has committed.
+ */
+async function refreshFile(
+  rootDir: string,
+  reference: string,
+  decidedKind: string | undefined,
+): Promise<number> {
+  const { patterns, legacy } = await patternFiles(rootDir);
+  if (legacy) console.error(`ui-consistency: ${MOVED}`);
+
+  const { dir } = await knowledgeDir(rootDir, 'patterns');
+  const where = relative(rootDir, reference);
+
+  // Named where a kind was named, and otherwise the one that covers this
+  // screen — by its member list, or by the holder where no file names it. The
+  // same question `uic patterns <screen>` answers, and the same refusal to
+  // guess between two candidates.
+  const covering =
+    decidedKind === undefined
+      ? patternForScreen(patterns, where, await holderOf(reference))
+      : (patterns.find((one) => one.name === slug(decidedKind)) ?? null);
+
+  if (covering === null) {
+    console.error(`No pattern file covers ${where}, so there is nothing to refresh.`);
+    console.error('`uic patterns <screen>` says why, and `uic pattern <screen> --establish`');
+    console.error('writes the first one.');
+    return 1;
+  }
+
+  const path = join(dir, covering.file);
+  const raw = await readFile(path, 'utf8').catch(() => null);
+  if (raw === null) {
+    console.error(`Cannot read ${relative(rootDir, path)}.`);
+    return 1;
+  }
+  if (!covering.derived) {
+    console.error(`${relative(rootDir, path)} carries no \`derived: true\`, so a person wrote it.`);
+    console.error('Nothing in it is safe to regenerate: read it against `uic pattern <screen>`');
+    console.error('and change what you decide should change.');
+    return 1;
+  }
+
+  const found = await patternOf(reference, { byHolder: true, ignoringPattern: covering.name });
+  if (found === null) {
+    // Not a dead end the way `--establish`'s is: the file still says what it
+    // said, and the reason the counts could not be redone is the answer.
+    console.error(`${relative(rootDir, path)} was left as it is.`);
+    console.error('Fewer than three screens of this kind can be read now, so there is nothing');
+    console.error('to count agreement over. That is a fact about the code today, and the');
+    console.error('pattern may well be what should hold — read it rather than deleting it.');
+    return 1;
+  }
+
+  const { text, changed } = refreshPattern(raw, found, {
+    name: covering.name,
+    observed: new Date().toISOString().slice(0, 10),
+    files: found.family.map((one) => relative(rootDir, one)),
+    reference: where,
+  });
+
+  if (changed.length === 0) {
+    console.log(`${relative(rootDir, path)} is already what the code says. Nothing was written.`);
+    return 0;
+  }
+
+  await writeFile(path, text, 'utf8');
+  console.log(relative(rootDir, path));
+  // Named one by one, because this rewrote a committed file. The diff is the
+  // safety mechanism — a refresh nobody then read would be the same defect as
+  // a pattern nobody refreshed — and this says where to look in it.
+  for (const one of changed) console.log(`  rewritten: ${one}`);
+  console.log('  kept: every other section, as written');
+  return 0;
+}
+
+/** The holder a screen sits in, read the way `uic patterns <screen>` reads it. */
+async function holderOf(screen: string): Promise<string | null> {
+  const pair = await pairOf(screen);
+  const identity = pair?.identity ?? screen;
+  const own = await readFile(identity, 'utf8').catch(() => null);
+  if (own === null) return null;
+  const markup = pair === null ? { path: screen, source: own } : await markupOf(identity, own);
+  if (markup === null) return null;
+  return regionsOf(markup.source, templateKind(markup.path) ?? undefined)?.holder ?? null;
 }
 
 /** `PageShell` → `page-shell`; a kind already written in words is left alone. */
@@ -837,7 +967,7 @@ async function patterns(rootDir: string, args: string[]): Promise<number> {
         `${members} ${members === 1 ? 'file' : 'files'}` +
         `${one.observed === null ? '' : `  observed ${one.observed}`}`,
     );
-    for (const line of staleness(await staleIn(rootDir, one))) console.log(`  ${line}`);
+    for (const line of staleness(await staleIn(rootDir, one), one.derived)) console.log(`  ${line}`);
   }
   return 0;
 }
@@ -850,14 +980,7 @@ async function coveringOne(
 ): Promise<number> {
   const absolute = resolve(rootDir, target);
   const where = relative(rootDir, absolute);
-  const pair = await pairOf(absolute);
-  const identity = pair?.identity ?? absolute;
-  const own = await readFile(identity, 'utf8').catch(() => null);
-  const markup = own === null ? null : pair === null ? { path: absolute, source: own } : await markupOf(identity, own);
-  const holder =
-    markup === null
-      ? null
-      : (regionsOf(markup.source, templateKind(markup.path) ?? undefined)?.holder ?? null);
+  const holder = await holderOf(absolute);
 
   const covering = patternForScreen(found, where, holder);
   if (covering === null) {
@@ -876,17 +999,23 @@ async function coveringOne(
       ? '  named by the pattern itself'
       : `  sits in <${holder}>, which is the pattern's holder`,
   );
-  for (const line of staleness(await staleIn(rootDir, covering))) console.log(`  ${line}`);
+  for (const line of staleness(await staleIn(rootDir, covering), covering.derived)) console.log(`  ${line}`);
   return 0;
 }
 
 /** What has moved under a pattern, said as the two different things it is. */
-function staleness(stale: Stale[]): string[] {
+function staleness(stale: Stale[], derived = false): string[] {
   const say = (why: Stale['why'], text: string): string[] => {
     const files = stale.filter((one) => one.why === why).map((one) => one.file);
     return files.length === 0 ? [] : [`${text}: ${files.join(', ')}`];
   };
-  return [...say('changed', 'changed since it was read'), ...say('gone', 'no longer there')];
+  const said = [...say('changed', 'changed since it was read'), ...say('gone', 'no longer there')];
+  // Naming what to do about it, and only where there is something to do. A file
+  // the tool established can have its counts regenerated; one a person wrote
+  // has no derived half, and offering a command that will refuse is worse than
+  // saying nothing (#28).
+  if (said.length > 0 && derived) said.push('`uic pattern <one of them> --refresh` re-counts it');
+  return said;
 }
 
 async function place(rootDir: string, args: string[]): Promise<number> {

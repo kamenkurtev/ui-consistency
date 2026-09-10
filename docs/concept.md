@@ -269,7 +269,14 @@ they look like*.
 The facts in it are still derived every time. What is stored is the intent — the
 shape, the alternatives, the rules — and the file records the date it was
 observed and the screens it was read from, so anything that has moved underneath
-it is reported where the pattern is used.
+it is reported where the pattern is used — and, since #28, with the one thing to
+do about it named beside it. `--refresh` re-counts what was counted in a file
+the tool established and leaves every sentence as written; a file a person wrote
+is refused, because it has no derived half. The refresh derives the family
+without reading the file it is refreshing: the pattern-file channel outranks
+everything read off the code, so a file naming four screens would otherwise
+recount itself over exactly those four forever, and a fifth screen of the kind
+could never join.
 
 ~~a reference screen you point at, then your curated rules, then Storybook, then
 the files next door~~ — **the route table was missing from that list, and it is

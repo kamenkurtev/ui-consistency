@@ -118,8 +118,19 @@ draft, and it says so.
 It writes nothing and **exits 1** where there are fewer than three screens of
 the kind, or where the file already exists. An existing pattern has been through
 a pull request, and replacing a reviewed sentence with a derived one is the tool
-overruling the person it works for — read it instead, and re-derive without
-`--establish` if it looks stale.
+overruling the person it works for — read it instead.
+
+**Where an established file has gone stale, `--refresh` is the way back:**
+
+```
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" pattern <a screen of that kind> --refresh
+```
+
+It re-counts what was counted and leaves every sentence alone — the answers
+under `## Still to be written` above all — and it names each section it rewrote,
+because it has just changed a committed file and the diff is what makes that
+safe. It exits 1 on a file carrying no `derived: true`: a person wrote that one,
+and nothing in it is safe to regenerate.
 
 Nothing about this is approval. The file is a draft in the project's own
 directory; the one place derived material may fail anything is still a person

@@ -9,6 +9,14 @@ The failure this exists for: **the pattern is already decided, and the
 twenty-seventh page still does not match the first.** Some pages come out right,
 others do not, and it is found by a person opening them one at a time.
 
+**It starts because the work is that shape, not because it was asked for**
+(#28). More than two or three screens taking the same change is this loop,
+whether or not anybody typed the word — and under Claude Code the prompt hook
+names it as soon as a prompt reads as a set. What it does not do is start
+itself: a queue written to disk off a guess about English, before a file has
+been read, would be a process nobody asked for. The judgement that the set is
+real is made here, with the files in front of you.
+
 Read `${CLAUDE_PLUGIN_ROOT}/rules/family-and-particulars.md` before the first
 file. *Reference minus invariant* is the whole of what makes a rollout safe: the
 seed page's own business is exactly what must not be carried into the other

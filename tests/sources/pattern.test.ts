@@ -854,6 +854,59 @@ describe('a kind that no route table registers', () => {
     // Three folders, which no folder walk and no route table would have joined.
     expect(derived?.family).toHaveLength(3);
   });
+
+  /**
+   * The closed loop a refresh would otherwise be (#28).
+   *
+   * The pattern-file channel outranks everything read off the code, so once a
+   * file names four screens, re-deriving one of them reads those same four
+   * back: the counts are recomputed over exactly the screens the pattern
+   * already named, and a screen that has since joined the kind can never enter.
+   * `ignoringPattern` names the one file the derivation may not answer from.
+   */
+  it('does not answer from a pattern file it was told to ignore', async () => {
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    await mkdir(join(root, '.ui-consistency/patterns'), { recursive: true });
+    const target = await screen('src/parts/ConfirmDialog.tsx', page('Dialog', ['DialogButtons']));
+    for (const name of ['Session', 'Upload', 'Retry']) {
+      await screen(`src/parts/${name}Dialog.tsx`, page('Dialog', ['DialogButtons']));
+    }
+    // The file was written before `RetryDialog` existed, so it names three.
+    await writeFile(
+      join(root, '.ui-consistency/patterns/dialog.md'),
+      '---\npattern: dialog\nholder: Dialog\n---\n\n## Where it is used\n\n' +
+        '`src/parts/ConfirmDialog.tsx`, `src/parts/SessionDialog.tsx`, `src/parts/UploadDialog.tsx`\n',
+    );
+
+    // As it stands, which is the loop: its own member list is the family.
+    const inLoop = await patternOf(target);
+    expect(inLoop?.from).toBe('pattern');
+    expect(inLoop?.family).toHaveLength(3);
+
+    const freshly = await patternOf(target, { ignoringPattern: 'dialog' });
+    expect(freshly?.from).not.toBe('pattern');
+    expect(freshly?.family).toHaveLength(4);
+    expect(freshly?.family.some((one) => one.includes('RetryDialog'))).toBe(true);
+  });
+
+  /** Another file stating a kind is still somebody stating a kind. */
+  it('ignores only the file it was named, not the channel', async () => {
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+    await mkdir(join(root, '.ui-consistency/patterns'), { recursive: true });
+    const target = await screen('src/parts/ConfirmDialog.tsx', page('Dialog', ['DialogButtons']));
+    await screen('src/elsewhere/SessionDialog.tsx', page('Dialog', ['DialogButtons']));
+    await screen('src/far/UploadDialog.tsx', page('Dialog', ['DialogButtons']));
+    await writeFile(
+      join(root, '.ui-consistency/patterns/modal.md'),
+      '---\npattern: modal\nholder: Dialog\n---\n\n## Where it is used\n\n' +
+        '`src/parts/ConfirmDialog.tsx`, `src/elsewhere/SessionDialog.tsx`, `src/far/UploadDialog.tsx`\n',
+    );
+
+    const derived = await patternOf(target, { ignoringPattern: 'dialog' });
+
+    expect(derived?.from).toBe('pattern');
+    expect(derived?.family).toHaveLength(3);
+  });
 });
 
 /**
