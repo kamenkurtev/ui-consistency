@@ -1,7 +1,8 @@
-import { readdir, readFile, stat } from 'node:fs/promises';
+import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, relative, sep } from 'node:path';
 import { exportedSymbolsFromSource } from '../inventory/exports.js';
 import { parseModule } from '../parse/parse.js';
+import { constantsFor, plainString, type Constants } from './constants.js';
 import type { Node, ObjectExpression } from '@babel/types';
 
 /** Where a screen sits in the application, as far as the code says. */
@@ -32,6 +33,17 @@ export interface Placement {
   trail: string[];
   /** Where the route is registered, for a project that declares them. */
   declaredIn: { file: string; line: number } | null;
+  /**
+   * Whether any segment of the path was written as a constant rather than a
+   * literal.
+   *
+   * A resolved path and a literal one are not equally safe to repeat back. The
+   * literal is what the table says; the resolved one is what a lookup made of
+   * it, and a reader who can see which is which can check the enum when a path
+   * looks wrong. `false` where nothing was resolved, and where there is no path
+   * at all (#36).
+   */
+  pathFromConstant: boolean;
 }
 
 /** The file names a router-based framework gives to a screen. */
@@ -198,6 +210,8 @@ async function declaredPath(
   binding: string | null;
   /** Whether the table wrote it whole — see `Found.absolute`. */
   absolute: boolean;
+  /** Whether a constant had to be resolved to read it. */
+  fromConstant: boolean;
 } | null> {
   const names = await namesOf(screen);
 
@@ -212,13 +226,34 @@ async function declaredPath(
     const ast = parseModule(source, file);
     if (ast === null) continue;
 
-    const entry = entryFor(ast.program as Node, names, []);
+    // Read once per table, before the walk. A project that keeps its paths in
+    // an enum writes every one of them as a reference, so this is the whole
+    // difference between 117 screens with a path and 117 without (#36).
+    //
+    // Asked for by name, so a table whose paths are all literals reads nothing:
+    // this runs on the registration, which the derived contract asks for on
+    // every edit, and a table imports every screen it registers.
+    const constants = await constantsFor(
+      file,
+      source,
+      insideProject(root),
+      namedPaths(ast.program as Node),
+    );
+
+    const entry = entryFor(ast.program as Node, names, [], false, constants);
     if (entry !== null) {
+      // Asked by walking the same table with nothing resolvable rather than by
+      // threading a flag through every frame: the question is exactly *would
+      // this path have been readable without the constants*, and that is what
+      // the second walk answers. One file, already parsed.
+      const literal =
+        constants.size === 0 ? entry : entryFor(ast.program as Node, names, [], false);
       return {
         path: entry.path,
         declaredIn: { file, line: entry.line },
-        binding: bindingOf(ast.program as Node, names, entry),
+        binding: bindingOf(ast.program as Node, names, entry, constants),
         absolute: entry.absolute,
+        fromConstant: entry.path !== null && literal?.path !== entry.path,
       };
     }
   }
@@ -235,11 +270,11 @@ async function declaredPath(
  * that builds its routes in a call, say — answers null, and null means no
  * mount is looked for rather than a guess at which array was meant.
  */
-function bindingOf(program: Node, names: string[], entry: Found): string | null {
+function bindingOf(program: Node, names: string[], entry: Found, constants: Constants): string | null {
   let binding: string | null = null;
   let hits = 0;
   for (const array of tableArrays(program)) {
-    const found = entryFor(array.node, names, []);
+    const found = entryFor(array.node, names, [], false, constants);
     if (found === null || found.line !== entry.line) continue;
     binding = array.name;
     hits++;
@@ -303,14 +338,132 @@ const asPrefix = (segments: string[]): string[] => {
 /** Did the table write this path whole, from the root? */
 const isRooted = (own: string[]): boolean => own.some((one) => one.startsWith('/'));
 
-const stringOf = (node: Node | null | undefined): string | null => {
+/** Nothing resolvable, for every walk that is not reading a path. */
+const NO_CONSTANTS: Constants = new Map();
+
+/**
+ * The string a node writes, resolving a constant the file can see.
+ *
+ * `path: RoutePaths.Dashboard` and `` path: `${RoutePaths.Groups}/:groupId` ``
+ * are both ordinary React, and reading only the literal answered `path: null`
+ * for every screen in an application (#36). Resolution is a **lookup** in a map
+ * built from declarations, never a reading of the name: an unknown constant is
+ * absent from the map and the answer stays null, which is a miss and not a
+ * guess.
+ */
+const stringOf = (node: Node | null | undefined, constants: Constants = NO_CONSTANTS): string | null => {
+  const plain = plainString(node);
+  if (plain !== null) return plain;
   if (node === null || node === undefined) return null;
-  if (node.type === 'StringLiteral') return node.value;
-  if (node.type === 'TemplateLiteral' && node.expressions.length === 0) {
-    return node.quasis[0]?.value.cooked ?? null;
+  if (node.type === 'TemplateLiteral') {
+    // Every part or nothing. A template with one unreadable expression is a
+    // partial path, and a partial path presented as a whole one is the failure
+    // the mount composition already forbids.
+    let out = '';
+    for (const [at, quasi] of node.quasis.entries()) {
+      out += quasi.value.cooked ?? '';
+      const expression = node.expressions[at];
+      if (expression === undefined) continue;
+      const value = named(expression as Node, constants);
+      if (value === null) return null;
+      out += value;
+    }
+    return out;
   }
-  return null;
+  return named(node, constants);
 };
+
+/** A constant by the name written at the use site, or null where it is not one. */
+function named(node: Node, constants: Constants): string | null {
+  if (constants.size === 0) return null;
+  const key = dotted(node);
+  return key === null ? null : (constants.get(key) ?? null);
+}
+
+/**
+ * `moduleAt`, refusing anything outside the project.
+ *
+ * A relative specifier can climb: `../../../../etc/passwd` is a relative
+ * specifier. Nothing above the project root is this tool's business, and a
+ * reader that follows one there is the finding a security pass already made
+ * about a `tsconfig` alias. The path is compared after resolution, because a
+ * symlink inside the project is how the check is walked around.
+ */
+const insideProject =
+  (root: string) =>
+  async (base: string): Promise<string | null> => {
+    const found = await moduleAt(base);
+    if (found === null) return null;
+    // Both sides resolved, not one. A project checked out under a symlinked
+    // directory — every `mkdtemp` on macOS is one — has a real path that does
+    // not begin with the root it was reached by, and comparing a resolved file
+    // against an unresolved root refuses every module in it.
+    const [real, home] = await Promise.all([
+      realpath(found).catch(() => found),
+      realpath(root).catch(() => root),
+    ]);
+    const away = relative(home, real);
+    return away.startsWith('..') || isAbsolute(away) ? null : found;
+  };
+
+/**
+ * The root identifiers this table writes its paths with.
+ *
+ * `RoutePaths` from `path: RoutePaths.Dashboard`, and from inside a template
+ * literal. Empty on a table that writes literals, which is what keeps the
+ * resolution free for every project that already worked.
+ */
+function namedPaths(program: Node): Set<string> {
+  const wanted = new Set<string>();
+
+  const want = (node: Node | null | undefined): void => {
+    if (node === null || node === undefined) return;
+    if (node.type === 'TemplateLiteral') {
+      for (const expression of node.expressions) want(expression as Node);
+      return;
+    }
+    const key = dotted(node);
+    if (key !== null) wanted.add(key.split('.')[0]!);
+  };
+
+  const visit = (node: Node): void => {
+    if (node.type === 'ObjectExpression') {
+      for (const property of node.properties) {
+        if (property.type !== 'ObjectProperty') continue;
+        const key =
+          property.key.type === 'Identifier'
+            ? property.key.name
+            : property.key.type === 'StringLiteral'
+              ? property.key.value
+              : null;
+        if (key !== null && PATH_KEYS.has(key)) want(property.value as Node);
+      }
+    }
+    if (node.type === 'JSXOpeningElement') {
+      for (const attribute of node.attributes) {
+        if (attribute.type !== 'JSXAttribute' || attribute.name.type !== 'JSXIdentifier') continue;
+        if (!PATH_KEYS.has(attribute.name.name)) continue;
+        if (attribute.value?.type === 'JSXExpressionContainer') {
+          want(attribute.value.expression as Node);
+        }
+      }
+    }
+    for (const child of inside(node)) visit(child);
+  };
+  visit(program);
+
+  return wanted;
+}
+
+/** `RoutePaths.Dashboard`, `Paths.Routes.Home`, `DASHBOARD` — as written. */
+function dotted(node: Node): string | null {
+  if (node.type === 'Identifier') return node.name;
+  if (node.type !== 'MemberExpression' || node.computed) return null;
+  const object = dotted(node.object as Node);
+  if (object === null) return null;
+  const property = node.property.type === 'Identifier' ? node.property.name : null;
+  return property === null ? null : `${object}.${property}`;
+}
 
 /** Every child node, without knowing what kind of node this is. */
 function inside(node: Node): Node[] {
@@ -395,7 +548,7 @@ interface Parts {
  * mount, so the two cannot disagree about what a route object is — which is the
  * failure mode a second hand-written reader would have.
  */
-function routeParts(node: ObjectExpression): Parts {
+function routeParts(node: ObjectExpression, constants: Constants = NO_CONSTANTS): Parts {
   const own: string[] = [];
   let binding: Node | null = null;
   let children: Node[] = [];
@@ -412,7 +565,7 @@ function routeParts(node: ObjectExpression): Parts {
     if (key === null) continue;
 
     if (PATH_KEYS.has(key)) {
-      const written = stringOf(property.value as Node);
+      const written = stringOf(property.value as Node, constants);
       if (written !== null) own.push(written);
     } else if (BINDING_KEYS.has(key)) {
       binding = property.value as Node;
@@ -436,9 +589,15 @@ function routeParts(node: ObjectExpression): Parts {
   return { own, binding, children, mounted };
 }
 
-function entryFor(node: Node, names: string[], prefix: string[], absolute = false): Found | null {
+function entryFor(
+  node: Node,
+  names: string[],
+  prefix: string[],
+  absolute = false,
+  constants: Constants = NO_CONSTANTS,
+): Found | null {
   if (node.type === 'ObjectExpression') {
-    const { own, binding, children } = routeParts(node);
+    const { own, binding, children } = routeParts(node, constants);
     const rooted = isRooted(own);
     const here = rooted ? [...own] : [...prefix, ...own];
     // The binding is checked before the children, so a parent that routes the
@@ -447,7 +606,7 @@ function entryFor(node: Node, names: string[], prefix: string[], absolute = fals
       return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
     }
     for (const child of children) {
-      const found = entryFor(child, names, asPrefix(here), absolute || rooted);
+      const found = entryFor(child, names, asPrefix(here), absolute || rooted, constants);
       if (found !== null) return found;
     }
     return null;
@@ -465,7 +624,7 @@ function entryFor(node: Node, names: string[], prefix: string[], absolute = fals
             ? (attribute.value.expression as Node)
             : ((attribute.value ?? null) as Node | null);
         if (PATH_KEYS.has(attribute.name.name)) {
-          const written = stringOf(value);
+          const written = stringOf(value, constants);
           if (written !== null) own.push(written);
         } else if (BINDING_KEYS.has(attribute.name.name) && value !== null) {
           bindings.push(value);
@@ -484,7 +643,7 @@ function entryFor(node: Node, names: string[], prefix: string[], absolute = fals
         return { path: joined(here), line: node.loc?.start.line ?? 1, absolute: absolute || rooted };
       }
       for (const child of node.children) {
-        const found = entryFor(child as Node, names, asPrefix(here), absolute || rooted);
+        const found = entryFor(child as Node, names, asPrefix(here), absolute || rooted, constants);
         if (found !== null) return found;
       }
       return null;
@@ -492,7 +651,7 @@ function entryFor(node: Node, names: string[], prefix: string[], absolute = fals
   }
 
   for (const child of inside(node)) {
-    const found = entryFor(child, names, prefix, absolute);
+    const found = entryFor(child, names, prefix, absolute, constants);
     if (found !== null) return found;
   }
   return null;
@@ -810,7 +969,13 @@ async function place(
   mounts: boolean,
   mountReads: number,
 ): Promise<Placement> {
-  const nothing: Placement = { style: null, path: null, trail: [], declaredIn: null };
+  const nothing: Placement = {
+    style: null,
+    path: null,
+    trail: [],
+    declaredIn: null,
+    pathFromConstant: false,
+  };
   if (root === null) return nothing;
 
   const away = relative(root, screen);
@@ -823,6 +988,8 @@ async function place(
       path: `/${byFile.join('/')}`,
       trail: byFile,
       declaredIn: null,
+      // The directory *is* the route, so there is no constant to resolve.
+      pathFromConstant: false,
     };
   }
 
@@ -848,6 +1015,7 @@ async function place(
     // No path, no trail. Inventing one from the folder is the confident wrong
     // answer this whole module refuses to give.
     trail: segmentsOf(path === null ? [] : [path]),
+    pathFromConstant: declared.fromConstant,
     declaredIn: declared.declaredIn,
   };
 }
