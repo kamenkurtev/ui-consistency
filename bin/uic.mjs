@@ -24721,7 +24721,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join22 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.98";
+var VERSION = "0.14.99";
 
 // src/cli/session.ts
 function shapeFor(env, context) {

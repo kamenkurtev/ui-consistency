@@ -302,8 +302,7 @@ The template goes through the tolerant HTML parser; the `.component.ts` goes
 through Babel — and Babel had no decorators plugin for a while, so *every* Angular
 component was a syntax error and every module-level reading of it returned
 nothing. That was wider than it sounds: the inventory is what the import and
-deprecated checks stand on, so v1's whole subject was blind to Angular. Measured
-in `docs/findings/2026-08-29-decorated-files-were-unread.md`.
+deprecated checks stand on, so v1's whole subject was blind to Angular. Measured on a real Angular monorepo of 179 components.
 
 **And it used to read as coverage of Angular *screens*, which it was not
 .** A React screen is a file. An **Angular
