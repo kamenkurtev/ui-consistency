@@ -202,7 +202,7 @@ describe('the built binary', () => {
   it('refuses an unknown subcommand', async () => {
     const run = await uic(['frobnicate'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stderr).toContain('Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
+    expect(run.stderr).toContain('Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log|mcp>');
   });
 
   it('says what to do when given no files', async () => {

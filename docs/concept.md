@@ -266,6 +266,13 @@ A route table states which screens are registered together; a folder states
 nothing at all. Only a pattern file says *these are one kind, and this is what
 they look like*.
 
+**And since #33 a pattern file is addressable rather than merely committed.**
+The MCP server the plugin declares exposes them as resources, so an agent lists
+and reads them without knowing that they live in `.ui-consistency/patterns/` —
+and so does anything else with an MCP client, a CI job or a review bot
+included. That is the half a CLI cannot offer, and it is also the only thing
+that reaches the three harnesses with no hook on the agent's own initiative.
+
 The facts in it are still derived every time. What is stored is the intent — the
 shape, the alternatives, the rules — and the file records the date it was
 observed and the screens it was read from, so anything that has moved underneath
