@@ -344,3 +344,152 @@ describe('an Angular screen, which is a pair', () => {
     expect(fromMarkup!.root).toEqual(fromClass!.root);
   });
 });
+
+/**
+ * First run against a real React monorepo: four screens tried, **three came out
+ * wrong**, and the one that was right had plain unconditional children (#31).
+ */
+describe('the tree the walk actually reads', () => {
+  /**
+   * The commonest detail pattern builds its tabs as objects before returning,
+   * and the JSX in a `content:` property is far bigger than the four lines the
+   * component returns. The root was the largest top-level element, so the
+   * answer was the loader and the whole screen was invisible.
+   */
+  it('is rooted at what the component returns, not at the biggest JSX in the file', async () => {
+    const at = 'src/Details.tsx';
+    await write(at,
+      'const generalTab = {\n' +
+        '  label: "General",\n' +
+        '  content: (\n' +
+        '    <LoadingBox loading={loading}>\n' +
+        '      <Accordion title="Identity"><GeneralForm /><AddressForm /></Accordion>\n' +
+        '      <Accordion title="Billing"><BillingForm /><TaxForm /></Accordion>\n' +
+        '      <SaveBar />\n' +
+        '    </LoadingBox>\n' +
+        '  ),\n' +
+        '};\n' +
+        'export const Details = () => (\n' +
+        '  <PageShell title="Account"><SectionTabs tabs={[generalTab]} /></PageShell>\n' +
+        ');\n',
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 2 });
+
+    expect(walked?.root.name).toBe('PageShell');
+    expect(walked?.root.children.map((one) => one.name)).toContain('SectionTabs');
+  });
+
+  /**
+   * The defect the old "largest element" reading was itself a fix for, and the
+   * one a returned-root reading can let back in: a helper declared above the
+   * screen with a bigger tree than the screen has. A screen is exported and a
+   * helper usually is not, so exported wins before size does.
+   */
+  it('takes the exported screen over a helper with a bigger tree', async () => {
+    const at = 'src/Helper.tsx';
+    await write(
+      at,
+      'const Row = () => (\n' +
+        '  <TableRow><Cell /><Cell /><Cell /><Cell /><Cell /><Cell /><Cell /></TableRow>\n' +
+        ');\n' +
+        'export const Page = () => <PageShell><Grid rows={Row} /></PageShell>;\n',
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 1 });
+
+    expect(walked?.root.name).toBe('PageShell');
+  });
+
+  it('walks a child inside an expression, which is how a screen gates on data', async () => {
+    const at = 'src/Regions.tsx';
+    await write(at,
+      'export const Regions = () => (\n' +
+        '  <PageShell title="Regions">\n' +
+        '    {user && <OrdersGrid user={user} />}\n' +
+        '    {loading ? <Spinner /> : <Summary />}\n' +
+        '    {rows.map((row) => <Row key={row.id} />)}\n' +
+        '    <>{extra && <Footer />}</>\n' +
+        '  </PageShell>\n' +
+        ');\n',
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 1 });
+    const held = walked?.root.children.map((one) => one.name) ?? [];
+
+    expect(held).toContain('OrdersGrid');
+    expect(held).toContain('Spinner');
+    expect(held).toContain('Summary');
+    expect(held).toContain('Row');
+    // A fragment holds no place in a layout: its children are the holder's own.
+    expect(held).toContain('Footer');
+    expect(held).not.toContain('Fragment');
+  });
+
+  it('never reports a node as its own child', async () => {
+    const at = 'src/Self.tsx';
+    await write(at,
+      "import { PageShell } from '@acme/ui';\nexport const Self = () => <PageShell title=\"x\" />;\n",
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 2 });
+
+    expect(walked?.root.name).toBe('PageShell');
+    expect(walked?.root.children.map((one) => one.name)).not.toContain('PageShell');
+  });
+
+  /**
+   * `<SectionTabs tabs={tabs} />` is a leaf to a walk that follows children,
+   * and the accordions, the forms and the save bar are all inside
+   * `tabs[].content`. Content-as-data is one of the commonest shapes in the
+   * repository this was found on.
+   */
+  it('follows content the screen passes as data, and says it came from a prop', async () => {
+    const at = 'src/Tabs.tsx';
+    await write(at,
+      'const generalTab = { label: "General", content: (<LoadingBox><SaveBar /></LoadingBox>) };\n' +
+        'export const Tabs = () => (\n' +
+        '  <PageShell><SectionTabs tabs={[generalTab]} /></PageShell>\n' +
+        ');\n',
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 1 });
+    const passed = walked?.root.children.find((one) => one.name === 'LoadingBox');
+
+    expect(passed).toBeDefined();
+    // Not printed as a child of `SectionTabs`: it is data the screen hands it.
+    expect(passed?.via).toBe('SectionTabs.tabs');
+  });
+
+  it('names a content prop it could not read, rather than leaving a leaf', async () => {
+    const at = 'src/Opaque.tsx';
+    await write(at,
+      "import { buildTabs } from './tabs';\n" +
+        'export const Opaque = () => (\n' +
+        '  <PageShell><SectionTabs tabs={buildTabs(t)} /></PageShell>\n' +
+        ');\n',
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 1 });
+
+    expect(walked?.root.children.map((one) => one.name)).toContain('SectionTabs.tabs');
+    expect(walked?.root.children.find((one) => one.name === 'SectionTabs.tabs')?.at).toBe(
+      'unresolved',
+    );
+  });
+
+  it('says nothing about a prop it cannot read on an element that holds something', async () => {
+    // A prop nobody can read, on an element that already holds a child, says
+    // nothing worth a line — and a check that floods gets switched off.
+    const at = 'src/Held.tsx';
+    await write(at,
+      'export const Held = () => (\n' +
+        '  <PageShell><SectionTabs tabs={buildTabs()}><Panel /></SectionTabs></PageShell>\n' +
+        ');\n',
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 1 });
+
+    expect(walked?.root.children.map((one) => one.name)).not.toContain('SectionTabs.tabs');
+  });
+});

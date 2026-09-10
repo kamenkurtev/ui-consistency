@@ -3,7 +3,7 @@ import { relative } from 'node:path';
 import { parseModule, walk } from '../parse/parse.js';
 import { isTemplateComponent, templateKind } from '../parse/template.js';
 import { markupOf, pairOf, selectorOf } from './pair.js';
-import { shapeOf } from './extract.js';
+import { shapeOf, passedContent } from './extract.js';
 import { resolverFor, type Resolver } from './resolve.js';
 
 /**
@@ -77,10 +77,28 @@ export type Leaf =
 export interface TreeNode {
   /** As written where it is used: a JSX name, or a template's selector. */
   name: string;
+  /**
+   * The prop this arrived on, where it was passed as data rather than held.
+   *
+   * *"`Accordion`, through `SectionTabs.tabs`"* is a different fact from
+   * *"`SectionTabs` holds an `Accordion`"*, and printing the second would be a
+   * tree claiming a shape the file does not have.
+   */
+  via?: string;
   /** Project-relative, where the walk resolved and read one. */
   file: string | null;
   at: Leaf;
   children: TreeNode[];
+  /**
+   * Where this node's own holder resolved to, when the walk stopped there.
+   *
+   * ~~Reported as a child with the same name~~ — **`PageShell` holding a
+   * `PageShell`, which is a tree saying something untrue about the screen
+   * (#31)**. The fact is worth keeping: the holder is a workspace package's
+   * component, or the depth bound stopped it, and neither is a leaf for the
+   * same reason. It belongs on the node it is about.
+   */
+  holderAt?: Leaf;
 }
 
 export interface ScreenTree {
@@ -217,15 +235,45 @@ async function nodeFor(
   // layout and describe the library instead of the screen — the holder of a
   // screen that holds something is the boundary, not a step.
   const wiring = surface.children.length === 0 && isTemplateComponent(surface.holder);
-  const children = wiring
+  const followed = wiring
     ? await followRoot(rootDir, file_, selectorsIn, surface.holder, kind, left, resolve, read, state, next)
-    : await Promise.all(
-        surface.children.map((name) =>
-          childNode(rootDir, file_, selectorsIn, name, kind, left, resolve, read, state, next),
-        ),
-      );
+    : null;
+  const children =
+    followed !== null
+      ? followed.children
+      : await Promise.all(
+          surface.children.map((name) =>
+            childNode(rootDir, file_, selectorsIn, name, kind, left, resolve, read, state, next),
+          ),
+        );
 
-  return { name: surface.holder, file: relative(rootDir, identity), at: 'project', children };
+  // What the screen passes as data. A walk that follows children alone reads
+  // `<SectionTabs tabs={tabs} />` as a leaf, and the accordions, the forms and
+  // the save bar are all inside `tabs[].content` — the whole anatomy of the
+  // commonest detail pattern on a real repository, invisible (#31). Only for
+  // JavaScript: a template passes no object literals.
+  if (kind === null && followed === null) {
+    const { passed, unresolved } = passedContent(own);
+    for (const one of passed) {
+      const node = await childNode(
+        rootDir, file_, selectorsIn, one.name, kind, left, resolve, read, state, next,
+      );
+      children.push({ ...node, via: `${one.to}.${one.via}` });
+    }
+    // A leaf that may not be one. Named rather than left looking settled, and
+    // only where the element holds nothing from anywhere else.
+    for (const where of unresolved) {
+      children.push({ name: where, file: null, at: 'unresolved', children: [], via: where });
+    }
+  }
+
+  return {
+    name: surface.holder,
+    file: relative(rootDir, identity),
+    at: 'project',
+    children,
+    ...(followed?.holderAt === undefined ? {} : { holderAt: followed.holderAt }),
+  };
 }
 
 /** One file, read once: where it is, what it imported, and what it declares. */
@@ -309,15 +357,18 @@ async function followRoot(
   read: Set<string>,
   state: State,
   seen: Set<string>,
-): Promise<TreeNode[]> {
+): Promise<{ children: TreeNode[]; holderAt?: Leaf }> {
   const node = await childNode(
     rootDir, from, selectorsIn, holder, kind, left, resolve, read, state, seen,
   );
-  if (node.children.length === 1) return node.children;
+  if (node.children.length === 1) return { children: node.children };
   // Resolved and stopped for a stated reason — another package, the depth
-  // bound. That is worth one line, and it is the only case where the repeated
-  // name carries something the root did not.
-  return node.at === 'package' || node.at === 'beyond' ? [node] : [];
+  // bound. ~~That is worth one line~~ **and it was written as a child with the
+  // same name**, so the tree said `PageShell` holds a `PageShell`. The fact
+  // moves onto the node it is about; nothing is a child of itself (#31).
+  return node.at === 'package' || node.at === 'beyond'
+    ? { children: [], holderAt: node.at }
+    : { children: [] };
 }
 
 /**

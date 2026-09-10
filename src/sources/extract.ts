@@ -1,5 +1,5 @@
 import type { JSXElement, Node } from '@babel/types';
-import { parseModule, walk } from '../parse/parse.js';
+import { parseModule, walk, childNodes } from '../parse/parse.js';
 import {
   isTemplateComponent,
   parseTemplate,
@@ -80,11 +80,156 @@ export function jsxNameOf(element: JSXElement): string | null {
  * helper rendered a table row. Both feed the advisory context, so the advice
  * described a helper function instead of the screen.
  *
- * The screen is the largest top-level element. A screen is big; a helper is
- * not. When a file holds only helpers, the largest of those is what there is
- * — nothing to find is not an error.
+ * ~~The screen is the largest top-level element. A screen is big; a helper is
+ * not.~~ **Size is the wrong question, and it read three of four real screens
+ * wrong (#31).** The commonest detail pattern on a real repository builds its
+ * tabs as objects before returning, and the JSX in a `content:` property is far
+ * bigger than the four lines the component actually returns:
+ *
+ * ```tsx
+ * const generalTab = { label, content: (<LoadingBox>…twenty lines…</LoadingBox>) };
+ * return <PageShell title={…}><SectionTabs tabs={tabs} /></PageShell>;
+ * ```
+ *
+ * The answer was `LoadingBox`, and `PageShell` — the holder, the kind, the
+ * thing every level above this is derived from — did not appear at all. Every
+ * screen of that pattern was invisible.
+ *
+ * **The screen is what a component returns.** That is what makes it the screen,
+ * and it needs no size heuristic: JSX sitting in an object property is data the
+ * screen passes, not the screen. Size still settles a tie between several
+ * components in one file, and the old reading remains the fallback for a file
+ * that returns no JSX from anywhere — a helper is still better than nothing to
+ * find.
  */
 export function screenRoot(program: Node): JSXElement | null {
+  const returned = returnedRoots(program);
+  // Exported first, and only then largest. A screen is exported and a helper
+  // usually is not, and without this the original defect comes back through the
+  // new door: `const Row = () => <TableRow>…twenty lines…</TableRow>` beside a
+  // four-line exported page would take the row, which is the mistake the note
+  // above records from the other direction.
+  const exported = returned.filter((one) => one.exported);
+  const among = exported.length > 0 ? exported : returned;
+  if (among.length > 0) return largest(among.map((one) => one.root));
+  return positionalRoot(program);
+}
+
+/**
+ * The JSX each top-level component returns.
+ *
+ * **Top-level, so a render prop does not outrank the component.** A callback
+ * passed to `.map` returns JSX too, and it is as much part of the screen's
+ * inside as a child element is — reading it as the root would put a table row
+ * where the page should be, which is the mistake the old note above describes
+ * from the other direction.
+ *
+ * `React.memo(…)` and `forwardRef(…)` wrap the function without changing what
+ * it returns, so they are unwrapped rather than making the component invisible.
+ */
+function returnedRoots(program: Node): { root: JSXElement; exported: boolean }[] {
+  const body = (program as { body?: unknown }).body;
+  if (!Array.isArray(body)) return [];
+
+  const roots: { root: JSXElement; exported: boolean }[] = [];
+  for (const statement of body as Node[]) {
+    const exported =
+      statement.type === 'ExportNamedDeclaration' || statement.type === 'ExportDefaultDeclaration';
+    for (const fn of componentsIn(statement)) {
+      const root = returnsJsx(fn);
+      if (root !== null) roots.push({ root, exported });
+    }
+  }
+  return roots;
+}
+
+/** The function-shaped things one top-level statement declares. */
+function componentsIn(statement: Node): Node[] {
+  const node =
+    statement.type === 'ExportNamedDeclaration' || statement.type === 'ExportDefaultDeclaration'
+      ? ((statement as { declaration?: Node | null }).declaration ?? null)
+      : statement;
+  if (node === null) return [];
+
+  if (node.type === 'FunctionDeclaration') return [node];
+  if (node.type === 'ArrowFunctionExpression' || node.type === 'FunctionExpression') return [node];
+
+  if (node.type !== 'VariableDeclaration') return [];
+  const out: Node[] = [];
+  for (const declarator of node.declarations) {
+    const init = unwrapComponent((declarator as { init?: Node | null }).init ?? null);
+    if (init !== null) out.push(init);
+  }
+  return out;
+}
+
+/** Through `memo(…)`, `forwardRef(…)`, `observer(…)` — one function, wrapped. */
+function unwrapComponent(node: Node | null): Node | null {
+  let current = node;
+  for (let hop = 0; current !== null && hop < 4; hop++) {
+    if (current.type === 'ArrowFunctionExpression' || current.type === 'FunctionExpression') {
+      return current;
+    }
+    if (current.type !== 'CallExpression' || current.arguments.length === 0) return null;
+    current = current.arguments[0] as Node;
+  }
+  return null;
+}
+
+/**
+ * What this function returns, without descending into a function inside it.
+ *
+ * An arrow's expression body is a return. Otherwise every `return` in the
+ * body counts, and where a component returns different JSX down two branches
+ * the larger one is taken — the same tie-break as between two components.
+ */
+function returnsJsx(fn: Node): JSXElement | null {
+  const body = (fn as { body?: Node | null }).body ?? null;
+  if (body === null) return null;
+  if (body.type === 'JSXElement') return body as JSXElement;
+
+  const found: JSXElement[] = [];
+  const visit = (node: Node): void => {
+    if (node !== body && isFunction(node)) return;
+    if (node.type === 'ReturnStatement') {
+      const argument = (node as { argument?: Node | null }).argument ?? null;
+      for (const element of jsxIn(argument)) found.push(element);
+      return;
+    }
+    for (const child of childNodes(node)) visit(child);
+  };
+  visit(body);
+  return found.length === 0 ? null : largest(found);
+}
+
+const isFunction = (node: Node): boolean =>
+  node.type === 'ArrowFunctionExpression' ||
+  node.type === 'FunctionExpression' ||
+  node.type === 'FunctionDeclaration';
+
+/** The JSX a returned expression can produce: itself, or either branch of a `?:`. */
+function jsxIn(node: Node | null): JSXElement[] {
+  if (node === null) return [];
+  if (node.type === 'JSXElement') return [node as JSXElement];
+  if (node.type === 'ConditionalExpression') {
+    return [...jsxIn(node.consequent as Node), ...jsxIn(node.alternate as Node)];
+  }
+  if (node.type === 'LogicalExpression') return jsxIn(node.right as Node);
+  if (node.type === 'JSXFragment') {
+    return node.children.filter((one): one is JSXElement => one.type === 'JSXElement');
+  }
+  return [];
+}
+
+const largest = (elements: JSXElement[]): JSXElement =>
+  elements.reduce((biggest, candidate) =>
+    (candidate.end ?? 0) - (candidate.start ?? 0) > (biggest.end ?? 0) - (biggest.start ?? 0)
+      ? candidate
+      : biggest,
+  );
+
+/** The old reading, kept for a file that returns no JSX from anywhere. */
+function positionalRoot(program: Node): JSXElement | null {
   const tops: JSXElement[] = [];
   walk(program, (node) => {
     if (node.type !== 'JSXElement') return;
@@ -105,12 +250,7 @@ export function screenRoot(program: Node): JSXElement | null {
       ),
   );
   if (outermost.length === 0) return null;
-
-  return outermost.reduce((largest, candidate) =>
-    (candidate.end ?? 0) - (candidate.start ?? 0) > (largest.end ?? 0) - (largest.start ?? 0)
-      ? candidate
-      : largest,
-  );
+  return largest(outermost);
 }
 
 function nameOf(element: JSXElement): string | null {
@@ -254,15 +394,67 @@ export function shapeOf(source: string, kind?: TemplateKind): ScreenShape | null
     pattern: outermost === null ? [] : patternOf(outermost),
     props,
     holder: outermost === null ? null : jsxNameOf(outermost),
-    body:
-      outermost === null
-        ? []
-        : outermost.children.flatMap((child) =>
-            child.type === 'JSXElement' ? ([nameOf(child)] as const).filter(
-              (name): name is string => name !== null,
-            ) : [],
-          ),
+    body: outermost === null ? [] : heldBy(outermost),
   };
+}
+
+/**
+ * The components an element holds directly, through the expressions real
+ * screens wrap them in.
+ *
+ * ~~Its JSX element children.~~ **A child inside an expression was missed
+ * entirely (#31)**, and `{cond && <X/>}` is how most real screens gate on data
+ * or a permission — so a page whose whole content is behind one was reported as
+ * holding nothing. `{cond ? <A/> : <B/>}`, `{items.map(…)}` and a fragment are
+ * the same shape and were missed the same way.
+ *
+ * A fragment is transparent: it holds no place in a layout and its children are
+ * the holder's own. A `.map` callback contributes what it returns, once —
+ * fifteen rows are one kind of child, not fifteen children.
+ */
+function heldBy(element: JSXElement): string[] {
+  const names: string[] = [];
+
+  const take = (node: Node | null | undefined): void => {
+    if (node === null || node === undefined) return;
+    switch (node.type) {
+      case 'JSXElement': {
+        const name = nameOf(node as JSXElement);
+        if (name !== null) names.push(name);
+        return;
+      }
+      // Transparent: a fragment is not a component and holds no place.
+      case 'JSXFragment':
+        for (const child of node.children) take(child as Node);
+        return;
+      case 'JSXExpressionContainer':
+        take(node.expression as Node);
+        return;
+      case 'LogicalExpression':
+        take(node.right as Node);
+        return;
+      case 'ConditionalExpression':
+        take(node.consequent as Node);
+        take(node.alternate as Node);
+        return;
+      case 'ArrowFunctionExpression':
+      case 'FunctionExpression':
+        // The callback of a `.map`, and what it returns is the child.
+        take((node as { body?: Node | null }).body ?? null);
+        return;
+      case 'CallExpression':
+        for (const argument of node.arguments) take(argument as Node);
+        return;
+      case 'ParenthesizedExpression':
+        take((node as { expression?: Node | null }).expression ?? null);
+        return;
+      default:
+        return;
+    }
+  };
+
+  for (const child of element.children) take(child as Node);
+  return names;
 }
 
 /**
@@ -342,4 +534,138 @@ export function rawMarkupOf(source: string, kind?: TemplateKind): string[] | nul
 
   if (!renders) return null;
   return tags;
+}
+
+/** A component reached through a prop rather than through a child position. */
+export interface PassedContent {
+  /** The component's name, as written. */
+  name: string;
+  /** The child element it was passed to, and the prop it arrived on. */
+  to: string;
+  via: string;
+}
+
+/**
+ * Content a screen passes as data, which the walk could not see at all.
+ *
+ * The commonest detail pattern on one real repository declares its tabs as
+ * objects and passes them: `<SectionTabs tabs={tabs} />` is a leaf to a walk
+ * that follows children, and the accordions, the forms and the save bar are all
+ * inside `tabs[].content`. It is not an edge case there — all three of that
+ * project's menu surfaces declare their contents as data too, one of them in
+ * 103 files (#31).
+ *
+ * **Resolved in this file and nowhere else.** A binding this file declares can
+ * be read; one it imports cannot, and following it would be a second walk with
+ * a second budget. What cannot be resolved is reported as unresolved rather
+ * than left looking like a leaf — but only for an element that has no children
+ * from anywhere, because a prop nobody can read on an element that already
+ * holds something says nothing worth a line.
+ */
+export function passedContent(source: string): { passed: PassedContent[]; unresolved: string[] } {
+  const ast = parseModule(source);
+  if (ast === null) return { passed: [], unresolved: [] };
+
+  const root = screenRoot(ast.program);
+  if (root === null) return { passed: [], unresolved: [] };
+
+  const declared = jsxBindings(ast.program);
+  const passed: PassedContent[] = [];
+  const unresolved: string[] = [];
+
+  for (const child of root.children) {
+    if (child.type !== 'JSXElement') continue;
+    const to = nameOf(child);
+    if (to === null) continue;
+
+    let found = 0;
+    let opaque: string | null = null;
+    for (const attribute of child.openingElement.attributes) {
+      if (attribute.type !== 'JSXAttribute' || attribute.name.type !== 'JSXIdentifier') continue;
+      const value = attribute.value;
+      if (value?.type !== 'JSXExpressionContainer') continue;
+
+      const names = jsxNamesIn(value.expression as Node, declared, new Set());
+      for (const name of names) {
+        passed.push({ name, to, via: attribute.name.name });
+        found++;
+      }
+      // Worth naming only where nothing else was found: an expression that is a
+      // call or an import is unreadable here, and most of them are not content.
+      if (names.length === 0 && opaque === null && CONTENTISH.test(attribute.name.name)) {
+        opaque = attribute.name.name;
+      }
+    }
+
+    if (found === 0 && opaque !== null && heldBy(child).length === 0) {
+      unresolved.push(`${to}.${opaque}`);
+    }
+  }
+
+  return { passed, unresolved };
+}
+
+/**
+ * Prop names that carry content often enough to be worth a line when unreadable.
+ *
+ * Not a vocabulary of components — those are the project's own and must never
+ * be hardcoded. These are the words React itself and every library spell the
+ * same, about the *shape of a prop* rather than about any project's names.
+ */
+const CONTENTISH = /^(?:children|content|items|tabs|panels|sections|render|body|slots?|actions)$/i;
+
+/** Every name this file binds to JSX, directly or inside data it declares. */
+function jsxBindings(program: Node): Map<string, Node> {
+  const found = new Map<string, Node>();
+  walk(program, (node) => {
+    if (node.type !== 'VariableDeclarator') return;
+    const id = (node as { id?: Node }).id;
+    const init = (node as { init?: Node | null }).init ?? null;
+    if (id === undefined || id.type !== 'Identifier' || init === null) return;
+    found.set(id.name, init);
+  });
+  return found;
+}
+
+/**
+ * The component names an expression can be seen to produce.
+ *
+ * Through the shapes content-as-data is actually written in: an element, an
+ * array of them, an object whose properties hold them, and an identifier this
+ * file bound to any of those. `seen` guards a binding that refers to itself.
+ */
+function jsxNamesIn(node: Node | null, declared: Map<string, Node>, seen: Set<string>): string[] {
+  if (node === null) return [];
+  switch (node.type) {
+    case 'JSXElement': {
+      const name = nameOf(node as JSXElement);
+      return name === null ? [] : [name];
+    }
+    case 'JSXFragment':
+      return node.children.flatMap((one) => jsxNamesIn(one as Node, declared, seen));
+    case 'Identifier': {
+      if (seen.has(node.name)) return [];
+      const bound = declared.get(node.name);
+      return bound === undefined ? [] : jsxNamesIn(bound, declared, new Set(seen).add(node.name));
+    }
+    case 'ArrayExpression':
+      return node.elements.flatMap((one) =>
+        one === null ? [] : jsxNamesIn(one as Node, declared, seen),
+      );
+    case 'ObjectExpression':
+      return node.properties.flatMap((property) =>
+        property.type === 'ObjectProperty' ? jsxNamesIn(property.value as Node, declared, seen) : [],
+      );
+    case 'ConditionalExpression':
+      return [
+        ...jsxNamesIn(node.consequent as Node, declared, seen),
+        ...jsxNamesIn(node.alternate as Node, declared, seen),
+      ];
+    case 'LogicalExpression':
+      return jsxNamesIn(node.right as Node, declared, seen);
+    case 'TSAsExpression':
+      return jsxNamesIn(node.expression as Node, declared, seen);
+    default:
+      return [];
+  }
 }

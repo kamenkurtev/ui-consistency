@@ -1,7 +1,7 @@
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, relative, sep } from 'node:path';
 import { exportedSymbolsFromSource } from '../inventory/exports.js';
-import { parseModule } from '../parse/parse.js';
+import { parseModule, childNodes } from '../parse/parse.js';
 import { constantsFor, plainString, type Constants } from './constants.js';
 import type { Node, ObjectExpression } from '@babel/types';
 
@@ -448,7 +448,7 @@ function namedPaths(program: Node): Set<string> {
         }
       }
     }
-    for (const child of inside(node)) visit(child);
+    for (const child of childNodes(node)) visit(child);
   };
   visit(program);
 
@@ -465,22 +465,6 @@ function dotted(node: Node): string | null {
   return property === null ? null : `${object}.${property}`;
 }
 
-/** Every child node, without knowing what kind of node this is. */
-function inside(node: Node): Node[] {
-  const found: Node[] = [];
-  for (const key of Object.keys(node)) {
-    if (key === 'loc') continue;
-    const value = (node as unknown as Record<string, unknown>)[key];
-    const one = (candidate: unknown): void => {
-      if (candidate !== null && typeof candidate === 'object' && 'type' in candidate) {
-        found.push(candidate as Node);
-      }
-    };
-    if (Array.isArray(value)) value.forEach(one);
-    else one(value);
-  }
-  return found;
-}
 
 /** Does this subtree name the screen — as an identifier, a tag, or a specifier? */
 function namesScreen(node: Node, names: string[], stopAtNestedRoute: boolean): boolean {
@@ -494,7 +478,7 @@ function namesScreen(node: Node, names: string[], stopAtNestedRoute: boolean): b
     // `component: () => import('@/views/orders/index')` names no identifier.
     const literal = stringOf(current);
     if (literal !== null && names.some((name) => literal.split(/[/.]/).includes(name))) return true;
-    return inside(current).some((child) => visit(child, false));
+    return childNodes(current).some((child) => visit(child, false));
   };
   return visit(node, true);
 }
@@ -650,7 +634,7 @@ function entryFor(
     }
   }
 
-  for (const child of inside(node)) {
+  for (const child of childNodes(node)) {
     const found = entryFor(child, names, prefix, absolute, constants);
     if (found !== null) return found;
   }
@@ -748,7 +732,7 @@ function mountsIn(node: Node, identifier: string, prefix: string[], out: (string
     for (const child of children) mountsIn(child, identifier, asPrefix(here), out);
     return;
   }
-  for (const child of inside(node)) mountsIn(child, identifier, prefix, out);
+  for (const child of childNodes(node)) mountsIn(child, identifier, prefix, out);
 }
 
 /** A file mounting a table, and the binding of its own that it does so from. */
