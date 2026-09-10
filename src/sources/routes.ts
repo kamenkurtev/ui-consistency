@@ -783,7 +783,7 @@ const MAX_CACHED_BYTES = 32_000_000;
  * the first. Both were checked before this was written: the candidate set for a
  * screen with `path: null` contained exactly one file, its own table.
  */
-async function filesUnder(root: string, budget: { left: number }): Promise<string[] | null> {
+export async function filesUnder(root: string, budget: { left: number }): Promise<string[] | null> {
   const remembered = sweptFiles.get(root);
   if (remembered !== undefined) return remembered;
 

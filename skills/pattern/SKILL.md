@@ -76,6 +76,20 @@ fallback a screen's own folder is not its family: a page and its grid, its
 dialog and its hooks are one screen, not four, so the search walks out to the
 pages beside it.
 
+**And from the holder, since #35, when neither of those produces a family of the
+right kind.** The folder walk collects by proximity, and in a project that gives
+every screen its own folder proximity is alphabetical accident: on a
+reproduction of that shape it returned 12 candidates and all 12 sat in a
+different holder, so a family of 8 answered *"fewer than three screens of this
+kind"*. The third channel asks the obvious question — which other screens in
+this application sit in the same holder — and answers `from: 'holder'`, which is
+weaker than a route table (nobody wrote it down) and stronger than a folder
+(what a screen is held by is structural). It runs here and not on the edit path:
+it reads files rather than directories and costs 376 ms on an 808-screen
+application. It is silent where the application has no `package.json` to be
+bounded by, because a family assembled across an unknown boundary is worse than
+no family.
+
 If the project has already decided — `.ui-consistency/decisions/<kind>.md`
 names the canonical screen — use that and say so:
 
