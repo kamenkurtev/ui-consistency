@@ -418,7 +418,14 @@ export function refreshPattern(
   }, text);
   if (rewritten !== text) changed.push(`frontmatter${was === null ? '' : ` (observed ${was})`}`);
 
-  return { text: `${rewritten.replace(/\n{3,}/g, '\n\n').trimEnd()}\n`, changed };
+  // **Not normalised.** A document-wide `\n{3,}` collapse would reflow the very
+  // sections this promises to leave exactly as found — two blank lines between
+  // somebody's paragraphs, or inside a fenced example in their `## Rules` — on
+  // every refresh that changed a count. Each splice closes its own seam
+  // instead: a section's span runs to the next heading, so it carries its own
+  // trailing blank line and both removing and replacing one leave the join
+  // intact. Only the end of the file needs settling.
+  return { text: `${rewritten.trimEnd()}\n`, changed };
 }
 
 /**
@@ -442,10 +449,21 @@ const FRONT = ['holder', 'read', 'from', 'observed'];
 /** Each `## ` section of a document, by title, with the text each one spans. */
 function sectionsOf(raw: string): Map<string, string[]> {
   const found = new Map<string, string[]>();
-  const heading = /^## +(.+?) *$/gm;
   const starts: { title: string; at: number }[] = [];
-  for (let hit = heading.exec(raw); hit !== null; hit = heading.exec(raw)) {
-    starts.push({ title: hit[1]!, at: hit.index });
+
+  // Fences are counted, because a pattern file documenting its own format has
+  // a `## Props` inside one — the shape `rules/pattern-file.md` and the README
+  // both use — and reading that as a boundary splices a fresh block into the
+  // middle of somebody's example.
+  let fenced = false;
+  let at = 0;
+  for (const line of raw.split('\n')) {
+    if (/^\s*(?:```|~~~)/.test(line)) fenced = !fenced;
+    else if (!fenced) {
+      const heading = /^## +(.+?) *$/.exec(line);
+      if (heading !== null) starts.push({ title: heading[1]!, at });
+    }
+    at += line.length + 1;
   }
   for (const [at, one] of starts.entries()) {
     const whole = raw.slice(one.at, starts[at + 1]?.at ?? raw.length);

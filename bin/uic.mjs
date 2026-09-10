@@ -23956,7 +23956,7 @@ ${replacement}
     return value === null ? carry : setFrontLine(carry, key, value);
   }, text);
   if (rewritten !== text) changed.push(`frontmatter${was === null ? "" : ` (observed ${was})`}`);
-  return { text: `${rewritten.replace(/\n{3,}/g, "\n\n").trimEnd()}
+  return { text: `${rewritten.trimEnd()}
 `, changed };
 }
 var COUNTED = [
@@ -23970,13 +23970,19 @@ var COUNTED = [
 var FRONT = ["holder", "read", "from", "observed"];
 function sectionsOf(raw) {
   const found = /* @__PURE__ */ new Map();
-  const heading = /^## +(.+?) *$/gm;
   const starts = [];
-  for (let hit = heading.exec(raw); hit !== null; hit = heading.exec(raw)) {
-    starts.push({ title: hit[1], at: hit.index });
+  let fenced = false;
+  let at = 0;
+  for (const line of raw.split("\n")) {
+    if (/^\s*(?:```|~~~)/.test(line)) fenced = !fenced;
+    else if (!fenced) {
+      const heading = /^## +(.+?) *$/.exec(line);
+      if (heading !== null) starts.push({ title: heading[1], at });
+    }
+    at += line.length + 1;
   }
-  for (const [at, one] of starts.entries()) {
-    const whole = raw.slice(one.at, starts[at + 1]?.at ?? raw.length);
+  for (const [at2, one] of starts.entries()) {
+    const whole = raw.slice(one.at, starts[at2 + 1]?.at ?? raw.length);
     found.set(one.title, [...found.get(one.title) ?? [], whole]);
   }
   return found;
@@ -25205,6 +25211,7 @@ async function refreshFile(rootDir, reference, decidedKind) {
   console.log(relative12(rootDir, path));
   for (const one of changed) console.log(`  rewritten: ${one}`);
   console.log("  kept: every other section, as written");
+  console.log(`  counted around: ${where2}`);
   return 0;
 }
 async function holderOf2(screen) {

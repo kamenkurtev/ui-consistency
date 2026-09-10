@@ -363,6 +363,47 @@ describe('a derived pattern, refreshed', () => {
   });
 
   /**
+   * "Left exactly as found" means byte for byte, and a document-wide reflow is
+   * how that quietly stops being true: two blank lines between somebody's
+   * paragraphs, or inside a fenced example in their own section, closed up on
+   * every refresh that changed a count somewhere else entirely.
+   */
+  it('leaves a person\'s section byte-identical, blank lines and fences included', () => {
+    const mine = [
+      '## Notes',
+      '',
+      'One paragraph.',
+      '',
+      '',
+      'Another, after two blank lines.',
+      '',
+      '```md',
+      '## Props',
+      '',
+      '',
+      '### `Anything`',
+      '```',
+      '',
+    ].join('\n');
+    const established = renderPattern(DERIVED, OPTIONS).replace('## Where it is used', `${mine}## Where it is used`);
+
+    const grown: ScreenPattern = { ...DERIVED, family: [...DERIVED.family, '/repo/src/pages/X.tsx'] };
+    const { text, changed } = refreshPattern(established, grown, {
+      ...OPTIONS,
+      files: [...OPTIONS.files, 'src/pages/X.tsx'],
+    });
+
+    expect(changed).toContain('Where it is used');
+    expect(text).toContain(mine);
+    // And the `## Props` inside the fence was an example, not a boundary: the
+    // fresh block did not land in the middle of it.
+    expect(text).toContain('```md\n## Props\n\n\n### `Anything`\n```');
+    // Two, and that is right: the section, and the example inside the fence.
+    // Collapsing them to one is exactly the defect.
+    expect(text.match(/^## Props$/gm)).toHaveLength(2);
+  });
+
+  /**
    * `String.replace` with a string replacement reads `$&`, `$'` and `$1` in it
    * as references to the match. A prop value is application data — a currency
    * format, a template placeholder — so a pattern whose props carry `$` would

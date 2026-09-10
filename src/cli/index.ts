@@ -557,6 +557,11 @@ async function refreshFile(
   // a pattern nobody refreshed — and this says where to look in it.
   for (const one of changed) console.log(`  rewritten: ${one}`);
   console.log('  kept: every other section, as written');
+  // Which screen the counts were taken around, because it need not be the one
+  // `--establish` used and `## Particular to one screen` is *about* that
+  // screen. The section names it in its own text; this says it before the
+  // diff is opened.
+  console.log(`  counted around: ${where}`);
   return 0;
 }
 
