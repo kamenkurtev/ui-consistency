@@ -170,6 +170,16 @@ registers this screen and states no path for it — a pathless layout route, and
 no table above it was found to mount it either. The family is still the screens
 that table registers; only the trail is unknown.
 
+Or it states one and it could not be read. A path written as a constant — an
+enum member, a property of a frozen object, an exported string — **is** resolved
+now (#36), by value and never from the name's spelling, so an application that
+keeps its paths in one enum is no longer `path: null` throughout. Where the
+declaration is somewhere the reader cannot follow, or a template literal has one
+part it cannot resolve, the answer stays null: a partial path presented as a
+whole one is the failure this reader has already made once. `pathFromConstant`
+says a path was resolved rather than read, which is worth knowing before
+repeating it back to somebody.
+
 Where the path *is* stated one table up — a routes array exported from one file
 and mounted under a path in another — it is composed from there and reported as
 the whole path — ~~for a screen whose own registration states no path~~
