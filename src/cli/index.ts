@@ -1113,6 +1113,13 @@ async function check(rootDir: string, args: string[]): Promise<number> {
       seen.add(path);
       console.log(path);
     }
+    // An empty queue is the answer a driver acts on, so it has to be able to
+    // tell a clean set from a set nothing looked at. On **stderr**, because
+    // stdout is the queue and pulling anything else into it is the context
+    // flood the driver exists to avoid.
+    if (seen.size === 0 && coverage !== null) {
+      for (const line of sayCoverage(coverage)) console.error(line);
+    }
     return seen.size > 0 ? 1 : 0;
   }
 
@@ -1146,8 +1153,9 @@ async function inventory(rootDir: string, args: string[]): Promise<number> {
   // (#37): a command answering with empty output and exit 0 says "nothing to
   // report" where the truth is "this file belongs to nothing I detected", and
   // those are the two answers a user must never have to guess between.
+  const named = relative(rootDir, resolve(rootDir, file));
   if (chain.length === 0) {
-    console.error(`${relative(rootDir, resolve(rootDir, file))} belongs to no detected package.`);
+    console.error(`${named} belongs to no detected package.`);
     console.error(
       packages.length === 0
         ? 'No package was detected at all — `uic scan` shows what was looked for.'
@@ -1181,7 +1189,7 @@ async function inventory(rootDir: string, args: string[]): Promise<number> {
   // or every barrel unreadable. An answer, and not the same answer as a file
   // with nothing exported near it.
   if (printed === 0) {
-    console.error(`Nothing readable on the ${chain.length} layer(s) ${relative(rootDir, resolve(rootDir, file))} sits on:`);
+    console.error(`Nothing readable on the ${chain.length} layer(s) ${named} sits on:`);
     for (const layer of chain.slice(0, 10)) console.error(`  ${layer.name}`);
     console.error('Every one of them is external, or its entry point could not be read.');
     return 1;

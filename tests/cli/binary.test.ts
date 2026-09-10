@@ -929,3 +929,22 @@ describe('what a check that found nothing says about itself', () => {
     await rm(dir, { recursive: true, force: true });
   });
 });
+
+describe('an empty queue from the batch driver', () => {
+  it('says on stderr why, and keeps stdout the queue', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'uic-list-'));
+    await writeFile(join(dir, 'package.json'), '{"name":"q"}', 'utf8');
+    await mkdir(join(dir, 'src'), { recursive: true });
+    await writeFile(join(dir, 'src/A.tsx'), 'export const A = () => <Button />;\n', 'utf8');
+
+    const run = await uic(['check', '--list', 'src/A.tsx'], dir);
+
+    // The queue itself stays exactly as the driver reads it.
+    expect(run.stdout.trim()).toBe('');
+    expect(run.code).toBe(0);
+    // And the reason is on the other stream.
+    expect(run.stderr).toContain('No findings. 1 of 1 file(s) read.');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+});

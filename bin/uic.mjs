@@ -25237,6 +25237,9 @@ async function check(rootDir, args) {
       seen.add(path);
       console.log(path);
     }
+    if (seen.size === 0 && coverage !== null) {
+      for (const line of sayCoverage(coverage)) console.error(line);
+    }
     return seen.size > 0 ? 1 : 0;
   }
   for (const finding of findings) {
@@ -25254,8 +25257,9 @@ async function inventory(rootDir, args) {
   const config = await readConfig(rootDir);
   const packages = applyConfig(await cachedPackages(rootDir), config);
   const chain = resolveChain(resolve9(rootDir, file), packages, config?.prefer ?? []);
+  const named2 = relative12(rootDir, resolve9(rootDir, file));
   if (chain.length === 0) {
-    console.error(`${relative12(rootDir, resolve9(rootDir, file))} belongs to no detected package.`);
+    console.error(`${named2} belongs to no detected package.`);
     console.error(
       packages.length === 0 ? "No package was detected at all \u2014 `uic scan` shows what was looked for." : `${packages.length} package(s) were detected, and none of them owns this file.`
     );
@@ -25277,7 +25281,7 @@ async function inventory(rootDir, args) {
     }
   }
   if (printed === 0) {
-    console.error(`Nothing readable on the ${chain.length} layer(s) ${relative12(rootDir, resolve9(rootDir, file))} sits on:`);
+    console.error(`Nothing readable on the ${chain.length} layer(s) ${named2} sits on:`);
     for (const layer of chain.slice(0, 10)) console.error(`  ${layer.name}`);
     console.error("Every one of them is external, or its entry point could not be read.");
     return 1;
