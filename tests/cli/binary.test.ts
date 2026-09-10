@@ -635,6 +635,95 @@ describe('the three silences a user has to be able to tell apart', () => {
   });
 
   /**
+   * A pattern goes stale and, until now, nothing refreshed it (#28).
+   *
+   * Run against the shipped bundle in a project of its own, because that is
+   * where the two things worth proving live: the counts follow the code, and
+   * every sentence a person wrote into the file is still there afterwards —
+   * `## Still to be written` above all, which the tool wrote *and* invited
+   * somebody to answer.
+   */
+  it('refreshes the counts in a pattern it established, and keeps every sentence', async () => {
+    const dir = await project({
+      'package.json': '{"name":"refresh"}',
+      'src/Routes.tsx': [
+        "import { OrdersPage } from './pages/OrdersPage';",
+        "import { InvoicesPage } from './pages/InvoicesPage';",
+        "import { ReportsPage } from './pages/ReportsPage';",
+        "export const routes = [{ path: 'orders', element: <OrdersPage /> },",
+        "  { path: 'invoices', element: <InvoicesPage /> },",
+        "  { path: 'reports', element: <ReportsPage /> }];",
+      ].join('\n'),
+      'src/pages/OrdersPage.tsx': page('Orders'),
+      'src/pages/InvoicesPage.tsx': page('Invoices'),
+      'src/pages/ReportsPage.tsx': page('Reports'),
+    });
+
+    const wrote = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--establish'], dir);
+    expect(wrote.code).toBe(0);
+    const path = join(dir, '.ui-consistency/patterns/page-layout.md');
+
+    // A person answers what the file asked for, and adds a rule of their own.
+    const established = await readFile(path, 'utf8');
+    await writeFile(
+      path,
+      established
+        .replace('## Where it is used', '## Rules\n\n- The title is a sentence.\n\n## Where it is used')
+        .replace(
+          '- **Exceptions.**',
+          '- **Exceptions.** Answered: the reports screen prints, so it has no toolbar.\n- **Was:**',
+        ),
+      'utf8',
+    );
+
+    // A fourth screen of the kind joins — registered beside the others, which
+    // is what makes it one of them — and that is exactly what a pattern
+    // deriving its family from its own member list can never see.
+    await writeFile(join(dir, 'src/pages/RefundsPage.tsx'), page('Refunds'), 'utf8');
+    await writeFile(
+      join(dir, 'src/Routes.tsx'),
+      [
+        "import { OrdersPage } from './pages/OrdersPage';",
+        "import { InvoicesPage } from './pages/InvoicesPage';",
+        "import { ReportsPage } from './pages/ReportsPage';",
+        "import { RefundsPage } from './pages/RefundsPage';",
+        "export const routes = [{ path: 'orders', element: <OrdersPage /> },",
+        "  { path: 'invoices', element: <InvoicesPage /> },",
+        "  { path: 'reports', element: <ReportsPage /> },",
+        "  { path: 'refunds', element: <RefundsPage /> }];",
+      ].join('\n'),
+      'utf8',
+    );
+
+    const refreshed = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--refresh'], dir);
+    expect(refreshed.code).toBe(0);
+    expect(refreshed.stdout).toContain('rewritten: Where it is used');
+    expect(refreshed.stdout).toContain('kept: every other section, as written');
+
+    const after = await readFile(path, 'utf8');
+    expect(after).toContain('src/pages/RefundsPage.tsx');
+    expect(after).toContain('read: 4 files');
+    // Verbatim, both of them.
+    expect(after).toContain('- **Exceptions.** Answered: the reports screen prints, so it has no toolbar.');
+    expect(after).toContain('## Rules\n\n- The title is a sentence.');
+
+    // Nothing moved since, so there is nothing to write and it says so rather
+    // than touching a committed file to no purpose.
+    const again = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--refresh'], dir);
+    expect(again.code).toBe(0);
+    expect(again.stdout).toContain('already what the code says');
+
+    // And a file a person wrote has no derived half to regenerate.
+    await writeFile(path, after.replace('derived: true\n', ''), 'utf8');
+    const refused = await uic(['pattern', 'src/pages/OrdersPage.tsx', '--refresh'], dir);
+    expect(refused.code).toBe(1);
+    expect(refused.stderr).toContain('a person wrote it');
+    expect(await readFile(path, 'utf8')).toBe(after.replace('derived: true\n', ''));
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  /**
    * The old knowledge directory is read and **never written**. A fallback that
    * also wrote would leave everybody on it forever — and it must still be
    * looked in, or a project on the old path gets a second pattern for a kind

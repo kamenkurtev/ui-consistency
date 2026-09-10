@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { renderPattern } from '../../src/knowledge/pattern-write.js';
+import { renderPattern, refreshPattern } from '../../src/knowledge/pattern-write.js';
 import { parsePattern } from '../../src/knowledge/pattern-file.js';
 import type { ScreenPattern } from '../../src/sources/pattern.js';
 
@@ -279,5 +279,165 @@ describe('a derived pattern, written down', () => {
   it('says a markup-built project has no component to name, rather than saying nothing', () => {
     const markup = renderPattern({ ...DERIVED, built: 'markup' }, OPTIONS);
     expect(markup).toContain('markup and classes');
+  });
+});
+
+describe('a derived pattern, refreshed', () => {
+  /**
+   * The one a fixture would not think to write.
+   *
+   * `## Still to be written` is a section the tool wrote *and* invited a person
+   * to answer, and `derived: true` cannot tell whether they answered it. So the
+   * rule is narrower than "keep the prose": a refresh regenerates what was
+   * counted and leaves that section, and anything else a person added, exactly
+   * as found — byte for byte, not merely present.
+   */
+  it('leaves an answered invitation and a section nobody derived untouched', () => {
+    const established = renderPattern(DERIVED, OPTIONS);
+    const answered = established
+      .replace(
+        '- **Exceptions.** Where a screen above departs from the rest, is that deliberate, and why?',
+        '- **Exceptions.** The invoices screen has no footer on purpose; it is printed.',
+      )
+      .replace('## Where it is used', '## Rules\n\n- The title is a sentence.\n\n## Where it is used');
+
+    const thinner: ScreenPattern = {
+      ...DERIVED,
+      configuration: DERIVED.configuration.map((one) => ({ ...one, props: [] })),
+    };
+    const { text, changed } = refreshPattern(answered, thinner, {
+      ...OPTIONS,
+      observed: '2026-09-10',
+    });
+
+    expect(text).toContain('- **Exceptions.** The invoices screen has no footer on purpose; it is printed.');
+    expect(text).toContain('## Rules\n\n- The title is a sentence.');
+    // The invitation's own wording, unchanged — a re-render would have restored
+    // the question over the answer.
+    expect(text).not.toContain('is that deliberate, and why?');
+    expect(changed).toContain('Props');
+    expect(changed).not.toContain('Still to be written');
+    expect(changed).not.toContain('Rules');
+  });
+
+  it('rewrites the counts, and says which sections it rewrote', () => {
+    const established = renderPattern(DERIVED, OPTIONS);
+    const grown: ScreenPattern = {
+      ...DERIVED,
+      family: [...DERIVED.family, '/repo/src/pages/CustomersPage.tsx'],
+    };
+    const { text, changed } = refreshPattern(established, grown, {
+      ...OPTIONS,
+      observed: '2026-09-10',
+      files: [...OPTIONS.files, 'src/pages/CustomersPage.tsx'],
+    });
+
+    expect(parsePattern('page-shell.md', text).observed).toBe('2026-09-10');
+    expect(parsePattern('page-shell.md', text).members).toContain('src/pages/CustomersPage.tsx');
+    expect(text).toContain('read: 3 files');
+    expect(changed.some((one) => one.startsWith('frontmatter'))).toBe(true);
+    expect(changed).toContain('Where it is used');
+  });
+
+  it('says nothing changed rather than rewriting a file with the same counts in it', () => {
+    const established = renderPattern(DERIVED, OPTIONS);
+    const { text, changed } = refreshPattern(established, DERIVED, OPTIONS);
+    expect(changed).toEqual([]);
+    expect(text).toBe(established);
+  });
+
+  /**
+   * A hand-edit can leave two `## Props` behind, and a refresh that replaced
+   * only one of them would leave a stale count below a fresh one where a reader
+   * would take either for the answer.
+   */
+  it('collapses a duplicated counted section into the fresh one', () => {
+    const established = renderPattern(DERIVED, OPTIONS);
+    const doubled = established.replace(
+      '## Avoided elements',
+      '## Props\n\n### `PageShell`\n\n- `density` = "loose" — 1 of 9\n\n## Avoided elements',
+    );
+    const { text } = refreshPattern(doubled, DERIVED, OPTIONS);
+    expect(text.match(/^## Props$/gm)).toHaveLength(1);
+    expect(text).not.toContain('"loose"');
+  });
+
+  /**
+   * "Left exactly as found" means byte for byte, and a document-wide reflow is
+   * how that quietly stops being true: two blank lines between somebody's
+   * paragraphs, or inside a fenced example in their own section, closed up on
+   * every refresh that changed a count somewhere else entirely.
+   */
+  it('leaves a person\'s section byte-identical, blank lines and fences included', () => {
+    const mine = [
+      '## Notes',
+      '',
+      'One paragraph.',
+      '',
+      '',
+      'Another, after two blank lines.',
+      '',
+      '```md',
+      '## Props',
+      '',
+      '',
+      '### `Anything`',
+      '```',
+      '',
+    ].join('\n');
+    const established = renderPattern(DERIVED, OPTIONS).replace('## Where it is used', `${mine}## Where it is used`);
+
+    const grown: ScreenPattern = { ...DERIVED, family: [...DERIVED.family, '/repo/src/pages/X.tsx'] };
+    const { text, changed } = refreshPattern(established, grown, {
+      ...OPTIONS,
+      files: [...OPTIONS.files, 'src/pages/X.tsx'],
+    });
+
+    expect(changed).toContain('Where it is used');
+    expect(text).toContain(mine);
+    // And the `## Props` inside the fence was an example, not a boundary: the
+    // fresh block did not land in the middle of it.
+    expect(text).toContain('```md\n## Props\n\n\n### `Anything`\n```');
+    // Two, and that is right: the section, and the example inside the fence.
+    // Collapsing them to one is exactly the defect.
+    expect(text.match(/^## Props$/gm)).toHaveLength(2);
+  });
+
+  /**
+   * `String.replace` with a string replacement reads `$&`, `$'` and `$1` in it
+   * as references to the match. A prop value is application data — a currency
+   * format, a template placeholder — so a pattern whose props carry `$` would
+   * have the match spliced into its own replacement, silently, in the file the
+   * project commits.
+   */
+  it('writes a value carrying a dollar sign as itself', () => {
+    const withMoney: ScreenPattern = {
+      ...DERIVED,
+      configuration: DERIVED.configuration.map((one) =>
+        one.component === 'PageShell'
+          ? { ...one, props: [{ name: 'format', value: "$& $' $1 $$", bare: false }] }
+          : one,
+      ),
+    };
+    const established = renderPattern(withMoney, OPTIONS);
+    expect(established).toContain("$& $' $1 $$");
+
+    // The same value arriving in a *replacement*, over a file that has a
+    // different one in it.
+    const { text } = refreshPattern(renderPattern(DERIVED, OPTIONS), withMoney, OPTIONS);
+    expect(text).toContain("$& $' $1 $$");
+    expect(text).not.toContain('density');
+  });
+
+  /**
+   * A section the fresh derivation has nothing to say about goes, rather than
+   * being left behind presenting an old count as a current one.
+   */
+  it('removes a counted section the family no longer supports', () => {
+    const established = renderPattern(DERIVED, OPTIONS);
+    expect(established).toContain('## Avoided elements');
+    const { text, changed } = refreshPattern(established, { ...DERIVED, avoids: [] }, OPTIONS);
+    expect(text).not.toContain('## Avoided elements');
+    expect(changed).toContain('Avoided elements — nothing to state now');
   });
 });

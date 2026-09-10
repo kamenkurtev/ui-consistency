@@ -431,6 +431,23 @@ export interface PatternOptions {
    * instructed to go before writing a screen.
    */
   byHolder?: boolean;
+  /**
+   * The name of a pattern file whose own member list must not become the
+   * family.
+   *
+   * **A refresh is otherwise a closed loop, and it was one.** The pattern-file
+   * channel outranks everything read off the code, so the moment a file exists
+   * naming four screens, re-deriving one of them reads those same four — a
+   * fifth screen of the kind joins the family and the refresh cannot ever see
+   * it. Measured on the shipped bundle: `read: 4 files` and an unchanged member
+   * list after a fifth screen was added, with `from` flipping from `holder` to
+   * `pattern` as the tell (#28).
+   *
+   * Only *this* file is skipped. Another pattern file naming the screen is
+   * still somebody stating a kind, and the authority of the channel is not what
+   * is in question — the circularity is.
+   */
+  ignoringPattern?: string;
 }
 
 /**
@@ -454,7 +471,8 @@ export async function patternOf(
   // one kind*, reviewed in a pull request. Nothing read off the code outranks
   // that, and a dialog that no router registers has no other way to have a kind
   // (#5).
-  const named = root === null ? null : await familyFromPattern(root, target);
+  const named =
+    root === null ? null : await familyFromPattern(root, target, options.ignoringPattern);
 
   const family =
     named ??
@@ -655,17 +673,24 @@ export async function patternOf(
  * The family a pattern file names, where one names this screen.
  *
  * Only the members, and only where there are enough of them to measure
- * agreement — the pattern file states the shape, and this level's job is still
+ * agreement. `ignoring` names a file this may not answer from, which is what
+ * keeps a refresh from re-deriving a pattern out of its own member list — the pattern file states the shape, and this level's job is still
  * to read what the code does. A pattern with one member is a decision about a
  * screen that does not have siblings yet, and deriving from it would report that
  * one screen's own business as the pattern.
  */
-async function familyFromPattern(root: string, target: string): Promise<Family | null> {
+async function familyFromPattern(
+  root: string,
+  target: string,
+  ignoring?: string,
+): Promise<Family | null> {
   const { patterns } = await patternFiles(root).catch(() => ({ patterns: [] }));
   if (patterns.length === 0) return null;
 
   const where = relative(root, target);
-  const covering = patterns.find((one) => one.members.includes(where));
+  const covering = patterns.find(
+    (one) => one.name !== ignoring && one.members.includes(where),
+  );
   if (covering === undefined) return null;
 
   const screens = covering.members

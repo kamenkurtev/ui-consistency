@@ -440,7 +440,8 @@ per pattern in `.ui-consistency/patterns/`, written by the agent from reading
 your code and reviewed by you in a pull request. Until you have reviewed it,
 it says so: a file the tool established carries `derived: true` and the date
 it was measured, and names under `## Still to be written` the parts no
-extraction can produce — which alternatives a slot allows, the rules no
+extraction can produce — and `uic pattern <screen> --refresh` re-counts such a
+file later without touching a sentence anybody wrote into it — which alternatives a slot allows, the rules no
 checker can evaluate, and whether a screen that differs does so deliberately:
 
 ~~~~markdown

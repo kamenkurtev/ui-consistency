@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdtemp, mkdir, writeFile, rm, utimes } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { promptContext, promptResponse } from '../../src/cli/prompt.js';
 
 let root: string;
@@ -105,6 +105,46 @@ describe('what reaches the agent before it writes', () => {
     const said = (await promptContext(root, 'change the orders screen')) ?? '';
 
     expect(said).toContain('changed since it was read');
+  });
+
+  /**
+   * "Re-derive before trusting it" named no way to do either, which an agent
+   * can only act on by ignoring the pattern or by rewriting somebody's file by
+   * hand. What it says now depends on which kind of file it is (#28).
+   */
+  it('names the refresh for a file it derived, and not for one a person wrote', async () => {
+    const screen = join(root, 'src/OrdersPage.tsx');
+    await mkdir(dirname(screen), { recursive: true });
+    await writeFile(screen, 'export const OrdersPage = () => <PageShell />;');
+    const later = new Date('2026-09-11T09:00:00Z');
+    await utimes(screen, later, later);
+    const front = 'holder: PageShell\nobserved: 2026-09-09';
+    const used = '## Where it is used\n\n`src/OrdersPage.tsx`\n';
+
+    await pattern('derived-one', `---\npattern: derived-one\n${front}\nderived: true\n---\n\n${used}`);
+    await pattern('written-one', `---\npattern: written-one\n${front}\n---\n\n${used}`);
+
+    const said = (await promptContext(root, 'change the orders screen')) ?? '';
+
+    expect(said).toContain('--refresh` first');
+    expect(said).toContain('a person wrote it, so read it against');
+  });
+
+  /**
+   * Half of #28: the loop starts because the work is that shape. Named and not
+   * begun — a hook writing a queue to disk off a regular expression over
+   * English would start a process nobody asked for, before a file had been read.
+   */
+  it('names the rollout loop where the prompt is a set, and not where it is one screen', async () => {
+    const many = (await promptContext(root, 'add a density toggle to all the list pages')) ?? '';
+    expect(many).toContain('ui-consistency:rollout');
+    expect(many).toContain('names a set, not one screen');
+
+    const one = (await promptContext(root, 'add a density toggle to the orders page')) ?? '';
+    expect(one).not.toContain('ui-consistency:rollout');
+
+    // Not about screens at all still reads no file and says nothing.
+    expect(await promptContext(root, 'update all the database migrations')).toBeNull();
   });
 });
 
