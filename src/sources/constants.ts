@@ -131,7 +131,7 @@ function declaredIn(program: Node, into: Constants): void {
             : member.id.type === 'StringLiteral'
               ? member.id.value
               : null;
-        const value = literalOf(member.initializer as Node | null | undefined);
+        const value = plainString(member.initializer as Node | null | undefined);
         if (key !== null && value !== null) into.set(`${name}.${key}`, value);
       }
       continue;
@@ -144,7 +144,7 @@ function declaredIn(program: Node, into: Constants): void {
       const init = unwrap(declarator.init as Node | null | undefined);
       if (init === null) continue;
 
-      const plain = literalOf(init);
+      const plain = plainString(init);
       if (plain !== null) {
         into.set(name, plain);
         continue;
@@ -158,7 +158,7 @@ function declaredIn(program: Node, into: Constants): void {
             : property.key.type === 'StringLiteral'
               ? property.key.value
               : null;
-        const value = literalOf(property.value as Node);
+        const value = plainString(property.value as Node);
         if (key !== null && value !== null) into.set(`${name}.${key}`, value);
       }
     }
@@ -188,7 +188,13 @@ function unwrap(node: Node | null | undefined): Node | null {
   return current;
 }
 
-const literalOf = (node: Node | null | undefined): string | null => {
+/**
+ * A string the node writes outright — a literal, or a template with nothing in
+ * it. Exported because `routes.ts` asks the same question of a `path:` before
+ * it tries to resolve anything, and a second copy of four lines is the shape
+ * `tests/core/duplicates.test.ts` exists to refuse.
+ */
+export const plainString = (node: Node | null | undefined): string | null => {
   if (node === null || node === undefined) return null;
   if (node.type === 'StringLiteral') return node.value;
   if (node.type === 'TemplateLiteral' && node.expressions.length === 0) {

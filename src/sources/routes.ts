@@ -1,8 +1,8 @@
-import { readdir, readFile, stat } from 'node:fs/promises';
+import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, relative, sep } from 'node:path';
 import { exportedSymbolsFromSource } from '../inventory/exports.js';
 import { parseModule } from '../parse/parse.js';
-import { constantsFor, type Constants } from './constants.js';
+import { constantsFor, plainString, type Constants } from './constants.js';
 import type { Node, ObjectExpression } from '@babel/types';
 
 /** Where a screen sits in the application, as far as the code says. */
@@ -233,7 +233,12 @@ async function declaredPath(
     // Asked for by name, so a table whose paths are all literals reads nothing:
     // this runs on the registration, which the derived contract asks for on
     // every edit, and a table imports every screen it registers.
-    const constants = await constantsFor(file, source, moduleAt, namedPaths(ast.program as Node));
+    const constants = await constantsFor(
+      file,
+      source,
+      insideProject(root),
+      namedPaths(ast.program as Node),
+    );
 
     const entry = entryFor(ast.program as Node, names, [], false, constants);
     if (entry !== null) {
@@ -347,10 +352,10 @@ const NO_CONSTANTS: Constants = new Map();
  * guess.
  */
 const stringOf = (node: Node | null | undefined, constants: Constants = NO_CONSTANTS): string | null => {
+  const plain = plainString(node);
+  if (plain !== null) return plain;
   if (node === null || node === undefined) return null;
-  if (node.type === 'StringLiteral') return node.value;
   if (node.type === 'TemplateLiteral') {
-    if (node.expressions.length === 0) return node.quasis[0]?.value.cooked ?? null;
     // Every part or nothing. A template with one unreadable expression is a
     // partial path, and a partial path presented as a whole one is the failure
     // the mount composition already forbids.
@@ -374,6 +379,32 @@ function named(node: Node, constants: Constants): string | null {
   const key = dotted(node);
   return key === null ? null : (constants.get(key) ?? null);
 }
+
+/**
+ * `moduleAt`, refusing anything outside the project.
+ *
+ * A relative specifier can climb: `../../../../etc/passwd` is a relative
+ * specifier. Nothing above the project root is this tool's business, and a
+ * reader that follows one there is the finding a security pass already made
+ * about a `tsconfig` alias. The path is compared after resolution, because a
+ * symlink inside the project is how the check is walked around.
+ */
+const insideProject =
+  (root: string) =>
+  async (base: string): Promise<string | null> => {
+    const found = await moduleAt(base);
+    if (found === null) return null;
+    // Both sides resolved, not one. A project checked out under a symlinked
+    // directory — every `mkdtemp` on macOS is one — has a real path that does
+    // not begin with the root it was reached by, and comparing a resolved file
+    // against an unresolved root refuses every module in it.
+    const [real, home] = await Promise.all([
+      realpath(found).catch(() => found),
+      realpath(root).catch(() => root),
+    ]);
+    const away = relative(home, real);
+    return away.startsWith('..') || isAbsolute(away) ? null : found;
+  };
 
 /**
  * The root identifiers this table writes its paths with.

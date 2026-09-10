@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { mkdir as mkdir2, readFile as readFile29, realpath as realpath2, stat as stat11, writeFile as writeFile7 } from "node:fs/promises";
+import { mkdir as mkdir2, readFile as readFile29, realpath as realpath3, stat as stat11, writeFile as writeFile7 } from "node:fs/promises";
 import { basename as basename8, dirname as dirname15, join as join22, relative as relative12, resolve as resolve9 } from "node:path";
 
 // src/layers/detect.ts
@@ -21415,7 +21415,7 @@ import { readdir as readdir7, readFile as readFile12 } from "node:fs/promises";
 import { basename as basename6, dirname as dirname6, isAbsolute as isAbsolute3, join as join13, relative as relative4 } from "node:path";
 
 // src/sources/routes.ts
-import { readdir as readdir6, readFile as readFile11, stat as stat6 } from "node:fs/promises";
+import { readdir as readdir6, readFile as readFile11, realpath as realpath2, stat as stat6 } from "node:fs/promises";
 import { basename as basename5, dirname as dirname5, isAbsolute as isAbsolute2, join as join12, relative as relative3, sep as sep3 } from "node:path";
 
 // src/sources/constants.ts
@@ -21465,7 +21465,7 @@ function declaredIn(program, into) {
       const members = Array.isArray(holder.body?.members) ? holder.body.members : holder.members;
       for (const member of members ?? []) {
         const key = member.id.type === "Identifier" ? member.id.name : member.id.type === "StringLiteral" ? member.id.value : null;
-        const value = literalOf(member.initializer);
+        const value = plainString(member.initializer);
         if (key !== null && value !== null) into.set(`${name}.${key}`, value);
       }
       continue;
@@ -21476,7 +21476,7 @@ function declaredIn(program, into) {
       const name = declarator.id.name;
       const init = unwrap(declarator.init);
       if (init === null) continue;
-      const plain = literalOf(init);
+      const plain = plainString(init);
       if (plain !== null) {
         into.set(name, plain);
         continue;
@@ -21485,7 +21485,7 @@ function declaredIn(program, into) {
       for (const property of init.properties) {
         if (property.type !== "ObjectProperty") continue;
         const key = property.key.type === "Identifier" ? property.key.name : property.key.type === "StringLiteral" ? property.key.value : null;
-        const value = literalOf(property.value);
+        const value = plainString(property.value);
         if (key !== null && value !== null) into.set(`${name}.${key}`, value);
       }
     }
@@ -21506,7 +21506,7 @@ function unwrap(node) {
   }
   return current;
 }
-var literalOf = (node) => {
+var plainString = (node) => {
   if (node === null || node === void 0) return null;
   if (node.type === "StringLiteral") return node.value;
   if (node.type === "TemplateLiteral" && node.expressions.length === 0) {
@@ -21631,7 +21631,12 @@ async function declaredPath(screen, root) {
     if (!names.some((name) => source.includes(name))) continue;
     const ast = parseModule(source, file);
     if (ast === null) continue;
-    const constants = await constantsFor(file, source, moduleAt, namedPaths(ast.program));
+    const constants = await constantsFor(
+      file,
+      source,
+      insideProject2(root),
+      namedPaths(ast.program)
+    );
     const entry = entryFor(ast.program, names, [], false, constants);
     if (entry !== null) {
       const literal = constants.size === 0 ? entry : entryFor(ast.program, names, [], false);
@@ -21670,10 +21675,10 @@ var asPrefix = (segments) => {
 var isRooted = (own) => own.some((one) => one.startsWith("/"));
 var NO_CONSTANTS = /* @__PURE__ */ new Map();
 var stringOf = (node, constants = NO_CONSTANTS) => {
+  const plain = plainString(node);
+  if (plain !== null) return plain;
   if (node === null || node === void 0) return null;
-  if (node.type === "StringLiteral") return node.value;
   if (node.type === "TemplateLiteral") {
-    if (node.expressions.length === 0) return node.quasis[0]?.value.cooked ?? null;
     let out = "";
     for (const [at, quasi] of node.quasis.entries()) {
       out += quasi.value.cooked ?? "";
@@ -21692,6 +21697,16 @@ function named(node, constants) {
   const key = dotted(node);
   return key === null ? null : constants.get(key) ?? null;
 }
+var insideProject2 = (root) => async (base) => {
+  const found = await moduleAt(base);
+  if (found === null) return null;
+  const [real, home] = await Promise.all([
+    realpath2(found).catch(() => found),
+    realpath2(root).catch(() => root)
+  ]);
+  const away = relative3(home, real);
+  return away.startsWith("..") || isAbsolute2(away) ? null : found;
+};
 function namedPaths(program) {
   const wanted = /* @__PURE__ */ new Set();
   const want = (node) => {
@@ -25305,7 +25320,7 @@ async function main(argv) {
   }
 }
 if (process.argv[1] !== void 0) {
-  const entry = await realpath2(process.argv[1]).then((real) => pathToFileURL(real).href).catch(() => null);
+  const entry = await realpath3(process.argv[1]).then((real) => pathToFileURL(real).href).catch(() => null);
   if (entry === import.meta.url) process.exit(await main(process.argv.slice(2)));
 }
 export {

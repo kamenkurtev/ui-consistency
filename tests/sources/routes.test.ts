@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
 import { declaredSiblings, placementOf } from '../../src/sources/routes.js';
 
 let root: string;
@@ -1164,5 +1164,39 @@ describe('what resolving a constant costs a table that has none', () => {
     expect(found.get('RoutePaths.Orders')).toBe('orders');
     // The screen module is imported by the table and is not looked at.
     expect(asked).toEqual([join(root, 'src/RoutePaths')]);
+  });
+});
+
+describe('where a constant module may be read from', () => {
+  /**
+   * A relative specifier can climb, and `../../../../etc/passwd` is one.
+   * Nothing above the project root is this tool's business — the class of
+   * finding a security pass already made about a `tsconfig` alias reading
+   * outside the project.
+   */
+  it('refuses a module outside the project, and still answers about the route', async () => {
+    const outside = await mkdtemp(join(tmpdir(), 'uic-outside-'));
+    await writeFile(
+      join(outside, 'secrets.ts'),
+      "export enum RoutePaths { Orders = 'orders' }\n",
+      'utf8',
+    );
+    const climb = relative(join(root, 'src'), join(outside, 'secrets')).split(sep).join('/');
+
+    await file(
+      'src/routes.tsx',
+      `import { RoutePaths } from '${climb}';\n` +
+        "import { Orders } from './pages/Orders';\n" +
+        'export const routes = [{ path: RoutePaths.Orders, Component: Orders }];\n',
+    );
+    const orders = await file('src/pages/Orders.tsx', 'export const Orders = () => null;\n');
+
+    const placed = await placementOf(orders, root);
+
+    // The registration is still found; only the path is not resolved.
+    expect(placed.style).toBe('declared');
+    expect(placed.path).toBeNull();
+
+    await rm(outside, { recursive: true, force: true });
   });
 });
