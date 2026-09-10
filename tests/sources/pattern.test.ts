@@ -912,6 +912,29 @@ describe('a family found by the holder it sits in', () => {
     expect(await patternOf(login)).toBeNull();
   });
 
+  /**
+   * Everything below the family selection compares by **identity**, and the
+   * retry replaces the array the readings live in. A reference left pointing
+   * into the discarded one never matches, so the page being asked about votes
+   * on its own pattern: `particulars` came back empty on a screen with a
+   * component nothing else renders, and the observer counted one sibling too
+   * many. Both are wrong answers rather than missing ones.
+   */
+  it('does not let the reference vote on its own pattern', async () => {
+    const login = await scattered();
+    // Only this screen renders it, so it belongs to the reference alone.
+    await writeFile(login, page('WelcomePage', ['LoginForm', 'SsoBadge']), 'utf8');
+
+    const found = await patternOf(login, { byHolder: true });
+
+    expect(found?.from).toBe('holder');
+    expect(found?.particulars.components).toContain('SsoBadge');
+    // Four siblings beside the reference, not five.
+    for (const usage of found?.configuration ?? []) {
+      expect(usage.seenIn).toBe((found?.family.length ?? 0) - 1);
+    }
+  });
+
   it('never takes a screen the reference imports', async () => {
     await writeFile(join(root, 'package.json'), '{"name":"app"}', 'utf8');
     const login = await screen(

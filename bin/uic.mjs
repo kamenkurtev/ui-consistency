@@ -22920,8 +22920,9 @@ async function patternOf2(target, options = {}) {
   let read = await readAll(family.screens);
   if (read.length < MIN_FAMILY) return null;
   const asked = (await pairOf(target))?.identity ?? target;
-  const reference = read.find((one) => one.path === asked);
-  if (reference === void 0) return null;
+  const asking = read.find((one) => one.path === asked);
+  if (asking === void 0) return null;
+  let reference = asking;
   let sameHolder = read.filter((one) => one.page.holder === reference.page.holder);
   if (options.byHolder === true && sameHolder.length < MIN_FAMILY && root !== null && named2 === null) {
     const area = await appRootFor(target, root);
@@ -22932,9 +22933,11 @@ async function patternOf2(target, options = {}) {
     if (byHolder.length + 1 >= MIN_FAMILY) {
       const again = await readAll(byHolder);
       const held = again.filter((one) => one.page.holder === reference.page.holder);
-      if (held.length >= MIN_FAMILY) {
+      const still = again.find((one) => one.path === asked);
+      if (held.length >= MIN_FAMILY && still !== void 0) {
         read = again;
         sameHolder = held;
+        reference = still;
         from = "holder";
       }
     }

@@ -493,8 +493,9 @@ export async function patternOf(
   // The identity, not the path handed in: either half of a pair is a way of
   // naming the same screen, and the reference has to be found by what it is.
   const asked = (await pairOf(target))?.identity ?? target;
-  const reference = read.find((one) => one.path === asked);
-  if (reference === undefined) return null;
+  const asking = read.find((one) => one.path === asked);
+  if (asking === undefined) return null;
+  let reference: Reading = asking;
 
   // Screens of the same kind, where the kind can be read at all. A list screen
   // and the forms beside it share only what every screen has — measured on a
@@ -528,9 +529,18 @@ export async function patternOf(
     if (byHolder.length + 1 >= MIN_FAMILY) {
       const again = await readAll(byHolder);
       const held = again.filter((one) => one.page.holder === reference.page.holder);
-      if (held.length >= MIN_FAMILY) {
+      // The reference is found again in the new reading, and not carried over
+      // from the old one. Everything below compares by **identity** — `others`
+      // is `screens.filter((one) => one !== reference)` — so a reference left
+      // pointing into the discarded array never matches, and the page being
+      // asked about ends up voting on its own pattern: `particulars` came back
+      // empty on a screen with a component nothing else renders, and the
+      // observer counted 8 siblings where there are 7.
+      const still = again.find((one) => one.path === asked);
+      if (held.length >= MIN_FAMILY && still !== undefined) {
         read = again;
         sameHolder = held;
+        reference = still;
         from = 'holder';
       }
     }
