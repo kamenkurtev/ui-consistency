@@ -93,7 +93,26 @@ after the batch:
 
 ```
 uic diff --contract <contract> <the file just written>
-``` Where an
+```
+
+**But every harness has the MCP server** (#33). All four manifests declare it,
+so it starts with the plugin and nobody configures anything. Ask it rather than
+shelling out where it is there: the parameters are typed arrays, so a glob
+cannot be mistaken for a path, and the pattern files come back as **resources**
+— list and read them without knowing where they live. Six tools:
+
+| tool | what it answers |
+| --- | --- |
+| `pattern` | what screens of this screen's kind look like here, and the pattern file if one covers it |
+| `deviations` | where a set of screens departs from a named pattern, per file |
+| `tree` | what one screen renders, through the files it imports |
+| `props` | which props each of a set writes on one component |
+| `group` | a set of screens grouped by what they are composed of |
+| `findings` | the deterministic findings for a set |
+
+It answers about the project it was started in and says which on stderr at
+startup. Nothing requires it: with no server running, this file and the CLI are
+the whole surface, exactly as before. Where an
 input is missing they degrade — deriving instead of refusing — rather than
 demanding a pipeline.
 
@@ -103,6 +122,7 @@ demanding a pipeline.
 uic pattern <screen> [--save]      what screens of this kind look like here
 uic pattern <screen> --establish   write it down as a pattern file, derived and dated
 uic pattern <screen> --refresh     re-count an established one; every sentence in it is kept
+uic mcp                            the MCP server on stdio; your harness starts it, not you
 uic diff --contract <c> <files>    where the screens you touched left it (a pattern file or a saved contract)
 uic place <screen>                 route, trail, and where it is registered
 uic tree <screen> [--depth N]      what it renders, resolved through its children

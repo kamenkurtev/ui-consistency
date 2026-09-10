@@ -125,9 +125,19 @@ the only requirement.
 > `PostToolUse` gate — the part that reports in the same turn as the edit — is
 > registered in `hooks/hooks.json`, which Claude Code reads. Cursor's hook file
 > registers `sessionStart` only; Codex's is empty. **Everywhere except Claude
-> Code, what you get today is the skills and the CLI, not the per-edit gate.**
-> Wiring the gate into the other harnesses is open work, and a good first
-> contribution.
+> Code there is no per-edit gate**, and wiring one into the other harnesses is
+> open work.
+>
+> **What every harness does have, since #33, is the MCP server.** All four
+> manifests declare it, it starts with the plugin, and it is the one surface an
+> agent can reach on its own initiative without a hook and without you running
+> anything. Six tools — the pattern for a screen, the deviations of a set from
+> a pattern file, the tree of one screen, the props matrix, the grouping, the
+> deterministic findings — and the pattern files as resources, which is the half
+> a CLI cannot offer: the agent lists and reads them without knowing a path
+> convention. Typed arrays instead of shell globs, so the commonest wrong call
+> is gone. Nothing requires it: the hook, the CLI and the skills work unchanged
+> with no server running, and a wedged one degrades to silence.
 
 ## Composing it into your own agent
 

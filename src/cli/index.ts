@@ -5,14 +5,8 @@ import { cachedPackages, clearPackageCache } from '../layers/cache.js';
 import { resolveChain, contains } from '../layers/chain.js';
 import { readConfig, applyConfig } from '../layers/config.js';
 import { buildInventory } from '../inventory/build.js';
-import { cachedInventory } from '../inventory/cache.js';
-import { checkSource } from '../core/check.js';
 import { exportedSymbolsFromSource } from '../inventory/exports.js';
-import { runEngine } from '../core/engine.js';
 import { parseKnowledge } from '../knowledge/parse.js';
-import { buildAdvice } from '../ai/advice.js';
-import { neighbourSource } from '../sources/neighbours.js';
-import { observeUsage } from '../sources/usage.js';
 import { patternOf } from '../sources/pattern.js';
 import { readDecisions } from '../knowledge/decisions.js';
 import { placementOf } from '../sources/routes.js';
@@ -27,6 +21,7 @@ import {
   type PatternFile,
   type Stale,
 } from '../knowledge/pattern-file.js';
+import { holderOf } from '../sources/holder.js';
 import { regionsOf } from '../sources/regions.js';
 import { templateKind } from '../parse/template.js';
 import { findProjectRoot } from '../layers/detect.js';
@@ -42,212 +37,24 @@ import type { ScreenPattern } from '../sources/pattern.js';
 import { parsePattern } from '../knowledge/pattern-file.js';
 import { contractPathFor, readLog, readSeen, summarise, logPath } from './log.js';
 import { shapeReport } from '../checks/shapes.js';
-import { resolveSource, statedConventions } from '../sources/adapter.js';
-import type { SourceModel } from '../sources/adapter.js';
 import { formatFinding } from '../core/format.js';
 import { coverageOf, sayCoverage, type Coverage } from '../core/coverage.js';
 import { hookResponse } from './hook.js';
 import { sessionResponse } from './session.js';
 import { promptResponse } from './prompt.js';
-import type { Finding, Inventory, Layer, Violation } from '../types.js';
+import { serveMcp } from '../mcp/server.js';
+import { cachedInventory } from '../inventory/cache.js';
 import { KNOWLEDGE_DIR, MOVED, knowledgeDir } from '../knowledge/paths.js';
 import { ownedDir, projectKey } from '../core/cache-dir.js';
 import { pathToFileURL } from 'node:url';
 
-export interface CheckOptions {
-  /**
-   * Include findings whose expected layer is the file's own.
-   *
-   * Off by default. On a real repository this class was 94 of 253 findings and
-   * mostly noise — a design system's own components reaching for the headless
-   * primitives they are built from, which is what that layer is for. The
-   * findings are still produced, so an audit can ask for them.
-   */
-  withinLayer?: boolean;
-}
-
-/**
- * One inventory per chain, for the length of a run.
- *
- * A batch of thirty files in one package resolves to the same chain thirty
- * times, and building the inventory reads and parses every barrel on it. Both
- * `checkProject` and `analyzeProject` need this and each had its own copy.
- */
-function inventoryReader(rootDir: string): (chain: Layer[]) => Promise<Inventory> {
-  const inventories = new Map<string, Inventory>();
-  return async (chain) => {
-    const key = chain.map((layer) => layer.name).join('>');
-    let inventory = inventories.get(key);
-    if (inventory === undefined) {
-      inventory = await cachedInventory(rootDir, chain);
-      inventories.set(key, inventory);
-    }
-    return inventory;
-  };
-}
-
-/**
- * Check the given files against the project's own layer chain.
- *
- * Files in the same package share a chain and therefore an inventory, so it is
- * built once per distinct chain rather than once per file, and kept on disk
- * between runs against the mtimes of everything it was built from.
- *
- * What counts as a violation is the check's business; which violations are
- * worth showing is policy, and lives here.
- */
-export async function checkProject(
-  rootDir: string,
-  files: string[],
-  options: CheckOptions = {},
-): Promise<Violation[]> {
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  if (packages.length === 0) return [];
-  const prefer = config?.prefer ?? [];
-
-  const inventoryFor = inventoryReader(rootDir);
-
-  const violations: Violation[] = [];
-  for (const file of files) {
-    const chain = resolveChain(file, packages, prefer);
-    if (chain.length === 0) continue;
-
-    const source = await readFile(file, 'utf8').catch(() => null);
-    if (source === null) continue;
-
-    violations.push(...checkSource(file, source, chain, await inventoryFor(chain)));
-  }
-
-  if (options.withinLayer === true) return violations;
-  return violations.filter((violation) => violation.withinOwnLayer !== true);
-}
-
-/**
- * Every check v2 has, over the given files.
- *
- * The same shape as {@link checkProject}, which stays as it was: v1's import
- * check is one of the things this runs, not something it replaces.
- *
- * Tier 2 is not started here. It needs a model client and a budget, which is
- * #26 — until then the engine is offered no reviewer and stays silent about
- * everything it cannot prove.
- */
-export async function analyzeProject(
-  rootDir: string,
-  files: string[],
-  options: CheckOptions = {},
-): Promise<Finding[]> {
-  const config = await readConfig(rootDir);
-  // No early return on an empty package set, for the reason given at the loop
-  // below: most of what Tier 1 checks does not need one (#166).
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  const prefer = config?.prefer ?? [];
-
-  // Read once for the whole run: a batch of thirty files in one package would
-  // otherwise re-read and re-parse the same Markdown thirty times.
-  const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-
-  const inventoryFor = inventoryReader(rootDir);
-
-  const models = new Map<string, SourceModel | null>();
-  const sourceFor = async (dir: string, file: string): Promise<SourceModel | null> => {
-    if (models.has(dir)) return models.get(dir) ?? null;
-    const model = await resolveSource(file, { knowledge, storybookDir: rootDir }).catch(() => null);
-    models.set(dir, model);
-    return model;
-  };
-
-  const findings: Finding[] = [];
-  for (const file of files) {
-    // No skip on an empty chain. Only three checks read one — imports, deprecated
-    // usage, and the layer half of substitutions — and they return nothing
-    // without it on their own. Style literals, an emoji standing in for an
-    // icon, a stated page rule and a written-down substitution need no package
-    // to have been detected at all.
-    //
-    // Skipping was already wrong for templates, and the comment that used to
-    // sit here said so: requiring a chain kept an Angular repository silent
-    // even after its templates could be read. The same argument applies to a
-    // `.tsx` outside every detected package, and a repository the tool cannot
-    // otherwise read is exactly where a fresh install has to show it does
-    // something (#166).
-    const chain = resolveChain(file, packages, prefer);
-
-    const source = await readFile(file, 'utf8').catch(() => null);
-    if (source === null) continue;
-
-    // The cascade decides what "correct" is for this file; `statedConventions`
-    // decides which of its answers may produce a hard finding.
-    //
-    // Cached per directory: the neighbour adapter reads every sibling, so a
-    // batch over one directory would otherwise be quadratic — 300 real files
-    // went from 3.7 ms each to 10 ms before this.
-    const model = await sourceFor(dirname(file), file);
-
-    const result = await runEngine(file, source, {
-      chain,
-      inventory: await inventoryFor(chain),
-      knowledge,
-      conventions: statedConventions(model),
-      ...(model === null ? {} : { conventionsFrom: model.kind }),
-      withinLayer: options.withinLayer === true,
-    });
-    findings.push(...result.tier1);
-  }
-
-  return findings;
-}
-
-/**
- * The advisory context for one file, or null.
- *
- * The harness path, and the reason this plugin needs no credentials: a hook
- * cannot call a model without a key nobody configured, so it does not try. It
- * hands the agent already reading the code the project's own rules and what
- * the file structurally is, and asks for a judgement.
- *
- * Only ever offered on a file the deterministic checks passed — the caller
- * enforces that, because something certainly wrong does not need an opinion
- * about whether it feels right.
- */
-export async function adviseProject(rootDir: string, file: string): Promise<string | null> {
-  // No early return on an empty knowledge base any more. What the screens
-  // beside this one are made of, and how they write it, needs nothing declared
-  // — and refusing to say it until somebody had written rules is why a fresh
-  // install looked like it did nothing at all.
-  const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-
-  const source = await readFile(file, 'utf8').catch(() => null);
-  if (source === null) return null;
-
-  const neighbours = await neighbourSource()
-    .describe(file)
-    .catch(() => null);
-
-  const usage = await observeUsage(file).catch(() => null);
-
-  // A screen written as a pair: the class was handed in, the markup is beside
-  // it, and reading only the class found no structure at all (#229).
-  const pair = await pairOf(file).catch(() => null);
-  const markup = pair === null ? null : await markupOf(pair.identity, source).catch(() => null);
-
-  return buildAdvice({
-    filePath: file,
-    source,
-    ...(markup === null ? {} : { markup }),
-    knowledge,
-    ...(usage === null ? {} : { usage }),
-    ...(neighbours === null
-      ? {}
-      : {
-          neighbours: {
-            ...(neighbours.holder === undefined ? {} : { holder: neighbours.holder }),
-            components: neighbours.components,
-          },
-        }),
-  });
-}
+export {
+  checkProject,
+  analyzeProject,
+  adviseProject,
+  type CheckOptions,
+} from '../core/project.js';
+import { analyzeProject, adviseProject } from '../core/project.js';
 
 async function review(rootDir: string, args: string[]): Promise<number> {
   const files = args.filter((arg) => !arg.startsWith('-'));
@@ -565,16 +372,6 @@ async function refreshFile(
   return 0;
 }
 
-/** The holder a screen sits in, read the way `uic patterns <screen>` reads it. */
-async function holderOf(screen: string): Promise<string | null> {
-  const pair = await pairOf(screen);
-  const identity = pair?.identity ?? screen;
-  const own = await readFile(identity, 'utf8').catch(() => null);
-  if (own === null) return null;
-  const markup = pair === null ? { path: screen, source: own } : await markupOf(identity, own);
-  if (markup === null) return null;
-  return regionsOf(markup.source, templateKind(markup.path) ?? undefined)?.holder ?? null;
-}
 
 /** `PageShell` → `page-shell`; a kind already written in words is left alone. */
 const slug = (kind: string): string =>
@@ -1395,6 +1192,35 @@ async function prompt(): Promise<number> {
 }
 
 /**
+ * The MCP server, on stdio, over the project this was started in.
+ *
+ * **The root is the working directory and never a parameter.** A `root` on each
+ * tool would be a path from the client, and a model that named the wrong one
+ * would be answered about a repository nobody asked about; the harness starts
+ * this server in the project, which is the same thing every `uic` command
+ * already assumes. Every answer says which root it read — the `instructions`
+ * name it once, and each refusal names it again — because a server started
+ * somewhere unexpected must be diagnosable rather than merely wrong.
+ *
+ * Nothing requires it. The hook, the CLI and the skills work unchanged with no
+ * server running, and a wedged one degrades to silence.
+ *
+ * **Statically imported, and that is measured rather than a preference.** This
+ * was `await import('../mcp/server.js')` first, to keep the tool surface off
+ * every other command's start-up, and it cost two things: the bundle deadlocked
+ * — one dynamic import into a module cycle never settles, and `uic mcp` exited
+ * 13 with *"unsettled top-level await"* — and it forced esbuild to make all 74
+ * modules lazily initializable, at 89 kB of wrapper for a bundle that has no
+ * other dynamic import. Static, the whole surface is 12.9 kB and there is no
+ * lazy initialization anywhere, so the deadlock is gone by construction. There
+ * was no start-up to save either: everything the tools call was already in the
+ * graph.
+ */
+async function mcp(rootDir: string): Promise<number> {
+  return serveMcp(rootDir);
+}
+
+/**
  * The duplicate-shape audit — deliberately a separate mode of a read-only
  * command, and never part of the per-file gate.
  *
@@ -1621,8 +1447,10 @@ export async function main(argv: string[]): Promise<number> {
       return session();
     case 'prompt':
       return prompt();
+    case 'mcp':
+      return mcp(rootDir);
     default:
-      console.error('Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log>');
+      console.error('Usage: uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log|mcp>');
       return 1;
   }
 }

@@ -1,6 +1,15 @@
 {
   "name": "ui-consistency",
   "description": "Establishes what screens of a kind already look like in your project, and checks the ones you write against it",
-  "version": "0.14.100",
-  "contextFileName": "AGENTS.md"
+  "version": "0.14.101",
+  "contextFileName": "AGENTS.md",
+  "mcpServers": {
+    "ui-consistency": {
+      "command": "node",
+      "args": [
+        "${extensionPath}${/}bin${/}uic.mjs",
+        "mcp"
+      ]
+    }
+  }
 }
