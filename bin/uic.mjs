@@ -23922,7 +23922,8 @@ var article = (word) => `${/^[aeiou]/i.test(word) ? "an" : "a"} ${word}`;
 var safe = (value) => quoted(value);
 var list = (items) => items.length <= 1 ? items[0] ?? "" : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 function refreshPattern(raw, pattern2, options) {
-  const fresh = sectionsOf(renderPattern(pattern2, options));
+  const rendered = renderPattern(pattern2, options);
+  const fresh = sectionsOf(rendered);
   const changed = [];
   let text = raw;
   for (const heading of COUNTED) {
@@ -23943,7 +23944,7 @@ ${replacement}
       continue;
     }
     if (existing.length === 1 && existing[0].trim() === replacement) continue;
-    text = text.replace(existing[0], `${replacement}
+    text = swap(text, existing[0], `${replacement}
 
 `);
     for (const one of existing.slice(1)) text = text.replace(one, "");
@@ -23951,7 +23952,7 @@ ${replacement}
   }
   const was = frontLine(raw, "observed");
   const rewritten = FRONT.reduce((carry, key) => {
-    const value = frontLine(renderPattern(pattern2, options), key);
+    const value = frontLine(rendered, key);
     return value === null ? carry : setFrontLine(carry, key, value);
   }, text);
   if (rewritten !== text) changed.push(`frontmatter${was === null ? "" : ` (observed ${was})`}`);
@@ -23980,12 +23981,13 @@ function sectionsOf(raw) {
   }
   return found;
 }
+var swap = (text, from, to) => text.replace(from, () => to);
 var frontLine = (raw, key) => new RegExp(`^${key} *: *(.*)$`, "m").exec(raw.split(/^---$/m)[1] ?? "")?.[1]?.trim() ?? null;
 function setFrontLine(raw, key, value) {
   const match = /^(---\n)([\s\S]*?)(\n---\n)/.exec(raw);
   if (match === null) return raw;
   const line = new RegExp(`^${key} *:.*$`, "m");
-  const block = line.test(match[2]) ? match[2].replace(line, `${key}: ${value}`) : `${match[2]}
+  const block = line.test(match[2]) ? match[2].replace(line, () => `${key}: ${value}`) : `${match[2]}
 ${key}: ${value}`;
   return `${match[1]}${block}${match[3]}${raw.slice(match[0].length)}`;
 }

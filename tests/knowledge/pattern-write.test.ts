@@ -363,6 +363,32 @@ describe('a derived pattern, refreshed', () => {
   });
 
   /**
+   * `String.replace` with a string replacement reads `$&`, `$'` and `$1` in it
+   * as references to the match. A prop value is application data — a currency
+   * format, a template placeholder — so a pattern whose props carry `$` would
+   * have the match spliced into its own replacement, silently, in the file the
+   * project commits.
+   */
+  it('writes a value carrying a dollar sign as itself', () => {
+    const withMoney: ScreenPattern = {
+      ...DERIVED,
+      configuration: DERIVED.configuration.map((one) =>
+        one.component === 'PageShell'
+          ? { ...one, props: [{ name: 'format', value: "$& $' $1 $$", bare: false }] }
+          : one,
+      ),
+    };
+    const established = renderPattern(withMoney, OPTIONS);
+    expect(established).toContain("$& $' $1 $$");
+
+    // The same value arriving in a *replacement*, over a file that has a
+    // different one in it.
+    const { text } = refreshPattern(renderPattern(DERIVED, OPTIONS), withMoney, OPTIONS);
+    expect(text).toContain("$& $' $1 $$");
+    expect(text).not.toContain('density');
+  });
+
+  /**
    * A section the fresh derivation has nothing to say about goes, rather than
    * being left behind presenting an old count as a current one.
    */

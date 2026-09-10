@@ -378,7 +378,8 @@ export function refreshPattern(
   // Rendered once and read back for the sections to splice in. The alternative
   // is a second copy of every block builder above, which is what
   // `tests/core/duplicates.test.ts` exists to refuse.
-  const fresh = sectionsOf(renderPattern(pattern, options));
+  const rendered = renderPattern(pattern, options);
+  const fresh = sectionsOf(rendered);
   const changed: string[] = [];
 
   let text = raw;
@@ -405,14 +406,14 @@ export function refreshPattern(
     // — collapses into the first, so a stale copy cannot survive below a fresh
     // one where a reader would take either for the answer.
     if (existing.length === 1 && existing[0]!.trim() === replacement) continue;
-    text = text.replace(existing[0]!, `${replacement}\n\n`);
+    text = swap(text, existing[0]!, `${replacement}\n\n`);
     for (const one of existing.slice(1)) text = text.replace(one, '');
     changed.push(heading);
   }
 
   const was = frontLine(raw, 'observed');
   const rewritten = FRONT.reduce((carry, key) => {
-    const value = frontLine(renderPattern(pattern, options), key);
+    const value = frontLine(rendered, key);
     return value === null ? carry : setFrontLine(carry, key, value);
   }, text);
   if (rewritten !== text) changed.push(`frontmatter${was === null ? '' : ` (observed ${was})`}`);
@@ -453,6 +454,18 @@ function sectionsOf(raw: string): Map<string, string[]> {
   return found;
 }
 
+/**
+ * One exact substring for another, with nothing in the replacement read as a
+ * reference to the match.
+ *
+ * `String.replace` with a string replacement interprets `$&`, `$'`, `$\`` and
+ * `$1` in it, and a prop value is application data — a currency format, a
+ * template placeholder. A pattern whose props carry a `$` would have the match
+ * spliced into its own replacement, silently, in the file the project commits.
+ * A function replacement is the documented way to switch that off.
+ */
+const swap = (text: string, from: string, to: string): string => text.replace(from, () => to);
+
 const frontLine = (raw: string, key: string): string | null =>
   new RegExp(`^${key} *: *(.*)$`, 'm').exec(raw.split(/^---$/m)[1] ?? '')?.[1]?.trim() ?? null;
 
@@ -462,7 +475,7 @@ function setFrontLine(raw: string, key: string, value: string): string {
   if (match === null) return raw;
   const line = new RegExp(`^${key} *:.*$`, 'm');
   const block = line.test(match[2]!)
-    ? match[2]!.replace(line, `${key}: ${value}`)
+    ? match[2]!.replace(line, () => `${key}: ${value}`)
     : `${match[2]!}\n${key}: ${value}`;
   return `${match[1]!}${block}${match[3]!}${raw.slice(match[0].length)}`;
 }
