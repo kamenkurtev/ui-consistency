@@ -132,3 +132,86 @@ describe('screens grouped by what they are composed of', () => {
     expect(grouped.notScreens).toEqual(['src/notes.tsx']);
   });
 });
+
+/**
+ * First run on a real React monorepo: 11 files answered **9 groups**, and on a
+ * second, 14 files answered 10. The fragmentation had two causes and neither
+ * was a project's conventions (#32).
+ */
+describe('what uic group counts, and what it folds', () => {
+  /** A holder and the components it holds directly, as a screen writes them. */
+  const held = (holder: string, children: string[]): string =>
+    `export const P = () => (\n  <${holder}>\n${children
+      .map((one) => `    <${one} />`)
+      .join('\n')}\n  </${holder}>\n);\n`;
+
+  it('does not count a file whose name says what it is', async () => {
+    const a = await write('A', held('FeaturedPage', ['Header']));
+    const b = await write('B', held('FeaturedPage', ['Header']));
+    const c = await write('C', held('FeaturedPage', ['Header']));
+    // A helper exporting a navigation link was given its own group.
+    const helper = await write('nav.helpers', 'export const L = () => <div><Link /></div>;\n');
+
+    const grouped = await groupScreens(root, [a, b, c, helper]);
+
+    expect(grouped.notScreens).toContain('src/nav.helpers.tsx');
+    expect(grouped.groups.flatMap((one) => one.members)).not.toContain('src/nav.helpers.tsx');
+    expect(grouped.given).toBe(4);
+  });
+
+  /**
+   * A grid component and a row renderer are parts of a screen, and nothing but
+   * their names says so. That another file in the set imports them is
+   * structural — the same rule the family search obeys.
+   */
+  it('does not count a file another of the given files imports', async () => {
+    const a = await write(
+      'A',
+      "import { OrderTotalRow } from './OrderTotalRow';\n" +
+        held('FeaturedPage', ['Header', 'OrderTotalRow']),
+    );
+    const row = await write('OrderTotalRow', held('Box', ['Cell']));
+    const b = await write('B', held('FeaturedPage', ['Header']));
+
+    const grouped = await groupScreens(root, [a, row, b]);
+
+    expect(grouped.notScreens).toContain('src/OrderTotalRow.tsx');
+  });
+
+  /**
+   * `FeaturedPage > Header` and the same plus a footer were two groups of two,
+   * where a person would call them one pattern with an optional footer.
+   */
+  it('folds a group that differs only by an element some members render', async () => {
+    const a = await write('A', held('FeaturedPage', ['Header']));
+    const b = await write('B', held('FeaturedPage', ['Header', 'Footer']));
+    const c = await write('C', held('FeaturedPage', ['Header', 'Footer']));
+
+    const grouped = await groupScreens(root, [a, b, c]);
+
+    expect(grouped.groups.length).toBe(1);
+    expect(grouped.groups[0]?.members.length).toBe(3);
+    // The optional line carries the strength, the same *N of M* the props
+    // matrix prints — so a folded group claims no more agreement than it has.
+    expect(grouped.groups[0]?.signature.join('\n')).toContain('Footer  2 of 3');
+  });
+
+  /**
+   * The fold takes the **smallest** difference. Sorted by length the longest
+   * host matches first, so a screen differing by one optional footer was folded
+   * into an unrelated group that merely rendered more — two patterns reported
+   * as one, which is worse than the over-splitting the fold exists to fix.
+   */
+  it('does not fold into a host that merely renders more', async () => {
+    const a = await write('A', held('FeaturedPage', ['Header']));
+    const b = await write('B', held('FeaturedPage', ['Header', 'Footer']));
+    const c = await write('C', held('FeaturedPage', ['Header', 'Footer']));
+    const d = await write('D', held('FeaturedPage', ['Header', 'Wide', 'Deep', 'Extra']));
+
+    const grouped = await groupScreens(root, [a, b, c, d]);
+
+    const withA = grouped.groups.find((one) => one.members.includes('src/A.tsx'));
+    expect(withA?.members).toContain('src/B.tsx');
+    expect(withA?.members).not.toContain('src/D.tsx');
+  });
+});

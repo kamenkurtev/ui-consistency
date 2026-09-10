@@ -23459,7 +23459,17 @@ async function groupScreens(rootDir, files, depth) {
   const read = [];
   const notScreens = [];
   let applied = 0;
+  const parts = /* @__PURE__ */ new Set();
   for (const file of files) {
+    for (const imported of await importedBy(file)) {
+      if (files.includes(imported)) parts.add(imported);
+    }
+  }
+  for (const file of files) {
+    if (!isScreenFile(file) || ROLE_FILE.test(file) || parts.has(file)) {
+      notScreens.push(relative9(rootDir, file));
+      continue;
+    }
     const tree2 = await screenTree(rootDir, file, depth === void 0 ? {} : { depth });
     if (tree2 === null) {
       notScreens.push(relative9(rootDir, file));
@@ -23499,25 +23509,58 @@ async function groupScreens(rootDir, files, depth) {
     group2.members.push(one.file);
     groups.set(key, group2);
   }
+  const merged = mergeOptional([...groups.values()]);
   return {
     depth: applied,
     // **A group of one is shown as it is written.** The placeholders exist to
     // merge screens whose middles differ, and a group that merged nothing has
     // nothing to hide behind them — `<one>` above `<one>` tells the reader less
     // than `Dialog` above `DialogContent`, which is what the file says.
-    groups: [...groups.values()].sort((a, b) => b.members.length - a.members.length).map(({ signature, members, concrete }) => ({
+    groups: merged.sort((a, b) => b.members.length - a.members.length).map(({ signature, members, concrete }) => ({
       signature: members.length === 1 ? concrete : signature,
       members
     })),
     notScreens,
-    ungrouped
+    ungrouped,
+    given: files.length
   };
 }
+var ROLE_FILE = /\.(?:helpers?|utils?|constants?|types?|styles?|mocks?|fixtures?)\.[jt]sx?$/i;
 function abstract(name, screensWith, singletonSuffixes) {
   if ((screensWith.get(name) ?? 0) > 1) return name;
   const word = trailingWord(name);
   if (word !== null && (singletonSuffixes.get(word) ?? 0) > 1) return `*${word}`;
   return "<one>";
+}
+function mergeOptional(candidates) {
+  const order = [...candidates].sort((a, b) => b.signature.length - a.signature.length);
+  const kept = [];
+  for (const candidate of order) {
+    const into = kept.filter((one) => subsequence(candidate.signature, one.host.signature)).map((one) => ({ one, extra: one.host.signature.length - candidate.signature.length })).filter(({ extra }) => extra < candidate.signature.length).sort((a, b) => a.extra - b.extra)[0]?.one;
+    if (into === void 0) {
+      kept.push({ host: candidate, folded: [] });
+      continue;
+    }
+    into.folded.push(candidate);
+    into.host.members.push(...candidate.members);
+  }
+  return kept.map(({ host, folded }) => {
+    if (folded.length === 0) return host;
+    const total = host.members.length;
+    const signature = host.signature.map((line) => {
+      const has = total - folded.filter((one) => !one.signature.includes(line)).reduce((sum, one) => sum + one.members.length, 0);
+      return has === total ? line : `${line}  ${has} of ${total}`;
+    });
+    return { ...host, signature };
+  });
+}
+function subsequence(small, whole) {
+  if (small.length >= whole.length) return false;
+  let at = 0;
+  for (const line of whole) {
+    if (at < small.length && small[at] === line) at++;
+  }
+  return at === small.length;
 }
 
 // src/checks/contract.ts
@@ -24677,7 +24720,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join22 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.97";
+var VERSION = "0.14.98";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -25208,8 +25251,9 @@ async function group(rootDir, args) {
   }
   const grouped = await groupScreens(rootDir, absolute, depthIn(args));
   const screens = grouped.groups.reduce((count, one) => count + one.members.length, 0) + grouped.ungrouped.length;
+  const skipped = grouped.notScreens.length;
   console.log(
-    `${screens} ${screens === 1 ? "screen" : "screens"}, read ${grouped.depth} ${grouped.depth === 1 ? "level" : "levels"} \u2014 ${grouped.groups.length} ${grouped.groups.length === 1 ? "group" : "groups"}`
+    `${grouped.given} ${grouped.given === 1 ? "file" : "files"}, ${screens} ${screens === 1 ? "screen" : "screens"}${skipped === 0 ? "" : `, ${skipped} not a screen`}, read ${grouped.depth} ${grouped.depth === 1 ? "level" : "levels"} \u2014 ${grouped.groups.length} ${grouped.groups.length === 1 ? "group" : "groups"}`
   );
   for (const one of grouped.groups) {
     console.log(`
@@ -25226,9 +25270,11 @@ ${n} ${n === 1 ? "screen shares" : "screens share"} nothing with any of these
     );
   }
   if (grouped.notScreens.length > 0) {
-    console.log(`
-not screens \u2014 nothing rendered in them
-  ${grouped.notScreens.join("\n  ")}`);
+    console.log(
+      `
+not screens \u2014 nothing rendered in them, a name saying what they are, or a part another of these files imports
+  ${grouped.notScreens.join("\n  ")}`
+    );
   }
   return 0;
 }
