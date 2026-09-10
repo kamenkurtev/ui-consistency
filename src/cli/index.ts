@@ -750,8 +750,13 @@ async function group(rootDir: string, args: string[]): Promise<number> {
   const screens =
     grouped.groups.reduce((count, one) => count + one.members.length, 0) +
     grouped.ungrouped.length;
+  // Both counts, because a few groups over many files reads as agreement and a
+  // few groups over a few screens is a small answer (#32).
+  const skipped = grouped.notScreens.length;
   console.log(
-    `${screens} ${screens === 1 ? 'screen' : 'screens'}, read ${grouped.depth} ` +
+    `${grouped.given} ${grouped.given === 1 ? 'file' : 'files'}, ` +
+      `${screens} ${screens === 1 ? 'screen' : 'screens'}` +
+      `${skipped === 0 ? '' : `, ${skipped} not a screen`}, read ${grouped.depth} ` +
       `${grouped.depth === 1 ? 'level' : 'levels'} — ${grouped.groups.length} ` +
       `${grouped.groups.length === 1 ? 'group' : 'groups'}`,
   );
@@ -769,7 +774,10 @@ async function group(rootDir: string, args: string[]): Promise<number> {
     );
   }
   if (grouped.notScreens.length > 0) {
-    console.log(`\nnot screens — nothing rendered in them\n  ${grouped.notScreens.join('\n  ')}`);
+    console.log(
+      `\nnot screens — nothing rendered in them, a name saying what they are,` +
+        ` or a part another of these files imports\n  ${grouped.notScreens.join('\n  ')}`,
+    );
   }
   return 0;
 }

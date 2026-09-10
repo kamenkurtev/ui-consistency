@@ -327,7 +327,12 @@ export async function siblingScreens(
  * guessing at it would exclude a file the screen never imported — which would
  * be a family shrunk for the wrong reason.
  */
-async function importedBy(target: string): Promise<Set<string>> {
+/**
+ * The files this one imports, resolved. Exported because *whether a file is a
+ * part of another* is the same question in three places, and the answer is
+ * always this one.
+ */
+export async function importedBy(target: string): Promise<Set<string>> {
   const source = await readFile(target, 'utf8').catch(() => null);
   if (source === null) return new Set();
 
