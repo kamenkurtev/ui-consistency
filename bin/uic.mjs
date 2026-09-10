@@ -23078,7 +23078,7 @@ function skeletonOf(screens) {
 }
 async function patternOf2(target, options = {}) {
   const root = await findProjectRoot(dirname11(target));
-  const named2 = root === null ? null : await familyFromPattern(root, target);
+  const named2 = root === null ? null : await familyFromPattern(root, target, options.ignoringPattern);
   const family = named2 ?? await siblingScreens(target, {
     ...root === null ? {} : { root },
     isScreen: isScreenFile,
@@ -23170,11 +23170,13 @@ async function patternOf2(target, options = {}) {
     from
   };
 }
-async function familyFromPattern(root, target) {
+async function familyFromPattern(root, target, ignoring) {
   const { patterns: patterns2 } = await patternFiles(root).catch(() => ({ patterns: [] }));
   if (patterns2.length === 0) return null;
   const where2 = relative6(root, target);
-  const covering = patterns2.find((one) => one.members.includes(where2));
+  const covering = patterns2.find(
+    (one) => one.name !== ignoring && one.members.includes(where2)
+  );
   if (covering === void 0) return null;
   const screens = covering.members.filter((member) => member !== where2).map((member) => resolve6(root, member));
   return screens.length + 1 < MIN_FAMILY ? null : { screens, from: "pattern" };
@@ -23919,6 +23921,82 @@ var whyUnmeasured = (siblings, needed) => siblings < needed ? `The props of a fa
 var article = (word) => `${/^[aeiou]/i.test(word) ? "an" : "a"} ${word}`;
 var safe = (value) => quoted(value);
 var list = (items) => items.length <= 1 ? items[0] ?? "" : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+function refreshPattern(raw, pattern2, options) {
+  const rendered = renderPattern(pattern2, options);
+  const fresh = sectionsOf(rendered);
+  const changed = [];
+  let text = raw;
+  for (const heading of COUNTED) {
+    const replacement = fresh.get(heading)?.map((one) => one.trim()).join("\n\n") ?? null;
+    const existing = sectionsOf(text).get(heading) ?? [];
+    if (replacement === null) {
+      if (existing.length === 0) continue;
+      for (const one of existing) text = text.replace(one, "");
+      changed.push(`${heading} \u2014 nothing to state now`);
+      continue;
+    }
+    if (existing.length === 0) {
+      text = `${text.trimEnd()}
+
+${replacement}
+`;
+      changed.push(`${heading} \u2014 added`);
+      continue;
+    }
+    if (existing.length === 1 && existing[0].trim() === replacement) continue;
+    text = swap(text, existing[0], `${replacement}
+
+`);
+    for (const one of existing.slice(1)) text = text.replace(one, "");
+    changed.push(heading);
+  }
+  const was = frontLine(raw, "observed");
+  const rewritten = FRONT.reduce((carry, key) => {
+    const value = frontLine(rendered, key);
+    return value === null ? carry : setFrontLine(carry, key, value);
+  }, text);
+  if (rewritten !== text) changed.push(`frontmatter${was === null ? "" : ` (observed ${was})`}`);
+  return { text: `${rewritten.trimEnd()}
+`, changed };
+}
+var COUNTED = [
+  "Structure",
+  "Props",
+  "Avoided elements",
+  "Wiring",
+  "Particular to one screen",
+  "Where it is used"
+];
+var FRONT = ["holder", "read", "from", "observed"];
+function sectionsOf(raw) {
+  const found = /* @__PURE__ */ new Map();
+  const starts = [];
+  let fenced = false;
+  let at = 0;
+  for (const line of raw.split("\n")) {
+    if (/^\s*(?:```|~~~)/.test(line)) fenced = !fenced;
+    else if (!fenced) {
+      const heading = /^## +(.+?) *$/.exec(line);
+      if (heading !== null) starts.push({ title: heading[1], at });
+    }
+    at += line.length + 1;
+  }
+  for (const [at2, one] of starts.entries()) {
+    const whole = raw.slice(one.at, starts[at2 + 1]?.at ?? raw.length);
+    found.set(one.title, [...found.get(one.title) ?? [], whole]);
+  }
+  return found;
+}
+var swap = (text, from, to) => text.replace(from, () => to);
+var frontLine = (raw, key) => new RegExp(`^${key} *: *(.*)$`, "m").exec(raw.split(/^---$/m)[1] ?? "")?.[1]?.trim() ?? null;
+function setFrontLine(raw, key, value) {
+  const match = /^(---\n)([\s\S]*?)(\n---\n)/.exec(raw);
+  if (match === null) return raw;
+  const line = new RegExp(`^${key} *:.*$`, "m");
+  const block = line.test(match[2]) ? match[2].replace(line, () => `${key}: ${value}`) : `${match[2]}
+${key}: ${value}`;
+  return `${match[1]}${block}${match[3]}${raw.slice(match[0].length)}`;
+}
 
 // src/cli/log.ts
 import { appendFile, readdir as readdir10, readFile as readFile21, rename, stat as stat10, writeFile as writeFile4 } from "node:fs/promises";
@@ -24721,7 +24799,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join22 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.99";
+var VERSION = "0.14.100";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24808,6 +24886,7 @@ async function sessionResponse(stdin) {
 
 // src/cli/prompt.ts
 var ABOUT_SCREENS = /\b(screens?|pages?|dialogs?|modals?|drawers?|panels?|widgets?|forms?|grids?|tables?|layouts?|components?|views?|ui)\b/i;
+var A_WHOLE_SET = /\b(all (?:the |of )?|every|each of|the rest|remaining|across (?:the|all|every)|throughout|everywhere|one by one|in bulk|consistent(?:ly)? across|\d{2,})\b/i;
 async function promptContext(rootDir, text) {
   if (!ABOUT_SCREENS.test(text)) return null;
   const { patterns: patterns2 } = await patternFiles(rootDir).catch(() => ({ patterns: [] }));
@@ -24815,7 +24894,8 @@ async function promptContext(rootDir, text) {
     return [
       `ui-consistency: this project has written no patterns down (${KNOWLEDGE_DIR}/patterns/).`,
       "",
-      ...ESTABLISH_IT
+      ...ESTABLISH_IT,
+      ...manyOfThem(text)
     ].join("\n");
   }
   const said = [`ui-consistency: what this project has written down, before you write.`, ""];
@@ -24830,7 +24910,8 @@ async function promptContext(rootDir, text) {
     "Read the one for the kind you are about to touch before writing anything.",
     "Where none of them covers that kind:",
     "",
-    ...ESTABLISH_IT
+    ...ESTABLISH_IT,
+    ...manyOfThem(text)
   );
   return said.join("\n");
 }
@@ -24849,6 +24930,14 @@ var ESTABLISH_IT = [
   "",
   "Doing any of this afterwards means arguing with code that already works."
 ];
+var manyOfThem = (text) => A_WHOLE_SET.test(text) ? [
+  "",
+  "This prompt names a set, not one screen. If it is more than two or three files,",
+  "that is a rollout: ui-consistency:rollout. It keeps the queue on disk, works one",
+  "file per turn against the contract re-read each time, and verifies the whole set",
+  "at the end \u2014 which is what stops file thirty drifting toward the last file you",
+  'looked at instead of the pattern, and what makes "27 of 30" auditable.'
+] : [];
 var MAX_PATTERNS = 12;
 var describe2 = (one) => [one.name, one.surface ?? "\u2014", one.holder ?? "\u2014", `${one.members.length} files`].join("  ");
 async function freshness(rootDir, one) {
@@ -24860,7 +24949,8 @@ async function freshness(rootDir, one) {
     ...changed > 0 ? [`${changed} changed`] : [],
     ...gone > 0 ? [`${gone} gone`] : []
   ];
-  return `  (${parts.join(", ")} since it was read \u2014 re-derive before trusting it)`;
+  const what = one.derived ? "run `uic pattern <one of them> --refresh` first" : "a person wrote it, so read it against `uic pattern <one of them>` before trusting it";
+  return `  (${parts.join(", ")} since it was read \u2014 ${what})`;
 }
 async function promptResponse(stdin) {
   let cwd = process.cwd();
@@ -24997,9 +25087,14 @@ async function review(rootDir, args) {
 async function pattern(rootDir, args) {
   const save = args.includes("--save");
   const establish = args.includes("--establish");
+  const refresh = args.includes("--refresh");
   const at = args.indexOf("--kind");
   const wanted = at < 0 ? void 0 : args[at + 1];
   const file = args.find((arg, index) => !arg.startsWith("-") && (at < 0 || index !== at + 1));
+  if (establish && refresh) {
+    console.error("`--establish` writes a pattern file and `--refresh` updates one; pick one.");
+    return 1;
+  }
   const decisions = await readDecisions(rootDir);
   const decided = wanted === void 0 ? void 0 : decisions.find((one) => one.kind === wanted);
   if (wanted !== void 0 && decided === void 0) {
@@ -25013,10 +25108,11 @@ async function pattern(rootDir, args) {
   }
   const reference = decided?.canon ?? (file === void 0 ? void 0 : resolve9(rootDir, file));
   if (reference === void 0) {
-    console.error("Usage: uic pattern <reference-screen> [--save]");
+    console.error("Usage: uic pattern <reference-screen> [--save|--establish|--refresh]");
     console.error("   or: uic pattern --kind <kind> [--save]   (from a decisions file)");
     return 1;
   }
+  if (refresh) return refreshFile(rootDir, reference, decided?.kind);
   const found = await patternOf2(reference, { byHolder: true });
   if (found === null) {
     console.error("No pattern found: fewer than three screens of this kind to compare.");
@@ -25054,7 +25150,8 @@ async function establishPattern(rootDir, found, reference, decidedKind) {
   for (const each of existing) {
     if (await stat12(each).catch(() => null) === null) continue;
     console.error(`${relative12(rootDir, each)} already exists, and was not overwritten.`);
-    console.error("Read it, and re-derive with `uic pattern <screen>` if it looks stale.");
+    console.error("If it looks stale, `uic pattern <screen> --refresh` brings its counts up to");
+    console.error("date and leaves every sentence in it alone.");
     return 1;
   }
   const rendered = renderPattern(found, {
@@ -25067,6 +25164,64 @@ async function establishPattern(rootDir, found, reference, decidedKind) {
   await writeFile7(path, rendered, "utf8");
   console.log(relative12(rootDir, path));
   return 0;
+}
+async function refreshFile(rootDir, reference, decidedKind) {
+  const { patterns: patterns2, legacy } = await patternFiles(rootDir);
+  if (legacy) console.error(`ui-consistency: ${MOVED}`);
+  const { dir } = await knowledgeDir(rootDir, "patterns");
+  const where2 = relative12(rootDir, reference);
+  const covering = decidedKind === void 0 ? patternForScreen(patterns2, where2, await holderOf2(reference)) : patterns2.find((one) => one.name === slug2(decidedKind)) ?? null;
+  if (covering === null) {
+    console.error(`No pattern file covers ${where2}, so there is nothing to refresh.`);
+    console.error("`uic patterns <screen>` says why, and `uic pattern <screen> --establish`");
+    console.error("writes the first one.");
+    return 1;
+  }
+  const path = join23(dir, covering.file);
+  const raw = await readFile30(path, "utf8").catch(() => null);
+  if (raw === null) {
+    console.error(`Cannot read ${relative12(rootDir, path)}.`);
+    return 1;
+  }
+  if (!covering.derived) {
+    console.error(`${relative12(rootDir, path)} carries no \`derived: true\`, so a person wrote it.`);
+    console.error("Nothing in it is safe to regenerate: read it against `uic pattern <screen>`");
+    console.error("and change what you decide should change.");
+    return 1;
+  }
+  const found = await patternOf2(reference, { byHolder: true, ignoringPattern: covering.name });
+  if (found === null) {
+    console.error(`${relative12(rootDir, path)} was left as it is.`);
+    console.error("Fewer than three screens of this kind can be read now, so there is nothing");
+    console.error("to count agreement over. That is a fact about the code today, and the");
+    console.error("pattern may well be what should hold \u2014 read it rather than deleting it.");
+    return 1;
+  }
+  const { text, changed } = refreshPattern(raw, found, {
+    name: covering.name,
+    observed: (/* @__PURE__ */ new Date()).toISOString().slice(0, 10),
+    files: found.family.map((one) => relative12(rootDir, one)),
+    reference: where2
+  });
+  if (changed.length === 0) {
+    console.log(`${relative12(rootDir, path)} is already what the code says. Nothing was written.`);
+    return 0;
+  }
+  await writeFile7(path, text, "utf8");
+  console.log(relative12(rootDir, path));
+  for (const one of changed) console.log(`  rewritten: ${one}`);
+  console.log("  kept: every other section, as written");
+  console.log(`  counted around: ${where2}`);
+  return 0;
+}
+async function holderOf2(screen) {
+  const pair = await pairOf(screen);
+  const identity = pair?.identity ?? screen;
+  const own = await readFile30(identity, "utf8").catch(() => null);
+  if (own === null) return null;
+  const markup = pair === null ? { path: screen, source: own } : await markupOf(identity, own);
+  if (markup === null) return null;
+  return regionsOf(markup.source, templateKind(markup.path) ?? void 0)?.holder ?? null;
 }
 var slug2 = (kind) => kind.replace(/([a-z0-9])([A-Z])/g, "$1-$2").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase() || "screens";
 async function diff(rootDir, args) {
@@ -25307,18 +25462,14 @@ async function patterns(rootDir, args) {
     console.log(
       `${one.name}  ${one.surface ?? "\u2014"}  ${one.holder ?? "\u2014"}  ${members} ${members === 1 ? "file" : "files"}${one.observed === null ? "" : `  observed ${one.observed}`}`
     );
-    for (const line of staleness(await staleIn(rootDir, one))) console.log(`  ${line}`);
+    for (const line of staleness(await staleIn(rootDir, one), one.derived)) console.log(`  ${line}`);
   }
   return 0;
 }
 async function coveringOne(rootDir, found, target) {
   const absolute = resolve9(rootDir, target);
   const where2 = relative12(rootDir, absolute);
-  const pair = await pairOf(absolute);
-  const identity = pair?.identity ?? absolute;
-  const own = await readFile30(identity, "utf8").catch(() => null);
-  const markup = own === null ? null : pair === null ? { path: absolute, source: own } : await markupOf(identity, own);
-  const holder = markup === null ? null : regionsOf(markup.source, templateKind(markup.path) ?? void 0)?.holder ?? null;
+  const holder = await holderOf2(absolute);
   const covering = patternForScreen(found, where2, holder);
   if (covering === null) {
     console.log(`${where2} \u2014 no pattern covers it.`);
@@ -25331,15 +25482,17 @@ async function coveringOne(rootDir, found, target) {
   console.log(
     covering.members.includes(where2) ? "  named by the pattern itself" : `  sits in <${holder}>, which is the pattern's holder`
   );
-  for (const line of staleness(await staleIn(rootDir, covering))) console.log(`  ${line}`);
+  for (const line of staleness(await staleIn(rootDir, covering), covering.derived)) console.log(`  ${line}`);
   return 0;
 }
-function staleness(stale) {
+function staleness(stale, derived = false) {
   const say = (why, text) => {
     const files = stale.filter((one) => one.why === why).map((one) => one.file);
     return files.length === 0 ? [] : [`${text}: ${files.join(", ")}`];
   };
-  return [...say("changed", "changed since it was read"), ...say("gone", "no longer there")];
+  const said = [...say("changed", "changed since it was read"), ...say("gone", "no longer there")];
+  if (said.length > 0 && derived) said.push("`uic pattern <one of them> --refresh` re-counts it");
+  return said;
 }
 async function place2(rootDir, args) {
   const file = args.find((arg) => !arg.startsWith("-"));

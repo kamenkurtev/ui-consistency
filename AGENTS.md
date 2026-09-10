@@ -67,7 +67,11 @@ When the work is about screens, this is the order. **Do not wait to be asked.**
    asks; it does not draft. The first screen of a kind is a decision, not a
    derivation.
 3. `screen` for one, `rollout` for many. `rollout` queues them and verifies the
-   whole set rather than trusting thirty separate turns.
+   whole set rather than trusting thirty separate turns. **Nobody has to ask for
+   it**: the shape of the work is what decides, so a prompt naming a set —
+   *all the*, *every*, *the rest* — is a rollout whether or not the word was
+   typed. Under Claude Code the prompt hook says so; here this line is the
+   whole of the trigger.
 4. `verify` before handing the work over. `review` for a second opinion on one
    screen, when asked.
 5. `reach` when you cannot tell whether this project is clean or this tool is
@@ -98,6 +102,7 @@ demanding a pipeline.
 ```
 uic pattern <screen> [--save]      what screens of this kind look like here
 uic pattern <screen> --establish   write it down as a pattern file, derived and dated
+uic pattern <screen> --refresh     re-count an established one; every sentence in it is kept
 uic diff --contract <c> <files>    where the screens you touched left it (a pattern file or a saved contract)
 uic place <screen>                 route, trail, and where it is registered
 uic tree <screen> [--depth N]      what it renders, resolved through its children

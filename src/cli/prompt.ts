@@ -20,6 +20,27 @@ const ABOUT_SCREENS =
   /\b(screens?|pages?|dialogs?|modals?|drawers?|panels?|widgets?|forms?|grids?|tables?|layouts?|components?|views?|ui)\b/i;
 
 /**
+ * Words that mean the work is a set rather than one screen.
+ *
+ * **The loop is named, and it is not started** (#28). The queue-on-disk,
+ * one-file-per-turn, verify-the-whole-set loop exists as `skills/rollout`, and
+ * what was missing is that it begins because the work is that shape rather than
+ * because somebody typed a command. Naming it here is the whole of what a
+ * `UserPromptSubmit` adapter can honestly do: its output is context, and a hook
+ * that wrote a queue to disk off a regular expression over English would be
+ * starting a process nobody asked for, on a guess, before a single file had
+ * been read. The agent starts it, at the moment it can already see whether the
+ * set is real.
+ *
+ * The same list-about-English defence as `ABOUT_SCREENS`, and the same failure
+ * directions: a miss is a prompt that gets one fewer line, an over-fire is a
+ * pointer to a skill on a prompt that turns out to touch one file. Neither
+ * writes anything.
+ */
+const A_WHOLE_SET =
+  /\b(all (?:the |of )?|every|each of|the rest|remaining|across (?:the|all|every)|throughout|everywhere|one by one|in bulk|consistent(?:ly)? across|\d{2,})\b/i;
+
+/**
  * What to put in front of the agent before it writes a screen.
  *
  * The moment this exists for is **before the write**. An agent told what the
@@ -45,6 +66,7 @@ export async function promptContext(rootDir: string, text: string): Promise<stri
       `ui-consistency: this project has written no patterns down (${KNOWLEDGE_DIR}/patterns/).`,
       '',
       ...ESTABLISH_IT,
+      ...manyOfThem(text),
     ].join('\n');
   }
 
@@ -61,6 +83,7 @@ export async function promptContext(rootDir: string, text: string): Promise<stri
     'Where none of them covers that kind:',
     '',
     ...ESTABLISH_IT,
+    ...manyOfThem(text),
   );
   return said.join('\n');
 }
@@ -108,6 +131,28 @@ const ESTABLISH_IT = [
 ];
 
 /**
+ * The loop, where the work is a set — named as the shape it is, never begun.
+ *
+ * The reason it says *the set makes this a rollout* rather than *run the
+ * rollout*: what makes the loop worth entering is that the same contract
+ * reaches file thirty as file one, and an agent that has read nothing yet
+ * cannot know there are thirty. So this states the shape and the two things
+ * that go wrong without it, which is what a reader can act on once it has
+ * opened the files.
+ */
+const manyOfThem = (text: string): string[] =>
+  A_WHOLE_SET.test(text)
+    ? [
+        '',
+        'This prompt names a set, not one screen. If it is more than two or three files,',
+        'that is a rollout: ui-consistency:rollout. It keeps the queue on disk, works one',
+        'file per turn against the contract re-read each time, and verifies the whole set',
+        'at the end — which is what stops file thirty drifting toward the last file you',
+        'looked at instead of the pattern, and what makes "27 of 30" auditable.',
+      ]
+    : [];
+
+/**
  * How many to name.
  *
  * This is paid for on every prompt that mentions a screen, so it is a list of
@@ -136,7 +181,15 @@ async function freshness(rootDir: string, one: PatternFile): Promise<string> {
     ...(changed > 0 ? [`${changed} changed`] : []),
     ...(gone > 0 ? [`${gone} gone`] : []),
   ];
-  return `  (${parts.join(', ')} since it was read — re-derive before trusting it)`;
+  // What to do about it, and only where it can be done: a file the tool
+  // established can have its counts regenerated in place, and one a person
+  // wrote cannot. "Re-derive before trusting it" named no way to do either,
+  // which is an instruction an agent can only act on by ignoring the pattern
+  // or by rewriting somebody's file by hand (#28).
+  const what = one.derived
+    ? 'run `uic pattern <one of them> --refresh` first'
+    : 'a person wrote it, so read it against `uic pattern <one of them>` before trusting it';
+  return `  (${parts.join(', ')} since it was read — ${what})`;
 }
 
 interface Payload {

@@ -346,3 +346,154 @@ const list = (items: string[]): string =>
   items.length <= 1
     ? (items[0] ?? '')
     : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]!}`;
+
+/**
+ * A derived pattern file, brought up to date without touching what anybody
+ * decided.
+ *
+ * **Only what was counted is regenerated** — the frontmatter's `read:` and
+ * `observed:`, and the sections that are arithmetic over the family. Every
+ * other section is left exactly as found, and the one that makes this rule
+ * narrower than "keep the prose" is `## Still to be written`, which the tool
+ * wrote *and* invited a person to answer. `derived: true` cannot tell you
+ * whether they answered it, so regenerating it would destroy the work the file
+ * itself asked for.
+ *
+ * The counts in a pattern file are evidence as at a date; the intent in it is
+ * not. That is the whole of what this may and may not rewrite.
+ *
+ * **What it cannot tell**, and does not pretend to: a sentence somebody added
+ * *inside* a counted section — an element the avoided list is allowed to render
+ * in one place — is arithmetic as far as this is concerned and goes. So the
+ * refusal to guess is spent elsewhere: every section it rewrote is named in
+ * what it returns, the file is committed, and the diff is read in a pull
+ * request. A refresh that silently rewrote a file nobody then looked at would
+ * be the same defect as a stale one.
+ */
+export function refreshPattern(
+  raw: string,
+  pattern: ScreenPattern,
+  options: RenderOptions,
+): { text: string; changed: string[] } {
+  // Rendered once and read back for the sections to splice in. The alternative
+  // is a second copy of every block builder above, which is what
+  // `tests/core/duplicates.test.ts` exists to refuse.
+  const rendered = renderPattern(pattern, options);
+  const fresh = sectionsOf(rendered);
+  const changed: string[] = [];
+
+  let text = raw;
+  for (const heading of COUNTED) {
+    const replacement = fresh.get(heading)?.map((one) => one.trim()).join('\n\n') ?? null;
+    const existing = sectionsOf(text).get(heading) ?? [];
+
+    if (replacement === null) {
+      // The fresh derivation has nothing to say here. Leaving what is there
+      // would present an old count as a current one, so it goes.
+      if (existing.length === 0) continue;
+      for (const one of existing) text = text.replace(one, '');
+      changed.push(`${heading} — nothing to state now`);
+      continue;
+    }
+    if (existing.length === 0) {
+      // A section the file never had. Appended rather than guessed at a place:
+      // order is the author's business, and this is the end of what was counted.
+      text = `${text.trimEnd()}\n\n${replacement}\n`;
+      changed.push(`${heading} — added`);
+      continue;
+    }
+    // A duplicate heading — two `## Props`, which a hand-edit can leave behind
+    // — collapses into the first, so a stale copy cannot survive below a fresh
+    // one where a reader would take either for the answer.
+    if (existing.length === 1 && existing[0]!.trim() === replacement) continue;
+    text = swap(text, existing[0]!, `${replacement}\n\n`);
+    for (const one of existing.slice(1)) text = text.replace(one, '');
+    changed.push(heading);
+  }
+
+  const was = frontLine(raw, 'observed');
+  const rewritten = FRONT.reduce((carry, key) => {
+    const value = frontLine(rendered, key);
+    return value === null ? carry : setFrontLine(carry, key, value);
+  }, text);
+  if (rewritten !== text) changed.push(`frontmatter${was === null ? '' : ` (observed ${was})`}`);
+
+  // **Not normalised.** A document-wide `\n{3,}` collapse would reflow the very
+  // sections this promises to leave exactly as found — two blank lines between
+  // somebody's paragraphs, or inside a fenced example in their `## Rules` — on
+  // every refresh that changed a count. Each splice closes its own seam
+  // instead: a section's span runs to the next heading, so it carries its own
+  // trailing blank line and both removing and replacing one leave the join
+  // intact. Only the end of the file needs settling.
+  return { text: `${rewritten.trimEnd()}\n`, changed };
+}
+
+/**
+ * The sections a refresh may rewrite: every one that is arithmetic over the
+ * family. `## Still to be written` is not here, and neither is any section a
+ * person added — a `## Rules` the extractor never writes survives untouched
+ * because nothing on this list names it.
+ */
+const COUNTED = [
+  'Structure',
+  'Props',
+  'Avoided elements',
+  'Wiring',
+  'Particular to one screen',
+  'Where it is used',
+];
+
+/** The frontmatter keys a refresh may rewrite. `pattern:` is the file's name. */
+const FRONT = ['holder', 'read', 'from', 'observed'];
+
+/** Each `## ` section of a document, by title, with the text each one spans. */
+function sectionsOf(raw: string): Map<string, string[]> {
+  const found = new Map<string, string[]>();
+  const starts: { title: string; at: number }[] = [];
+
+  // Fences are counted, because a pattern file documenting its own format has
+  // a `## Props` inside one — the shape `rules/pattern-file.md` and the README
+  // both use — and reading that as a boundary splices a fresh block into the
+  // middle of somebody's example.
+  let fenced = false;
+  let at = 0;
+  for (const line of raw.split('\n')) {
+    if (/^\s*(?:```|~~~)/.test(line)) fenced = !fenced;
+    else if (!fenced) {
+      const heading = /^## +(.+?) *$/.exec(line);
+      if (heading !== null) starts.push({ title: heading[1]!, at });
+    }
+    at += line.length + 1;
+  }
+  for (const [at, one] of starts.entries()) {
+    const whole = raw.slice(one.at, starts[at + 1]?.at ?? raw.length);
+    found.set(one.title, [...(found.get(one.title) ?? []), whole]);
+  }
+  return found;
+}
+
+/**
+ * One exact substring for another, with nothing in the replacement read as a
+ * reference to the match.
+ *
+ * `String.replace` with a string replacement interprets `$&`, `$'`, `$\`` and
+ * `$1` in it, and a prop value is application data — a currency format, a
+ * template placeholder. A pattern whose props carry a `$` would have the match
+ * spliced into its own replacement, silently, in the file the project commits.
+ * A function replacement is the documented way to switch that off.
+ */
+const swap = (text: string, from: string, to: string): string => text.replace(from, () => to);
+
+const frontLine = (raw: string, key: string): string | null =>
+  new RegExp(`^${key} *: *(.*)$`, 'm').exec(raw.split(/^---$/m)[1] ?? '')?.[1]?.trim() ?? null;
+
+/** Set one frontmatter line, or add it where the block has none. */
+function setFrontLine(raw: string, key: string, value: string): string {
+  const match = /^(---\n)([\s\S]*?)(\n---\n)/.exec(raw);
+  if (match === null) return raw;
+  const line = new RegExp(`^${key} *:.*$`, 'm');
+  const block = line.test(match[2]!)
+    ? match[2]!.replace(line, () => `${key}: ${value}`)
+    : `${match[2]!}\n${key}: ${value}`;
+  return `${match[1]!}${block}${match[3]!}${raw.slice(match[0].length)}`;
+}

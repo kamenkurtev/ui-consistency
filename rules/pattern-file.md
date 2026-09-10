@@ -169,6 +169,16 @@ frontmatter, the structure block, the props with their counts and the member
 list, marked `derived: true` and dated, with what no extraction can produce
 named under `## Still to be written`. Answer those before building from it.
 
+`uic pattern <screen> --refresh` brings such a file back up to date. It rewrites
+what was **counted** — the frontmatter, the structure strengths, the props, the
+avoided elements, the wiring, the member list — and leaves every other section
+exactly as found, `## Still to be written` included, because the tool wrote that
+one *and* invited a person to answer it. It refuses a file with no
+`derived: true`: a person wrote that, and it has no derived half. And it derives
+the family **without reading the file it is refreshing**, or the member list
+would be its own family and a screen that has since joined the kind could never
+enter it.
+
 ## What reads this file
 
 `src/knowledge/pattern-file.ts` parses it, and only three parts are read as
