@@ -855,3 +855,94 @@ describe('a kind that no route table registers', () => {
     expect(derived?.family).toHaveLength(3);
   });
 });
+
+/**
+ * The channel that was missing. `ScreenPattern.kind` states the rule in its own
+ * doc comment — *screens of one kind are the ones that sit in the same holder* —
+ * and the holder was only ever used to **filter** a family found some other way.
+ * Nothing asked which other screens sit in the same holder, so on a project
+ * where the route table cannot be read and every screen has a folder to itself,
+ * families of 8 and of 7 answered "fewer than three screens of this kind" (#35).
+ */
+describe('a family found by the holder it sits in', () => {
+  /** One folder per screen, no shared parent of their own, drowned in others. */
+  const scattered = async (): Promise<string> => {
+    await writeFile(join(root, 'package.json'), '{"name":"app"}', 'utf8');
+    let first = '';
+    for (const name of ['Login', 'Register', 'Forgot', 'Reset', 'Verify']) {
+      const path = await screen(
+        `src/pages/${name.toLowerCase()}/${name}/${name}.tsx`,
+        page('WelcomePage', [`${name}Form`]),
+      );
+      // Each screen's own parts sit beside it, which is why its folder is not
+      // its family.
+      await screen(
+        `src/pages/${name.toLowerCase()}/${name}/${name}Form.tsx`,
+        'export const F = () => <form />;\n',
+      );
+      if (first === '') first = path;
+    }
+    for (let i = 0; i < 12; i++) {
+      const name = `A${String(i).padStart(2, '0')}`;
+      await screen(`src/pages/a${i}/${name}/${name}.tsx`, page('MainLayout', [`${name}Grid`]));
+    }
+    return first;
+  };
+
+  it('finds the screens the folder walk never reaches', async () => {
+    const login = await scattered();
+
+    const found = await patternOf(login, { byHolder: true });
+
+    expect(found).not.toBeNull();
+    expect(found?.kind).toBe('WelcomePage');
+    expect(found?.family.length).toBe(5);
+    // Provenance is stated, and it is weaker than a route table: what a screen
+    // is held by is structural, but nobody wrote it down.
+    expect(found?.from).toBe('holder');
+  });
+
+  /**
+   * Not on the edit path, and the same measurement that kept `uic tree` off it:
+   * 376 ms end to end on an 808-screen reproduction against a 37 ms budget.
+   */
+  it('is not asked for unless the caller asks, which the edit path does not', async () => {
+    const login = await scattered();
+
+    expect(await patternOf(login)).toBeNull();
+  });
+
+  it('never takes a screen the reference imports', async () => {
+    await writeFile(join(root, 'package.json'), '{"name":"app"}', 'utf8');
+    const login = await screen(
+      'src/pages/login/Login/Login.tsx',
+      "import { LoginPanel } from './LoginPanel';\n" + page('WelcomePage', ['LoginPanel']),
+    );
+    // A panel of the same shape, imported by the page: part of it, not beside it.
+    await screen('src/pages/login/Login/LoginPanel.tsx', page('WelcomePage', ['Fields']));
+    for (const name of ['Register', 'Forgot']) {
+      await screen(
+        `src/pages/${name.toLowerCase()}/${name}/${name}.tsx`,
+        page('WelcomePage', [`${name}Form`]),
+      );
+    }
+
+    const found = await patternOf(login, { byHolder: true });
+
+    expect(found?.family).not.toContain(join(root, 'src/pages/login/Login/LoginPanel.tsx'));
+  });
+
+  it('says nothing where the holder is a plain element', async () => {
+    // Every markup-built screen in a project sits in a `<div>`, and a family of
+    // `div` is the whole project.
+    await writeFile(join(root, 'package.json'), '{"name":"app"}', 'utf8');
+    const first = await screen('src/pages/one/One/One.tsx', page('div', ['Thing']));
+    for (const name of ['Two', 'Three', 'Four']) {
+      await screen(`src/pages/${name.toLowerCase()}/${name}/${name}.tsx`, page('div', ['Thing']));
+    }
+
+    const found = await patternOf(first, { byHolder: true });
+
+    expect(found?.from).not.toBe('holder');
+  });
+});

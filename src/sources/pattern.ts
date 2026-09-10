@@ -1,5 +1,5 @@
-import { readFile } from 'node:fs/promises';
-import { dirname, relative, resolve } from 'node:path';
+import { readFile, stat } from 'node:fs/promises';
+import { dirname, join, relative, resolve } from 'node:path';
 import { findProjectRoot } from '../layers/detect.js';
 import { regionsOf, type PageRegions, type Region } from './regions.js';
 import { rawMarkupOf, shapeOf } from './extract.js';
@@ -14,6 +14,7 @@ import {
   QUORUM,
   isScreenFile,
   siblingScreens,
+  holderSiblings,
   type Family,
 } from './siblings.js';
 import { observeUsage, type ComponentUsage } from './usage.js';
@@ -179,13 +180,18 @@ export interface ScreenPattern {
    * inferred. `'folder'` — the files around it, which is a guess about which of
    * them are of a kind.
    *
+   * `'holder'` — the screens in this application that sit in the same holder.
+   * Structural, and the channel that was missing: where the route table cannot
+   * be read and every screen has a folder to itself, the two cheaper channels
+   * answer with a set of an entirely different kind (#35).
+   *
    * It belongs in the contract because since #231 a derived contract reaches
    * the agent automatically, and *"derived from the 8 screens registered beside
    * it"* and *"derived from files in its folder"* are not equally trustworthy
    * sentences. An agent handed the second, with the names, can judge the family
    * nonsense on sight — which is this tool's own division of labour (#255).
    */
-  from: 'pattern' | 'routes' | 'folder';
+  from: 'pattern' | 'routes' | 'folder' | 'holder';
 }
 
 /** Three screens of a kind, the reference among them. Two files are a copy. */
@@ -412,6 +418,21 @@ function skeletonOf(screens: Reading[]): { holder: string; regions: Region[] } |
   };
 }
 
+export interface PatternOptions {
+  /**
+   * Search the application for screens sitting in the same holder, where the
+   * cheaper channels came back with a family of a different kind.
+   *
+   * **Off by default, because it is not for the edit path.** Measured on an
+   * 808-screen reproduction it costs 376 ms end to end, against the 37 ms cold
+   * budget the derived contract is held to — the same measurement that kept
+   * `uic tree` off that path at 115 ms. `uic pattern` turns it on, which is
+   * where #35's own evidence runs it and, since #38, where the agent is
+   * instructed to go before writing a screen.
+   */
+  byHolder?: boolean;
+}
+
 /**
  * What the screens of one kind have in common, read from the code.
  *
@@ -419,7 +440,10 @@ function skeletonOf(screens: Reading[]): { holder: string; regions: Region[] } |
  * exactly what must not be carried into the next screen. What repeats across
  * the family is the pattern; what appears once is that page's own business.
  */
-export async function patternOf(target: string): Promise<ScreenPattern | null> {
+export async function patternOf(
+  target: string,
+  options: PatternOptions = {},
+): Promise<ScreenPattern | null> {
   // The project this file belongs to, so the search cannot climb out of it into
   // whatever repository happens to sit beside this one on disk.
   const root = await findProjectRoot(dirname(target));
@@ -446,15 +470,20 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
   // Deduplicated by identity, because both halves of a pair are candidates and
   // they are one screen. Without this an Angular family counts every screen
   // twice and compares a class against a template.
-  const read: Reading[] = [];
-  const seen = new Set<string>();
-  const nearby = family.screens;
-  for (const path of [target, ...nearby]) {
-    const reading = await readScreen(path);
-    if (reading === null || seen.has(reading.path)) continue;
-    seen.add(reading.path);
-    read.push(reading);
-  }
+  const readAll = async (paths: string[]): Promise<Reading[]> => {
+    const out: Reading[] = [];
+    const seen = new Set<string>();
+    for (const path of [target, ...paths]) {
+      const reading = await readScreen(path);
+      if (reading === null || seen.has(reading.path)) continue;
+      seen.add(reading.path);
+      out.push(reading);
+    }
+    return out;
+  };
+
+  let from = family.from;
+  let read = await readAll(family.screens);
   if (read.length < MIN_FAMILY) return null;
 
   // No answer at all when the page asked about could not be read. Carrying on
@@ -475,7 +504,38 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
   // and free of any vocabulary: what a screen is *held by* is a fact about this
   // project, while "is this a list or a form" needed a list of component names
   // that matched nothing outside one library.
-  const sameHolder = read.filter((one) => one.page.holder === reference.page.holder);
+  let sameHolder = read.filter((one) => one.page.holder === reference.page.holder);
+
+  // Ask the question nothing was asking. The two channels above collect by what
+  // a project *states* and by what sits nearby, and where the first is silent
+  // the second is proximity — which in a project giving every screen its own
+  // folder is alphabetical accident. On a reproduction of that shape the walk
+  // returned 12 candidates and all 12 sat in a different holder, so a family of
+  // 8 answered "fewer than three screens of this kind" (#35).
+  //
+  // Only here, and only after everything cheaper has failed: this reads files
+  // rather than directories, and the case it runs in is the one where the tool
+  // otherwise says nothing at all.
+  if (options.byHolder === true && sameHolder.length < MIN_FAMILY && root !== null && named === null) {
+    const area = await appRootFor(target, root);
+    const byHolder =
+      area === null
+        ? []
+        : await holderSiblings(target, reference.page.holder, area, {
+            isScreen: isScreenFile,
+            maxSiblings: MAX_FAMILY,
+          });
+    if (byHolder.length + 1 >= MIN_FAMILY) {
+      const again = await readAll(byHolder);
+      const held = again.filter((one) => one.page.holder === reference.page.holder);
+      if (held.length >= MIN_FAMILY) {
+        read = again;
+        sameHolder = held;
+        from = 'holder';
+      }
+    }
+  }
+
   const narrowed = sameHolder.length >= MIN_FAMILY;
 
   // **A folder that holds a mixture is not a family** (#5). Where the project
@@ -488,7 +548,7 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
   // a history tab.
   //
   // The honest answer is then fewer members or none. A miss, never an invention.
-  if (!narrowed && family.from === 'folder') return null;
+  if (!narrowed && from === 'folder') return null;
 
   const screens = narrowed ? sameHolder : read;
   const kind = narrowed ? reference.page.holder : null;
@@ -577,7 +637,7 @@ export async function patternOf(target: string): Promise<ScreenPattern | null> {
     wiring: shared(screens.map((one) => one.hooks)),
     family: screens.map((one) => one.path),
     kind,
-    from: family.from,
+    from,
   };
 }
 
@@ -602,4 +662,30 @@ async function familyFromPattern(root: string, target: string): Promise<Family |
     .filter((member) => member !== where)
     .map((member) => resolve(root, member));
   return screens.length + 1 < MIN_FAMILY ? null : { screens, from: 'pattern' };
+}
+
+/**
+ * The application the screen belongs to, which is not the workspace.
+ *
+ * A holder search bounded at the repository root would put one app's screens
+ * into another app's family — on a four-app monorepo that is a wrong family,
+ * not a slow one. The nearest `package.json` at or above the screen is the
+ * boundary a monorepo actually states.
+ *
+ * `null` where none can be found below the root, and a null answer means the
+ * channel does not run: a family assembled across an unknown boundary is worse
+ * than no family. That is the Nx shape this plugin calls normal — libraries
+ * with no `package.json`, bounded by `tsconfig` aliases — so on those the
+ * holder channel is silent. A miss, stated here rather than left to be
+ * discovered.
+ */
+async function appRootFor(screen: string, root: string): Promise<string | null> {
+  let current = dirname(screen);
+  for (;;) {
+    if (await stat(join(current, 'package.json')).then(() => true, () => false)) return current;
+    if (current === root) return null;
+    const up = dirname(current);
+    if (up === current) return null;
+    current = up;
+  }
 }

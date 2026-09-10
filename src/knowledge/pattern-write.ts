@@ -131,6 +131,7 @@ function derivedFrom(pattern: ScreenPattern, total: number): string {
     pattern: 'named together by a pattern file',
     routes: "registered beside one another in the project's route table",
     folder: 'found in the folders around the reference, which is a guess about which of them are of a kind',
+    holder: 'found in this application sitting in the same holder, which is structural but is not a registration anybody wrote',
   }[pattern.from];
 
   const built =

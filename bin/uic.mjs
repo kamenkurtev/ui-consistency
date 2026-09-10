@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { mkdir as mkdir2, readFile as readFile29, realpath as realpath3, stat as stat11, writeFile as writeFile7 } from "node:fs/promises";
-import { basename as basename8, dirname as dirname15, join as join22, relative as relative12, resolve as resolve9 } from "node:path";
+import { mkdir as mkdir2, readFile as readFile29, realpath as realpath3, stat as stat12, writeFile as writeFile7 } from "node:fs/promises";
+import { basename as basename8, dirname as dirname15, join as join23, relative as relative12, resolve as resolve9 } from "node:path";
 
 // src/layers/detect.ts
 import { readFile as readFile2, readdir as readdir2, stat as stat2 } from "node:fs/promises";
@@ -22188,6 +22188,27 @@ async function importedBy(target) {
   }
   return found;
 }
+var MAX_HOLDER_READS = 600;
+var MAX_HOLDER_SWEEP = 8e3;
+async function holderSiblings(target, holder, area, options) {
+  if (holder === "" || /^[a-z]/.test(holder)) return [];
+  const swept = await filesUnder(area, { left: MAX_HOLDER_SWEEP });
+  if (swept === null) return [];
+  const budget = { left: MAX_HOLDER_READS };
+  const mine = await importedBy(target);
+  const found = [];
+  const needle = `<${holder}`;
+  for (const path of swept) {
+    if (found.length >= options.maxSiblings || budget.left <= 0) break;
+    if (path === target || mine.has(path)) continue;
+    if (!options.isScreen(basename6(path)) || ROUTE_FILE.test(basename6(path))) continue;
+    budget.left--;
+    const source = await readFile12(path, "utf8").catch(() => null);
+    if (source === null || !source.includes(needle)) continue;
+    found.push(path);
+  }
+  return found;
+}
 
 // src/sources/pair.ts
 import { readFile as readFile13, stat as stat7 } from "node:fs/promises";
@@ -22560,8 +22581,8 @@ function slotsIn(files) {
 }
 
 // src/sources/pattern.ts
-import { readFile as readFile18 } from "node:fs/promises";
-import { dirname as dirname11, relative as relative6, resolve as resolve6 } from "node:path";
+import { readFile as readFile18, stat as stat9 } from "node:fs/promises";
+import { dirname as dirname11, join as join16, relative as relative6, resolve as resolve6 } from "node:path";
 
 // src/knowledge/pattern-file.ts
 import { readdir as readdir8, readFile as readFile16, stat as stat8 } from "node:fs/promises";
@@ -22873,7 +22894,7 @@ function skeletonOf(screens) {
     regions: order.value === "" ? [] : order.value.split(">")
   };
 }
-async function patternOf2(target) {
+async function patternOf2(target, options = {}) {
   const root = await findProjectRoot(dirname11(target));
   const named2 = root === null ? null : await familyFromPattern(root, target);
   const family = named2 ?? await siblingScreens(target, {
@@ -22884,22 +22905,42 @@ async function patternOf2(target) {
     // family, and one of the three is the page being asked about.
     quorum: MIN_FAMILY - 1
   });
-  const read = [];
-  const seen = /* @__PURE__ */ new Set();
-  const nearby = family.screens;
-  for (const path of [target, ...nearby]) {
-    const reading = await readScreen(path);
-    if (reading === null || seen.has(reading.path)) continue;
-    seen.add(reading.path);
-    read.push(reading);
-  }
+  const readAll = async (paths) => {
+    const out = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const path of [target, ...paths]) {
+      const reading = await readScreen(path);
+      if (reading === null || seen.has(reading.path)) continue;
+      seen.add(reading.path);
+      out.push(reading);
+    }
+    return out;
+  };
+  let from = family.from;
+  let read = await readAll(family.screens);
   if (read.length < MIN_FAMILY) return null;
   const asked = (await pairOf(target))?.identity ?? target;
   const reference = read.find((one) => one.path === asked);
   if (reference === void 0) return null;
-  const sameHolder = read.filter((one) => one.page.holder === reference.page.holder);
+  let sameHolder = read.filter((one) => one.page.holder === reference.page.holder);
+  if (options.byHolder === true && sameHolder.length < MIN_FAMILY && root !== null && named2 === null) {
+    const area = await appRootFor(target, root);
+    const byHolder = area === null ? [] : await holderSiblings(target, reference.page.holder, area, {
+      isScreen: isScreenFile,
+      maxSiblings: MAX_FAMILY
+    });
+    if (byHolder.length + 1 >= MIN_FAMILY) {
+      const again = await readAll(byHolder);
+      const held = again.filter((one) => one.page.holder === reference.page.holder);
+      if (held.length >= MIN_FAMILY) {
+        read = again;
+        sameHolder = held;
+        from = "holder";
+      }
+    }
+  }
   const narrowed = sameHolder.length >= MIN_FAMILY;
-  if (!narrowed && family.from === "folder") return null;
+  if (!narrowed && from === "folder") return null;
   const screens = narrowed ? sameHolder : read;
   const kind = narrowed ? reference.page.holder : null;
   const others = screens.filter((one) => one !== reference);
@@ -22941,7 +22982,7 @@ async function patternOf2(target) {
     wiring: shared(screens.map((one) => one.hooks)),
     family: screens.map((one) => one.path),
     kind,
-    from: family.from
+    from
   };
 }
 async function familyFromPattern(root, target) {
@@ -22953,13 +22994,23 @@ async function familyFromPattern(root, target) {
   const screens = covering.members.filter((member) => member !== where2).map((member) => resolve6(root, member));
   return screens.length + 1 < MIN_FAMILY ? null : { screens, from: "pattern" };
 }
+async function appRootFor(screen, root) {
+  let current = dirname11(screen);
+  for (; ; ) {
+    if (await stat9(join16(current, "package.json")).then(() => true, () => false)) return current;
+    if (current === root) return null;
+    const up = dirname11(current);
+    if (up === current) return null;
+    current = up;
+  }
+}
 
 // src/sources/tree.ts
 import { readFile as readFile19 } from "node:fs/promises";
 import { relative as relative7 } from "node:path";
 
 // src/sources/resolve.ts
-import { dirname as dirname12, join as join16, resolve as resolve7, sep as sep4 } from "node:path";
+import { dirname as dirname12, join as join17, resolve as resolve7, sep as sep4 } from "node:path";
 async function resolverFor(rootDir) {
   const aliases = await tsconfigPaths(rootDir).catch(() => null);
   const packages = await cachedPackages(rootDir).catch(() => []);
@@ -23011,7 +23062,7 @@ async function throughPackages(packages, specifier) {
   const owning = packageFor(packages, specifier);
   if (owning === null) return null;
   const rest = specifier.slice(owning.name.length).replace(/^\//, "");
-  if (rest.length > 0) return moduleAt(join16(owning.root, rest));
+  if (rest.length > 0) return moduleAt(join17(owning.root, rest));
   return entryFileFor(owning.root).catch(() => null);
 }
 function packageFor(packages, specifier) {
@@ -23520,7 +23571,8 @@ function derivedFrom(pattern2, total) {
   const where2 = {
     pattern: "named together by a pattern file",
     routes: "registered beside one another in the project's route table",
-    folder: "found in the folders around the reference, which is a guess about which of them are of a kind"
+    folder: "found in the folders around the reference, which is a guess about which of them are of a kind",
+    holder: "found in this application sitting in the same holder, which is structural but is not a registration anybody wrote"
   }[pattern2.from];
   const built = pattern2.built === "markup" ? " These screens are built out of markup and classes rather than layout components, so there is no component to name for most roles." : "";
   return `Derived by \`uic pattern\` from ${total} ${total === 1 ? "screen" : "screens"} ${where2}.${built} Nothing here has been approved by a person; the counts are evidence as at the date above, and \`uic patterns\` says what has moved since.`;
@@ -23612,18 +23664,18 @@ var safe = (value) => quoted(value);
 var list = (items) => items.length <= 1 ? items[0] ?? "" : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 
 // src/cli/log.ts
-import { appendFile, readdir as readdir10, readFile as readFile21, rename, stat as stat9, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join17, relative as relative10 } from "node:path";
-var logPath = (rootDir) => join17(cacheRoot(), projectKey(rootDir), "findings.jsonl");
-var contractPathFor = (rootDir, kind) => join17(logPath(rootDir), "..", `contract-${kind.replace(/[^\w.-]+/g, "-")}.json`);
+import { appendFile, readdir as readdir10, readFile as readFile21, rename, stat as stat10, writeFile as writeFile4 } from "node:fs/promises";
+import { join as join18, relative as relative10 } from "node:path";
+var logPath = (rootDir) => join18(cacheRoot(), projectKey(rootDir), "findings.jsonl");
+var contractPathFor = (rootDir, kind) => join18(logPath(rootDir), "..", `contract-${kind.replace(/[^\w.-]+/g, "-")}.json`);
 var contractsFor = async (rootDir) => {
   const dir = await ownedDir(projectKey(rootDir));
   if (dir === null) return [];
   const entries = await readdir10(dir).catch(() => null);
-  return (entries ?? []).filter((name) => /^contract-.*\.json$/.test(name)).sort().map((name) => join17(dir, name));
+  return (entries ?? []).filter((name) => /^contract-.*\.json$/.test(name)).sort().map((name) => join18(dir, name));
 };
 var MAX_BYTES2 = 4e6;
-var statePath = (rootDir) => join17(logPath(rootDir), "..", "seen.jsonl");
+var statePath = (rootDir) => join18(logPath(rootDir), "..", "seen.jsonl");
 var MAX_STATE_BYTES = 512e3;
 var keyOf = (entry) => `${entry.file}|${entry.line}|${entry.level}|${entry.message}`;
 var readSeen = async (rootDir) => {
@@ -23656,16 +23708,16 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
     const path = logPath(rootDir);
     const dir = await ownedDir(projectKey(rootDir));
     if (dir === null) return;
-    await writeFile4(join17(dir, "repo.txt"), `${base}
+    await writeFile4(join18(dir, "repo.txt"), `${base}
 `, "utf8").catch(() => void 0);
-    const size = await stat9(path).then(
+    const size = await stat10(path).then(
       (info) => info.size,
       () => 0
     );
     if (size > MAX_BYTES2) await rename(path, `${path}.1`).catch(() => void 0);
     const seen = await readSeen(rootDir);
     const state = statePath(rootDir);
-    const stateSize = await stat9(state).then(
+    const stateSize = await stat10(state).then(
       (info) => info.size,
       () => 0
     );
@@ -23970,7 +24022,7 @@ function knowledgeSource(knowledge) {
 
 // src/sources/storybook.ts
 import { readdir as readdir11, readFile as readFile24 } from "node:fs/promises";
-import { join as join18 } from "node:path";
+import { join as join19 } from "node:path";
 var STORIES = /\.stories\.[jt]sx?$/;
 async function storyFiles(dir, depth = 2) {
   const entries = await readdir11(dir, { withFileTypes: true }).catch(() => null);
@@ -23978,7 +24030,7 @@ async function storyFiles(dir, depth = 2) {
   const found = [];
   for (const entry of entries) {
     if (entry.name === "node_modules" || entry.name.startsWith(".")) continue;
-    const path = join18(dir, entry.name);
+    const path = join19(dir, entry.name);
     if (entry.isDirectory()) {
       if (depth > 0) found.push(...await storyFiles(path, depth - 1));
       continue;
@@ -24105,7 +24157,7 @@ import { readFile as readFile28 } from "node:fs/promises";
 
 // src/ai/settled.ts
 import { readFile as readFile25, writeFile as writeFile5 } from "node:fs/promises";
-import { join as join19 } from "node:path";
+import { join as join20 } from "node:path";
 var WINDOW = 6e4;
 var settled = async (rootDir, filePath, options = {}) => {
   try {
@@ -24117,7 +24169,7 @@ var settled = async (rootDir, filePath, options = {}) => {
 var decide = async (rootDir, filePath, options) => {
   const now = options.now ?? (() => Date.now());
   const window = options.windowMs ?? WINDOW;
-  const file = join19(cacheRoot(), projectKey(rootDir), "advised.json");
+  const file = join20(cacheRoot(), projectKey(rootDir), "advised.json");
   const raw = await readFile25(file, "utf8").catch(() => null);
   let seen = {};
   if (raw !== null) {
@@ -24139,11 +24191,11 @@ var decide = async (rootDir, filePath, options) => {
 };
 
 // src/sources/pattern-cache.ts
-import { readFile as readFile26, stat as stat10, writeFile as writeFile6 } from "node:fs/promises";
-import { dirname as dirname13, join as join20 } from "node:path";
+import { readFile as readFile26, stat as stat11, writeFile as writeFile6 } from "node:fs/promises";
+import { dirname as dirname13, join as join21 } from "node:path";
 var CACHE_VERSION3 = 2;
-var fileIn3 = (dir) => join20(dir, "patterns.json");
-var mtimeOf3 = (path) => stat10(path).then(
+var fileIn3 = (dir) => join21(dir, "patterns.json");
+var mtimeOf3 = (path) => stat11(path).then(
   (info) => info.mtimeMs,
   () => null
 );
@@ -24335,10 +24387,10 @@ async function deviationsFromContract(root, file) {
 
 // src/cli/session.ts
 import { readdir as readdir12, open } from "node:fs/promises";
-import { join as join21 } from "node:path";
+import { join as join22 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.94";
+var VERSION = "0.14.95";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24391,7 +24443,7 @@ async function sessionContext(rootDir) {
   const said = [STANDING];
   const versions = /* @__PURE__ */ new Set();
   for (const name of files.slice(0, MAX_FILES)) {
-    const head = await firstBytes(join21(dir, name));
+    const head = await firstBytes(join22(dir, name));
     if (head === null) continue;
     const version = generatedVersion(head);
     if (version !== null && version !== VERSION) versions.add(version);
@@ -24634,7 +24686,7 @@ async function pattern(rootDir, args) {
     console.error("   or: uic pattern --kind <kind> [--save]   (from a decisions file)");
     return 1;
   }
-  const found = await patternOf2(reference);
+  const found = await patternOf2(reference, { byHolder: true });
   if (found === null) {
     console.error("No pattern found: fewer than three screens of this kind to compare.");
     console.error("Decide it here, and this screen becomes the first of its kind.");
@@ -24664,12 +24716,12 @@ async function pattern(rootDir, args) {
 }
 async function establishPattern(rootDir, found, reference, decidedKind) {
   const name = slug2(decidedKind ?? found.kind ?? "screens");
-  const path = join22(rootDir, KNOWLEDGE_DIR, "patterns", `${name}.md`);
+  const path = join23(rootDir, KNOWLEDGE_DIR, "patterns", `${name}.md`);
   const { dir: reading, legacy } = await knowledgeDir(rootDir, "patterns");
-  const existing = [path, join22(reading, `${name}.md`)];
+  const existing = [path, join23(reading, `${name}.md`)];
   if (legacy) console.error(`ui-consistency: ${MOVED}`);
   for (const each of existing) {
-    if (await stat11(each).catch(() => null) === null) continue;
+    if (await stat12(each).catch(() => null) === null) continue;
     console.error(`${relative12(rootDir, each)} already exists, and was not overwritten.`);
     console.error("Read it, and re-derive with `uic pattern <screen>` if it looks stale.");
     return 1;
@@ -25048,7 +25100,7 @@ async function givenFiles(rootDir, files) {
   const problems = [];
   for (const file of files) {
     const path = resolve9(rootDir, file);
-    const found = await stat11(path).catch(() => null);
+    const found = await stat12(path).catch(() => null);
     if (found === null) {
       problems.push(
         GLOB.test(file) ? `${file} matched no file. Globs are expanded by your shell, so a quoted pattern arrives here literally.` : `${file} does not exist.`

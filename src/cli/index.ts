@@ -326,7 +326,10 @@ async function pattern(rootDir: string, args: string[]): Promise<number> {
     return 1;
   }
 
-  const found = await patternOf(reference);
+  // The holder channel is asked for here and nowhere else. It reads files
+  // rather than directories and costs 376 ms on an 808-screen application,
+  // which is fine inside a command somebody invoked and is not fine on an edit.
+  const found = await patternOf(reference, { byHolder: true });
   if (found === null) {
     // The honest answer, and a useful one: it means this screen is the first of
     // its kind, and what is decided about it becomes the pattern for the next.
