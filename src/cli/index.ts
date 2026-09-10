@@ -654,8 +654,13 @@ async function tree(rootDir: string, args: string[]): Promise<number> {
 function branch(node: TreeNode, indent: number, from: string | null): string[] {
   const moved = node.file !== null && node.file !== from;
   const where = node.at === 'project' ? (moved ? `  ${node.file}` : '') : `  (${node.at})`;
+  // Said on the node it is about rather than as a child of the same name.
+  const stopped = node.holderAt === undefined ? '' : `  (holder in a ${node.holderAt})`;
+  // Passed as data, not held. Said, because a tree that prints it as a child
+  // claims a shape the file does not have.
+  const through = node.via === undefined ? '' : `  ← ${node.via}`;
   return [
-    `${'  '.repeat(indent)}${node.name}${where}`,
+    `${'  '.repeat(indent)}${node.name}${where}${stopped}${through}`,
     ...node.children.flatMap((child) => branch(child, indent + 1, node.file)),
   ];
 }

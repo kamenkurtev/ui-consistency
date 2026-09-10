@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
-  "version": "0.14.96",
+  "version": "0.14.97",
   "description": "Keeps AI-generated UI consistent with your project's own component vocabulary",
   "license": "MIT",
   "type": "module",

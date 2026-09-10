@@ -14265,17 +14265,22 @@ function walk(root, visit) {
   while (stack.length > 0) {
     const current = stack.pop();
     visit(current);
-    for (const key of Object.keys(current)) {
-      const child = current[key];
-      if (Array.isArray(child)) {
-        for (const item of child) {
-          if (item !== null && typeof item === "object" && "type" in item) stack.push(item);
-        }
-      } else if (child !== null && typeof child === "object" && "type" in child) {
-        stack.push(child);
+    stack.push(...childNodes(current));
+  }
+}
+function childNodes(node) {
+  const out = [];
+  for (const key of Object.keys(node)) {
+    const child = node[key];
+    if (Array.isArray(child)) {
+      for (const item of child) {
+        if (item !== null && typeof item === "object" && "type" in item) out.push(item);
       }
+    } else if (child !== null && typeof child === "object" && "type" in child) {
+      out.push(child);
     }
   }
+  return out;
 }
 
 // src/layers/chain.ts
@@ -14387,9 +14392,9 @@ async function packageRootFor(target) {
 }
 var GENERATED_DIRECTORY = /* @__PURE__ */ new Set(["dist", "build", "out", "coverage", "generated"]);
 function isGenerated(base, resolved) {
-  const inside2 = relative2(base, resolved);
-  if (inside2.startsWith("..")) return false;
-  return inside2.split(sep).some((segment) => GENERATED_DIRECTORY.has(segment) || /^\.[^.]/.test(segment));
+  const inside = relative2(base, resolved);
+  if (inside.startsWith("..")) return false;
+  return inside.split(sep).some((segment) => GENERATED_DIRECTORY.has(segment) || /^\.[^.]/.test(segment));
 }
 async function insideProject(rootDir, target) {
   const real = await realpath(target).catch(() => null);
@@ -14920,14 +14925,14 @@ import { resolve as resolve3 } from "node:path";
 var KNOWLEDGE_DIR = ".ui-consistency";
 var LEGACY_KNOWLEDGE_DIR = ".claude/ui-consistency";
 async function knowledgeDir(rootDir, sub = "") {
-  const inside2 = async (base) => {
+  const inside = async (base) => {
     const entries = await readdir3(resolve3(rootDir, base, sub)).catch(() => null);
     return entries !== null && entries.length > 0;
   };
-  if (await inside2(KNOWLEDGE_DIR)) {
+  if (await inside(KNOWLEDGE_DIR)) {
     return { dir: resolve3(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
   }
-  if (await inside2(LEGACY_KNOWLEDGE_DIR)) {
+  if (await inside(LEGACY_KNOWLEDGE_DIR)) {
     return { dir: resolve3(rootDir, LEGACY_KNOWLEDGE_DIR, sub), legacy: true };
   }
   return { dir: resolve3(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
@@ -20865,6 +20870,83 @@ function jsxNameOf(element) {
   return null;
 }
 function screenRoot(program) {
+  const returned = returnedRoots(program);
+  const exported = returned.filter((one) => one.exported);
+  const among = exported.length > 0 ? exported : returned;
+  if (among.length > 0) return largest(among.map((one) => one.root));
+  return positionalRoot(program);
+}
+function returnedRoots(program) {
+  const body = program.body;
+  if (!Array.isArray(body)) return [];
+  const roots = [];
+  for (const statement of body) {
+    const exported = statement.type === "ExportNamedDeclaration" || statement.type === "ExportDefaultDeclaration";
+    for (const fn of componentsIn2(statement)) {
+      const root = returnsJsx(fn);
+      if (root !== null) roots.push({ root, exported });
+    }
+  }
+  return roots;
+}
+function componentsIn2(statement) {
+  const node = statement.type === "ExportNamedDeclaration" || statement.type === "ExportDefaultDeclaration" ? statement.declaration ?? null : statement;
+  if (node === null) return [];
+  if (node.type === "FunctionDeclaration") return [node];
+  if (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression") return [node];
+  if (node.type !== "VariableDeclaration") return [];
+  const out = [];
+  for (const declarator of node.declarations) {
+    const init = unwrapComponent(declarator.init ?? null);
+    if (init !== null) out.push(init);
+  }
+  return out;
+}
+function unwrapComponent(node) {
+  let current = node;
+  for (let hop = 0; current !== null && hop < 4; hop++) {
+    if (current.type === "ArrowFunctionExpression" || current.type === "FunctionExpression") {
+      return current;
+    }
+    if (current.type !== "CallExpression" || current.arguments.length === 0) return null;
+    current = current.arguments[0];
+  }
+  return null;
+}
+function returnsJsx(fn) {
+  const body = fn.body ?? null;
+  if (body === null) return null;
+  if (body.type === "JSXElement") return body;
+  const found = [];
+  const visit = (node) => {
+    if (node !== body && isFunction(node)) return;
+    if (node.type === "ReturnStatement") {
+      const argument = node.argument ?? null;
+      for (const element of jsxIn(argument)) found.push(element);
+      return;
+    }
+    for (const child of childNodes(node)) visit(child);
+  };
+  visit(body);
+  return found.length === 0 ? null : largest(found);
+}
+var isFunction = (node) => node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression" || node.type === "FunctionDeclaration";
+function jsxIn(node) {
+  if (node === null) return [];
+  if (node.type === "JSXElement") return [node];
+  if (node.type === "ConditionalExpression") {
+    return [...jsxIn(node.consequent), ...jsxIn(node.alternate)];
+  }
+  if (node.type === "LogicalExpression") return jsxIn(node.right);
+  if (node.type === "JSXFragment") {
+    return node.children.filter((one) => one.type === "JSXElement");
+  }
+  return [];
+}
+var largest = (elements) => elements.reduce(
+  (biggest, candidate) => (candidate.end ?? 0) - (candidate.start ?? 0) > (biggest.end ?? 0) - (biggest.start ?? 0) ? candidate : biggest
+);
+function positionalRoot(program) {
   const tops = [];
   walk(program, (node) => {
     if (node.type !== "JSXElement") return;
@@ -20880,9 +20962,7 @@ function screenRoot(program) {
     )
   );
   if (outermost.length === 0) return null;
-  return outermost.reduce(
-    (largest, candidate) => (candidate.end ?? 0) - (candidate.start ?? 0) > (largest.end ?? 0) - (largest.start ?? 0) ? candidate : largest
-  );
+  return largest(outermost);
 }
 function nameOf(element) {
   const name = element.openingElement.name;
@@ -20963,12 +21043,49 @@ function shapeOf(source, kind) {
     pattern: outermost === null ? [] : patternOf(outermost),
     props: props2,
     holder: outermost === null ? null : jsxNameOf(outermost),
-    body: outermost === null ? [] : outermost.children.flatMap(
-      (child) => child.type === "JSXElement" ? [nameOf(child)].filter(
-        (name) => name !== null
-      ) : []
-    )
+    body: outermost === null ? [] : heldBy(outermost)
   };
+}
+function heldBy(element) {
+  const names = [];
+  const take = (node) => {
+    if (node === null || node === void 0) return;
+    switch (node.type) {
+      case "JSXElement": {
+        const name = nameOf(node);
+        if (name !== null) names.push(name);
+        return;
+      }
+      // Transparent: a fragment is not a component and holds no place.
+      case "JSXFragment":
+        for (const child of node.children) take(child);
+        return;
+      case "JSXExpressionContainer":
+        take(node.expression);
+        return;
+      case "LogicalExpression":
+        take(node.right);
+        return;
+      case "ConditionalExpression":
+        take(node.consequent);
+        take(node.alternate);
+        return;
+      case "ArrowFunctionExpression":
+      case "FunctionExpression":
+        take(node.body ?? null);
+        return;
+      case "CallExpression":
+        for (const argument of node.arguments) take(argument);
+        return;
+      case "ParenthesizedExpression":
+        take(node.expression ?? null);
+        return;
+      default:
+        return;
+    }
+  };
+  for (const child of element.children) take(child);
+  return names;
 }
 var MAX_RAW = 8;
 function rawMarkupOf(source, kind) {
@@ -20998,6 +21115,86 @@ function rawMarkupOf(source, kind) {
   const tags = [...found.entries()].sort((a, b) => a[1] - b[1]).map(([name]) => name);
   if (!renders) return null;
   return tags;
+}
+function passedContent(source) {
+  const ast = parseModule(source);
+  if (ast === null) return { passed: [], unresolved: [] };
+  const root = screenRoot(ast.program);
+  if (root === null) return { passed: [], unresolved: [] };
+  const declared = jsxBindings(ast.program);
+  const passed = [];
+  const unresolved = [];
+  for (const child of root.children) {
+    if (child.type !== "JSXElement") continue;
+    const to = nameOf(child);
+    if (to === null) continue;
+    let found = 0;
+    let opaque = null;
+    for (const attribute of child.openingElement.attributes) {
+      if (attribute.type !== "JSXAttribute" || attribute.name.type !== "JSXIdentifier") continue;
+      const value = attribute.value;
+      if (value?.type !== "JSXExpressionContainer") continue;
+      const names = jsxNamesIn(value.expression, declared, /* @__PURE__ */ new Set());
+      for (const name of names) {
+        passed.push({ name, to, via: attribute.name.name });
+        found++;
+      }
+      if (names.length === 0 && opaque === null && CONTENTISH.test(attribute.name.name)) {
+        opaque = attribute.name.name;
+      }
+    }
+    if (found === 0 && opaque !== null && heldBy(child).length === 0) {
+      unresolved.push(`${to}.${opaque}`);
+    }
+  }
+  return { passed, unresolved };
+}
+var CONTENTISH = /^(?:children|content|items|tabs|panels|sections|render|body|slots?|actions)$/i;
+function jsxBindings(program) {
+  const found = /* @__PURE__ */ new Map();
+  walk(program, (node) => {
+    if (node.type !== "VariableDeclarator") return;
+    const id = node.id;
+    const init = node.init ?? null;
+    if (id === void 0 || id.type !== "Identifier" || init === null) return;
+    found.set(id.name, init);
+  });
+  return found;
+}
+function jsxNamesIn(node, declared, seen) {
+  if (node === null) return [];
+  switch (node.type) {
+    case "JSXElement": {
+      const name = nameOf(node);
+      return name === null ? [] : [name];
+    }
+    case "JSXFragment":
+      return node.children.flatMap((one) => jsxNamesIn(one, declared, seen));
+    case "Identifier": {
+      if (seen.has(node.name)) return [];
+      const bound = declared.get(node.name);
+      return bound === void 0 ? [] : jsxNamesIn(bound, declared, new Set(seen).add(node.name));
+    }
+    case "ArrayExpression":
+      return node.elements.flatMap(
+        (one) => one === null ? [] : jsxNamesIn(one, declared, seen)
+      );
+    case "ObjectExpression":
+      return node.properties.flatMap(
+        (property) => property.type === "ObjectProperty" ? jsxNamesIn(property.value, declared, seen) : []
+      );
+    case "ConditionalExpression":
+      return [
+        ...jsxNamesIn(node.consequent, declared, seen),
+        ...jsxNamesIn(node.alternate, declared, seen)
+      ];
+    case "LogicalExpression":
+      return jsxNamesIn(node.right, declared, seen);
+    case "TSAsExpression":
+      return jsxNamesIn(node.expression, declared, seen);
+    default:
+      return [];
+  }
 }
 
 // src/sources/regions.ts
@@ -21735,7 +21932,7 @@ function namedPaths(program) {
         }
       }
     }
-    for (const child of inside(node)) visit(child);
+    for (const child of childNodes(node)) visit(child);
   };
   visit(program);
   return wanted;
@@ -21748,21 +21945,6 @@ function dotted(node) {
   const property = node.property.type === "Identifier" ? node.property.name : null;
   return property === null ? null : `${object}.${property}`;
 }
-function inside(node) {
-  const found = [];
-  for (const key of Object.keys(node)) {
-    if (key === "loc") continue;
-    const value = node[key];
-    const one = (candidate) => {
-      if (candidate !== null && typeof candidate === "object" && "type" in candidate) {
-        found.push(candidate);
-      }
-    };
-    if (Array.isArray(value)) value.forEach(one);
-    else one(value);
-  }
-  return found;
-}
 function namesScreen(node, names, stopAtNestedRoute) {
   const visit = (current, top) => {
     if (stopAtNestedRoute && !top && current.type === "JSXElement") {
@@ -21773,7 +21955,7 @@ function namesScreen(node, names, stopAtNestedRoute) {
     if (current.type === "JSXIdentifier" && names.includes(current.name)) return true;
     const literal = stringOf(current);
     if (literal !== null && names.some((name) => literal.split(/[/.]/).includes(name))) return true;
-    return inside(current).some((child) => visit(child, false));
+    return childNodes(current).some((child) => visit(child, false));
   };
   return visit(node, true);
 }
@@ -21848,7 +22030,7 @@ function entryFor(node, names, prefix2, absolute = false, constants = NO_CONSTAN
       return null;
     }
   }
-  for (const child of inside(node)) {
+  for (const child of childNodes(node)) {
     const found = entryFor(child, names, prefix2, absolute, constants);
     if (found !== null) return found;
   }
@@ -21890,7 +22072,7 @@ function mountsIn(node, identifier, prefix2, out) {
     for (const child of children) mountsIn(child, identifier, asPrefix(here), out);
     return;
   }
-  for (const child of inside(node)) mountsIn(child, identifier, prefix2, out);
+  for (const child of childNodes(node)) mountsIn(child, identifier, prefix2, out);
 }
 var sweptFiles = /* @__PURE__ */ new Map();
 var foundMounts = /* @__PURE__ */ new Map();
@@ -22042,8 +22224,8 @@ async function moduleAt(base) {
     if (await isFile2(`${base}${extension}`)) return `${base}${extension}`;
   }
   for (const extension of MODULE_EXTENSIONS) {
-    const inside2 = join12(base, `index${extension}`);
-    if (await isFile2(inside2)) return inside2;
+    const inside = join12(base, `index${extension}`);
+    if (await isFile2(inside)) return inside;
   }
   return null;
 }
@@ -22124,8 +22306,8 @@ async function siblingScreens(target, options) {
     return { screens: siblings, from: "folder" };
   }
   let budget = MAX_READS2;
-  const chooseIn = (folder, name, inside3) => {
-    const found = inside3.filter(screen).find((file) => ROUTE_SCREEN2.test(file) || file.startsWith(name) || file.startsWith("index"));
+  const chooseIn = (folder, name, inside2) => {
+    const found = inside2.filter(screen).find((file) => ROUTE_SCREEN2.test(file) || file.startsWith(name) || file.startsWith("index"));
     return found === void 0 ? null : join13(folder, found);
   };
   const collect3 = async (from, depth, into) => {
@@ -22139,14 +22321,14 @@ async function siblingScreens(target, options) {
       const folder = join13(from, name);
       if (folder === dir) continue;
       budget--;
-      const inside3 = await readDirectory(folder).catch(() => null);
-      if (inside3 === null) continue;
-      const found = chooseIn(folder, name, inside3);
+      const inside2 = await readDirectory(folder).catch(() => null);
+      if (inside2 === null) continue;
+      const found = chooseIn(folder, name, inside2);
       if (found !== null) into.push(found);
       await collect3(folder, depth - 1, into);
     }
   };
-  const inside2 = (path) => {
+  const inside = (path) => {
     if (options.root === void 0) return true;
     const away = relative4(options.root, path);
     return away === "" || !away.startsWith("..") && !isAbsolute3(away);
@@ -22154,7 +22336,7 @@ async function siblingScreens(target, options) {
   const scopes = [{ from: dir, depth: 1 }];
   let ancestor = dirname6(dir);
   for (let level = 0; level < MAX_ANCESTORS; level++) {
-    if (!inside2(ancestor)) break;
+    if (!inside(ancestor)) break;
     scopes.push({ from: ancestor, depth: level });
     const next = dirname6(ancestor);
     if (next === ancestor) break;
@@ -22730,14 +22912,14 @@ import { readdir as readdir9, readFile as readFile17 } from "node:fs/promises";
 import { dirname as dirname10, isAbsolute as isAbsolute4, join as join15, relative as relative5 } from "node:path";
 var LAYOUT_FILE = /^(\+layout\.svelte|layout\.[jt]sx?|__layout\.svelte)$/;
 async function governingLayout(screen, root) {
-  const inside2 = (path) => {
+  const inside = (path) => {
     if (root === null) return true;
     const away = relative5(root, path);
     return away === "" || !away.startsWith("..") && !isAbsolute4(away);
   };
   let dir = dirname10(screen);
   for (; ; ) {
-    if (!inside2(dir)) return null;
+    if (!inside(dir)) return null;
     const entries = await readdir9(dir).catch(() => null);
     const found = entries?.find((name) => LAYOUT_FILE.test(name));
     if (found !== void 0 && join15(dir, found) !== screen) return join15(dir, found);
@@ -23110,12 +23292,40 @@ async function nodeFor(rootDir, file, left, resolve10, read, state, seen) {
   const selectorsIn = async () => selectors ??= await selectorMap(identity, file_.bindings, resolve10, read);
   const next = new Set(seen).add(identity);
   const wiring = surface.children.length === 0 && isTemplateComponent(surface.holder);
-  const children = wiring ? await followRoot(rootDir, file_, selectorsIn, surface.holder, kind, left, resolve10, read, state, next) : await Promise.all(
+  const followed = wiring ? await followRoot(rootDir, file_, selectorsIn, surface.holder, kind, left, resolve10, read, state, next) : null;
+  const children = followed !== null ? followed.children : await Promise.all(
     surface.children.map(
       (name) => childNode(rootDir, file_, selectorsIn, name, kind, left, resolve10, read, state, next)
     )
   );
-  return { name: surface.holder, file: relative7(rootDir, identity), at: "project", children };
+  if (kind === null && followed === null) {
+    const { passed, unresolved } = passedContent(own);
+    for (const one of passed) {
+      const node = await childNode(
+        rootDir,
+        file_,
+        selectorsIn,
+        one.name,
+        kind,
+        left,
+        resolve10,
+        read,
+        state,
+        next
+      );
+      children.push({ ...node, via: `${one.to}.${one.via}` });
+    }
+    for (const where2 of unresolved) {
+      children.push({ name: where2, file: null, at: "unresolved", children: [], via: where2 });
+    }
+  }
+  return {
+    name: surface.holder,
+    file: relative7(rootDir, identity),
+    at: "project",
+    children,
+    ...followed?.holderAt === void 0 ? {} : { holderAt: followed.holderAt }
+  };
 }
 async function childNode(rootDir, from, selectorsIn, name, kind, left, resolve10, read, state, seen) {
   const specifier = from.bindings.get(name);
@@ -23149,8 +23359,8 @@ async function followRoot(rootDir, from, selectorsIn, holder, kind, left, resolv
     state,
     seen
   );
-  if (node.children.length === 1) return node.children;
-  return node.at === "package" || node.at === "beyond" ? [node] : [];
+  if (node.children.length === 1) return { children: node.children };
+  return node.at === "package" || node.at === "beyond" ? { children: [], holderAt: node.at } : { children: [] };
 }
 async function selectorMap(from, bindings, resolve10, read) {
   const found = /* @__PURE__ */ new Map();
@@ -24467,7 +24677,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join22 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.96";
+var VERSION = "0.14.97";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24931,8 +25141,10 @@ async function tree(rootDir, args) {
 function branch(node, indent, from) {
   const moved = node.file !== null && node.file !== from;
   const where2 = node.at === "project" ? moved ? `  ${node.file}` : "" : `  (${node.at})`;
+  const stopped = node.holderAt === void 0 ? "" : `  (holder in a ${node.holderAt})`;
+  const through = node.via === void 0 ? "" : `  \u2190 ${node.via}`;
   return [
-    `${"  ".repeat(indent)}${node.name}${where2}`,
+    `${"  ".repeat(indent)}${node.name}${where2}${stopped}${through}`,
     ...node.children.flatMap((child) => branch(child, indent + 1, node.file))
   ];
 }
