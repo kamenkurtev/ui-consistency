@@ -976,3 +976,193 @@ describe('what the sweep for a mount is not allowed to read', () => {
     await file('src/invoices/pages/Invoice.tsx', 'export const Invoice = () => null;\n');
   });
 });
+
+/**
+ * A path written as a constant reference, which is ordinary React and was
+ * unreadable: `uic place` read the **literal** in `path:`, so an application
+ * keeping its paths in one enum answered `path: null` for every screen it
+ * registers (#36). The registration was found and the path never was.
+ */
+describe('a path written as a constant', () => {
+  const enumModule = `export enum RoutePaths {
+  Home = '/',
+  Dashboard = 'dashboard',
+  CashPosition = 'cash-position',
+  Groups = 'groups',
+}
+`;
+
+  it('resolves a member reference, and composes it down the tree', async () => {
+    await file('src/RoutePaths.ts', enumModule);
+    await file(
+      'src/routes.tsx',
+      "import { RoutePaths } from './RoutePaths';\n" +
+        "import { Dashboard } from './pages/Dashboard';\n" +
+        "import { Groups } from './pages/Groups';\n" +
+        'export const routes = [\n' +
+        '  { path: RoutePaths.Dashboard, Component: Dashboard },\n' +
+        '  { path: RoutePaths.CashPosition, children: [\n' +
+        '      { path: RoutePaths.Groups, Component: Groups },\n' +
+        '  ] },\n' +
+        '];\n',
+    );
+    const dashboard = await file('src/pages/Dashboard.tsx', 'export const Dashboard = () => null;\n');
+    const groups = await file('src/pages/Groups.tsx', 'export const Groups = () => null;\n');
+
+    expect((await placementOf(dashboard, root)).path).toBe('/dashboard');
+
+    const nested = await placementOf(groups, root);
+    expect(nested.path).toBe('/cash-position/groups');
+    expect(nested.trail).toEqual(['cash-position', 'groups']);
+    // A resolved path and a literal one are not equally safe to repeat back.
+    expect(nested.pathFromConstant).toBe(true);
+  });
+
+  it('resolves a template literal made of resolvable parts', async () => {
+    await file('src/RoutePaths.ts', enumModule);
+    await file(
+      'src/routes.tsx',
+      "import { RoutePaths } from './RoutePaths';\n" +
+        "import { GroupDetail } from './pages/GroupDetail';\n" +
+        'export const routes = [\n' +
+        '  { path: `${RoutePaths.Groups}/:groupId`, Component: GroupDetail },\n' +
+        '];\n',
+    );
+    const detail = await file('src/pages/GroupDetail.tsx', 'export const GroupDetail = () => null;\n');
+
+    expect((await placementOf(detail, root)).path).toBe('/groups/:groupId');
+  });
+
+  it('reads a frozen object and a plain exported string, not only an enum', async () => {
+    await file(
+      'src/paths.ts',
+      "export const Routes = Object.freeze({ Orders: 'orders' });\nexport const INVOICES = 'invoices';\n",
+    );
+    await file(
+      'src/routes.tsx',
+      "import { Routes, INVOICES } from './paths';\n" +
+        "import { Orders } from './pages/Orders';\n" +
+        "import { Invoices } from './pages/Invoices';\n" +
+        'export const routes = [\n' +
+        '  { path: Routes.Orders, Component: Orders },\n' +
+        '  { path: INVOICES, Component: Invoices },\n' +
+        '];\n',
+    );
+    const orders = await file('src/pages/Orders.tsx', 'export const Orders = () => null;\n');
+    const invoices = await file('src/pages/Invoices.tsx', 'export const Invoices = () => null;\n');
+
+    expect((await placementOf(orders, root)).path).toBe('/orders');
+    expect((await placementOf(invoices, root)).path).toBe('/invoices');
+  });
+
+  /**
+   * The whole rule this reader lives under. It has already been broken once —
+   * 52 invented paths borrowed from a neighbouring entry — and the failure
+   * direction must always be a miss.
+   */
+  it('answers null rather than guessing where the constant cannot be read', async () => {
+    await file(
+      'src/routes.tsx',
+      "import { pathFor } from './build';\n" +
+        "import { Orders } from './pages/Orders';\n" +
+        'export const routes = [{ path: pathFor(module), Component: Orders }];\n',
+    );
+    const orders = await file('src/pages/Orders.tsx', 'export const Orders = () => null;\n');
+
+    const placed = await placementOf(orders, root);
+    // The registration is still found: a path and a registration are two facts.
+    expect(placed.style).toBe('declared');
+    expect(placed.declaredIn).not.toBeNull();
+    // And nothing was invented from the member's spelling.
+    expect(placed.path).toBeNull();
+    expect(placed.pathFromConstant).toBe(false);
+  });
+
+  it('refuses a template literal with one part it cannot resolve', async () => {
+    await file('src/RoutePaths.ts', enumModule);
+    await file(
+      'src/routes.tsx',
+      "import { RoutePaths } from './RoutePaths';\n" +
+        "import { GroupDetail } from './pages/GroupDetail';\n" +
+        'export const routes = [\n' +
+        '  { path: `${RoutePaths.Groups}/${segment()}`, Component: GroupDetail },\n' +
+        '];\n',
+    );
+    const detail = await file('src/pages/GroupDetail.tsx', 'export const GroupDetail = () => null;\n');
+
+    // A partial path presented as a whole one is what the mount composition
+    // already forbids two paragraphs into `Placement.path`.
+    expect((await placementOf(detail, root)).path).toBeNull();
+  });
+
+  it('a literal path is not reported as coming from a constant', async () => {
+    await file(
+      'src/routes.tsx',
+      "import { Orders } from './pages/Orders';\n" +
+        "export const routes = [{ path: 'orders', Component: Orders }];\n",
+    );
+    const orders = await file('src/pages/Orders.tsx', 'export const Orders = () => null;\n');
+
+    const placed = await placementOf(orders, root);
+    expect(placed.path).toBe('/orders');
+    expect(placed.pathFromConstant).toBe(false);
+  });
+});
+
+/**
+ * The cost promise. This runs on the *registration*, which the derived contract
+ * asks for on every edit — and a route table imports every screen it registers,
+ * so following its imports to look for constants would read and parse the whole
+ * application each time.
+ */
+describe('what resolving a constant costs a table that has none', () => {
+  it('reads no module at all where every path is a literal', async () => {
+    const { constantsFor } = await import('../../src/sources/constants.js');
+
+    let asked = 0;
+    const resolve = async (base: string): Promise<string | null> => {
+      asked++;
+      return base;
+    };
+
+    const source =
+      "import { Orders } from './pages/Orders';\n" +
+      "import { Invoices } from './pages/Invoices';\n" +
+      "export const routes = [{ path: 'orders', Component: Orders }];\n";
+
+    const found = await constantsFor(join(root, 'src/routes.tsx'), source, resolve, new Set());
+
+    expect(found.size).toBe(0);
+    expect(asked).toBe(0);
+  });
+
+  it('follows only the module bringing in a name a path is written with', async () => {
+    const { constantsFor } = await import('../../src/sources/constants.js');
+
+    await file('src/RoutePaths.ts', "export enum RoutePaths { Orders = 'orders' }\n");
+    await file('src/pages/Orders.tsx', 'export const Orders = () => null;\n');
+
+    const asked: string[] = [];
+    const resolve = async (base: string): Promise<string | null> => {
+      asked.push(base);
+      const { moduleAt } = await import('../../src/sources/routes.js');
+      return moduleAt(base);
+    };
+
+    const source =
+      "import { RoutePaths } from './RoutePaths';\n" +
+      "import { Orders } from './pages/Orders';\n" +
+      'export const routes = [{ path: RoutePaths.Orders, Component: Orders }];\n';
+
+    const found = await constantsFor(
+      join(root, 'src/routes.tsx'),
+      source,
+      resolve,
+      new Set(['RoutePaths']),
+    );
+
+    expect(found.get('RoutePaths.Orders')).toBe('orders');
+    // The screen module is imported by the table and is not looked at.
+    expect(asked).toEqual([join(root, 'src/RoutePaths')]);
+  });
+});
