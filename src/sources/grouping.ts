@@ -76,10 +76,15 @@ export async function groupScreens(
   // set in hand and from no list of component names. `OrderTotalRow` is a
   // row renderer, and nothing but its name says so; that it is imported by the
   // screen above it is structural.
+  // A set, not `includes`: this command is handed whole `pages/` trees — 1 674
+  // files on one repository — and a linear scan per import is that squared.
+  const given = new Set(files);
   const parts = new Set<string>();
   for (const file of files) {
+    // One extra parse per file, on a command that is deliberately not on the
+    // edit path. Said here rather than left to be measured by somebody else.
     for (const imported of await importedBy(file)) {
-      if (files.includes(imported)) parts.add(imported);
+      if (given.has(imported)) parts.add(imported);
     }
   }
 

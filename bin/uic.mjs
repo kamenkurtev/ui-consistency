@@ -23459,10 +23459,11 @@ async function groupScreens(rootDir, files, depth) {
   const read = [];
   const notScreens = [];
   let applied = 0;
+  const given = new Set(files);
   const parts = /* @__PURE__ */ new Set();
   for (const file of files) {
     for (const imported of await importedBy(file)) {
-      if (files.includes(imported)) parts.add(imported);
+      if (given.has(imported)) parts.add(imported);
     }
   }
   for (const file of files) {
