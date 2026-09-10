@@ -20865,6 +20865,92 @@ function jsxNameOf(element) {
   return null;
 }
 function screenRoot(program) {
+  const returned = returnedRoots(program);
+  if (returned.length > 0) return largest(returned);
+  return positionalRoot(program);
+}
+function returnedRoots(program) {
+  const body = program.body;
+  if (!Array.isArray(body)) return [];
+  const roots = [];
+  for (const statement of body) {
+    for (const fn of componentsIn2(statement)) {
+      const root = returnsJsx(fn);
+      if (root !== null) roots.push(root);
+    }
+  }
+  return roots;
+}
+function componentsIn2(statement) {
+  const node = statement.type === "ExportNamedDeclaration" || statement.type === "ExportDefaultDeclaration" ? statement.declaration ?? null : statement;
+  if (node === null) return [];
+  if (node.type === "FunctionDeclaration") return [node];
+  if (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression") return [node];
+  if (node.type !== "VariableDeclaration") return [];
+  const out = [];
+  for (const declarator of node.declarations) {
+    const init = unwrapComponent(declarator.init ?? null);
+    if (init !== null) out.push(init);
+  }
+  return out;
+}
+function unwrapComponent(node) {
+  let current = node;
+  for (let hop = 0; current !== null && hop < 4; hop++) {
+    if (current.type === "ArrowFunctionExpression" || current.type === "FunctionExpression") {
+      return current;
+    }
+    if (current.type !== "CallExpression" || current.arguments.length === 0) return null;
+    current = current.arguments[0];
+  }
+  return null;
+}
+function returnsJsx(fn) {
+  const body = fn.body ?? null;
+  if (body === null) return null;
+  if (body.type === "JSXElement") return body;
+  const found = [];
+  const visit = (node) => {
+    if (node !== body && isFunction(node)) return;
+    if (node.type === "ReturnStatement") {
+      const argument = node.argument ?? null;
+      for (const element of jsxIn(argument)) found.push(element);
+      return;
+    }
+    for (const child of childrenOf(node)) visit(child);
+  };
+  visit(body);
+  return found.length === 0 ? null : largest(found);
+}
+var isFunction = (node) => node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression" || node.type === "FunctionDeclaration";
+function jsxIn(node) {
+  if (node === null) return [];
+  if (node.type === "JSXElement") return [node];
+  if (node.type === "ConditionalExpression") {
+    return [...jsxIn(node.consequent), ...jsxIn(node.alternate)];
+  }
+  if (node.type === "LogicalExpression") return jsxIn(node.right);
+  if (node.type === "JSXFragment") {
+    return node.children.filter((one) => one.type === "JSXElement");
+  }
+  return [];
+}
+function childrenOf(node) {
+  const out = [];
+  for (const value of Object.values(node)) {
+    if (Array.isArray(value)) {
+      for (const one of value) if (isNode(one)) out.push(one);
+    } else if (isNode(value)) {
+      out.push(value);
+    }
+  }
+  return out;
+}
+var isNode = (value) => typeof value === "object" && value !== null && typeof value.type === "string";
+var largest = (elements) => elements.reduce(
+  (biggest, candidate) => (candidate.end ?? 0) - (candidate.start ?? 0) > (biggest.end ?? 0) - (biggest.start ?? 0) ? candidate : biggest
+);
+function positionalRoot(program) {
   const tops = [];
   walk(program, (node) => {
     if (node.type !== "JSXElement") return;
@@ -20880,9 +20966,7 @@ function screenRoot(program) {
     )
   );
   if (outermost.length === 0) return null;
-  return outermost.reduce(
-    (largest, candidate) => (candidate.end ?? 0) - (candidate.start ?? 0) > (largest.end ?? 0) - (largest.start ?? 0) ? candidate : largest
-  );
+  return largest(outermost);
 }
 function nameOf(element) {
   const name = element.openingElement.name;
@@ -20963,12 +21047,49 @@ function shapeOf(source, kind) {
     pattern: outermost === null ? [] : patternOf(outermost),
     props: props2,
     holder: outermost === null ? null : jsxNameOf(outermost),
-    body: outermost === null ? [] : outermost.children.flatMap(
-      (child) => child.type === "JSXElement" ? [nameOf(child)].filter(
-        (name) => name !== null
-      ) : []
-    )
+    body: outermost === null ? [] : heldBy(outermost)
   };
+}
+function heldBy(element) {
+  const names = [];
+  const take = (node) => {
+    if (node === null || node === void 0) return;
+    switch (node.type) {
+      case "JSXElement": {
+        const name = nameOf(node);
+        if (name !== null) names.push(name);
+        return;
+      }
+      // Transparent: a fragment is not a component and holds no place.
+      case "JSXFragment":
+        for (const child of node.children) take(child);
+        return;
+      case "JSXExpressionContainer":
+        take(node.expression);
+        return;
+      case "LogicalExpression":
+        take(node.right);
+        return;
+      case "ConditionalExpression":
+        take(node.consequent);
+        take(node.alternate);
+        return;
+      case "ArrowFunctionExpression":
+      case "FunctionExpression":
+        take(node.body ?? null);
+        return;
+      case "CallExpression":
+        for (const argument of node.arguments) take(argument);
+        return;
+      case "ParenthesizedExpression":
+        take(node.expression ?? null);
+        return;
+      default:
+        return;
+    }
+  };
+  for (const child of element.children) take(child);
+  return names;
 }
 var MAX_RAW = 8;
 function rawMarkupOf(source, kind) {
@@ -20998,6 +21119,86 @@ function rawMarkupOf(source, kind) {
   const tags = [...found.entries()].sort((a, b) => a[1] - b[1]).map(([name]) => name);
   if (!renders) return null;
   return tags;
+}
+function passedContent(source) {
+  const ast = parseModule(source);
+  if (ast === null) return { passed: [], unresolved: [] };
+  const root = screenRoot(ast.program);
+  if (root === null) return { passed: [], unresolved: [] };
+  const declared = jsxBindings(ast.program);
+  const passed = [];
+  const unresolved = [];
+  for (const child of root.children) {
+    if (child.type !== "JSXElement") continue;
+    const to = nameOf(child);
+    if (to === null) continue;
+    let found = 0;
+    let opaque = null;
+    for (const attribute of child.openingElement.attributes) {
+      if (attribute.type !== "JSXAttribute" || attribute.name.type !== "JSXIdentifier") continue;
+      const value = attribute.value;
+      if (value?.type !== "JSXExpressionContainer") continue;
+      const names = jsxNamesIn(value.expression, declared, /* @__PURE__ */ new Set());
+      for (const name of names) {
+        passed.push({ name, to, via: attribute.name.name });
+        found++;
+      }
+      if (names.length === 0 && opaque === null && CONTENTISH.test(attribute.name.name)) {
+        opaque = attribute.name.name;
+      }
+    }
+    if (found === 0 && opaque !== null && heldBy(child).length === 0) {
+      unresolved.push(`${to}.${opaque}`);
+    }
+  }
+  return { passed, unresolved };
+}
+var CONTENTISH = /^(?:children|content|items|tabs|panels|sections|render|body|slots?|actions)$/i;
+function jsxBindings(program) {
+  const found = /* @__PURE__ */ new Map();
+  walk(program, (node) => {
+    if (node.type !== "VariableDeclarator") return;
+    const id = node.id;
+    const init = node.init ?? null;
+    if (id === void 0 || id.type !== "Identifier" || init === null) return;
+    found.set(id.name, init);
+  });
+  return found;
+}
+function jsxNamesIn(node, declared, seen) {
+  if (node === null) return [];
+  switch (node.type) {
+    case "JSXElement": {
+      const name = nameOf(node);
+      return name === null ? [] : [name];
+    }
+    case "JSXFragment":
+      return node.children.flatMap((one) => jsxNamesIn(one, declared, seen));
+    case "Identifier": {
+      if (seen.has(node.name)) return [];
+      const bound = declared.get(node.name);
+      return bound === void 0 ? [] : jsxNamesIn(bound, declared, new Set(seen).add(node.name));
+    }
+    case "ArrayExpression":
+      return node.elements.flatMap(
+        (one) => one === null ? [] : jsxNamesIn(one, declared, seen)
+      );
+    case "ObjectExpression":
+      return node.properties.flatMap(
+        (property) => property.type === "ObjectProperty" ? jsxNamesIn(property.value, declared, seen) : []
+      );
+    case "ConditionalExpression":
+      return [
+        ...jsxNamesIn(node.consequent, declared, seen),
+        ...jsxNamesIn(node.alternate, declared, seen)
+      ];
+    case "LogicalExpression":
+      return jsxNamesIn(node.right, declared, seen);
+    case "TSAsExpression":
+      return jsxNamesIn(node.expression, declared, seen);
+    default:
+      return [];
+  }
 }
 
 // src/sources/regions.ts
@@ -23110,12 +23311,40 @@ async function nodeFor(rootDir, file, left, resolve10, read, state, seen) {
   const selectorsIn = async () => selectors ??= await selectorMap(identity, file_.bindings, resolve10, read);
   const next = new Set(seen).add(identity);
   const wiring = surface.children.length === 0 && isTemplateComponent(surface.holder);
-  const children = wiring ? await followRoot(rootDir, file_, selectorsIn, surface.holder, kind, left, resolve10, read, state, next) : await Promise.all(
+  const followed = wiring ? await followRoot(rootDir, file_, selectorsIn, surface.holder, kind, left, resolve10, read, state, next) : null;
+  const children = followed !== null ? followed.children : await Promise.all(
     surface.children.map(
       (name) => childNode(rootDir, file_, selectorsIn, name, kind, left, resolve10, read, state, next)
     )
   );
-  return { name: surface.holder, file: relative7(rootDir, identity), at: "project", children };
+  if (kind === null && followed === null) {
+    const { passed, unresolved } = passedContent(own);
+    for (const one of passed) {
+      const node = await childNode(
+        rootDir,
+        file_,
+        selectorsIn,
+        one.name,
+        kind,
+        left,
+        resolve10,
+        read,
+        state,
+        next
+      );
+      children.push({ ...node, via: `${one.to}.${one.via}` });
+    }
+    for (const where2 of unresolved) {
+      children.push({ name: where2, file: null, at: "unresolved", children: [], via: where2 });
+    }
+  }
+  return {
+    name: surface.holder,
+    file: relative7(rootDir, identity),
+    at: "project",
+    children,
+    ...followed?.holderAt === void 0 ? {} : { holderAt: followed.holderAt }
+  };
 }
 async function childNode(rootDir, from, selectorsIn, name, kind, left, resolve10, read, state, seen) {
   const specifier = from.bindings.get(name);
@@ -23149,8 +23378,8 @@ async function followRoot(rootDir, from, selectorsIn, holder, kind, left, resolv
     state,
     seen
   );
-  if (node.children.length === 1) return node.children;
-  return node.at === "package" || node.at === "beyond" ? [node] : [];
+  if (node.children.length === 1) return { children: node.children };
+  return node.at === "package" || node.at === "beyond" ? { children: [], holderAt: node.at } : { children: [] };
 }
 async function selectorMap(from, bindings, resolve10, read) {
   const found = /* @__PURE__ */ new Map();
@@ -24467,7 +24696,7 @@ import { readdir as readdir12, open } from "node:fs/promises";
 import { join as join22 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.96";
+var VERSION = "0.14.97";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24931,8 +25160,10 @@ async function tree(rootDir, args) {
 function branch(node, indent, from) {
   const moved = node.file !== null && node.file !== from;
   const where2 = node.at === "project" ? moved ? `  ${node.file}` : "" : `  (${node.at})`;
+  const stopped = node.holderAt === void 0 ? "" : `  (holder in a ${node.holderAt})`;
+  const through = node.via === void 0 ? "" : `  \u2190 ${node.via}`;
   return [
-    `${"  ".repeat(indent)}${node.name}${where2}`,
+    `${"  ".repeat(indent)}${node.name}${where2}${stopped}${through}`,
     ...node.children.flatMap((child) => branch(child, indent + 1, node.file))
   ];
 }
