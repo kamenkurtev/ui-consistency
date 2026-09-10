@@ -45,6 +45,7 @@ import { shapeReport } from '../checks/shapes.js';
 import { resolveSource, statedConventions } from '../sources/adapter.js';
 import type { SourceModel } from '../sources/adapter.js';
 import { formatFinding } from '../core/format.js';
+import { coverageOf, sayCoverage, type Coverage } from '../core/coverage.js';
 import { hookResponse } from './hook.js';
 import { sessionResponse } from './session.js';
 import { promptResponse } from './prompt.js';
@@ -1078,6 +1079,29 @@ async function check(rootDir: string, args: string[]): Promise<number> {
   // how a whole application went unchecked with a green result (#110).
   if (!listOnly) await warnIfNothingWasChecked(rootDir, absolute);
 
+  // A run that reports nothing is either a clean project or a blind tool, and
+  // from outside they look identical — which is how 400 screen files were
+  // reported as success on a repository where nothing had been looked at (#37).
+  // Paid for only here, where there is nothing else to say and nobody waiting
+  // on a list.
+  let coverage: Coverage | null = null;
+  if (findings.length === 0) {
+    coverage = await coverageOf(rootDir, absolute).catch(() => null);
+    if (coverage !== null && !listOnly) {
+      for (const line of sayCoverage(coverage)) console.error(line);
+    }
+  }
+
+  // None of them could be read, so nothing was checked and exit 0 would say
+  // "nothing wrong" about work nobody did. The same answer `diff` gives where
+  // none of the paths it was handed was a screen. A project no package was
+  // detected in is **not** this case: every check that needs no chain ran on
+  // every file, and failing those would be the gate `CLAUDE.md` forbids.
+  if (coverage !== null && coverage.given > 0 && coverage.read === 0) {
+    if (listOnly) console.error(`None of the ${coverage.given} file(s) given could be read.`);
+    return 1;
+  }
+
   if (listOnly) {
     // Paths and nothing else. The batch driver builds its queue from this, and
     // it must not pull every file's findings into its own context on the way —
@@ -1117,11 +1141,24 @@ async function inventory(rootDir: string, args: string[]): Promise<number> {
   const config = await readConfig(rootDir);
   const packages = applyConfig(await cachedPackages(rootDir), config);
   const chain = resolveChain(resolve(rootDir, file), packages, config?.prefer ?? []);
-  // Silence rather than an error, as everywhere else: a file on no chain is a
-  // file this tool has nothing to say about.
-  if (chain.length === 0) return 0;
+  // ~~Silence rather than an error, as everywhere else: a file on no chain is a
+  // file this tool has nothing to say about.~~ **Silence here is the failure**
+  // (#37): a command answering with empty output and exit 0 says "nothing to
+  // report" where the truth is "this file belongs to nothing I detected", and
+  // those are the two answers a user must never have to guess between.
+  if (chain.length === 0) {
+    console.error(`${relative(rootDir, resolve(rootDir, file))} belongs to no detected package.`);
+    console.error(
+      packages.length === 0
+        ? 'No package was detected at all — `uic scan` shows what was looked for.'
+        : `${packages.length} package(s) were detected, and none of them owns this file.`,
+    );
+    console.error('There is no inventory to print, which is a detection gap and not a clean result.');
+    return 1;
+  }
 
   const built = await cachedInventory(rootDir, chain);
+  let printed = 0;
   for (const layer of chain) {
     const symbols = built.layers[layer.name] ?? {};
     const names = Object.keys(symbols).sort();
@@ -1130,6 +1167,7 @@ async function inventory(rootDir: string, args: string[]): Promise<number> {
     // printing them buries the 77 that matter under a wall the subagent has to
     // read past — the exact context flood the driver is built to avoid.
     if (names.length === 0) continue;
+    printed++;
     console.log(`# ${layer.name}`);
     for (const name of names) {
       const entry = symbols[name]!;
@@ -1138,6 +1176,15 @@ async function inventory(rootDir: string, args: string[]): Promise<number> {
         : '';
       console.log(`  ${name}${note}`);
     }
+  }
+  // A chain of layers this tool cannot read the source of — every one external,
+  // or every barrel unreadable. An answer, and not the same answer as a file
+  // with nothing exported near it.
+  if (printed === 0) {
+    console.error(`Nothing readable on the ${chain.length} layer(s) ${relative(rootDir, resolve(rootDir, file))} sits on:`);
+    for (const layer of chain.slice(0, 10)) console.error(`  ${layer.name}`);
+    console.error('Every one of them is external, or its entry point could not be read.');
+    return 1;
   }
   return 0;
 }
