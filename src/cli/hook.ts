@@ -132,7 +132,7 @@ export async function hookResponse(stdin: string): Promise<HookResponse | null> 
     // somebody approved where one exists, and otherwise from one derived here.
     //
     // ~1 KB of *observation* about neighbouring screens was injected here once
-    // and ignored (P4 in `docs/findings/2026-08-14-problems.md`), and the answer
+    // and ignored — measured on a real run — and the answer
     // was to say nothing at all without an approved contract. That went too far
     // (#231): it left the pattern half reachable only by running a command per
     // kind and saving the result, which nobody does thirty times — so on a

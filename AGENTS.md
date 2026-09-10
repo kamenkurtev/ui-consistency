@@ -35,6 +35,7 @@ the three that have no hook.
 | `roles-and-names.md` | roles are universal, names are local, and an empty answer is not a clean one |
 | `routes-and-breadcrumbs.md` | where a route and a trail come from, per router family |
 | `what-a-decision-is.md` | what belongs in a decisions file, and the one test for it |
+| `pattern-file.md` | what a pattern file states and how — the artifact the work is done from |
 
 Read them directly if your harness has no skill mechanism: they are the
 instructions, and the CLI below is the fact supplier.
