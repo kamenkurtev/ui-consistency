@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { execFile } from 'node:child_process';
-import { mkdtemp, rm, writeFile, mkdir, access, cp, readFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile, mkdir, access, cp, readFile, chmod } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -381,10 +381,24 @@ describe('what a subagent is told about a file', () => {
     }
   });
 
-  it('is silent about a file on no chain, rather than failing', async () => {
+  /**
+   * ~~Is silent about a file on no chain, rather than failing.~~
+   *
+   * **Withdrawn (#37).** That was written as a courtesy and it is the exact
+   * failure the tool is organised against: empty output with exit 0 says
+   * *nothing to report* where the truth is *this file belongs to nothing I
+   * detected*, and a user cannot tell those apart. On one real repository it
+   * was 400 screen files reported as success without one of them being looked
+   * at. It still prints no inventory — there is none — but it says why, and the
+   * exit code no longer claims a result.
+   */
+  it('says a file on no chain belongs to no package, rather than nothing', async () => {
     const run = await uic(['inventory', 'nowhere/X.tsx'], fixture);
-    expect(run.code).toBe(0);
+
     expect(run.stdout.trim()).toBe('');
+    expect(run.stderr).toContain('belongs to no detected package');
+    expect(run.stderr).toContain('detection gap and not a clean result');
+    expect(run.code).toBe(1);
   });
 });
 
@@ -815,5 +829,122 @@ describe('the built binary > under a different name', () => {
 
     expect(run.stderr).not.toContain('ENOENT');
     expect(run.code).toBe(0);
+  });
+});
+
+/**
+ * A run that reports nothing is either a clean project or a blind tool, and
+ * from outside they look identical. On one real repository that was 400 screen
+ * files reported as success in silence, with nothing looked at (#37) — the
+ * failure `skills/reach` exists to prevent, happening inside the CLI.
+ */
+describe('what a check that found nothing says about itself', () => {
+  const project = async (files: Record<string, string>): Promise<string> => {
+    const dir = await mkdtemp(join(tmpdir(), 'uic-cover-'));
+    for (const [path, body] of Object.entries(files)) {
+      await mkdir(dirname(join(dir, path)), { recursive: true });
+      await writeFile(join(dir, path), body, 'utf8');
+    }
+    return dir;
+  };
+
+  it('says what it read rather than printing nothing', async () => {
+    const dir = await project({
+      'package.json': '{"name":"clean"}',
+      'src/A.tsx': 'export const A = () => <Button sx={{ p: 2 }} />;\n',
+    });
+
+    const run = await uic(['check', 'src/A.tsx'], dir);
+
+    expect(run.stdout.trim()).toBe('');
+    expect(run.stderr).toContain('No findings. 1 of 1 file(s) read.');
+    // The style check saw this project's dialect and had nothing to say.
+    expect(run.stderr).toContain('`sx`');
+    // And it is not called clean because it produced no findings.
+    expect(run.stderr).not.toContain('clean');
+    expect(run.code).toBe(0);
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  /**
+   * The one thing that is legitimately silent and must say so. Class- and
+   * template-based systems are out of reach of a per-file AST check **by
+   * construction**, which is a correct answer and a very different one from a
+   * clean report.
+   */
+  it('says the style check cannot see a project that styles in template literals', async () => {
+    const dir = await project({
+      'package.json': '{"name":"styled"}',
+      'src/A.tsx':
+        "import styled from 'styled-components';\n" +
+        'const Box = styled.div`color: #f00; padding: 12px;`;\n' +
+        'export const A = () => <Box className="wide" />;\n',
+    });
+
+    const run = await uic(['check', 'src/A.tsx'], dir);
+
+    expect(run.stderr).toContain('no file uses either');
+    expect(run.stderr).toContain('CSS in template literals');
+    expect(run.stderr).toContain('out of reach of a per-file AST check by construction, not clean');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  /**
+   * The analogue of what `diff` already does where none of the paths it was
+   * given was a screen. A project no package was detected in is **not** this
+   * case: every check needing no chain ran on every file, and failing those
+   * would be the gate `CLAUDE.md` forbids.
+   */
+  it('exits non-zero where not one of the files could be read', async () => {
+    const dir = await project({
+      'package.json': '{"name":"gone"}',
+      'src/B.tsx': 'export const B = () => <Button />;\n',
+    });
+    // Named and matched, and then not readable. A directory in its place is
+    // refused earlier and by name, which is a different answer.
+    await chmod(join(dir, 'src/B.tsx'), 0o000);
+
+    const run = await uic(['check', 'src/B.tsx'], dir);
+    await chmod(join(dir, 'src/B.tsx'), 0o600);
+
+    expect(run.code).toBe(1);
+    expect(run.stderr).toContain('None of them could be read');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it('a project that has written nothing down is told which checks that silences', async () => {
+    const dir = await project({
+      'package.json': '{"name":"quiet"}',
+      'src/A.tsx': 'export const A = () => <Button />;\n',
+    });
+
+    const run = await uic(['check', 'src/A.tsx'], dir);
+
+    expect(run.stderr).toContain('.ui-consistency/');
+    expect(run.stderr).toContain('had nothing to apply');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+});
+
+describe('an empty queue from the batch driver', () => {
+  it('says on stderr why, and keeps stdout the queue', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'uic-list-'));
+    await writeFile(join(dir, 'package.json'), '{"name":"q"}', 'utf8');
+    await mkdir(join(dir, 'src'), { recursive: true });
+    await writeFile(join(dir, 'src/A.tsx'), 'export const A = () => <Button />;\n', 'utf8');
+
+    const run = await uic(['check', '--list', 'src/A.tsx'], dir);
+
+    // The queue itself stays exactly as the driver reads it.
+    expect(run.stdout.trim()).toBe('');
+    expect(run.code).toBe(0);
+    // And the reason is on the other stream.
+    expect(run.stderr).toContain('No findings. 1 of 1 file(s) read.');
+
+    await rm(dir, { recursive: true, force: true });
   });
 });
