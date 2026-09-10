@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, relative } from 'node:path';
-import { declaredSiblings, resolveRelative } from './routes.js';
+import { declaredSiblings, filesUnder, resolveRelative } from './routes.js';
 import { parseModule, walk } from '../parse/parse.js';
 
 /**
@@ -178,8 +178,14 @@ export interface Family {
    * this one. Stated, but about registration rather than about kind.
    *
    * `'folder'` — the files around it, which is a guess.
+   *
+   * `'holder'` — the screens in this application that sit in the **same
+   * holder**. Weaker than a route table, which is a registration somebody
+   * wrote, and stronger than a folder, which is a guess: what a screen is held
+   * by is structural, and needs no vocabulary. Asked only where the cheaper
+   * channels came back with a set of a different kind — see `holderSiblings`.
    */
-  from: 'pattern' | 'routes' | 'folder';
+  from: 'pattern' | 'routes' | 'folder' | 'holder';
 }
 
 export async function siblingScreens(
@@ -344,6 +350,93 @@ async function importedBy(target: string): Promise<Set<string>> {
   for (const specifier of specifiers) {
     const path = await resolveRelative(dirname(target), specifier);
     if (path !== null) found.add(path);
+  }
+  return found;
+}
+
+/**
+ * How many files this may open looking for screens under one holder.
+ *
+ * A different unit from `MAX_READS`, which counts **directories** and never
+ * opens a file. This reads, so it gets a budget of its own — and the reason it
+ * can afford a larger one is that it runs only where every cheaper channel has
+ * already failed to produce a family of the right kind, which is exactly the
+ * case where the tool otherwise says nothing at all. Paying a sweep to answer
+ * beats paying nothing to stay silent, and the answer is cached above.
+ */
+const MAX_HOLDER_READS = 600;
+
+/**
+ * How many directories the sweep that finds the candidates may read.
+ *
+ * **Its own budget, and the first version did not have one.** Sharing the read
+ * budget above meant the sweep spent it: measured on an 816-file reproduction,
+ * the walk exhausted 600 directory entries before a single file was opened, so
+ * the channel cost 80 ms and returned nothing — the one outcome worse than not
+ * running. Two units, two budgets.
+ *
+ * Sized for an application rather than for a monorepo, which is what it is
+ * bounded to. `filesUnder` remembers the sweep per root, so a process that asks
+ * twice pays once.
+ */
+const MAX_HOLDER_SWEEP = 8_000;
+
+/**
+ * The screens in this application that sit in the same holder as the reference.
+ *
+ * The channel that was missing. `ScreenPattern.kind` states the rule in its own
+ * doc comment — *screens of one kind are the ones that sit in the same holder* —
+ * and the holder was only ever used to **filter** a family found some other way.
+ * Nothing asked the obvious question, so on a project where the route table
+ * cannot be read and every screen has a folder to itself, families of 8 and of 7
+ * came back as *"fewer than three screens of this kind"* (#35).
+ *
+ * Measured on a reproduction of that shape: the walk returned 12 candidates and
+ * **all 12 sat in a different holder**, because it collects by proximity and
+ * proximity in a one-folder-per-screen project is alphabetical accident.
+ *
+ * **Candidates by text, correctness by the caller.** A screen rendering
+ * `<WelcomePage>` contains that string, so the search is a read and a
+ * `includes` — no parse. Whether a candidate really sits in that holder is
+ * decided where it already was, by the caller's own holder filter, so a text
+ * match that is a comment or an import costs one read and is then dropped.
+ *
+ * **What it costs, measured on that 808-screen reproduction**: 148 ms to sweep
+ * 816 files, 94 ms for 600 reads, 376 ms end to end. That is why the caller
+ * asks for it explicitly and the edit path does not — the same 37 ms cold
+ * budget that kept `uic tree` off that path at 115 ms.
+ */
+export async function holderSiblings(
+  target: string,
+  holder: string,
+  area: string,
+  options: { isScreen: (name: string) => boolean; maxSiblings: number },
+): Promise<string[]> {
+  // A holder that is a plain element says nothing: every markup-built screen in
+  // the project sits in a `<div>`, and a family of `div` is the whole project.
+  if (holder === '' || /^[a-z]/.test(holder)) return [];
+
+  const swept = await filesUnder(area, { left: MAX_HOLDER_SWEEP });
+  if (swept === null) return [];
+  const budget = { left: MAX_HOLDER_READS };
+
+  // Nothing the screen imports may be its family — the same rule every other
+  // channel here obeys, and the reason a page's own panels are not its siblings.
+  const mine = await importedBy(target);
+
+  const found: string[] = [];
+  const needle = `<${holder}`;
+  for (const path of swept) {
+    if (found.length >= options.maxSiblings || budget.left <= 0) break;
+    if (path === target || mine.has(path)) continue;
+    if (!options.isScreen(basename(path)) || ROUTE_FILE.test(basename(path))) continue;
+
+    budget.left--;
+    const source = await readFile(path, 'utf8').catch(() => null);
+    // The holder is written as an element, so a file that never spells it that
+    // way cannot be held by it. An import of the same name is not a match.
+    if (source === null || !source.includes(needle)) continue;
+    found.push(path);
   }
   return found;
 }
