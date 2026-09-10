@@ -1,5 +1,5 @@
 import type { JSXElement, Node } from '@babel/types';
-import { parseModule, walk } from '../parse/parse.js';
+import { parseModule, walk, childNodes } from '../parse/parse.js';
 import {
   isTemplateComponent,
   parseTemplate,
@@ -104,7 +104,14 @@ export function jsxNameOf(element: JSXElement): string | null {
  */
 export function screenRoot(program: Node): JSXElement | null {
   const returned = returnedRoots(program);
-  if (returned.length > 0) return largest(returned);
+  // Exported first, and only then largest. A screen is exported and a helper
+  // usually is not, and without this the original defect comes back through the
+  // new door: `const Row = () => <TableRow>…twenty lines…</TableRow>` beside a
+  // four-line exported page would take the row, which is the mistake the note
+  // above records from the other direction.
+  const exported = returned.filter((one) => one.exported);
+  const among = exported.length > 0 ? exported : returned;
+  if (among.length > 0) return largest(among.map((one) => one.root));
   return positionalRoot(program);
 }
 
@@ -120,15 +127,17 @@ export function screenRoot(program: Node): JSXElement | null {
  * `React.memo(…)` and `forwardRef(…)` wrap the function without changing what
  * it returns, so they are unwrapped rather than making the component invisible.
  */
-function returnedRoots(program: Node): JSXElement[] {
+function returnedRoots(program: Node): { root: JSXElement; exported: boolean }[] {
   const body = (program as { body?: unknown }).body;
   if (!Array.isArray(body)) return [];
 
-  const roots: JSXElement[] = [];
+  const roots: { root: JSXElement; exported: boolean }[] = [];
   for (const statement of body as Node[]) {
+    const exported =
+      statement.type === 'ExportNamedDeclaration' || statement.type === 'ExportDefaultDeclaration';
     for (const fn of componentsIn(statement)) {
       const root = returnsJsx(fn);
-      if (root !== null) roots.push(root);
+      if (root !== null) roots.push({ root, exported });
     }
   }
   return roots;
@@ -187,7 +196,7 @@ function returnsJsx(fn: Node): JSXElement | null {
       for (const element of jsxIn(argument)) found.push(element);
       return;
     }
-    for (const child of childrenOf(node)) visit(child);
+    for (const child of childNodes(node)) visit(child);
   };
   visit(body);
   return found.length === 0 ? null : largest(found);
@@ -211,22 +220,6 @@ function jsxIn(node: Node | null): JSXElement[] {
   }
   return [];
 }
-
-/** Every child node, without knowing what kind of node this is. */
-function childrenOf(node: Node): Node[] {
-  const out: Node[] = [];
-  for (const value of Object.values(node as unknown as Record<string, unknown>)) {
-    if (Array.isArray(value)) {
-      for (const one of value) if (isNode(one)) out.push(one as Node);
-    } else if (isNode(value)) {
-      out.push(value as Node);
-    }
-  }
-  return out;
-}
-
-const isNode = (value: unknown): boolean =>
-  typeof value === 'object' && value !== null && typeof (value as { type?: unknown }).type === 'string';
 
 const largest = (elements: JSXElement[]): JSXElement =>
   elements.reduce((biggest, candidate) =>

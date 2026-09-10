@@ -68,15 +68,29 @@ export function walk(root: Node, visit: (node: Node) => void): void {
   while (stack.length > 0) {
     const current = stack.pop()!;
     visit(current);
-    for (const key of Object.keys(current)) {
-      const child = (current as unknown as Record<string, unknown>)[key];
-      if (Array.isArray(child)) {
-        for (const item of child) {
-          if (item !== null && typeof item === 'object' && 'type' in item) stack.push(item as Node);
-        }
-      } else if (child !== null && typeof child === 'object' && 'type' in child) {
-        stack.push(child as Node);
+    stack.push(...childNodes(current));
+  }
+}
+
+/**
+ * Every child node of one node, without knowing what kind of node it is.
+ *
+ * Exported because a caller that must **stop** somewhere cannot use `walk` — a
+ * traversal that has to halt at a function boundary, say — and each such caller
+ * was writing this out again. `CLAUDE.md` names a fourth copy of `walk` as a
+ * live problem in this repository; this is the shared half of it.
+ */
+export function childNodes(node: Node): Node[] {
+  const out: Node[] = [];
+  for (const key of Object.keys(node)) {
+    const child = (node as unknown as Record<string, unknown>)[key];
+    if (Array.isArray(child)) {
+      for (const item of child) {
+        if (item !== null && typeof item === 'object' && 'type' in item) out.push(item as Node);
       }
+    } else if (child !== null && typeof child === 'object' && 'type' in child) {
+      out.push(child as Node);
     }
   }
+  return out;
 }

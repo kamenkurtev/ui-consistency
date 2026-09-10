@@ -14265,17 +14265,22 @@ function walk(root, visit) {
   while (stack.length > 0) {
     const current = stack.pop();
     visit(current);
-    for (const key of Object.keys(current)) {
-      const child = current[key];
-      if (Array.isArray(child)) {
-        for (const item of child) {
-          if (item !== null && typeof item === "object" && "type" in item) stack.push(item);
-        }
-      } else if (child !== null && typeof child === "object" && "type" in child) {
-        stack.push(child);
+    stack.push(...childNodes(current));
+  }
+}
+function childNodes(node) {
+  const out = [];
+  for (const key of Object.keys(node)) {
+    const child = node[key];
+    if (Array.isArray(child)) {
+      for (const item of child) {
+        if (item !== null && typeof item === "object" && "type" in item) out.push(item);
       }
+    } else if (child !== null && typeof child === "object" && "type" in child) {
+      out.push(child);
     }
   }
+  return out;
 }
 
 // src/layers/chain.ts
@@ -14387,9 +14392,9 @@ async function packageRootFor(target) {
 }
 var GENERATED_DIRECTORY = /* @__PURE__ */ new Set(["dist", "build", "out", "coverage", "generated"]);
 function isGenerated(base, resolved) {
-  const inside2 = relative2(base, resolved);
-  if (inside2.startsWith("..")) return false;
-  return inside2.split(sep).some((segment) => GENERATED_DIRECTORY.has(segment) || /^\.[^.]/.test(segment));
+  const inside = relative2(base, resolved);
+  if (inside.startsWith("..")) return false;
+  return inside.split(sep).some((segment) => GENERATED_DIRECTORY.has(segment) || /^\.[^.]/.test(segment));
 }
 async function insideProject(rootDir, target) {
   const real = await realpath(target).catch(() => null);
@@ -14920,14 +14925,14 @@ import { resolve as resolve3 } from "node:path";
 var KNOWLEDGE_DIR = ".ui-consistency";
 var LEGACY_KNOWLEDGE_DIR = ".claude/ui-consistency";
 async function knowledgeDir(rootDir, sub = "") {
-  const inside2 = async (base) => {
+  const inside = async (base) => {
     const entries = await readdir3(resolve3(rootDir, base, sub)).catch(() => null);
     return entries !== null && entries.length > 0;
   };
-  if (await inside2(KNOWLEDGE_DIR)) {
+  if (await inside(KNOWLEDGE_DIR)) {
     return { dir: resolve3(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
   }
-  if (await inside2(LEGACY_KNOWLEDGE_DIR)) {
+  if (await inside(LEGACY_KNOWLEDGE_DIR)) {
     return { dir: resolve3(rootDir, LEGACY_KNOWLEDGE_DIR, sub), legacy: true };
   }
   return { dir: resolve3(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
@@ -20866,7 +20871,9 @@ function jsxNameOf(element) {
 }
 function screenRoot(program) {
   const returned = returnedRoots(program);
-  if (returned.length > 0) return largest(returned);
+  const exported = returned.filter((one) => one.exported);
+  const among = exported.length > 0 ? exported : returned;
+  if (among.length > 0) return largest(among.map((one) => one.root));
   return positionalRoot(program);
 }
 function returnedRoots(program) {
@@ -20874,9 +20881,10 @@ function returnedRoots(program) {
   if (!Array.isArray(body)) return [];
   const roots = [];
   for (const statement of body) {
+    const exported = statement.type === "ExportNamedDeclaration" || statement.type === "ExportDefaultDeclaration";
     for (const fn of componentsIn2(statement)) {
       const root = returnsJsx(fn);
-      if (root !== null) roots.push(root);
+      if (root !== null) roots.push({ root, exported });
     }
   }
   return roots;
@@ -20917,7 +20925,7 @@ function returnsJsx(fn) {
       for (const element of jsxIn(argument)) found.push(element);
       return;
     }
-    for (const child of childrenOf(node)) visit(child);
+    for (const child of childNodes(node)) visit(child);
   };
   visit(body);
   return found.length === 0 ? null : largest(found);
@@ -20935,18 +20943,6 @@ function jsxIn(node) {
   }
   return [];
 }
-function childrenOf(node) {
-  const out = [];
-  for (const value of Object.values(node)) {
-    if (Array.isArray(value)) {
-      for (const one of value) if (isNode(one)) out.push(one);
-    } else if (isNode(value)) {
-      out.push(value);
-    }
-  }
-  return out;
-}
-var isNode = (value) => typeof value === "object" && value !== null && typeof value.type === "string";
 var largest = (elements) => elements.reduce(
   (biggest, candidate) => (candidate.end ?? 0) - (candidate.start ?? 0) > (biggest.end ?? 0) - (biggest.start ?? 0) ? candidate : biggest
 );
@@ -21936,7 +21932,7 @@ function namedPaths(program) {
         }
       }
     }
-    for (const child of inside(node)) visit(child);
+    for (const child of childNodes(node)) visit(child);
   };
   visit(program);
   return wanted;
@@ -21949,21 +21945,6 @@ function dotted(node) {
   const property = node.property.type === "Identifier" ? node.property.name : null;
   return property === null ? null : `${object}.${property}`;
 }
-function inside(node) {
-  const found = [];
-  for (const key of Object.keys(node)) {
-    if (key === "loc") continue;
-    const value = node[key];
-    const one = (candidate) => {
-      if (candidate !== null && typeof candidate === "object" && "type" in candidate) {
-        found.push(candidate);
-      }
-    };
-    if (Array.isArray(value)) value.forEach(one);
-    else one(value);
-  }
-  return found;
-}
 function namesScreen(node, names, stopAtNestedRoute) {
   const visit = (current, top) => {
     if (stopAtNestedRoute && !top && current.type === "JSXElement") {
@@ -21974,7 +21955,7 @@ function namesScreen(node, names, stopAtNestedRoute) {
     if (current.type === "JSXIdentifier" && names.includes(current.name)) return true;
     const literal = stringOf(current);
     if (literal !== null && names.some((name) => literal.split(/[/.]/).includes(name))) return true;
-    return inside(current).some((child) => visit(child, false));
+    return childNodes(current).some((child) => visit(child, false));
   };
   return visit(node, true);
 }
@@ -22049,7 +22030,7 @@ function entryFor(node, names, prefix2, absolute = false, constants = NO_CONSTAN
       return null;
     }
   }
-  for (const child of inside(node)) {
+  for (const child of childNodes(node)) {
     const found = entryFor(child, names, prefix2, absolute, constants);
     if (found !== null) return found;
   }
@@ -22091,7 +22072,7 @@ function mountsIn(node, identifier, prefix2, out) {
     for (const child of children) mountsIn(child, identifier, asPrefix(here), out);
     return;
   }
-  for (const child of inside(node)) mountsIn(child, identifier, prefix2, out);
+  for (const child of childNodes(node)) mountsIn(child, identifier, prefix2, out);
 }
 var sweptFiles = /* @__PURE__ */ new Map();
 var foundMounts = /* @__PURE__ */ new Map();
@@ -22243,8 +22224,8 @@ async function moduleAt(base) {
     if (await isFile2(`${base}${extension}`)) return `${base}${extension}`;
   }
   for (const extension of MODULE_EXTENSIONS) {
-    const inside2 = join12(base, `index${extension}`);
-    if (await isFile2(inside2)) return inside2;
+    const inside = join12(base, `index${extension}`);
+    if (await isFile2(inside)) return inside;
   }
   return null;
 }
@@ -22325,8 +22306,8 @@ async function siblingScreens(target, options) {
     return { screens: siblings, from: "folder" };
   }
   let budget = MAX_READS2;
-  const chooseIn = (folder, name, inside3) => {
-    const found = inside3.filter(screen).find((file) => ROUTE_SCREEN2.test(file) || file.startsWith(name) || file.startsWith("index"));
+  const chooseIn = (folder, name, inside2) => {
+    const found = inside2.filter(screen).find((file) => ROUTE_SCREEN2.test(file) || file.startsWith(name) || file.startsWith("index"));
     return found === void 0 ? null : join13(folder, found);
   };
   const collect3 = async (from, depth, into) => {
@@ -22340,14 +22321,14 @@ async function siblingScreens(target, options) {
       const folder = join13(from, name);
       if (folder === dir) continue;
       budget--;
-      const inside3 = await readDirectory(folder).catch(() => null);
-      if (inside3 === null) continue;
-      const found = chooseIn(folder, name, inside3);
+      const inside2 = await readDirectory(folder).catch(() => null);
+      if (inside2 === null) continue;
+      const found = chooseIn(folder, name, inside2);
       if (found !== null) into.push(found);
       await collect3(folder, depth - 1, into);
     }
   };
-  const inside2 = (path) => {
+  const inside = (path) => {
     if (options.root === void 0) return true;
     const away = relative4(options.root, path);
     return away === "" || !away.startsWith("..") && !isAbsolute3(away);
@@ -22355,7 +22336,7 @@ async function siblingScreens(target, options) {
   const scopes = [{ from: dir, depth: 1 }];
   let ancestor = dirname6(dir);
   for (let level = 0; level < MAX_ANCESTORS; level++) {
-    if (!inside2(ancestor)) break;
+    if (!inside(ancestor)) break;
     scopes.push({ from: ancestor, depth: level });
     const next = dirname6(ancestor);
     if (next === ancestor) break;
@@ -22931,14 +22912,14 @@ import { readdir as readdir9, readFile as readFile17 } from "node:fs/promises";
 import { dirname as dirname10, isAbsolute as isAbsolute4, join as join15, relative as relative5 } from "node:path";
 var LAYOUT_FILE = /^(\+layout\.svelte|layout\.[jt]sx?|__layout\.svelte)$/;
 async function governingLayout(screen, root) {
-  const inside2 = (path) => {
+  const inside = (path) => {
     if (root === null) return true;
     const away = relative5(root, path);
     return away === "" || !away.startsWith("..") && !isAbsolute4(away);
   };
   let dir = dirname10(screen);
   for (; ; ) {
-    if (!inside2(dir)) return null;
+    if (!inside(dir)) return null;
     const entries = await readdir9(dir).catch(() => null);
     const found = entries?.find((name) => LAYOUT_FILE.test(name));
     if (found !== void 0 && join15(dir, found) !== screen) return join15(dir, found);

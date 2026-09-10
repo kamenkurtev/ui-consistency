@@ -380,6 +380,27 @@ describe('the tree the walk actually reads', () => {
     expect(walked?.root.children.map((one) => one.name)).toContain('SectionTabs');
   });
 
+  /**
+   * The defect the old "largest element" reading was itself a fix for, and the
+   * one a returned-root reading can let back in: a helper declared above the
+   * screen with a bigger tree than the screen has. A screen is exported and a
+   * helper usually is not, so exported wins before size does.
+   */
+  it('takes the exported screen over a helper with a bigger tree', async () => {
+    const at = 'src/Helper.tsx';
+    await write(
+      at,
+      'const Row = () => (\n' +
+        '  <TableRow><Cell /><Cell /><Cell /><Cell /><Cell /><Cell /><Cell /></TableRow>\n' +
+        ');\n' +
+        'export const Page = () => <PageShell><Grid rows={Row} /></PageShell>;\n',
+    );
+
+    const walked = await screenTree(root, join(root, at), { depth: 1 });
+
+    expect(walked?.root.name).toBe('PageShell');
+  });
+
   it('walks a child inside an expression, which is how a screen gates on data', async () => {
     const at = 'src/Regions.tsx';
     await write(at,
