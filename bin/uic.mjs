@@ -21599,10 +21599,18 @@ async function siblingScreens(target, options) {
   return { screens: siblings, from: "folder" };
 }
 async function importedBy(target) {
+  const found = /* @__PURE__ */ new Set();
+  for (const specifier of await specifiersOf(target)) {
+    const path = await resolveRelative(dirname6(target), specifier);
+    if (path !== null) found.add(path);
+  }
+  return found;
+}
+async function specifiersOf(target) {
   const source = await readFile13(target, "utf8").catch(() => null);
-  if (source === null) return /* @__PURE__ */ new Set();
+  if (source === null) return [];
   const ast = parseModule(source, target);
-  if (ast === null) return /* @__PURE__ */ new Set();
+  if (ast === null) return [];
   const specifiers = [];
   walk(ast.program, (node) => {
     if (node.type === "ImportDeclaration") specifiers.push(node.source.value);
@@ -21610,12 +21618,7 @@ async function importedBy(target) {
       specifiers.push(node.arguments[0].value);
     }
   });
-  const found = /* @__PURE__ */ new Set();
-  for (const specifier of specifiers) {
-    const path = await resolveRelative(dirname6(target), specifier);
-    if (path !== null) found.add(path);
-  }
-  return found;
+  return specifiers;
 }
 var MAX_HOLDER_READS = 600;
 var MAX_HOLDER_SWEEP = 8e3;
@@ -22492,10 +22495,12 @@ async function groupScreens(rootDir, files, depth) {
   const notScreens = [];
   let applied = 0;
   const given = new Set(files);
+  const resolver = await resolverFor(rootDir);
   const parts = /* @__PURE__ */ new Set();
   for (const file of files) {
-    for (const imported of await importedBy(file)) {
-      if (given.has(imported)) parts.add(imported);
+    for (const specifier of await specifiersOf(file)) {
+      const imported = await resolver.find(file, specifier);
+      if (imported !== null && given.has(imported)) parts.add(imported);
     }
   }
   for (const file of files) {
@@ -23726,7 +23731,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.104";
+var VERSION = "0.14.105";
 
 // src/cli/session.ts
 function shapeFor(env, context) {

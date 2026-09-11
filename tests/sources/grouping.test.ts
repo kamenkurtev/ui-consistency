@@ -296,3 +296,81 @@ describe('a signature that carries no shape', () => {
     expect(grouped.given).toBe(4);
   });
 });
+
+describe('what counts as a part, and how far the chain reaches', () => {
+  /**
+   * The chain broke at the first import not written relatively (#62).
+   *
+   * `importedBy` resolves `./Grid` and returns null for everything else, which
+   * is right for the family search — a screen's own parts sit beside it — and
+   * wrong here. On the monorepo shape this plugin is built for, a screen
+   * renders components imported by package name or through a `tsconfig` alias,
+   * so the chain ended at that import and every component below it survived as
+   * a screen of its own. Two comparable React monorepos then disagreed by a
+   * factor of three about what proportion of their files were screens: 224 of
+   * 1 606 against 833 of 1 955.
+   */
+  it('excludes a part imported through a tsconfig alias, not only a relative one', async () => {
+    await writeFile(
+      join(root, 'tsconfig.json'),
+      JSON.stringify({ compilerOptions: { baseUrl: '.', paths: { '@app/ui/*': ['src/ui/*'] } } }),
+    );
+    await mkdir(join(root, 'src/ui'), { recursive: true });
+    await mkdir(join(root, 'src/pages'), { recursive: true });
+
+    const at = async (name: string, source: string): Promise<string> => {
+      const path = join(root, `src/${name}.tsx`);
+      await writeFile(path, source);
+      return path;
+    };
+
+    // `Grid` has to render a **component**, or it is excluded as *not a screen*
+    // whatever the import rule does — which is what made the first version of
+    // this test pass against the unfixed code.
+    await at('ui/Dot', 'export const Dot = () => (\n  <div>\n    <svg />\n  </div>\n);\n');
+    const grid = await at(
+      'ui/Grid',
+      'import { Dot } from "./Dot";\nexport const Grid = () => (\n  <table>\n    <Dot />\n  </table>\n);\n',
+    );
+    const shell = await at('ui/Shell', 'export const Shell = (p: any) => <section {...p} />;\n');
+    const screen = (name: string): Promise<string> =>
+      at(
+        `pages/${name}`,
+        'import { Shell } from "@app/ui/Shell";\nimport { Grid } from "@app/ui/Grid";\n' +
+          'export const P = () => (\n  <Shell>\n    <Grid />\n  </Shell>\n);\n',
+      );
+
+    const files = [await screen('OrdersPage'), await screen('InvoicesPage'), await screen('CustomersPage'), grid, shell];
+
+    const grouped = await groupScreens(root, files, 2);
+
+    // Both parts are parts, whichever way the specifier was written.
+    expect(grouped.notScreens.join(' ')).toContain('Grid');
+    expect(grouped.notScreens.join(' ')).toContain('Shell');
+    // And neither leaks into the screen count or into a group of its own.
+    expect(grouped.ungrouped).toEqual([]);
+    expect(grouped.groups).toHaveLength(1);
+    expect(grouped.groups[0]!.members).toHaveLength(3);
+  });
+
+  /**
+   * The family search must keep its old reach. It is bounded by relative
+   * imports deliberately — a page and its grid are one screen, and a component
+   * the whole workspace shares is not that page's own business.
+   */
+  it('leaves the relative-only rule the family search relies on alone', async () => {
+    const { importedBy } = await import('../../src/sources/siblings.js');
+    await mkdir(join(root, 'src'), { recursive: true });
+    await writeFile(join(root, 'src/Own.tsx'), 'export const Own = () => <div />;\n');
+    const screen = join(root, 'src/Page.tsx');
+    await writeFile(
+      screen,
+      'import { Own } from "./Own";\nimport { Shared } from "@app/ui/Shared";\nexport const P = () => <Own />;\n',
+    );
+
+    const found = [...(await importedBy(screen))];
+
+    expect(found.join(' ')).toContain('Own');
+    expect(found.join(' ')).not.toContain('Shared');
+  });
+});

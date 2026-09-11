@@ -1,7 +1,8 @@
 import { relative } from 'node:path';
+import { resolverFor } from './resolve.js';
 import { flatLines, screenTree } from './tree.js';
 import { trailingWord } from './names.js';
-import { importedBy, isScreenFile } from './siblings.js';
+import { isScreenFile, specifiersOf } from './siblings.js';
 
 export interface Group {
   /** The shared structure, one line per level, already indented. */
@@ -89,12 +90,27 @@ export async function groupScreens(
   // A set, not `includes`: this command is handed whole `pages/` trees — 1 674
   // files on one repository — and a linear scan per import is that squared.
   const given = new Set(files);
+  // **Resolved the way the project writes its imports, not only relatively**
+  // (#62). `importedBy` resolves `./Grid` and returns null for anything else,
+  // so on the monorepo shape this plugin is built for — where a screen renders
+  // a component imported by package name or through a `tsconfig` alias — the
+  // chain broke at the first such import and every leaf below it survived as a
+  // screen of its own. That is what made two comparable React monorepos
+  // disagree by a factor of three about what proportion of their files are
+  // screens: 224 of 1 606 against 833 of 1 955.
+  //
+  // The resolver is the one `uic tree` already uses. A second copy of alias
+  // handling is what `tests/core/duplicates.test.ts` exists to refuse, and
+  // guessing at aliases is what `resolveRelative` declines to do for good
+  // reason — so this asks the thing that knows.
+  const resolver = await resolverFor(rootDir);
   const parts = new Set<string>();
   for (const file of files) {
     // One extra parse per file, on a command that is deliberately not on the
     // edit path. Said here rather than left to be measured by somebody else.
-    for (const imported of await importedBy(file)) {
-      if (given.has(imported)) parts.add(imported);
+    for (const specifier of await specifiersOf(file)) {
+      const imported = await resolver.find(file, specifier);
+      if (imported !== null && given.has(imported)) parts.add(imported);
     }
   }
 
