@@ -39,6 +39,16 @@ export interface Grouping {
    * a pattern that does not exist.
    */
   ungrouped: string[];
+  /**
+   * Read, a screen, and nothing a pattern is made of: a tree of one node.
+   *
+   * Separate from `ungrouped`, which is *shares nothing with these others*.
+   * This is *has no shape to share* — a leaf whose whole output is one element
+   * or one generic name. Counted and named, never grouped and never silently
+   * dropped: on a real monorepo these were the largest "pattern" in the project
+   * (#58).
+   */
+  shapeless: string[];
 }
 
 /**
@@ -129,6 +139,7 @@ export async function groupScreens(
 
   const groups = new Map<string, Group & { concrete: string[] }>();
   const ungrouped: string[] = [];
+  const shapeless: string[] = [];
   for (const one of read) {
     const concrete = one.lines.map((line) => `${'  '.repeat(line.indent)}${line.name}`);
     const abstracted = one.lines.map((line) =>
@@ -143,6 +154,29 @@ export async function groupScreens(
     // counts.
     if (abstracted.every((name) => name === '<one>')) {
       ungrouped.push(one.file);
+      continue;
+    }
+
+    // **A signature of one node is the same non-answer, arriving by a different
+    // route** (#58). It carries no holder-and-child relationship, no order and
+    // no role — `div` is a raw element and `Provider` is one generic name — so
+    // the screens in it share a name and nothing a pattern is made of. On a
+    // real 1 955-file monorepo `div` was the *largest group in the project* at
+    // 27 screens, ranked above a modal with a header, content and footer at
+    // 7 of 8 and a page holder with an optional footer at 2 of 7, which are
+    // what this command exists to find.
+    //
+    // The fold below makes it worse rather than better: a one-node signature is
+    // a subsequence of very nearly everything, so it attracts members instead
+    // of being absorbed.
+    //
+    // **Unless that node is a slot.** `*Grid` over two screens is a role the
+    // project's own naming stated — the whole of #6's mechanism, where
+    // `OrdersGrid` and `InvoicesGrid` reach no majority by name and the shared
+    // trailing word is the evidence they are one role. A literal name shared by
+    // 27 files is not that: they share a name and nothing a pattern is made of.
+    if (one.lines.length < 2 && !abstracted.every((name) => name.startsWith('*'))) {
+      shapeless.push(one.file);
       continue;
     }
 
@@ -178,6 +212,7 @@ export async function groupScreens(
       })),
     notScreens,
     ungrouped,
+    shapeless,
     given: files.length,
   };
 }

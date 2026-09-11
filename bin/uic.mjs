@@ -22525,6 +22525,7 @@ async function groupScreens(rootDir, files, depth) {
   }
   const groups = /* @__PURE__ */ new Map();
   const ungrouped = [];
+  const shapeless = [];
   for (const one of read) {
     const concrete = one.lines.map((line) => `${"  ".repeat(line.indent)}${line.name}`);
     const abstracted = one.lines.map(
@@ -22532,6 +22533,10 @@ async function groupScreens(rootDir, files, depth) {
     );
     if (abstracted.every((name) => name === "<one>")) {
       ungrouped.push(one.file);
+      continue;
+    }
+    if (one.lines.length < 2 && !abstracted.every((name) => name.startsWith("*"))) {
+      shapeless.push(one.file);
       continue;
     }
     const signature = one.lines.map(
@@ -22555,6 +22560,7 @@ async function groupScreens(rootDir, files, depth) {
     })),
     notScreens,
     ungrouped,
+    shapeless,
     given: files.length
   };
 }
@@ -23720,7 +23726,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.103";
+var VERSION = "0.14.104";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -25757,11 +25763,18 @@ async function group(rootDir, args) {
     return 1;
   }
   const grouped = await groupScreens(rootDir, absolute, depthIn(args));
-  const screens = grouped.groups.reduce((count, one) => count + one.members.length, 0) + grouped.ungrouped.length;
+  const inGroups = grouped.groups.reduce((count, one) => count + one.members.length, 0);
+  const screens = inGroups + grouped.ungrouped.length + grouped.shapeless.length;
   const skipped = grouped.notScreens.length;
   console.log(
-    `${grouped.given} ${grouped.given === 1 ? "file" : "files"}, ${screens} ${screens === 1 ? "screen" : "screens"}${skipped === 0 ? "" : `, ${skipped} not a screen`}, read ${grouped.depth} ${grouped.depth === 1 ? "level" : "levels"} \u2014 ${grouped.groups.length} ${grouped.groups.length === 1 ? "group" : "groups"}`
+    `${grouped.given} ${grouped.given === 1 ? "file" : "files"}, ${screens} ${screens === 1 ? "screen" : "screens"}${grouped.given === 0 ? "" : ` (${Math.round(screens / grouped.given * 100)}% of what was given)`}${skipped === 0 ? "" : `, ${skipped} not a screen`}, read ${grouped.depth} ${grouped.depth === 1 ? "level" : "levels"} \u2014 ${grouped.groups.length} ${grouped.groups.length === 1 ? "group" : "groups"}`
   );
+  if (grouped.groups.length > 0 && inGroups > 0) {
+    const per = inGroups / grouped.groups.length;
+    console.log(
+      `${per.toFixed(1)} screens per group` + (per < 2.5 ? " \u2014 that is a list and not a grouping: these screens mostly share nothing." : "")
+    );
+  }
   for (const one of grouped.groups) {
     console.log(`
 ${one.members.length} ${one.members.length === 1 ? "screen" : "screens"}`);
@@ -25774,6 +25787,14 @@ ${one.members.length} ${one.members.length === 1 ? "screen" : "screens"}`);
       `
 ${n} ${n === 1 ? "screen shares" : "screens share"} nothing with any of these
   ` + grouped.ungrouped.join("\n  ")
+    );
+  }
+  if (grouped.shapeless.length > 0) {
+    const n = grouped.shapeless.length;
+    console.log(
+      `
+${n} ${n === 1 ? "screen renders" : "screens render"} one node and nothing under it, so there is no shape to group by \u2014 a leaf, or a holder whose children could not be read
+  ` + grouped.shapeless.join("\n  ")
     );
   }
   if (grouped.notScreens.length > 0) {

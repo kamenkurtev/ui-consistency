@@ -732,19 +732,38 @@ async function group(rootDir: string, args: string[]): Promise<number> {
   }
 
   const grouped = await groupScreens(rootDir, absolute, depthIn(args));
-  const screens =
-    grouped.groups.reduce((count, one) => count + one.members.length, 0) +
-    grouped.ungrouped.length;
+  const inGroups = grouped.groups.reduce((count, one) => count + one.members.length, 0);
+  const screens = inGroups + grouped.ungrouped.length + grouped.shapeless.length;
   // Both counts, because a few groups over many files reads as agreement and a
   // few groups over a few screens is a small answer (#32).
   const skipped = grouped.notScreens.length;
   console.log(
     `${grouped.given} ${grouped.given === 1 ? 'file' : 'files'}, ` +
       `${screens} ${screens === 1 ? 'screen' : 'screens'}` +
+      `${grouped.given === 0 ? '' : ` (${Math.round((screens / grouped.given) * 100)}% of what was given)`}` +
       `${skipped === 0 ? '' : `, ${skipped} not a screen`}, read ${grouped.depth} ` +
       `${grouped.depth === 1 ? 'level' : 'levels'} — ${grouped.groups.length} ` +
       `${grouped.groups.length === 1 ? 'group' : 'groups'}`,
   );
+
+  // **A reader has to be able to tell a pattern from a list** (#58). 527 groups
+  // over 833 screens is not 527 findings; it is a grouping that found nothing,
+  // and printed as a ranked list it reads as the opposite. So the ratio is
+  // stated, and where it is near one the answer is said in words.
+  //
+  // The proportion of files called screens is in the heading for the same
+  // reason: two real React monorepos of comparable size disagreed by a factor
+  // of three — 14% against 43% — and a number nobody can see is a disagreement
+  // nobody can find.
+  if (grouped.groups.length > 0 && inGroups > 0) {
+    const per = inGroups / grouped.groups.length;
+    console.log(
+      `${per.toFixed(1)} screens per group` +
+        (per < 2.5
+          ? ' — that is a list and not a grouping: these screens mostly share nothing.'
+          : ''),
+    );
+  }
 
   for (const one of grouped.groups) {
     console.log(`\n${one.members.length} ${one.members.length === 1 ? 'screen' : 'screens'}`);
@@ -756,6 +775,14 @@ async function group(rootDir: string, args: string[]): Promise<number> {
     console.log(
       `\n${n} ${n === 1 ? 'screen shares' : 'screens share'} nothing with any of these\n  ` +
         grouped.ungrouped.join('\n  '),
+    );
+  }
+  if (grouped.shapeless.length > 0) {
+    const n = grouped.shapeless.length;
+    console.log(
+      `\n${n} ${n === 1 ? 'screen renders' : 'screens render'} one node and nothing under it, so` +
+        ` there is no shape to group by — a leaf, or a holder whose children could not be read\n  ` +
+        grouped.shapeless.join('\n  '),
     );
   }
   if (grouped.notScreens.length > 0) {

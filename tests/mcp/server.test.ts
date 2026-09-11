@@ -72,11 +72,19 @@ const answered = (session: Session): { text: string; isError: boolean } => {
   return { text: last?.result?.content?.[0]?.text ?? '', isError: last?.result?.isError === true };
 };
 
+/**
+ * A holder and a real child, not a holder and a `<div />`.
+ *
+ * The child has to be a component or the tree is one node — which `uic group`
+ * now reports as having no shape to group by (#58), correctly, and which made
+ * this fixture exercise the `group` tool over nothing.
+ */
 const page = (name: string): string =>
   [
     "import { PageShell } from '../ui/PageShell';",
+    `import { ${name}Grid } from '../ui/${name}Grid';`,
     `export function ${name}Page() {`,
-    `  return <PageShell title="${name}" data-testid="${name.toLowerCase()}-page" density="compact"><div /></PageShell>;`,
+    `  return <PageShell title="${name}" data-testid="${name.toLowerCase()}-page" density="compact"><${name}Grid /></PageShell>;`,
     '}',
   ].join('\n');
 
@@ -90,6 +98,7 @@ beforeAll(async () => {
   await writeFile(join(root, 'src/ui/PageShell.tsx'), 'export const PageShell = (p: any) => <div {...p} />;');
   for (const name of ['Orders', 'Invoices', 'Customers', 'Reports']) {
     await writeFile(join(root, `src/pages/${name}Page.tsx`), page(name));
+    await writeFile(join(root, `src/ui/${name}Grid.tsx`), `export const ${name}Grid = () => <table />;`);
   }
 });
 
