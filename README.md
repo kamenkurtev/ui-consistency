@@ -227,7 +227,7 @@ written into `style` or `sx`:
 
 ```
 src/Card.tsx:3
-fontSize: 12 is a hardcoded value, not a design-system token.
+fontSize: 12 is a raw number written into a style object.
 ```
 
 Numbers on spacing keys in `sx` are left alone: `sx={{ mt: 2 }}` is a theme
@@ -626,11 +626,11 @@ owner-only and refuses to use if anything else owns the name.
 ```
 Said more than once — told, and not acted on:
       3x src/dashboard/RevenueWidget.tsx:6
-         fontSize: 12 is a hardcoded value, not a design-system token.
+         fontSize: 12 is a raw number written into a style object.
 
 Said about many different files:
      84 files  @material-ui/core is imported where @backstage/ui is nearer.
-      9 files  fontSize: 12 is a hardcoded value, not a design-system token.
+      9 files  fontSize: 12 is a raw number written into a style object.
 
 Findings that did not come back:
       4  acted on — the file was checked again and this was gone

@@ -21,7 +21,7 @@ describe('the v2 finding vocabulary', () => {
       file: 'apps/orders/widgets/Revenue.tsx',
       line: 12,
       level: 'style',
-      message: 'fontSize: 12 is a hardcoded value',
+      message: 'fontSize: 12 is a raw number written into a style object',
     };
     expect(finding.level).toBe('style');
     expect(finding.source).toBeUndefined();

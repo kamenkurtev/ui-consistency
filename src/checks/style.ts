@@ -98,7 +98,7 @@ function collect(
         file,
         line,
         level: 'style',
-        message: `${quoted(key)}: ${quoted(String(shown))} is a hardcoded value, not a design-system token.`,
+        message: `${quoted(key)}: ${quoted(String(shown))} is a raw number written into a style object.`,
       });
       continue;
     }
@@ -110,7 +110,7 @@ function collect(
           file,
           line,
           level: 'style',
-          message: `${quoted(key)}: '${quoted(value)}' is a hardcoded colour, not a design-system token.`,
+          message: `${quoted(key)}: '${quoted(value)}' is a colour literal.`,
         });
         continue;
       }
@@ -121,7 +121,7 @@ function collect(
           file,
           line,
           level: 'style',
-          message: `${quoted(key)}: '${quoted(value)}' is a hardcoded length, not a design-system token.`,
+          message: `${quoted(key)}: '${quoted(value)}' is an absolute length.`,
         });
       }
       continue;
@@ -144,6 +144,28 @@ function styleAttributeName(node: JSXAttribute): StyleAttribute | null {
  * Deliberately not asserted here: that a token exists for the value found.
  * That needs the knowledge base. The raw literal on its own is certain, and
  * certainty is the whole licence for a check that runs on every edit.
+ *
+ * **And for a long time the messages asserted it anyway** (#64). Each ended
+ * *"not a design-system token"* — the negative of the thing this docblock says
+ * it does not assert, appended to the same string, on 142 of 223 findings on
+ * one real repository and 17 of 31 on another. `12px` *is* an absolute length;
+ * whether a token existed for it is a judgement about a design system, and
+ * `CLAUDE.md` states in the load-bearing decision that the program does not get
+ * to make it.
+ *
+ * On a project with more than one theme the clause has no single fact behind it
+ * to be corrected to: one real design system ships two presets, 16 and 14
+ * per-component override files, chosen by name at runtime, and a value can
+ * match a token in one and not the other while the component writing it cannot
+ * know which it will render under.
+ *
+ * So the messages now say what was found and stop, which is the wording
+ * `CLAUDE.md`'s own example uses. Where the project **has** stated something
+ * about a value — a theme that can be read, a token file, a written rule — the
+ * curated checks are what speak, and they name what they read. That is the
+ * "stated by the project, or evidence" half, and it is the only thing that
+ * licenses a claim about tokens. None of this pulls theme resolution forward;
+ * that stays deferred.
  */
 export function styleFindings(filePath: string, source: string): Finding[] {
   const ast = parseModule(source, filePath);

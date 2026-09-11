@@ -23731,7 +23731,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.105";
+var VERSION = "0.14.106";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -24093,7 +24093,7 @@ function collect2(attribute, object, file, findings) {
         file,
         line,
         level: "style",
-        message: `${quoted(key)}: ${quoted(String(shown))} is a hardcoded value, not a design-system token.`
+        message: `${quoted(key)}: ${quoted(String(shown))} is a raw number written into a style object.`
       });
       continue;
     }
@@ -24104,7 +24104,7 @@ function collect2(attribute, object, file, findings) {
           file,
           line,
           level: "style",
-          message: `${quoted(key)}: '${quoted(value)}' is a hardcoded colour, not a design-system token.`
+          message: `${quoted(key)}: '${quoted(value)}' is a colour literal.`
         });
         continue;
       }
@@ -24113,7 +24113,7 @@ function collect2(attribute, object, file, findings) {
           file,
           line,
           level: "style",
-          message: `${quoted(key)}: '${quoted(value)}' is a hardcoded length, not a design-system token.`
+          message: `${quoted(key)}: '${quoted(value)}' is an absolute length.`
         });
       }
       continue;
@@ -24548,7 +24548,10 @@ function styleFindingsFor(file, node) {
       file,
       line: node.line,
       level: "style",
-      message: `${quoted(property)}: ${quoted(value)} is a hardcoded ${isColour ? "colour" : "length"}, not a design-system token.`
+      // The literal and nothing more. `not a design-system token` was on this
+      // message too, and it is the negative of what neither this check nor the
+      // JavaScript one may assert (#64).
+      message: `${quoted(property)}: ${quoted(value)} is ${isColour ? "a colour literal" : "an absolute length"}.`
     });
   }
   return findings;

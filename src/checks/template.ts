@@ -44,7 +44,10 @@ function styleFindingsFor(file: string, node: TemplateNode): Finding[] {
       file,
       line: node.line,
       level: 'style',
-      message: `${quoted(property)}: ${quoted(value)} is a hardcoded ${isColour ? 'colour' : 'length'}, not a design-system token.`,
+      // The literal and nothing more. `not a design-system token` was on this
+      // message too, and it is the negative of what neither this check nor the
+      // JavaScript one may assert (#64).
+      message: `${quoted(property)}: ${quoted(value)} is ${isColour ? 'a colour literal' : 'an absolute length'}.`,
     });
   }
   return findings;

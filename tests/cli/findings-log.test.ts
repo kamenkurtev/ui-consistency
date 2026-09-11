@@ -11,7 +11,7 @@ const finding = (over: Partial<Finding> = {}): Finding => ({
   file: '/repo/apps/orders/src/List.tsx',
   line: 12,
   level: 'style',
-  message: "color: '#333' is a hardcoded colour, not a design-system token.",
+  message: "color: '#333' is a colour literal.",
   ...over,
 });
 
@@ -127,7 +127,7 @@ describe('what the summary says', () => {
       file: 'apps/orders/src/OrderList.tsx',
       line: 12,
       level: 'style',
-      message: 'fontSize: 12 is a hardcoded value',
+      message: 'fontSize: 12 is a raw number written into a style object',
       kind: 'finding',
     });
     await mkdir(join(logPath(root), '..'), { recursive: true });
@@ -304,7 +304,7 @@ describe('what an entry actually carries', () => {
           file: join(root, 'src/App.tsx'),
           line: 1,
           level: 'style',
-          message: "color: '#ff0000' is a hardcoded colour, not a design-system token.",
+          message: "color: '#ff0000' is a colour literal.",
         },
       ],
       { rootDir: root },

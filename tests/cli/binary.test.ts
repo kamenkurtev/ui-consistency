@@ -519,8 +519,8 @@ describe('the built binary > a repository with no package it can detect', () => 
     const run = await uic(['check', 'src/W.tsx'], workspace);
 
     expect(run.code).toBe(1);
-    expect(run.stdout).toContain('fontSize: 12 is a hardcoded value');
-    expect(run.stdout).toContain("color: '#f00' is a hardcoded colour");
+    expect(run.stdout).toContain('fontSize: 12 is a raw number written into a style object.');
+    expect(run.stdout).toContain("color: '#f00' is a colour literal.");
     expect(run.stdout).toContain('emoji used as an icon');
   });
 
