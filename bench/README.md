@@ -38,12 +38,26 @@ What a run needs, and the order is not taste:
    was under test. `tests/gate/bench-prompts.test.ts` fails if either file names
    a repository, a framework or a kind — which both of them did, so a run was
    impossible anywhere but the machine they were written on (#56).
-6. **More than one run per arm.** Two bound the weather rather than measuring it;
+6. **The ON arm must not be told to optimise the score** (#57). This is the
+   subtlest way to get a run wrong and it was got wrong the first time: the arm
+   was told to run `uic diff --contract` on each file and fix what it reported —
+   *the scorer's own command, against the scorer's own pattern.* Its score was
+   then bounded at zero by construction, and an ON score above zero could only
+   have meant the agent ignored an instruction. It also made the arms differ by
+   two things at once: the pattern being readable, and a per-file gate the OFF
+   arm has no equivalent of.
+
+   **The treatment is that the pattern is readable, and nothing more.** That is
+   what the plugin does before a write and what #34 set out to measure.
+   Benchmarking the per-edit gate is a different experiment needing a metric the
+   arm was not told to optimise, and it must not be folded into this one.
+
+7. **More than one run per arm.** Two bound the weather rather than measuring it;
    report the range and never a mean of two.
 
 Then:
 
-7. **Score it.**
+8. **Score it.**
 
 ```
 npm run bench -- --pattern <repo>/.ui-consistency/patterns/<kind>.md \
