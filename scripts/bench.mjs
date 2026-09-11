@@ -150,12 +150,63 @@ const mean = (numbers) =>
   numbers.length === 0 ? null : Math.round((numbers.reduce((a, b) => a + b, 0) / numbers.length) * 100) / 100;
 
 /**
+ * **Where a deviation kind was first seen, and how many were new late on.**
+ *
+ * The count-based curve came back flat over 18 screens, and a flat count has
+ * two very different readings that call for opposite responses (#63): the batch
+ * is too short, or drift is not positional at all — in which case the loop in
+ * `skills/rollout`, whose whole shape assumes attention thinning within a
+ * session, is built on a mechanism that does not exist.
+ *
+ * A count cannot separate them, and this is the axis that might. *Consistently
+ * missing one prop* and *inventing a new mistake every few screens* are the
+ * same mean and the same flat curve, and only the second is drift. So: for each
+ * screen, how many of its deviation kinds had never appeared in any earlier
+ * screen of the batch. An arm that is merely uniform answers 1 at the start and
+ * 0 after; an arm whose grip is slipping keeps introducing new kinds late.
+ *
+ * It is not a verdict either. It is one more axis, and the run is what decides.
+ */
+function novelty(screens) {
+  const seen = new Set();
+  const perScreen = [];
+  const firstSeen = [];
+  for (const screen of screens) {
+    if (screen.deviations === null) {
+      perScreen.push({ position: screen.position, novel: null });
+      continue;
+    }
+    let novel = 0;
+    for (const message of screen.messages ?? []) {
+      if (seen.has(message)) continue;
+      seen.add(message);
+      novel++;
+      firstSeen.push({ position: screen.position, message });
+    }
+    perScreen.push({ position: screen.position, novel });
+  }
+
+  const counted = perScreen.filter((one) => one.novel !== null);
+  const third = Math.max(1, Math.floor(counted.length / 3));
+  return {
+    perScreen,
+    firstSeen,
+    kinds: seen.size,
+    // The same thirds as the count curve, so the two are read side by side.
+    early: counted.length < 3 ? null : mean(counted.slice(0, third).map((one) => one.novel)),
+    late: counted.length < 3 ? null : mean(counted.slice(-third).map((one) => one.novel)),
+  };
+}
+
+/**
  * The drift curve, as the two numbers that answer the claim.
  *
  * A mean over the whole batch cannot distinguish *consistently mediocre* from
  * *fine at first and drifting badly*, and the second is the thing this project
  * exists for. So: the first third against the last third, which is the
  * comparison the claim makes, and it is reported even when it is flat.
+ *
+ * **Flat here is not an answer on its own** — see {@link novelty}.
  */
 function curve(screens) {
   const counted = screens.filter((one) => one.deviations !== null);
@@ -230,6 +281,8 @@ const report = {
     on: { mean: mean(scored.on.screens.filter((o) => o.deviations !== null).map((o) => o.deviations)), measured: scored.on.measured, unmeasured: scored.on.unmeasured },
   },
   drift: { off: curve(scored.off.screens), on: curve(scored.on.screens) },
+  // The second axis, because a flat count has two readings (#63).
+  novelty: { off: novelty(scored.off.screens), on: novelty(scored.on.screens) },
   // Distinct deviations and how many screens carried each. A mean hides whether
   // an arm missed one thing everywhere or everything once.
   whatWasWrong: { off: scored.off.kinds ?? [], on: scored.on.kinds ?? [] },
@@ -255,6 +308,15 @@ if (wantsJson) {
   console.log(`batch:   off ${report.batch.off}, on ${report.batch.on}${sameSize ? '' : '  — NOT COMPARABLE, the arms differ in length'}`);
   if (short < tasks.minimumBatch) {
     console.log(`         ${short} screens is below the stated minimum of ${tasks.minimumBatch}: a curve this short cannot bend.`);
+  } else if (report.drift.off.drift === 0 && report.drift.on.drift === 0) {
+    // **A flat curve at or above the minimum is not a result yet**, because the
+    // minimum itself is unmeasured: 15 came out of the issue body and nothing
+    // has established where the effect would begin. Said here rather than left
+    // for a reader to assume the question was settled (#63).
+    console.log(
+      `         both curves are flat at ${short} screens, and ${tasks.minimumBatch} is a guess — nothing has\n` +
+        '         established where drift would begin, so this does not yet mean it is not positional.',
+    );
   }
   console.log('\nconformance — mean deviations per screen (lower is better)');
   for (const arm of ['off', 'on']) {
@@ -266,6 +328,23 @@ if (wantsJson) {
     const one = report.drift[arm];
     console.log(`  ${arm.padEnd(4)} early ${String(one.early ?? '—').padEnd(6)} late ${String(one.late ?? '—').padEnd(6)} drift ${one.drift === null ? '—' : one.drift > 0 ? `+${one.drift}` : one.drift}`);
   }
+  console.log('\nnew kinds of deviation — a flat count above has two readings, and this is the other axis');
+  for (const arm of ['off', 'on']) {
+    const one = report.novelty[arm];
+    console.log(
+      `  ${arm.padEnd(4)} ${one.kinds} distinct kind(s)` +
+        `   early ${String(one.early ?? '—').padEnd(6)} late ${String(one.late ?? '—')}` +
+        (one.early !== null && one.late !== null && one.late > one.early
+          ? '  — new kinds are still appearing late, which is what drift would look like'
+          : one.kinds === 0
+            ? ''
+            : '  — no new kinds late: uniform, not drifting'),
+    );
+    for (const first of one.firstSeen) {
+      console.log(`       first at ${String(first.position).padStart(3)}  ${first.message}`);
+    }
+  }
+
   console.log('\nper position');
   for (const row of report.perPosition) {
     console.log(`  ${String(row.position).padStart(3)}  off ${String(row.off ?? '—').padStart(3)}   on ${String(row.on ?? '—').padStart(3)}`);
