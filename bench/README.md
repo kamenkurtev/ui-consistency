@@ -22,12 +22,28 @@ What a run needs, and the order is not taste:
    `tasks.json` gives.** This is the whole mechanism: drift is attention thinning
    within a session, and a fresh agent per file deletes the thing being measured.
    Same model on every arm.
-5. **`prompt-off.md` and `prompt-on.md` as written.** Diff them before you start:
-   the difference must be the pattern's availability and nothing else.
+5. **`prompt-off.md` and `prompt-on.md` as written**, with these substitutions
+   and no others — the seed prompt is everything after the `---` in each file:
+
+   | in the prompt | supplied from |
+   | --- | --- |
+   | `OUTPUT_DIR` | the directory that arm writes into |
+   | `TASK_LIST` | `tasks.json`, in `order` |
+   | `PATTERN_PATH` | the same `--pattern` you give the scorer in step 7 |
+
+   **Substitute; do not edit.** Diff the two files before you start: the
+   difference must be the pattern's availability and nothing else, and a
+   hand-edited pair is not evidence of that. `PATTERN_PATH` is the scorer's own
+   `--pattern` so the two halves of a run cannot disagree about which pattern
+   was under test. `tests/gate/bench-prompts.test.ts` fails if either file names
+   a repository, a framework or a kind — which both of them did, so a run was
+   impossible anywhere but the machine they were written on (#56).
 6. **More than one run per arm.** Two bound the weather rather than measuring it;
    report the range and never a mean of two.
 
 Then:
+
+7. **Score it.**
 
 ```
 npm run bench -- --pattern <repo>/.ui-consistency/patterns/<kind>.md \
