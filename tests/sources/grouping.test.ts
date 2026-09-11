@@ -215,3 +215,84 @@ describe('what uic group counts, and what it folds', () => {
     expect(withA?.members).not.toContain('src/D.tsx');
   });
 });
+
+describe('a signature that carries no shape', () => {
+  /**
+   * The largest "pattern" in a real 1 955-file monorepo was `div`, at 27
+   * screens — ranked above a modal with a header, content and footer at 7 of 8
+   * and a page holder with an optional footer at 2 of 7, which are what this
+   * command exists to find (#58).
+   *
+   * A tree of one node carries no holder-and-child relationship, no order and
+   * no role. It is the same non-answer as a signature made entirely of
+   * placeholders, arriving by a different route — and the optional-group fold
+   * makes it worse, because one node is a subsequence of very nearly
+   * everything, so it attracts members instead of being absorbed.
+   */
+  it('does not report a one-node signature as a group', async () => {
+    // The shape the real repository had, and it takes two files to build: a
+    // leaf whose whole output is one component, whose own output is raw
+    // elements. A file rendering only `<div />` never reaches grouping at all —
+    // it is already *not a screen* — so that cannot be the fixture, and the
+    // rule is about the shape rather than about the spelling of the node.
+    await write('Dot', 'export const Dot = () => (\n  <div>\n    <svg />\n  </div>\n);\n');
+    const leaf = `import { Dot } from './Dot';\nexport const P = () => <Dot />;\n`;
+    const files = [
+      await write('IconA', leaf),
+      await write('IconB', leaf),
+      await write('IconC', leaf),
+      // And a real pattern beside them, which must survive and must rank above.
+      await write('PageA', listScreen('OrdersGrid')),
+      await write('PageB', listScreen('InvoicesGrid')),
+    ];
+
+    const grouped = await groupScreens(root, files, 2);
+
+    // The three leaves are named as having no shape, not grouped.
+    expect(grouped.shapeless).toHaveLength(3);
+    expect(grouped.shapeless.join(' ')).toContain('IconA');
+    for (const one of grouped.groups) {
+      expect(one.signature.length, 'a group with a one-line signature').toBeGreaterThan(1);
+    }
+    // And the real pattern is still there, and is now the largest.
+    expect(grouped.groups[0]?.members).toHaveLength(2);
+    expect(grouped.groups[0]?.signature.join(' ')).toContain('PageShell');
+  });
+
+  /**
+   * One generic name is the same non-answer as one raw element: what made `div`
+   * wrong is the shape, not the spelling, and a rule that only excluded raw
+   * elements would be a hardcoded vocabulary — which nothing here may have.
+   */
+  it('applies to a component name as much as to a raw element', async () => {
+    const files = [
+      await write('ProviderA', 'export const P = () => <Provider />;\n'),
+      await write('ProviderB', 'export const P = () => <Provider />;\n'),
+    ];
+
+    const grouped = await groupScreens(root, files, 1);
+
+    expect(grouped.groups).toHaveLength(0);
+    expect(grouped.shapeless).toHaveLength(2);
+  });
+
+  /** Never silently dropped: every file given comes back in exactly one bucket. */
+  it('accounts for every file it was given', async () => {
+    const files = [
+      await write('IconA', 'export const P = () => <Provider />;\n'),
+      await write('PageA', listScreen('OrdersGrid')),
+      await write('PageB', listScreen('InvoicesGrid')),
+      await write('notes.helpers', 'export const x = 1;\n'),
+    ];
+
+    const grouped = await groupScreens(root, files, 1);
+
+    const accounted =
+      grouped.groups.reduce((count, one) => count + one.members.length, 0) +
+      grouped.ungrouped.length +
+      grouped.shapeless.length +
+      grouped.notScreens.length;
+    expect(accounted).toBe(grouped.given);
+    expect(grouped.given).toBe(4);
+  });
+});
