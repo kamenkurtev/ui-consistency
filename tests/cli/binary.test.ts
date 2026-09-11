@@ -635,6 +635,70 @@ describe('the three silences a user has to be able to tell apart', () => {
   });
 
   /**
+   * `--json` exists so a benchmark can index deviations by position in a batch
+   * (#34), and the thing that has to be right about it is what it says for a
+   * file it never measured. Reported as zero deviations, *not looked at* is
+   * *matched* — and averaged over a batch that turns a repository the tool
+   * could not read into a repository that conformed. It happened: a scorer
+   * pointed at the wrong directory read a planted 18-screen drift curve as a
+   * flat zero on both arms.
+   */
+  it('reports a path it could not measure as unmeasured, not as a match', async () => {
+    const dir = await project({
+      'package.json': '{"name":"json-diff"}',
+      '.ui-consistency/patterns/page-layout.md': [
+        '---',
+        'pattern: page-layout',
+        'holder: PageLayout',
+        'observed: 2026-09-01',
+        'derived: true',
+        '---',
+        '',
+        '## Props',
+        '',
+        '### `PageLayout`',
+        '',
+        '- `title` — 3 of 3',
+        '',
+        '## Where it is used',
+        '',
+        '`src/pages/OrdersPage.tsx`',
+      ].join('\n'),
+      'src/pages/OrdersPage.tsx': page('Orders'),
+      'src/notes.md': '# not a screen at all',
+    });
+
+    const run = await uic(
+      [
+        'diff',
+        '--contract',
+        '.ui-consistency/patterns/page-layout.md',
+        '--json',
+        'src/pages/OrdersPage.tsx',
+        'src/nowhere/Gone.tsx',
+        'src/notes.md',
+      ],
+      dir,
+    );
+
+    const report = JSON.parse(run.stdout.slice(run.stdout.indexOf('{'))) as {
+      unread: number;
+      couldNotRead: string[];
+      files: { file: string; deviations: number | null }[];
+    };
+
+    const by = new Map(report.files.map((one) => [one.file, one.deviations]));
+    // Measured: a number, whatever it is.
+    expect(typeof by.get('src/pages/OrdersPage.tsx')).toBe('number');
+    // Never read, and read but of no interest: both null, neither zero.
+    expect(by.get('src/nowhere/Gone.tsx')).toBeNull();
+    expect(by.get('src/notes.md')).toBeNull();
+    expect(report.couldNotRead).toContain('src/nowhere/Gone.tsx');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  /**
    * A pattern goes stale and, until now, nothing refreshed it (#28).
    *
    * Run against the shipped bundle in a project of its own, because that is
