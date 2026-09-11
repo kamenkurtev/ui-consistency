@@ -52,12 +52,32 @@ What a run needs, and the order is not taste:
    Benchmarking the per-edit gate is a different experiment needing a metric the
    arm was not told to optimise, and it must not be folded into this one.
 
-7. **More than one run per arm.** Two bound the weather rather than measuring it;
+7. **The whole list, not the first fifteen** (#63). A count-based drift curve
+   came back flat over 18 screens, and a flat curve has two readings that call
+   for opposite responses: the batch is too short, or drift is not positional at
+   all — and the second would mean `skills/rollout`, whose whole shape assumes
+   attention thinning within a session, is built on a mechanism that does not
+   exist. `minimumBatch` is 15 because an issue body said so and is flagged
+   unvalidated in `tasks.json`; nothing has measured where the effect begins.
+
+   The report carries a **second axis** for the same reason: how many deviation
+   kinds each screen introduced that no earlier screen had. *Consistently
+   missing one prop* and *inventing a new mistake every few screens* are the
+   same mean and the same flat count curve, and only the second is drift.
+
+   **A third arm would separate position from accumulated context**, which a
+   single-session run confounds — file 40 is both late and preceded by 39 files
+   of context. The same tasks written with a **fresh context per file** answers
+   it: if that arm is flat and the single-session arm bends, the mechanism is
+   accumulation; if both are flat, position is not the axis. Not built, because
+   nothing yet says the single-session curve bends at all.
+
+8. **More than one run per arm.** Two bound the weather rather than measuring it;
    report the range and never a mean of two.
 
 Then:
 
-8. **Score it.**
+9. **Score it.**
 
 ```
 npm run bench -- --pattern <repo>/.ui-consistency/patterns/<kind>.md \
