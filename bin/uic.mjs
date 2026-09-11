@@ -23720,7 +23720,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.102";
+var VERSION = "0.14.103";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -25540,10 +25540,11 @@ async function diff(rootDir, args) {
   const at = args.indexOf("--contract");
   const contractPath = at < 0 ? void 0 : args[at + 1];
   const files = args.filter((arg, index) => !arg.startsWith("-") && index !== at + 1);
-  const unknown = args.filter((arg) => arg.startsWith("-") && arg !== "--contract");
+  const asJson = args.includes("--json");
+  const unknown = args.filter((arg) => arg.startsWith("-") && arg !== "--contract" && arg !== "--json");
   if (contractPath === void 0 || contractPath.startsWith("-") || files.length === 0 || unknown.length > 0) {
     if (unknown.length > 0) console.error(`Unknown option: ${unknown.join(", ")}`);
-    console.error("Usage: uic diff --contract <contract.json> <file...>");
+    console.error("Usage: uic diff --contract <contract.json|pattern.md> [--json] <file...>");
     return 1;
   }
   const raw = await readFile33(resolve10(rootDir, contractPath), "utf8").catch(() => null);
@@ -25571,6 +25572,8 @@ async function diff(rootDir, args) {
   let unread = 0;
   const handedOver = /* @__PURE__ */ new Set();
   const otherKind = [];
+  const couldNotRead = [];
+  const notAScreen = [];
   for (const file of files) {
     const absolute = resolve10(rootDir, file);
     const where2 = relative13(rootDir, absolute);
@@ -25579,6 +25582,7 @@ async function diff(rootDir, args) {
     const source = await readFile33(identity, "utf8").catch(() => null);
     if (source === null) {
       unread++;
+      couldNotRead.push(where2);
       continue;
     }
     const markup = pair === null ? { path: absolute, source } : await markupOf(identity, source);
@@ -25589,7 +25593,10 @@ async function diff(rootDir, args) {
         continue;
       }
       const deviations = contractDeviations(where2, markup.source, parsed);
-      if (deviations === null) continue;
+      if (deviations === null) {
+        notAScreen.push(where2);
+        continue;
+      }
       measured++;
       if (deviations.length > 0) byFile.set(deviations[0].file, deviations);
       continue;
@@ -25604,6 +25611,38 @@ async function diff(rootDir, args) {
     measured++;
     for (const one of report.handedOver) handedOver.add(one);
     if (report.deviations.length > 0) byFile.set(where2, report.deviations);
+  }
+  if (asJson) {
+    console.log(
+      JSON.stringify(
+        {
+          read: pattern2 === null ? "contract" : "pattern",
+          name: pattern2?.name ?? null,
+          measured,
+          unread,
+          otherKind,
+          couldNotRead,
+          notAScreen,
+          handedOver: [...handedOver],
+          files: files.map((file) => {
+            const where2 = relative13(rootDir, resolve10(rootDir, file));
+            const found = byFile.get(where2) ?? [];
+            return {
+              file: where2,
+              // `null` wherever nothing was measured: another kind, unreadable,
+              // or read and not a screen. Zero deviations and *not looked at*
+              // are different answers, and a benchmark that averaged them
+              // would report a project it could not read as one that matched.
+              deviations: otherKind.includes(where2) || couldNotRead.includes(where2) || notAScreen.includes(where2) ? null : found.length,
+              messages: found.map((one) => one.message)
+            };
+          })
+        },
+        null,
+        2
+      )
+    );
+    return measured === 0 ? 1 : byFile.size > 0 || unread > 0 ? 1 : 0;
   }
   const SHOWN = 20;
   for (const [file, deviations] of [...byFile].slice(0, SHOWN)) {

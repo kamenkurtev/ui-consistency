@@ -124,6 +124,7 @@ uic pattern <screen> --establish   write it down as a pattern file, derived and 
 uic pattern <screen> --refresh     re-count an established one; every sentence in it is kept
 uic mcp                            the MCP server on stdio; your harness starts it, not you
 uic diff --contract <c> <files>    where the screens you touched left it (a pattern file or a saved contract)
+uic diff --contract <c> --json …   the same, per file and machine-readable; unmeasured comes back null, never 0
 uic place <screen>                 route, trail, and where it is registered
 uic tree <screen> [--depth N]      what it renders, resolved through its children
 uic props <Component> <files>      which props each file writes on it, and where they diverge

@@ -393,12 +393,14 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
   const contractPath = at < 0 ? undefined : args[at + 1];
   const files = args.filter((arg, index) => !arg.startsWith('-') && index !== at + 1);
 
+
   // Every flag named, as `check` does: silently ignoring a misspelt one runs
   // something other than what was asked for and says nothing about it.
-  const unknown = args.filter((arg) => arg.startsWith('-') && arg !== '--contract');
+  const asJson = args.includes('--json');
+  const unknown = args.filter((arg) => arg.startsWith('-') && arg !== '--contract' && arg !== '--json');
   if (contractPath === undefined || contractPath.startsWith('-') || files.length === 0 || unknown.length > 0) {
     if (unknown.length > 0) console.error(`Unknown option: ${unknown.join(', ')}`);
-    console.error('Usage: uic diff --contract <contract.json> <file...>');
+    console.error('Usage: uic diff --contract <contract.json|pattern.md> [--json] <file...>');
     return 1;
   }
 
@@ -441,6 +443,12 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
 
   const handedOver = new Set<string>();
   const otherKind: string[] = [];
+  // **Which ones**, not how many. A count is enough for the prose form, and it
+  // is not enough for `--json`: a file nothing could read must come back as
+  // *not measured*, and reporting it as zero deviations is *not looked at*
+  // presented as *matched*, which is the failure this repository keeps meeting.
+  const couldNotRead: string[] = [];
+  const notAScreen: string[] = [];
 
   for (const file of files) {
     const absolute = resolve(rootDir, file);
@@ -450,6 +458,7 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
     const source = await readFile(identity, 'utf8').catch(() => null);
     if (source === null) {
       unread++;
+      couldNotRead.push(where);
       continue;
     }
     const markup = pair === null ? { path: absolute, source } : await markupOf(identity, source);
@@ -466,7 +475,10 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
       }
       const deviations = contractDeviations(where, markup.source, parsed as ScreenPattern);
       // Null means "not a screen": not measured, and so not a match either.
-      if (deviations === null) continue;
+      if (deviations === null) {
+        notAScreen.push(where);
+        continue;
+      }
       measured++;
       if (deviations.length > 0) byFile.set(deviations[0]!.file, deviations);
       continue;
@@ -485,6 +497,47 @@ async function diff(rootDir: string, args: string[]): Promise<number> {
     measured++;
     for (const one of report.handedOver) handedOver.add(one);
     if (report.deviations.length > 0) byFile.set(where, report.deviations);
+  }
+
+  // **Per file, and counts beside the sentences.** Added for the benchmark
+  // (#34), which needs deviations *indexed by position in a batch* to draw a
+  // drift curve at all — and a benchmark parsing this command's prose would
+  // break on the next wording change. Anything scripting a build gate wants
+  // the same thing. The prose form is unchanged and is still the default.
+  if (asJson) {
+    console.log(
+      JSON.stringify(
+        {
+          read: pattern === null ? 'contract' : 'pattern',
+          name: pattern?.name ?? null,
+          measured,
+          unread,
+          otherKind,
+          couldNotRead,
+          notAScreen,
+          handedOver: [...handedOver],
+          files: files.map((file) => {
+            const where = relative(rootDir, resolve(rootDir, file));
+            const found = byFile.get(where) ?? [];
+            return {
+              file: where,
+              // `null` wherever nothing was measured: another kind, unreadable,
+              // or read and not a screen. Zero deviations and *not looked at*
+              // are different answers, and a benchmark that averaged them
+              // would report a project it could not read as one that matched.
+              deviations:
+                otherKind.includes(where) || couldNotRead.includes(where) || notAScreen.includes(where)
+                  ? null
+                  : found.length,
+              messages: found.map((one) => one.message),
+            };
+          }),
+        },
+        null,
+        2,
+      ),
+    );
+    return measured === 0 ? 1 : byFile.size > 0 || unread > 0 ? 1 : 0;
   }
 
   const SHOWN = 20;
