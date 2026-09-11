@@ -333,11 +333,33 @@ export async function siblingScreens(
  * always this one.
  */
 export async function importedBy(target: string): Promise<Set<string>> {
+  const found = new Set<string>();
+  for (const specifier of await specifiersOf(target)) {
+    const path = await resolveRelative(dirname(target), specifier);
+    if (path !== null) found.add(path);
+  }
+  return found;
+}
+
+/**
+ * Every specifier a file imports, as written, resolved by nobody.
+ *
+ * Split out of {@link importedBy} because the two callers need different
+ * resolution and only one of them can have it. The family search is bounded by
+ * *relative* imports on purpose — a screen's own parts sit beside it — while
+ * `uic group` has to follow a specifier written as a package name or through a
+ * `tsconfig` alias, which is how the monorepo shape this plugin is built for
+ * writes the components a screen renders (#62). Resolving here would force one
+ * answer on both.
+ *
+ * Static `import` and dynamic `import()`; a lazily imported screen is imported.
+ */
+export async function specifiersOf(target: string): Promise<string[]> {
   const source = await readFile(target, 'utf8').catch(() => null);
-  if (source === null) return new Set();
+  if (source === null) return [];
 
   const ast = parseModule(source, target);
-  if (ast === null) return new Set();
+  if (ast === null) return [];
 
   const specifiers: string[] = [];
   walk(ast.program, (node) => {
@@ -350,13 +372,7 @@ export async function importedBy(target: string): Promise<Set<string>> {
       specifiers.push(node.arguments[0].value);
     }
   });
-
-  const found = new Set<string>();
-  for (const specifier of specifiers) {
-    const path = await resolveRelative(dirname(target), specifier);
-    if (path !== null) found.add(path);
-  }
-  return found;
+  return specifiers;
 }
 
 /**
