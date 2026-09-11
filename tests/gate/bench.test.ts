@@ -262,6 +262,109 @@ describe('the with/without benchmark scorer', () => {
     });
   });
 
+  describe('the second axis, because a flat count has two readings', () => {
+    /**
+     * An arm that misses the same one thing on every screen and an arm whose
+     * grip is slipping produce the same mean and the same flat count curve, and
+     * only the second is drift (#63). So: how many deviation kinds each screen
+     * introduced that no earlier screen had.
+     *
+     * Three fixtures, because one proves nothing: an arm that degrades, an arm
+     * that is uniformly wrong, and an arm whose count is flat while the kind
+     * keeps changing. The axis has to separate the second from the third, which
+     * is the reading a flat count cannot give.
+     */
+    it('bends on both axes where the arm actually degrades', async () => {
+      // The standing fixture: clean, then one prop short, then three. New kinds
+      // appear at 7 and at 13, so both axes see it.
+      const run = await bench(
+        ['--pattern', '.ui-consistency/patterns/list.md', '--off', 'off', '--on', 'on', '--json'],
+        root,
+      );
+      const report = JSON.parse(run.stdout) as {
+        drift: { off: { drift: number } };
+        novelty: { off: { kinds: number; early: number; late: number; firstSeen: { position: number }[] } };
+      };
+
+      expect(report.drift.off.drift).toBeGreaterThan(0);
+      expect(report.novelty.off.late).toBeGreaterThan(report.novelty.off.early);
+      // And where each kind entered, which is what makes a curve readable.
+      expect(Math.max(...report.novelty.off.firstSeen.map((one) => one.position))).toBeGreaterThan(6);
+    });
+
+    it('reports a uniformly wrong arm as uniform, not as drifting', async () => {
+      const uniform = join(root, 'uniform');
+      await mkdir(uniform, { recursive: true });
+      for (const n of Array.from({ length: 18 }, (_, at) => String(at + 1).padStart(2, '0'))) {
+        // The same one prop missing on every screen, from the first.
+        await writeFile(join(uniform, `${n}.tsx`), oneOff(n));
+      }
+
+      const run = await bench(
+        ['--pattern', '.ui-consistency/patterns/list.md', '--off', 'uniform', '--on', 'on', '--json'],
+        root,
+      );
+      const report = JSON.parse(run.stdout) as {
+        conformance: { off: { mean: number } };
+        drift: { off: { drift: number } };
+        novelty: { off: { kinds: number; early: number; late: number } };
+      };
+
+      // Wrong throughout, and the count curve is flat — which on its own reads
+      // the same as an arm that never drifted.
+      expect(report.conformance.off.mean).toBeGreaterThan(0);
+      expect(report.drift.off.drift).toBe(0);
+      // The second axis says which of the two it is.
+      expect(report.novelty.off.kinds).toBe(1);
+      expect(report.novelty.off.late).toBe(0);
+      expect(run.stdout).not.toContain('still appearing late');
+
+      await rm(uniform, { recursive: true, force: true });
+    });
+
+    /**
+     * And the axis has to be able to bend, or it says nothing either. A planted
+     * arm that introduces a *different* deviation every few screens is what
+     * drift would actually look like, and the count curve can be flat through
+     * it — which is the whole reason this exists.
+     */
+    it('reports new kinds appearing late, where an arm keeps inventing them', async () => {
+      const drifting = join(root, 'drifting');
+      await mkdir(drifting, { recursive: true });
+      const numbers = Array.from({ length: 18 }, (_, at) => String(at + 1).padStart(2, '0'));
+      for (const [at, n] of numbers.entries()) {
+        // One deviation each, and a *different* one as the batch goes on: the
+        // count is 1 throughout — a perfectly flat curve — while the kind keeps
+        // changing.
+        const which = Math.floor(at / 6);
+        const source =
+          which === 0
+            ? matching(n).replace(' density="compact"', '')
+            : which === 1
+              ? matching(n).replace(` data-testid="t-${n}"`, '')
+              : matching(n).replace('<DataGrid />', '<div />');
+        await writeFile(join(drifting, `${n}.tsx`), source);
+      }
+
+      const run = await bench(
+        ['--pattern', '.ui-consistency/patterns/list.md', '--off', 'drifting', '--on', 'on', '--json'],
+        root,
+      );
+      const report = JSON.parse(run.stdout) as {
+        drift: { off: { drift: number } };
+        novelty: { off: { kinds: number; early: number; late: number } };
+      };
+
+      // The count curve is flat — one deviation per screen from first to last.
+      expect(report.drift.off.drift).toBe(0);
+      // And the novelty axis is not, which is the point.
+      expect(report.novelty.off.kinds).toBeGreaterThan(1);
+      expect(report.novelty.off.late).toBeGreaterThan(0);
+
+      await rm(drifting, { recursive: true, force: true });
+    });
+  });
+
   /**
    * A file nothing could read must come back as *not measured*. Reported as
    * zero deviations it is *not looked at* presented as *matched* — and it
