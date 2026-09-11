@@ -107,5 +107,12 @@ what was decided or found on a date; being overtaken is what a record is for.~~
 so every tracked document is one of the documents above, and the scrub applies
 to all of them without an exception to remember.
 
+**So an instruction to write a measurement up as a dated `docs/findings/`
+document is stale wherever it still appears** — #39's own body asks for one, and
+it was written before #48 deleted the directory. The numbers go where evidence
+lives now: a sentence in `CLAUDE.md` carrying the counts, with the names
+scrubbed exactly as this rule requires. Recreating the directory would undo the
+issue before it.
+
 Before opening a PR, read them against the change and say in the body which were
 read and what was found. "Read, nothing false" is a result.
