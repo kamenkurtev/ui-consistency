@@ -79,6 +79,30 @@ describe('the two benchmark arm prompts', () => {
     expect(onlyOff.length).toBeLessThanOrEqual(1);
   });
 
+  /**
+   * The subtlest way to get a run wrong, and it was got wrong the first time:
+   * the ON arm was told to run the scorer's own command against the scorer's
+   * own pattern and fix what it reported, so its score was bounded at zero by
+   * construction and measured instruction-following (#57).
+   */
+  it('does not tell the ON arm to run the scoring command', async () => {
+    const on = seed(await read('prompt-on.md'));
+
+    expect(on).not.toContain('diff --contract');
+    expect(on).not.toMatch(/\buic\b/);
+    // And no per-file gate of any spelling: the arms would then differ by two
+    // things, and the second alone drives conformance to zero with no
+    // pattern-informed authoring at all.
+    expect(on).not.toMatch(/\bfix what it reports\b/i);
+    expect(on).not.toMatch(/\bcheck it against the pattern\b/i);
+  });
+
+  it('names the contamination in the run procedure, so it is not re-invented', async () => {
+    const readme = await read('README.md');
+    expect(readme).toContain('must not be told to optimise the score');
+    expect(readme).toContain('bounded at zero');
+  });
+
   it('the ON arm reads the same pattern the scorer is given', async () => {
     // Two halves of one run disagreeing about which pattern was under test is
     // unfalsifiable rather than merely wrong, so the path is one value.

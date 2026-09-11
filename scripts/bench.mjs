@@ -119,11 +119,28 @@ async function scoreArm(patternPath, files, cwd) {
     position: index + 1,
     file: basename(one.file),
     deviations: one.deviations,
+    messages: one.messages ?? [],
   }));
+
+  // **What the deviations were, not only how many** (#57). One prop missing on
+  // seven screens and seven different props missing on one screen are the same
+  // mean and are not the same result — and on the first real run the entire
+  // measured difference between the arms was a single boolean prop, which a
+  // mean of 0.39 against 0 does not convey at all.
+  const kinds = new Map();
+  for (const screen of screens) {
+    for (const message of screen.messages) {
+      const entry = kinds.get(message) ?? { message, screens: 0 };
+      entry.screens++;
+      kinds.set(message, entry);
+    }
+  }
+
   return {
     screens,
     measured: screens.filter((one) => one.deviations !== null).length,
     unmeasured: screens.filter((one) => one.deviations === null).length,
+    kinds: [...kinds.values()].sort((a, b) => b.screens - a.screens),
     handedOver: report.handedOver ?? [],
     pattern: report.name ?? null,
   };
@@ -213,6 +230,9 @@ const report = {
     on: { mean: mean(scored.on.screens.filter((o) => o.deviations !== null).map((o) => o.deviations)), measured: scored.on.measured, unmeasured: scored.on.unmeasured },
   },
   drift: { off: curve(scored.off.screens), on: curve(scored.on.screens) },
+  // Distinct deviations and how many screens carried each. A mean hides whether
+  // an arm missed one thing everywhere or everything once.
+  whatWasWrong: { off: scored.off.kinds ?? [], on: scored.on.kinds ?? [] },
   perPosition: Array.from({ length: short }, (_, at) => ({
     position: at + 1,
     off: scored.off.screens[at]?.deviations ?? null,
@@ -249,6 +269,14 @@ if (wantsJson) {
   console.log('\nper position');
   for (const row of report.perPosition) {
     console.log(`  ${String(row.position).padStart(3)}  off ${String(row.off ?? '—').padStart(3)}   on ${String(row.on ?? '—').padStart(3)}`);
+  }
+  for (const arm of ['off', 'on']) {
+    const kinds = report.whatWasWrong[arm];
+    if (kinds.length === 0) continue;
+    console.log(`\nwhat was wrong — ${arm}`);
+    for (const one of kinds) {
+      console.log(`  ${String(one.screens).padStart(3)} screen(s)  ${one.message}`);
+    }
   }
   if (report.handedOverAndNotScored.length > 0) {
     console.log('\nstated by the pattern and scored by nothing here:');
