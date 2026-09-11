@@ -1,0 +1,53 @@
+{
+  "$comment": [
+    "The task set for the with/without benchmark (#34), as data rather than as prose in a script.",
+    "",
+    "JSON and not YAML, though the prior art this copies used YAML: this repository has three runtime",
+    "dependencies and a promise of no install, and a YAML parser for one file is a fourth. Nothing about",
+    "the shape needs it.",
+    "",
+    "Every identifier here is neutral. The set is dogfooded against private repositories, and",
+    ".claude/rules/uic-docs.md is explicit: evidence keeps its numbers and loses its names. `kind` is a",
+    "role, never a project's component name, and the repository and the holder it maps onto are supplied",
+    "at run time — the same way scripts/first-run.mjs takes repository paths, and for the same reason:",
+    "a committed harness cannot carry a repository.",
+    "",
+    "The order is the batch order and it is load-bearing. The claim under test is that the twentieth",
+    "screen drifts and the first does not, so the tasks are numbered and both arms write them in this",
+    "sequence. Shuffling between arms would measure the shuffle."
+  ],
+  "version": 1,
+  "minimumBatch": 15,
+  "tasks": [
+    { "order": 1, "id": "list-01", "kind": "list", "ticket": "A screen listing the records of one collection, with the collection's own filters above the table." },
+    { "order": 2, "id": "list-02", "kind": "list", "ticket": "A screen listing records filtered to one owner, sortable by the date column." },
+    { "order": 3, "id": "detail-01", "kind": "detail", "ticket": "A screen showing one record in full, with its related items beneath." },
+    { "order": 4, "id": "list-03", "kind": "list", "ticket": "A screen listing records awaiting approval, with a bulk action in the header." },
+    { "order": 5, "id": "detail-02", "kind": "detail", "ticket": "A screen showing one record, read-only, with an export action." },
+    { "order": 6, "id": "list-04", "kind": "list", "ticket": "A screen listing archived records, with the archive date shown and no create action." },
+    { "order": 7, "id": "form-01", "kind": "form", "ticket": "A screen creating a record, validating before submit." },
+    { "order": 8, "id": "list-05", "kind": "list", "ticket": "A screen listing records grouped by status, with a count per group." },
+    { "order": 9, "id": "detail-03", "kind": "detail", "ticket": "A screen showing one record with an activity history tab." },
+    { "order": 10, "id": "list-06", "kind": "list", "ticket": "A screen listing records assigned to the signed-in user." },
+    { "order": 11, "id": "form-02", "kind": "form", "ticket": "A screen editing an existing record, with the unchanged fields left untouched on submit." },
+    { "order": 12, "id": "list-07", "kind": "list", "ticket": "A screen listing records matching a saved search, with the search named in the header." },
+    { "order": 13, "id": "detail-04", "kind": "detail", "ticket": "A screen showing one record and the documents attached to it." },
+    { "order": 14, "id": "list-08", "kind": "list", "ticket": "A screen listing records with a date range filter defaulting to this month." },
+    { "order": 15, "id": "detail-05", "kind": "detail", "ticket": "A screen showing one record with its audit trail, most recent first." },
+    { "order": 16, "id": "list-09", "kind": "list", "ticket": "A screen listing records flagged for review, with the reason column." },
+    { "order": 17, "id": "form-03", "kind": "form", "ticket": "A screen creating a record from a template, with the template chosen first." },
+    { "order": 18, "id": "list-10", "kind": "list", "ticket": "A screen listing records due this week, with overdue ones marked." }
+  ],
+  "arms": {
+    "off": {
+      "$comment": "No hook, no skills, no pattern file. The ticket and the repository, and nothing else.",
+      "plugin": false,
+      "establishPatternFirst": false
+    },
+    "on": {
+      "$comment": "The pattern for the kind is established and committed before the arm starts, and the per-file check runs.",
+      "plugin": true,
+      "establishPatternFirst": true
+    }
+  }
+}
