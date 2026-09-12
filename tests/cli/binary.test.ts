@@ -698,6 +698,71 @@ describe('the three silences a user has to be able to tell apart', () => {
     await rm(dir, { recursive: true, force: true });
   });
 
+
+  /**
+   * A workspace package whose manifest names a **built** entry point — the file
+   * the build emits, absent in the checkout this plugin runs in. The declared
+   * entry was taken without looking, so the path answered nothing and the
+   * conventional candidates beneath it were never tried. On one real React
+   * monorepo that was 15 of 15 workspace packages: no chain readable anywhere,
+   * so the three checks that need one could not fire at all (#70).
+   */
+  it('reads a package whose manifest names a built entry point that is not there', async () => {
+    const dir = await project({
+      'package.json': '{"name":"root","workspaces":["packages/*"]}',
+      // `index.js` and `index.d.ts` are what the build emits. Neither exists.
+      'packages/widgets/package.json': '{"name":"@ws/widgets","main":"./index.js","types":"./index.d.ts"}',
+      'packages/widgets/src/index.ts':
+        'export const Button = () => null;\n' +
+        '/** @deprecated Use {@link Button} instead. */\n' +
+        'export const OldButton = () => null;\n',
+      'packages/app/package.json': '{"name":"@ws/app","dependencies":{"@ws/widgets":"*"}}',
+      'packages/app/src/Page.tsx':
+        'import { OldButton } from "@ws/widgets";\nexport const P = () => <OldButton />;\n',
+    });
+
+    const listed = await uic(['inventory', 'packages/app/src/Page.tsx'], dir);
+    expect(listed.stdout).toContain('OldButton');
+    expect(listed.stdout).toContain('@ws/widgets');
+
+    // And the chain checks fire, which is the whole point: falling back is why
+    // there are two detection mechanisms.
+    const run = await uic(['check', 'packages/app/src/Page.tsx'], dir);
+    expect(run.stdout).toContain('OldButton is deprecated');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  /**
+   * Coverage is paid for only where there are no findings, which leaves a hole
+   * one level below the one #37 closed: a command that finds *something* said
+   * nothing about which of its checks ran. 31 findings from four checks read as
+   * a working tool while three were dead (#70).
+   */
+  it('says a chain check could not run even when another check found something', async () => {
+    const dir = await project({
+      'package.json': '{"name":"root","workspaces":["packages/*"]}',
+      // Nothing readable under any name: no entry, built or conventional.
+      'packages/widgets/package.json': '{"name":"@ws/widgets","main":"./index.js"}',
+      'packages/widgets/src/entry.ts': 'export const Button = () => null;\n',
+      'packages/app/package.json': '{"name":"@ws/app","dependencies":{"@ws/widgets":"*"}}',
+      'packages/app/src/Page.tsx':
+        'import { Button } from "@ws/widgets";\n' +
+        'export const P = () => <Button sx={{ padding: "12px" }} />;\n',
+    });
+
+    const run = await uic(['check', 'packages/app/src/Page.tsx'], dir);
+
+    // A check that needs no chain still found something…
+    expect(run.stdout).toContain("padding: '12px' is an absolute length.");
+    // …and the three that need one say they did not run, rather than their
+    // silence reading as a clean result.
+    expect(run.stderr).toContain('did not run');
+    expect(run.stderr).toContain('imports, deprecated usage');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
   /**
    * A pattern goes stale and, until now, nothing refreshed it (#28).
    *

@@ -1077,6 +1077,36 @@ async function givenFiles(
   return { absolute, problems };
 }
 
+/**
+ * Could a chain be read for any of these files?
+ *
+ * Not *is any file on a chain* — a package whose entry point names build output
+ * absent from a checkout resolves a chain of layers and reads nothing from any
+ * of them, which is the case #70 is about. So the question is asked of the
+ * inventory, which is what the three chain checks actually consume.
+ *
+ * Stops at the first yes: on a set where everything works this costs one
+ * inventory read, and that one is already cached from the run above.
+ */
+async function someFileIsOnAChain(rootDir: string, files: string[]): Promise<boolean> {
+  const config = await readConfig(rootDir).catch(() => null);
+  const packages = applyConfig(await cachedPackages(rootDir).catch(() => []), config);
+  if (packages.length === 0) return false;
+  const prefer = config?.prefer ?? [];
+
+  for (const file of files) {
+    const chain = resolveChain(file, packages, prefer);
+    if (chain.length === 0) continue;
+    const inventory = await cachedInventory(rootDir, chain).catch(() => null);
+    // A layer with no symbols read is a layer that answered nothing, and a
+    // chain of those is what a built entry point produces.
+    if (inventory !== null && Object.values(inventory.layers).some((one) => Object.keys(one).length > 0)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /** The same advice both callers give, in one place. */
 function sayHowToNameFiles(problems: string[]): void {
   for (const problem of problems) console.error(problem);
@@ -1109,6 +1139,18 @@ async function check(rootDir: string, args: string[]): Promise<number> {
 
   const findings = await analyzeProject(rootDir, absolute, { withinLayer });
 
+  // **A check that could not run says so whether or not the others found
+  // something** (#70). Coverage is paid for only where there are no findings,
+  // which is the right cost decision and leaves a hole one level below the one
+  // #37 closed: #37 made a *command* that finds nothing say what it read, and a
+  // command that finds something still said nothing about which of its seven
+  // checks ran. On one real monorepo 31 findings from four checks read as a
+  // working tool while three were dead — every workspace package named a built
+  // entry point, so no chain was readable anywhere.
+  //
+  // Not a coverage report on every run: one line, and only where a chain could
+  // be read for **no file in the set**, which is a fact about the run rather
+  // than about any file in it.
   // A file on no chain is skipped, silently and by design — most of what a
   // repository holds is not UI. Every file skipped is a different matter: it
   // means detection found no package that owns any of them, and an exit code of
@@ -1164,6 +1206,26 @@ async function check(rootDir: string, args: string[]): Promise<number> {
     // Absolute paths are right for a caller; a reader wants them repo-relative.
     console.log(`${formatFinding({ ...finding, file: relative(rootDir, finding.file) })}\n`);
   }
+
+  // **A check that could not run says so whether or not the others found
+  // something** (#70). Coverage is paid for only where there are no findings,
+  // which is the right cost decision and leaves a hole one level below the one
+  // #37 closed: #37 made a *command* that finds nothing say what it read, and a
+  // command that finds something still said nothing about which of its seven
+  // checks ran. On one real monorepo 31 findings from four checks read as a
+  // working tool while three were dead — every workspace package named a built
+  // entry point, so no chain was readable anywhere.
+  //
+  // Not a coverage report on every run: one line, after the findings, and only
+  // where a chain could be read for **no file in the set**, which is a fact
+  // about the run rather than about any file in it.
+  if (findings.length > 0 && !(await someFileIsOnAChain(rootDir, absolute))) {
+    console.error('Note: no file in this set belongs to a package whose entry point could be read,');
+    console.error('so imports, deprecated usage and the layer half of substitutions did not run.');
+    console.error('`uic inventory <file>` says which layers were tried. What is above is the four');
+    console.error('checks that need no chain.');
+  }
+
   return findings.length > 0 ? 1 : 0;
 }
 
@@ -1229,6 +1291,12 @@ async function inventory(rootDir: string, args: string[]): Promise<number> {
     console.error(`Nothing readable on the ${chain.length} layer(s) ${named} sits on:`);
     for (const layer of chain.slice(0, 10)) console.error(`  ${layer.name}`);
     console.error('Every one of them is external, or its entry point could not be read.');
+    // **Two answers that need different actions** (#70). A third-party package
+    // has no source here and never will; a workspace package whose manifest
+    // names build output has source right there, under a name nothing looked
+    // for. Saying only "external" sends a reader to the wrong one.
+    console.error('A workspace package naming a built entry — `"main": "./index.js"` in a checkout —');
+    console.error('is the second case, and `src/index.ts` beside it is what would be read instead.');
     return 1;
   }
   return 0;

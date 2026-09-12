@@ -97,14 +97,43 @@ const ENTRY_CANDIDATES = [
  *
  * `source` is consulted before `module` and `main` because a workspace package
  * usually points those at build output that may not exist yet.
+ *
+ * **And a declared entry is taken only if it is there** (#70). This knew the
+ * fields point at build output and then returned one without looking, so a
+ * package declaring `"main": "./index.js"` — the file the build emits, absent
+ * in the checkout this plugin runs in — answered a path nothing could read, and
+ * the conventional candidates beneath were never tried. On one real React
+ * monorepo that was **15 of 15 workspace packages**: no chain readable for any
+ * file, so the three checks that need one — imports, deprecated usage, and the
+ * layer half of substitutions — could not fire at all. `uic check` returned 31
+ * findings over 1 961 files, none of them import findings, and nothing said the
+ * three were dead. The same binary on a workspace bound by `tsconfig` aliases
+ * returned 81 import findings over 1 606 files; the difference was not the
+ * code.
+ *
+ * Falling through is the whole point of having a second mechanism, and
+ * `CLAUDE.md` describes exactly two — a declared package taken at its word, and
+ * aliases filling in what no manifest describes. A manifest describing an entry
+ * that only exists after a build is a third case, and it belongs to the
+ * fallback rather than to the word.
  */
 export async function entryFileFor(packageRoot: string): Promise<string | null> {
+  const readable = async (path: string): Promise<boolean> =>
+    (await readFile(path, 'utf8').catch(() => null)) !== null;
+
   const raw = await readFile(join(packageRoot, 'package.json'), 'utf8').catch(() => null);
   if (raw !== null) {
     try {
       const pkg = JSON.parse(raw) as { source?: unknown; main?: unknown; module?: unknown };
       for (const field of [pkg.source, pkg.module, pkg.main]) {
-        if (typeof field === 'string') return join(packageRoot, field);
+        if (typeof field !== 'string') continue;
+        const declared = join(packageRoot, field);
+        if (await readable(declared)) return declared;
+        // A declared entry with no extension resolves the way a bundler would,
+        // which is also how a `source` field is usually written.
+        for (const suffix of ['.ts', '.tsx', '.js', '.jsx', '/index.ts', '/index.tsx', '/index.js']) {
+          if (await readable(`${declared}${suffix}`)) return `${declared}${suffix}`;
+        }
       }
     } catch {
       // Fall through to the conventional candidates.
@@ -113,7 +142,7 @@ export async function entryFileFor(packageRoot: string): Promise<string | null> 
 
   for (const candidate of ENTRY_CANDIDATES) {
     const path = join(packageRoot, candidate);
-    if ((await readFile(path, 'utf8').catch(() => null)) !== null) return path;
+    if (await readable(path)) return path;
   }
   return null;
 }
