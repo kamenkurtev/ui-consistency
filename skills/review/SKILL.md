@@ -5,7 +5,10 @@ description: Use when the user asks whether a screen or component fits the rest 
 
 # Deep design review of a screen
 
-Read `${CLAUDE_PLUGIN_ROOT}/rules/roles-and-names.md` first. It is the rule that
+Read `${CLAUDE_PLUGIN_ROOT}/rules/raw-values.md` and
+`${CLAUDE_PLUGIN_ROOT}/rules/roles-and-names.md` first. The first is what used
+to be the style and emoji checks (#79) and is now yours to apply by reading the
+file. The second is the rule that
 stops an empty answer being read as a clean one, which is the commonest way a
 second opinion goes wrong.
 

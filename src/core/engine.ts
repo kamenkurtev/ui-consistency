@@ -1,9 +1,6 @@
 import { importSentence } from './format.js';
 import { checkSource } from './check.js';
-import { styleFindings } from '../checks/style.js';
-import { emojiFindings } from '../checks/emoji.js';
 import { propFindings } from '../checks/props.js';
-import { deprecatedUsageFindings } from '../checks/deprecated-usage.js';
 import { retrieve } from '../knowledge/retrieve.js';
 import { substitutionRules } from '../knowledge/rules.js';
 import { substitutionFindings } from '../checks/substitution.js';
@@ -82,31 +79,6 @@ function importFinding(violation: Violation): Finding {
 }
 
 /**
- * Drop the import-level report of a deprecation that is also reported where it
- * is rendered.
- *
- * Both are true, and saying both twice is how a check trains people to skim
- * past it. The usage is the line that has to change, so the usage is what
- * survives.
- */
-function collapseDeprecations(findings: Finding[]): Finding[] {
-  const usedAndFlagged = new Set(
-    findings
-      .filter((finding) => finding.level === 'deprecated' && finding.importedFrom === undefined)
-      .map((finding) => finding.symbol),
-  );
-
-  return findings.filter(
-    (finding) =>
-      !(
-        finding.reason === 'deprecated' &&
-        finding.importedFrom !== undefined &&
-        usedAndFlagged.has(finding.symbol)
-      ),
-  );
-}
-
-/**
  * Every deterministic check over one file, then — only if they all passed —
  * the offer of a fuzzy review.
  *
@@ -155,11 +127,8 @@ export async function runEngine(
       ? { fragments: [] }
       : { fragments: retrieve(source, ctx.knowledge, { filePath }) };
 
-  const tier1 = collapseDeprecations([
+  const tier1 = [
     ...imports,
-    ...styleFindings(filePath, source),
-    ...emojiFindings(filePath, source),
-    ...deprecatedUsageFindings(filePath, source, ctx.chain, ctx.inventory),
     ...(ctx.conventions === undefined
       ? []
       : propFindings(filePath, source, ctx.conventions, ctx.conventionsFrom)),
@@ -182,7 +151,7 @@ export async function runEngine(
           ctx.chain,
           ctx.inventory,
         )),
-  ]).sort((a, b) => a.line - b.line);
+  ].sort((a, b) => a.line - b.line);
 
   if (tier1.length > 0) return { tier1 };
   if (ctx.review === undefined || ctx.knowledge === undefined) return { tier1 };

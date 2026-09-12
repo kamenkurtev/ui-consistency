@@ -23,6 +23,9 @@ so it can be re-read rather than remembered.
   minus invariant*: the explicit list of what must not be copied.
 - **`roles-and-names.md`** — roles are universal, names are local, and an empty
   answer is not a clean one.
+- **`raw-values.md`** — colours, lengths and emoji standing in for icons. Not a
+  judgement about the pattern: it is the one rule that applies to every line you
+  write, whatever the kind.
 - **`routes-and-breadcrumbs.md`** — where a route and a trail come from, per
   router family. The breadcrumb is the one got wrong nearly every time.
 - **`pattern-file.md`** — what a pattern file states and how, which is the

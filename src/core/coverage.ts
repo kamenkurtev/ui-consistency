@@ -25,24 +25,9 @@ export interface Coverage {
   onAChain: number;
   /** Packages detection found at all. */
   packages: number;
-  /**
-   * The style dialects the files actually use.
-   *
-   * The style check reads `sx` and inline `style` objects, and nothing else can
-   * be read from one file's AST. A project that styles with class strings or
-   * CSS-in-template is outside it **by construction**, and saying so is a
-   * different answer from a clean report.
-   */
-  styledWith: { sx: number; style: number; classes: number; template: number };
   /** Whether the project has written anything down for the curated checks. */
   stated: number;
 }
-
-const SX = /\bsx=\{/;
-const INLINE = /\bstyle=\{\{/;
-const CLASSES = /\b(?:className|class)=["'{]/;
-// `styled.div\``, `css\``, `createGlobalStyle\`` — a tagged template holding CSS.
-const TEMPLATE = /\b(?:styled|css|createGlobalStyle|keyframes)\b[\s\S]{0,40}?`/;
 
 /** What the run was able to look at, read once over the files it was given. */
 export async function coverageOf(rootDir: string, files: string[]): Promise<Coverage> {
@@ -57,7 +42,6 @@ export async function coverageOf(rootDir: string, files: string[]): Promise<Cove
     read: 0,
     onAChain: 0,
     packages: packages.length,
-    styledWith: { sx: 0, style: 0, classes: 0, template: 0 },
     stated: knowledge?.fragments.length ?? 0,
   };
 
@@ -66,10 +50,6 @@ export async function coverageOf(rootDir: string, files: string[]): Promise<Cove
     const source = await readFile(file, 'utf8').catch(() => null);
     if (source === null) continue;
     found.read++;
-    if (SX.test(source)) found.styledWith.sx++;
-    if (INLINE.test(source)) found.styledWith.style++;
-    if (CLASSES.test(source)) found.styledWith.classes++;
-    if (TEMPLATE.test(source)) found.styledWith.template++;
   }
 
   return found;
@@ -86,7 +66,6 @@ export async function coverageOf(rootDir: string, files: string[]): Promise<Cove
  */
 export function sayCoverage(found: Coverage): string[] {
   const said: string[] = [];
-  const { styledWith: styled } = found;
 
   said.push(`No findings. ${found.read} of ${found.given} file(s) read.`);
 
@@ -100,34 +79,24 @@ export function sayCoverage(found: Coverage): string[] {
   if (found.onAChain === 0) {
     said.push(
       found.packages === 0
-        ? 'No package was detected, so imports and deprecated usage did not run.'
-        : `No file belongs to any of the ${found.packages} detected package(s), so imports and deprecated usage did not run.`,
+        ? 'No package was detected, so the import check did not run.'
+        : `No file belongs to any of the ${found.packages} detected package(s), so the import check did not run.`,
     );
     said.push('That is a detection gap, not a clean result — `uic scan` shows what was looked for.');
   } else if (found.onAChain < found.read) {
     said.push(
-      `${found.onAChain} of them belong to a detected package; imports and deprecated usage did not run on the other ${found.read - found.onAChain}.`,
+      `${found.onAChain} of them belong to a detected package; the import check did not run on the other ${found.read - found.onAChain}.`,
     );
   }
 
-  // What the style check can see, and what it cannot see by construction.
-  const seen = styled.sx + styled.style;
-  if (seen === 0 && (styled.classes > 0 || styled.template > 0)) {
-    const how = [
-      ...(styled.classes > 0 ? [`${styled.classes} with class strings`] : []),
-      ...(styled.template > 0 ? [`${styled.template} with CSS in template literals`] : []),
-    ].join(' and ');
-    said.push(
-      `The style check reads \`sx\` and inline \`style\` objects, and no file uses either — ${how}.`,
-    );
-    said.push('Those are out of reach of a per-file AST check by construction, not clean.');
-  } else if (seen > 0) {
-    const how = [
-      ...(styled.sx > 0 ? [`${styled.sx} with \`sx\``] : []),
-      ...(styled.style > 0 ? [`${styled.style} with inline \`style\``] : []),
-    ].join(' and ');
-    said.push(`The style check read ${how}, and found no hardcoded value in them.`);
-  }
+  // ~~What the style check can see, and what it cannot see by construction.~~
+  //
+  // **Gone with the check (#79).** Raw colours, lengths and emoji are
+  // `rules/raw-values.md` now, obeyed while the line is written; a coverage
+  // report has nothing to say about whether an agent read a rule, and saying
+  // something anyway would be the invented reassurance #37 exists to prevent.
+  // The rule states its own limit — a class-based system is out of reach — in
+  // the place the agent reads it.
 
   // The curated half, which is silent until somebody writes something down.
   if (found.stated === 0) {

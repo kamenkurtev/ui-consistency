@@ -20,7 +20,9 @@ itself: a queue written to disk off a guess about English, before a file has
 been read, would be a process nobody asked for. The judgement that the set is
 real is made here, with the files in front of you.
 
-Read `${CLAUDE_PLUGIN_ROOT}/rules/family-and-particulars.md` before the first
+Read `${CLAUDE_PLUGIN_ROOT}/rules/raw-values.md` once before the first file —
+it applies to every line of every screen in the queue — and
+`${CLAUDE_PLUGIN_ROOT}/rules/family-and-particulars.md` before the first
 file. *Reference minus invariant* is the whole of what makes a rollout safe: the
 seed page's own business is exactly what must not be carried into the other
 twenty-nine.

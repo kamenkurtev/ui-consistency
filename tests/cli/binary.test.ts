@@ -515,19 +515,34 @@ describe('the built binary > a repository with no package it can detect', () => 
    * something, and this project has already been through one round of being
    * silent on every repository's first day.
    */
-  it('still reports what needs no package, rather than exiting 0', async () => {
+  /**
+   * ~~It reported the raw values and the emoji.~~ **Since #79 those are a rule
+   * and the program has nothing to say about this file** — no package, nothing
+   * written down, so none of the four remaining checks can fire. That is the
+   * trade #76 took knowingly, and it is exactly the case #37 exists for: the
+   * answer must be *what was read and which checks could not run*, never an
+   * empty stdout and exit 0.
+   *
+   * So what is asserted is the property this test was written for, which is
+   * not about any particular finding: **a fresh install is not silent.**
+   */
+  it('says what it read and what could not run, rather than being silent', async () => {
     const run = await uic(['check', 'src/W.tsx'], workspace);
 
-    expect(run.code).toBe(1);
-    expect(run.stdout).toContain('fontSize: 12 is a raw number written into a style object.');
-    expect(run.stdout).toContain("color: '#f00' is a colour literal.");
-    expect(run.stdout).toContain('emoji used as an icon');
+    // On stderr, where every coverage answer in this tool goes: stdout is for
+    // findings, and there are none to print.
+    expect(run.stderr).toContain('1 of 1 file(s) read');
+    expect(run.stderr).toContain('the import check did not run');
+    expect(run.stderr).toContain('detection gap, not a clean result');
+    expect(run.stderr).toContain('Nothing is written down');
   });
 
   it('says which checks did not run, rather than that nothing was checked', async () => {
     const run = await uic(['check', 'src/W.tsx'], workspace);
 
-    expect(run.stderr).toContain('The checks that read one — imports, deprecated usage — did not run.');
+    expect(run.stderr).toContain(
+      'The checks that read one — the import check, and the layer half of substitutions — did not run.',
+    );
     expect(run.stderr).toContain('detection gap, not a clean result');
     expect(run.stderr).not.toContain('nothing was checked');
   });
@@ -740,25 +755,32 @@ describe('the three silences a user has to be able to tell apart', () => {
    * a working tool while three were dead (#70).
    */
   it('says a chain check could not run even when another check found something', async () => {
+    // The chainless check is a **stated page rule** since #79 — the style check
+    // it used to be is `rules/raw-values.md` now. Which check speaks is not the
+    // point; that one does, while the chain checks say they could not, is.
     const dir = await project({
       'package.json': '{"name":"root","workspaces":["packages/*"]}',
       // Nothing readable under any name: no entry, built or conventional.
       'packages/widgets/package.json': '{"name":"@ws/widgets","main":"./index.js"}',
       'packages/widgets/src/entry.ts': 'export const Button = () => null;\n',
       'packages/app/package.json': '{"name":"@ws/app","dependencies":{"@ws/widgets":"*"}}',
+      '.ui-consistency/pages.md':
+        '# Pages\n\n## Page structure\n\n' +
+        'A page is `<PageLayout>` holding, in order: `<PageHeader>`, `<PageBody>`.\n',
       'packages/app/src/Page.tsx':
         'import { Button } from "@ws/widgets";\n' +
-        'export const P = () => <Button sx={{ padding: "12px" }} />;\n',
+        'export const P = () => (\n  <PageLayout>\n    <PageBody><Button /></PageBody>\n' +
+        '    <PageHeader />\n  </PageLayout>\n);\n',
     });
 
     const run = await uic(['check', 'packages/app/src/Page.tsx'], dir);
 
     // A check that needs no chain still found something…
-    expect(run.stdout).toContain("padding: '12px' is an absolute length.");
-    // …and the three that need one say they did not run, rather than their
+    expect(run.stdout).toContain('"Page structure" says the order is header, content.');
+    // …and the ones that need one say they did not run, rather than their
     // silence reading as a clean result.
     expect(run.stderr).toContain('did not run');
-    expect(run.stderr).toContain('imports, deprecated usage');
+    expect(run.stderr).toContain('the import check');
 
     await rm(dir, { recursive: true, force: true });
   });
@@ -1076,8 +1098,10 @@ describe('what a check that found nothing says about itself', () => {
 
     expect(run.stdout.trim()).toBe('');
     expect(run.stderr).toContain('No findings. 1 of 1 file(s) read.');
-    // The style check saw this project's dialect and had nothing to say.
-    expect(run.stderr).toContain('`sx`');
+    // ~~The style check saw this project's dialect and had nothing to say.~~ —
+    // the style check is `rules/raw-values.md` now (#79) and a coverage report
+    // has nothing truthful to say about whether an agent read a rule.
+    expect(run.stderr).toContain('Nothing is written down');
     // And it is not called clean because it produced no findings.
     expect(run.stderr).not.toContain('clean');
     expect(run.code).toBe(0);
@@ -1086,27 +1110,27 @@ describe('what a check that found nothing says about itself', () => {
   });
 
   /**
-   * The one thing that is legitimately silent and must say so. Class- and
+   * ~~The one thing that is legitimately silent and must say so. Class- and
    * template-based systems are out of reach of a per-file AST check **by
    * construction**, which is a correct answer and a very different one from a
-   * clean report.
+   * clean report.~~
+   *
+   * **The check whose reach this described is gone (#79)**, so there is no
+   * longer a coverage sentence to assert. The limit itself is unchanged and is
+   * stated in `rules/raw-values.md`, in the place the agent reads it — which is
+   * where the rule can also say what to do about it, and a coverage line never
+   * could. Asserted as text there rather than as behaviour here, because a
+   * rule's content is all a rule has.
    */
-  it('says the style check cannot see a project that styles in template literals', async () => {
-    const dir = await project({
-      'package.json': '{"name":"styled"}',
-      'src/A.tsx':
-        "import styled from 'styled-components';\n" +
-        'const Box = styled.div`color: #f00; padding: 12px;`;\n' +
-        'export const A = () => <Box className="wide" />;\n',
-    });
+  it('states its own limit in the rule, since no check speaks for it any more', async () => {
+    const rule = await readFile(
+      fileURLToPath(new URL('../../rules/raw-values.md', import.meta.url)),
+      'utf8',
+    );
 
-    const run = await uic(['check', 'src/A.tsx'], dir);
-
-    expect(run.stderr).toContain('no file uses either');
-    expect(run.stderr).toContain('CSS in template literals');
-    expect(run.stderr).toContain('out of reach of a per-file AST check by construction, not clean');
-
-    await rm(dir, { recursive: true, force: true });
+    expect(rule).toContain('out of reach');
+    expect(rule).toMatch(/Tailwind|CSS modules/u);
+    expect(rule).toContain('not that the screen is clean');
   });
 
   /**

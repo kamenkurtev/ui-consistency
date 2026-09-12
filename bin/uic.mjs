@@ -9885,7 +9885,7 @@ var StatementParser = class extends ExpressionParser {
     return this.finishNode(node, isForIn ? "ForInStatement" : "ForOfStatement");
   }
   parseVar(node, isFor, kind, allowMissingInitializer = false) {
-    const declarations2 = node.declarations = [];
+    const declarations = node.declarations = [];
     node.kind = kind;
     for (; ; ) {
       const decl = this.startNode();
@@ -9902,7 +9902,7 @@ var StatementParser = class extends ExpressionParser {
           });
         }
       }
-      declarations2.push(this.finishNode(decl, "VariableDeclarator"));
+      declarations.push(this.finishNode(decl, "VariableDeclarator"));
       if (!this.eat(8)) break;
     }
     return node;
@@ -21024,7 +21024,7 @@ async function tablesNear(screen, root) {
   const found = [];
   const seen = /* @__PURE__ */ new Set();
   let budget = MAX_READS;
-  const collect3 = async (dir2, skip, descend) => {
+  const collect2 = async (dir2, skip, descend) => {
     if (budget <= 0 || found.length >= MAX_TABLES) return;
     const entries = await readdir7(dir2, { withFileTypes: true }).catch(() => null);
     budget--;
@@ -21046,13 +21046,13 @@ async function tablesNear(screen, root) {
     if (!descend) return;
     for (const folder of folders) {
       if (budget <= 0 || found.length >= MAX_TABLES) return;
-      await collect3(folder, null, false);
+      await collect2(folder, null, false);
     }
   };
   let dir = dirname5(screen);
   let from = null;
   for (; ; ) {
-    await collect3(dir, from, true);
+    await collect2(dir, from, true);
     if (dir === root || budget <= 0) break;
     const next = dirname5(dir);
     if (next === dir) break;
@@ -21566,7 +21566,7 @@ async function siblingScreens(target, options) {
     const found = inside2.filter(screen).find((file) => ROUTE_SCREEN2.test(file) || file.startsWith(name) || file.startsWith("index"));
     return found === void 0 ? null : join14(folder, found);
   };
-  const collect3 = async (from, depth, into) => {
+  const collect2 = async (from, depth, into) => {
     if (depth < 0 || into.length >= maxSiblings || budget <= 0) return;
     const entries2 = await readDirectory(from).catch(() => null);
     if (entries2 === null) return;
@@ -21581,7 +21581,7 @@ async function siblingScreens(target, options) {
       if (inside2 === null) continue;
       const found = chooseIn(folder, name, inside2);
       if (found !== null) into.push(found);
-      await collect3(folder, depth - 1, into);
+      await collect2(folder, depth - 1, into);
     }
   };
   const inside = (path) => {
@@ -21600,7 +21600,7 @@ async function siblingScreens(target, options) {
   }
   for (const scope of scopes) {
     const found = [];
-    await collect3(scope.from, scope.depth, found);
+    await collect2(scope.from, scope.depth, found);
     const kept = found.filter(notMine);
     if (kept.length >= quorum) return { screens: kept, from: "folder" };
     if (budget <= 0) break;
@@ -23435,10 +23435,6 @@ function shapeReport(corpora) {
 
 // src/core/coverage.ts
 import { readFile as readFile22 } from "node:fs/promises";
-var SX = /\bsx=\{/;
-var INLINE2 = /\bstyle=\{\{/;
-var CLASSES = /\b(?:className|class)=["'{]/;
-var TEMPLATE = /\b(?:styled|css|createGlobalStyle|keyframes)\b[\s\S]{0,40}?`/;
 async function coverageOf(rootDir, files) {
   const config = await readConfig(rootDir);
   const packages = applyConfig(await cachedPackages(rootDir), config);
@@ -23449,7 +23445,6 @@ async function coverageOf(rootDir, files) {
     read: 0,
     onAChain: 0,
     packages: packages.length,
-    styledWith: { sx: 0, style: 0, classes: 0, template: 0 },
     stated: knowledge?.fragments.length ?? 0
   };
   for (const file of files) {
@@ -23457,16 +23452,11 @@ async function coverageOf(rootDir, files) {
     const source = await readFile22(file, "utf8").catch(() => null);
     if (source === null) continue;
     found.read++;
-    if (SX.test(source)) found.styledWith.sx++;
-    if (INLINE2.test(source)) found.styledWith.style++;
-    if (CLASSES.test(source)) found.styledWith.classes++;
-    if (TEMPLATE.test(source)) found.styledWith.template++;
   }
   return found;
 }
 function sayCoverage(found) {
   const said = [];
-  const { styledWith: styled } = found;
   said.push(`No findings. ${found.read} of ${found.given} file(s) read.`);
   if (found.read === 0) {
     said.push("None of them could be read, so nothing was checked at all.");
@@ -23474,30 +23464,13 @@ function sayCoverage(found) {
   }
   if (found.onAChain === 0) {
     said.push(
-      found.packages === 0 ? "No package was detected, so imports and deprecated usage did not run." : `No file belongs to any of the ${found.packages} detected package(s), so imports and deprecated usage did not run.`
+      found.packages === 0 ? "No package was detected, so the import check did not run." : `No file belongs to any of the ${found.packages} detected package(s), so the import check did not run.`
     );
     said.push("That is a detection gap, not a clean result \u2014 `uic scan` shows what was looked for.");
   } else if (found.onAChain < found.read) {
     said.push(
-      `${found.onAChain} of them belong to a detected package; imports and deprecated usage did not run on the other ${found.read - found.onAChain}.`
+      `${found.onAChain} of them belong to a detected package; the import check did not run on the other ${found.read - found.onAChain}.`
     );
-  }
-  const seen = styled.sx + styled.style;
-  if (seen === 0 && (styled.classes > 0 || styled.template > 0)) {
-    const how = [
-      ...styled.classes > 0 ? [`${styled.classes} with class strings`] : [],
-      ...styled.template > 0 ? [`${styled.template} with CSS in template literals`] : []
-    ].join(" and ");
-    said.push(
-      `The style check reads \`sx\` and inline \`style\` objects, and no file uses either \u2014 ${how}.`
-    );
-    said.push("Those are out of reach of a per-file AST check by construction, not clean.");
-  } else if (seen > 0) {
-    const how = [
-      ...styled.sx > 0 ? [`${styled.sx} with \`sx\``] : [],
-      ...styled.style > 0 ? [`${styled.style} with inline \`style\``] : []
-    ].join(" and ");
-    said.push(`The style check read ${how}, and found no hardcoded value in them.`);
   }
   if (found.stated === 0) {
     said.push(
@@ -23753,7 +23726,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.110";
+var VERSION = "0.14.111";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -23943,192 +23916,6 @@ function checkSource(filePath, source, chain, inventory2) {
   return violations;
 }
 
-// src/checks/css-values.ts
-var HEX = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
-var COLOUR_FUNCTION = /^(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/i;
-var ABSOLUTE_LENGTH = /^-?\d*\.?\d+(?:px|pt|pc|in|cm|mm)$/i;
-var ZERO_LENGTH = /^-?0*\.?0*(?:px|pt|pc|in|cm|mm)?$/i;
-var isColourValue = (value) => HEX.test(value) || COLOUR_FUNCTION.test(value);
-var isLengthValue = (value) => ABSOLUTE_LENGTH.test(value);
-var isZeroLength = (value) => ZERO_LENGTH.test(value);
-var SIZE_KEYS = /* @__PURE__ */ new Set(["fontSize"]);
-var SCALED_IN_SX = /* @__PURE__ */ new Set(["borderRadius", "letterSpacing"]);
-var SPACING_KEYS = /* @__PURE__ */ new Set([
-  "margin",
-  "marginTop",
-  "marginRight",
-  "marginBottom",
-  "marginLeft",
-  "padding",
-  "paddingTop",
-  "paddingRight",
-  "paddingBottom",
-  "paddingLeft",
-  "gap",
-  "rowGap",
-  "columnGap",
-  "spacing",
-  "m",
-  "mt",
-  "mr",
-  "mb",
-  "ml",
-  "mx",
-  "my",
-  "p",
-  "pt",
-  "pr",
-  "pb",
-  "pl",
-  "px",
-  "py"
-]);
-var kebab = (key) => key.replace(/([A-Z])/gu, "-$1").replace(/^-/u, "").toLowerCase();
-var LENGTH_PROPERTIES = new Set(
-  [...SIZE_KEYS, ...SPACING_KEYS, ...SCALED_IN_SX, "lineHeight"].flatMap((key) => [
-    key,
-    kebab(key)
-  ])
-);
-var takesLength = (property) => LENGTH_PROPERTIES.has(property) || LENGTH_PROPERTIES.has(kebab(property));
-
-// src/checks/style.ts
-var UNITLESS = /* @__PURE__ */ new Set(["lineHeight", "opacity", "zIndex", "flexGrow", "flexShrink", "order"]);
-function isRawNumber(attribute, key) {
-  if (UNITLESS.has(key)) return false;
-  if (SIZE_KEYS.has(key)) return true;
-  if (attribute !== "style") return false;
-  return SPACING_KEYS.has(key) || SCALED_IN_SX.has(key);
-}
-function propertyKey(node) {
-  if (node.type !== "ObjectProperty" || node.computed) return null;
-  const key = node.key;
-  if (key.type === "Identifier") return key.name;
-  if (key.type === "StringLiteral") return key.value;
-  return null;
-}
-function unwrapNegative(value) {
-  if (value.type === "UnaryExpression" && value.operator === "-") {
-    return { node: value.argument, negated: true };
-  }
-  return { node: value, negated: false };
-}
-function collect2(attribute, object, file, findings) {
-  for (const property of object.properties) {
-    const key = propertyKey(property);
-    if (key === null || property.type !== "ObjectProperty") continue;
-    if (property.value.type === "ObjectExpression") {
-      collect2(attribute, property.value, file, findings);
-      continue;
-    }
-    const { node, negated } = unwrapNegative(property.value);
-    const line = property.loc?.start.line ?? 1;
-    if (node.type === "NumericLiteral") {
-      if (!isRawNumber(attribute, key) || node.value === 0) continue;
-      const shown = `${negated ? "-" : ""}${node.value}`;
-      findings.push({
-        file,
-        line,
-        level: "style",
-        message: `${quoted(key)}: ${quoted(String(shown))} is a raw number written into a style object.`
-      });
-      continue;
-    }
-    if (node.type === "StringLiteral") {
-      const value = node.value;
-      if (isColourValue(value)) {
-        findings.push({
-          file,
-          line,
-          level: "style",
-          message: `${quoted(key)}: '${quoted(value)}' is a colour literal.`
-        });
-        continue;
-      }
-      if (takesLength(key) && isLengthValue(value) && !isZeroLength(value)) {
-        findings.push({
-          file,
-          line,
-          level: "style",
-          message: `${quoted(key)}: '${quoted(value)}' is an absolute length.`
-        });
-      }
-      continue;
-    }
-  }
-}
-function styleAttributeName(node) {
-  if (node.name.type !== "JSXIdentifier") return null;
-  const name = node.name.name;
-  return name === "sx" || name === "style" ? name : null;
-}
-function styleFindings(filePath, source) {
-  const ast = parseModule(source, filePath);
-  if (ast === null) return [];
-  const findings = [];
-  walk(ast.program, (node) => {
-    if (node.type !== "JSXAttribute") return;
-    const attribute = styleAttributeName(node);
-    const value = node.value;
-    if (attribute !== null && value?.type === "JSXExpressionContainer" && value.expression.type === "ObjectExpression") {
-      collect2(attribute, value.expression, filePath, findings);
-    }
-  });
-  return findings.sort((a, b) => a.line - b.line);
-}
-
-// src/checks/emoji.ts
-var EMOJI = /[\u{1F300}-\u{1FAFF}\u{1F000}-\u{1F0FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{1F900}-\u{1F9FF}]/u;
-function isEmojiOnly(text) {
-  const trimmed = text.trim();
-  if (trimmed === "" || !EMOJI.test(trimmed)) return false;
-  return !/[\p{L}\p{N}]/u.test(trimmed);
-}
-var ICON_SLOTS = /* @__PURE__ */ new Set([
-  "icon",
-  "startIcon",
-  "endIcon",
-  "avatar",
-  "logo",
-  "iconName",
-  "leftIcon",
-  "rightIcon"
-]);
-function emojiFinding(file, line, text) {
-  return {
-    file,
-    line,
-    level: "reuse",
-    message: `${quoted(text)} is an emoji used as an icon. Use the design system's icon component so it matches the others.`
-  };
-}
-function emojiFindings(filePath, source) {
-  const ast = parseModule(source, filePath);
-  if (ast === null) return [];
-  const findings = [];
-  walk(ast.program, (node) => {
-    if (node.type === "JSXElement") {
-      const element = node;
-      const line = element.openingElement.loc?.start.line ?? 1;
-      for (const child of element.children) {
-        if (child.type !== "JSXText") continue;
-        if (isEmojiOnly(child.value)) {
-          findings.push(emojiFinding(filePath, child.loc?.start.line ?? line, child.value));
-        }
-      }
-      return;
-    }
-    if (node.type === "JSXAttribute") {
-      if (node.name.type !== "JSXIdentifier" || !ICON_SLOTS.has(node.name.name)) return;
-      const value = node.value;
-      if (value?.type === "StringLiteral" && EMOJI.test(value.value)) {
-        findings.push(emojiFinding(filePath, value.loc?.start.line ?? 1, value.value));
-      }
-    }
-  });
-  return findings.sort((a, b) => a.line - b.line);
-}
-
 // src/checks/props.ts
 function componentName(opening) {
   const name = opening.name;
@@ -24162,52 +23949,6 @@ function propFindings(filePath, source, conventions, sourceKind) {
         ...sourceKind === void 0 ? {} : { source: sourceKind }
       });
     }
-  });
-  return findings.sort((a, b) => a.line - b.line);
-}
-
-// src/checks/deprecated-usage.ts
-function importedComponents(ast, chain) {
-  const found = /* @__PURE__ */ new Map();
-  for (const statement of ast.program.body) {
-    if (statement.type !== "ImportDeclaration") continue;
-    if (statement.importKind === "type") continue;
-    const layer = layerFor(statement.source.value, chain);
-    if (layer === null) continue;
-    for (const binding of statement.specifiers) {
-      if (binding.type !== "ImportSpecifier") continue;
-      if (binding.importKind === "type") continue;
-      const imported = binding.imported;
-      if (imported.type !== "Identifier") continue;
-      found.set(binding.local.name, { symbol: imported.name, layer: layer.name });
-    }
-  }
-  return found;
-}
-function deprecatedUsageFindings(filePath, source, chain, inventory2) {
-  if (chain.length === 0) return [];
-  const ast = parseModule(source, filePath);
-  if (ast === null) return [];
-  const imported = importedComponents(ast, chain);
-  if (imported.size === 0) return [];
-  const findings = [];
-  walk(ast.program, (node) => {
-    if (node.type !== "JSXOpeningElement") return;
-    if (node.name.type !== "JSXIdentifier") return;
-    const origin = imported.get(node.name.name);
-    if (origin === void 0) return;
-    const entry = inventory2.layers[origin.layer]?.[origin.symbol];
-    if (entry === void 0 || !entry.deprecated) return;
-    const replacement = entry.replacement;
-    findings.push({
-      file: filePath,
-      line: node.loc?.start.line ?? 1,
-      level: "deprecated",
-      symbol: origin.symbol,
-      expectedFrom: origin.layer,
-      message: replacement === null ? `${origin.symbol} is deprecated in ${origin.layer}.` : `${origin.symbol} is deprecated in ${origin.layer}. Use ${replacement} instead.`,
-      ...replacement === null ? {} : { replacement }
-    });
   });
   return findings.sort((a, b) => a.line - b.line);
 }
@@ -24461,38 +24202,6 @@ var pageFindings = (filePath, source, rules) => {
 };
 
 // src/checks/template.ts
-function declarations(style) {
-  const found = [];
-  for (const part of style.split(";")) {
-    const at = part.indexOf(":");
-    if (at < 0) continue;
-    const property = part.slice(0, at).trim().toLowerCase();
-    const value = part.slice(at + 1).trim();
-    if (property !== "" && value !== "") found.push({ property, value });
-  }
-  return found;
-}
-function styleFindingsFor(file, node) {
-  const style = node.attributes["style"];
-  if (style === void 0 || style.includes("{{") || style.includes("{")) return [];
-  const findings = [];
-  for (const { property, value } of declarations(style)) {
-    if (isZeroLength(value)) continue;
-    const isColour = isColourValue(value);
-    const isLength = !isColour && takesLength(property) && isLengthValue(value);
-    if (!isColour && !isLength) continue;
-    findings.push({
-      file,
-      line: node.line,
-      level: "style",
-      // The literal and nothing more. `not a design-system token` was on this
-      // message too, and it is the negative of what neither this check nor the
-      // JavaScript one may assert (#64).
-      message: `${quoted(property)}: ${quoted(value)} is ${isColour ? "a colour literal" : "an absolute length"}.`
-    });
-  }
-  return findings;
-}
 function templateFindings(filePath, source, rules) {
   const kind = templateKind(filePath);
   if (kind === null) return [];
@@ -24502,15 +24211,6 @@ function templateFindings(filePath, source, rules) {
   }
   const findings = [];
   for (const node of parseTemplate(source, kind)) {
-    findings.push(...styleFindingsFor(filePath, node));
-    if (isEmojiOnly(node.text)) {
-      findings.push({
-        file: filePath,
-        line: node.line,
-        level: "reuse",
-        message: `${quoted(node.text)} is an emoji used as an icon. Use the design system's icon component so it matches the others.`
-      });
-    }
     const rule = forbidden.get(node.name);
     if (rule !== void 0) {
       findings.push({
@@ -24535,14 +24235,6 @@ function importFinding(violation) {
     message: violation.reason === "deprecated" ? `${violation.symbol} is deprecated in ${violation.importedFrom}.` : importSentence([violation.symbol], violation.importedFrom, violation.expectedFrom)
   };
 }
-function collapseDeprecations(findings) {
-  const usedAndFlagged = new Set(
-    findings.filter((finding) => finding.level === "deprecated" && finding.importedFrom === void 0).map((finding) => finding.symbol)
-  );
-  return findings.filter(
-    (finding) => !(finding.reason === "deprecated" && finding.importedFrom !== void 0 && usedAndFlagged.has(finding.symbol))
-  );
-}
 async function runEngine(filePath, source, ctx) {
   if (ctx.includeTestFiles !== true && GENERATED2.test(filePath)) return { tier1: [] };
   const kind = templateKind(filePath);
@@ -24558,11 +24250,8 @@ async function runEngine(filePath, source, ctx) {
   }
   const imports = checkSource(filePath, source, ctx.chain, ctx.inventory).filter((violation) => ctx.withinLayer === true || violation.withinOwnLayer !== true).map(importFinding);
   const retrieved = ctx.knowledge === void 0 ? { fragments: [] } : { fragments: retrieve(source, ctx.knowledge, { filePath }) };
-  const tier1 = collapseDeprecations([
+  const tier1 = [
     ...imports,
-    ...styleFindings(filePath, source),
-    ...emojiFindings(filePath, source),
-    ...deprecatedUsageFindings(filePath, source, ctx.chain, ctx.inventory),
     ...ctx.conventions === void 0 ? [] : propFindings(filePath, source, ctx.conventions, ctx.conventionsFrom),
     // Level one: the page's own structure, against a stated page rule.
     ...pageFindings(filePath, source, pageRules(retrieved)),
@@ -24581,7 +24270,7 @@ async function runEngine(filePath, source, ctx) {
       ctx.chain,
       ctx.inventory
     )
-  ]).sort((a, b) => a.line - b.line);
+  ].sort((a, b) => a.line - b.line);
   if (tier1.length > 0) return { tier1 };
   if (ctx.review === void 0 || ctx.knowledge === void 0) return { tier1 };
   const fragments = retrieved.fragments;
@@ -24858,8 +24547,8 @@ function argsOf(source) {
     if (node.value.type !== "ObjectExpression") return;
     for (const property of node.value.properties) {
       if (property.type !== "ObjectProperty" || property.computed) continue;
-      const propertyKey2 = property.key;
-      const propName = propertyKey2.type === "Identifier" ? propertyKey2.name : propertyKey2.type === "StringLiteral" ? propertyKey2.value : null;
+      const propertyKey = property.key;
+      const propName = propertyKey.type === "Identifier" ? propertyKey.name : propertyKey.type === "StringLiteral" ? propertyKey.value : null;
       if (propName === null) continue;
       if (property.value.type !== "StringLiteral") continue;
       const values = found[propName] ??= [];
@@ -25894,7 +25583,7 @@ async function warnIfNothingWasChecked(rootDir, files) {
   if (onAChain.length > 0) return;
   console.error(`
 None of the ${files.length} file(s) given belongs to a detected package.`);
-  console.error("The checks that read one \u2014 imports, deprecated usage \u2014 did not run.");
+  console.error("The checks that read one \u2014 the import check, and the layer half of substitutions \u2014 did not run.");
   console.error("This is a detection gap, not a clean result.");
   if (packages.length === 0) {
     console.error("No packages were detected at all \u2014 run `uic scan` to see what was looked for.");
@@ -25999,7 +25688,7 @@ async function check(rootDir, args) {
   }
   if (findings.length > 0 && !await someFileIsOnAChain(rootDir, absolute)) {
     console.error("Note: no file in this set belongs to a package whose entry point could be read,");
-    console.error("so imports, deprecated usage and the layer half of substitutions did not run.");
+    console.error("so the import check and the layer half of substitutions did not run.");
     console.error("`uic inventory <file>` says which layers were tried. What is above is the four");
     console.error("checks that need no chain.");
   }

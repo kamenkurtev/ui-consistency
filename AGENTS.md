@@ -41,6 +41,7 @@ the three that have no hook.
 | `routes-and-breadcrumbs.md` | where a route and a trail come from, per router family |
 | `what-a-decision-is.md` | what belongs in a decisions file, and the one test for it |
 | `pattern-file.md` | what a pattern file states and how — the artifact the work is done from |
+| `raw-values.md` | no colour literal, no absolute length, no emoji where an icon belongs — and the four exceptions that stop it flooding |
 
 Read them directly if your harness has no skill mechanism: they are the
 instructions, and the CLI below is the fact supplier.

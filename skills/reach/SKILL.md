@@ -52,9 +52,8 @@ folder. Three files in one folder answer for that folder.
 | --- | --- | --- | --- |
 | **layers** | `scan` names a mechanism and lists packages with edges | — | `scan` finds no packages: say which two mechanisms were looked for, and that the three checks reading a chain are the only ones affected |
 | **imports** | a chain exists and `check` reports or clears real files | — | no chain — and say so, rather than reporting a clean file |
-| **style literals** | `check` read the files at all | — | class-based systems (Tailwind, CSS modules, styled-components) are out of reach of a per-file AST check by construction |
-| **emoji-as-icon** | `check` read the files | — | never blind; it needs no package |
-| **deprecated usage** | `inventory` shows `@deprecated` markers | nothing in the project is marked | no chain |
+| ~~**style literals**~~, ~~**emoji-as-icon**~~ | — | — | **Not levels any more (#79).** They are `rules/raw-values.md`, and this skill has nothing to report about them: whether an agent read a rule is not a coverage fact, and answering anyway would be the invented reassurance this skill exists to prevent. The rule states its own limit — a class-based system (Tailwind, CSS modules, styled-components) is out of reach of anything reading one file — where the agent reads it. |
+| ~~**deprecated usage**~~ | — | — | **Gone with them (#79):** the marker is in the imported component's own source, which the agent reads. |
 | **prop values** | a source of truth is injected | no reference and no curated set — the commonest case | — |
 | **page rules, substitutions** | a rule file exists and was retrieved | `.ui-consistency/` is empty | a rule exists but names files it does not apply to |
 | **placement** | `place` returns a path and where it is declared | — | `place` says nothing routes any of the sample |
