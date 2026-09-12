@@ -11,8 +11,11 @@ others do not, and it is found by a person opening them one at a time.
 
 **It starts because the work is that shape, not because it was asked for**
 (#28). More than two or three screens taking the same change is this loop,
-whether or not anybody typed the word — and under Claude Code the prompt hook
-names it as soon as a prompt reads as a set. What it does not do is start
+whether or not anybody typed the word. ~~Under Claude Code the prompt hook
+names it as soon as a prompt reads as a set.~~ **That hook is gone (#80): it
+matched English words, so it named nothing for anybody working in another
+language, and this skill's own description is what reaches it now.** What it
+does not do is start
 itself: a queue written to disk off a guess about English, before a file has
 been read, would be a process nobody asked for. The judgement that the set is
 real is made here, with the files in front of you.

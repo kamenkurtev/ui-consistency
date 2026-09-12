@@ -49,16 +49,22 @@ edit it is making — no command, nothing saved, nothing approved.~~
 **Half of that is still true and the other half was withdrawn.** The hook does
 still derive a contract on the edit it is making, and that is still nothing
 saved and nothing approved. But it says so *after* the write, and the pattern
-this project has written down is now put in front of the agent **before** it, on
-the prompt — and where nothing has been written down about the kind, that
-channel's instruction is to run this skill and write one. So this is no longer
-only the deliberate form: it is also the automatic first move on a fresh
-install, where a channel that merely reports what exists opens onto nothing.
+this project has written down belongs in front of the agent **before** it — and
+where nothing has been written down about the kind, the move is to write one
+rather than to report that none exists. So this is no longer only the deliberate
+form: it is also the first move on a fresh install, where a channel that merely
+reports what exists opens onto nothing.
+
+**What carries that is this skill's own `description`, and no longer a hook
+(#80).** The prompt channel that used to say it decided on a list of English
+words and was silent for anybody prompting in another language. Reaching this
+skill because its description matches the work is the same arrival with none of
+that.
 
 ### Which of the two you are in, because the first move differs
 
-**Reached automatically** — the prompt channel said no pattern covers this kind,
-or you are about to write a screen and nothing is written down about it. **Ask
+**Reached automatically** — you are about to write or change a screen and
+nothing is written down about its kind. **Ask
 the user nothing.** Take the screen being changed, or any existing screen of the
 same kind, and go straight to step 2 with `--establish`. The question below is
 what the automatic path exists to remove: a first move that is a question is a

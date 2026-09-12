@@ -23753,7 +23753,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.109";
+var VERSION = "0.14.110";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -23837,93 +23837,6 @@ async function sessionResponse(stdin) {
   const context = await sessionContext(cwd).catch(() => null);
   if (context === null) return null;
   return shapeFor(process.env, context);
-}
-
-// src/cli/prompt.ts
-var ABOUT_SCREENS = /\b(screens?|pages?|dialogs?|modals?|drawers?|panels?|widgets?|forms?|grids?|tables?|layouts?|components?|views?|ui)\b/i;
-var A_WHOLE_SET = /\b(all (?:the |of )?|every|each of|the rest|remaining|across (?:the|all|every)|throughout|everywhere|one by one|in bulk|consistent(?:ly)? across|\d{2,})\b/i;
-async function promptContext(rootDir, text) {
-  if (SILENCED()) return null;
-  if (!ABOUT_SCREENS.test(text)) return null;
-  const { patterns: patterns2 } = await patternFiles(rootDir).catch(() => ({ patterns: [] }));
-  if (patterns2.length === 0) {
-    return [
-      `ui-consistency: this project has written no patterns down (${KNOWLEDGE_DIR}/patterns/).`,
-      "",
-      ...ESTABLISH_IT,
-      ...manyOfThem(text)
-    ].join("\n");
-  }
-  const said = [`ui-consistency: what this project has written down, before you write.`, ""];
-  for (const one of patterns2.slice(0, MAX_PATTERNS)) {
-    said.push(`  ${describe(one)}${await freshness(rootDir, one)}`);
-  }
-  if (patterns2.length > MAX_PATTERNS) {
-    said.push(`  \u2026 and ${patterns2.length - MAX_PATTERNS} more in ${KNOWLEDGE_DIR}/patterns/`);
-  }
-  said.push(
-    "",
-    "Read the one for the kind you are about to touch before writing anything.",
-    "Where none of them covers that kind:",
-    "",
-    ...ESTABLISH_IT,
-    ...manyOfThem(text)
-  );
-  return said.join("\n");
-}
-var ESTABLISH_IT = [
-  "Establish it first, from the code you are about to read anyway:",
-  "",
-  "  1. Find a screen of that kind that already exists here.",
-  "  2. ui-consistency:pattern \u2014 derive what that family agrees on and write it",
-  "     down: `uic pattern <that screen> --establish`.",
-  "     Do not ask the user for a reference; take the screen from step 1.",
-  "  3. Fill in the parts the file says are still to be written, then build from it.",
-  "",
-  "Where there are fewer than three screens of the kind, nothing is derived and",
-  "ui-consistency:decide records what is decided instead \u2014 a pattern of one is",
-  "that screen's particulars turned into a rule for every screen after it.",
-  "",
-  "Doing any of this afterwards means arguing with code that already works."
-];
-var manyOfThem = (text) => A_WHOLE_SET.test(text) ? [
-  "",
-  "This prompt names a set, not one screen. If it is more than two or three files,",
-  "that is a rollout: ui-consistency:rollout. It keeps the queue on disk, works one",
-  "file per turn against the contract re-read each time, and verifies the whole set",
-  "at the end \u2014 which is what stops file thirty drifting toward the last file you",
-  'looked at instead of the pattern, and what makes "27 of 30" auditable.'
-] : [];
-var MAX_PATTERNS = 12;
-var describe = (one) => [one.name, one.surface ?? "\u2014", one.holder ?? "\u2014", `${one.members.length} files`].join("  ");
-async function freshness(rootDir, one) {
-  const stale = await staleIn(rootDir, one).catch(() => []);
-  if (stale.length === 0) return "";
-  const gone = stale.filter((each) => each.why === "gone").length;
-  const changed = stale.length - gone;
-  const parts = [
-    ...changed > 0 ? [`${changed} changed`] : [],
-    ...gone > 0 ? [`${gone} gone`] : []
-  ];
-  const what = one.derived ? "run `uic pattern <one of them> --refresh` first" : "a person wrote it, so read it against `uic pattern <one of them>` before trusting it";
-  return `  (${parts.join(", ")} since it was read \u2014 ${what})`;
-}
-async function promptResponse(stdin) {
-  let cwd = process.cwd();
-  let text = "";
-  try {
-    const parsed = JSON.parse(stdin);
-    const payload = parsed;
-    if (typeof payload?.cwd === "string" && payload.cwd !== "") cwd = payload.cwd;
-    for (const key of ["prompt", "user_input"]) {
-      const value = payload?.[key];
-      if (typeof value === "string" && value !== "") text = value;
-    }
-  } catch {
-    return null;
-  }
-  if (text === "") return null;
-  return promptContext(cwd, text).catch(() => null);
 }
 
 // src/mcp/server.ts
@@ -24686,7 +24599,7 @@ var SHAPE2 = {
 };
 var MAX_ADVICE = 1e4;
 var RULES_BUDGET = 6e3;
-function describe2(holder) {
+function describe(holder) {
   return holder == null || holder === "" ? null : `held by ${holder}`;
 }
 function buildAdvice(input) {
@@ -24716,7 +24629,7 @@ ${input.markup.source}`;
     `# What this file is (read from its code)`,
     // Absent rather than "unknown": an empty answer that reads as a judgement
     // about the screen is worse than no line at all.
-    ...describe2(holder) === null ? [] : [`- kind of screen: ${describe2(holder)}`],
+    ...describe(holder) === null ? [] : [`- kind of screen: ${describe(holder)}`],
     `- layout: ${shape?.pattern.join(" > ") || (holder ?? "nothing structural found")}`
   ];
   if (raw !== null) {
@@ -24727,7 +24640,7 @@ ${input.markup.source}`;
     );
   }
   if (input.neighbours !== void 0) {
-    const kind = describe2(input.neighbours.holder);
+    const kind = describe(input.neighbours.holder);
     lines.push("", "# What the screens beside it look like (a heuristic, not a rule)");
     if (kind !== null) lines.push(`- kind of screen: ${kind}`);
     if (input.neighbours.components.length > 0) {
@@ -26149,11 +26062,6 @@ async function session() {
   if (response !== null) console.log(JSON.stringify(response));
   return 0;
 }
-async function prompt() {
-  const said = await promptResponse(await readStdin()).catch(() => null);
-  if (said !== null) console.log(said);
-  return 0;
-}
 async function mcp(rootDir) {
   return serveMcp(rootDir);
 }
@@ -26320,8 +26228,6 @@ async function main(argv) {
       return hook();
     case "session":
       return session();
-    case "prompt":
-      return prompt();
     case "mcp":
       return mcp(rootDir);
     default:
