@@ -1,5 +1,6 @@
 import { patternFiles, staleIn, type PatternFile } from '../knowledge/pattern-file.js';
 import { KNOWLEDGE_DIR } from '../knowledge/paths.js';
+import { SILENCED } from '../core/off.js';
 
 /**
  * Words that mean the work is about screens.
@@ -57,6 +58,7 @@ const A_WHOLE_SET =
  * that is not about screens reads no file at all.
  */
 export async function promptContext(rootDir: string, text: string): Promise<string | null> {
+  if (SILENCED()) return null;
   if (!ABOUT_SCREENS.test(text)) return null;
 
   const { patterns } = await patternFiles(rootDir).catch(() => ({ patterns: [] }));

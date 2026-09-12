@@ -1,6 +1,7 @@
 import { dirname, relative, resolve } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { analyzeProject } from './index.js';
+import { SILENCED } from '../core/off.js';
 import { settled } from '../ai/settled.js';
 import { record } from './log.js';
 import { contractDeviations, contractsForScreen, isContract } from '../checks/contract.js';
@@ -88,6 +89,10 @@ function filePathFrom(payload: Payload): string | null {
  * it throw.
  */
 export async function hookResponse(stdin: string): Promise<HookResponse | null> {
+  // Silenced, and silently: a hook that announced it was off would itself be a
+  // line in the arm's context (#71).
+  if (SILENCED()) return null;
+
   let payload: Payload;
   try {
     const parsed: unknown = JSON.parse(stdin);
