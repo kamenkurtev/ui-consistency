@@ -130,6 +130,11 @@ beforeAll(async () => {
     await writeFile(join(root, `off/${n}.tsx`), at < 6 ? matching(n) : at < 12 ? oneOff(n) : threeOff(n));
   }
 
+  // What was live while each arm was written. Required since #71, because an
+  // arm that does not say cannot be told from a contaminated one.
+  await writeFile(join(root, 'off/arm.json'), JSON.stringify({ plugin: 'none' }));
+  await writeFile(join(root, 'on/arm.json'), JSON.stringify({ plugin: '0.14.107' }));
+
   // The pre-run guard reads git, so the fixture is a repository and the pattern
   // is committed in it — which is what the guard exists to require.
   await git(['init', '-q'], root);
@@ -238,6 +243,7 @@ describe('the with/without benchmark scorer', () => {
     it('refuses arms of different lengths rather than comparing two experiments', async () => {
       const short = join(root, 'short');
       await mkdir(short, { recursive: true });
+      await writeFile(join(short, 'arm.json'), JSON.stringify({ plugin: 'none' }));
       await writeFile(join(short, '01.tsx'), matching('01'));
 
       const run = await bench(
@@ -295,6 +301,7 @@ describe('the with/without benchmark scorer', () => {
     it('reports a uniformly wrong arm as uniform, not as drifting', async () => {
       const uniform = join(root, 'uniform');
       await mkdir(uniform, { recursive: true });
+      await writeFile(join(uniform, 'arm.json'), JSON.stringify({ plugin: 'none' }));
       for (const n of Array.from({ length: 18 }, (_, at) => String(at + 1).padStart(2, '0'))) {
         // The same one prop missing on every screen, from the first.
         await writeFile(join(uniform, `${n}.tsx`), oneOff(n));
@@ -331,6 +338,7 @@ describe('the with/without benchmark scorer', () => {
     it('reports new kinds appearing late, where an arm keeps inventing them', async () => {
       const drifting = join(root, 'drifting');
       await mkdir(drifting, { recursive: true });
+      await writeFile(join(drifting, 'arm.json'), JSON.stringify({ plugin: 'none' }));
       const numbers = Array.from({ length: 18 }, (_, at) => String(at + 1).padStart(2, '0'));
       for (const [at, n] of numbers.entries()) {
         // One deviation each, and a *different* one as the batch goes on: the
@@ -384,5 +392,77 @@ describe('the with/without benchmark scorer', () => {
     // eighteen measured and none quietly averaged in as zero.
     expect(report.conformance.off.measured).toBe(18);
     expect(report.conformance.off.unmeasured).toBe(0);
+  });
+});
+
+describe('what was live while an arm was written', () => {
+  /**
+   * The OFF arm is written inside a harness that has the plugin installed, so
+   * its `PostToolUse` hook fires on every write it makes and hands it the
+   * derived contract — the treatment, through a door neither prompt closes
+   * (#71). Two runs were scored before this was noticed, and the second arm's
+   * conformance reached the treatment's exactly.
+   *
+   * The scorer cannot verify it after the fact: the files are on disk and the
+   * session is gone. So it is declared — and an arm that declares nothing is
+   * refused, because a contaminated arm that looks clean is the defect.
+   */
+  it('refuses an arm that does not say what was live while it was written', async () => {
+    const undeclared = join(root, 'undeclared');
+    await mkdir(undeclared, { recursive: true });
+    await writeFile(join(undeclared, '01.tsx'), matching('01'));
+
+    const run = await bench(
+      ['--pattern', '.ui-consistency/patterns/list.md', '--off', 'undeclared', '--on', 'on'],
+      root,
+    );
+
+    expect(run.code).toBe(1);
+    expect(run.stderr).toContain('arm.json is missing');
+    expect(run.stderr).toContain('not close that door');
+    expect(run.stdout.trim()).toBe('');
+
+    await rm(undeclared, { recursive: true, force: true });
+  });
+
+  it('refuses an OFF arm written with the plugin live', async () => {
+    await writeFile(join(root, 'off/arm.json'), JSON.stringify({ plugin: '0.14.107' }));
+
+    const run = await bench(
+      ['--pattern', '.ui-consistency/patterns/list.md', '--off', 'off', '--on', 'on'],
+      root,
+    );
+
+    expect(run.code).toBe(1);
+    expect(run.stderr).toContain('written with the plugin live');
+    expect(run.stderr).toContain('no baseline');
+
+    await writeFile(join(root, 'off/arm.json'), JSON.stringify({ plugin: 'none' }));
+  });
+
+  it('scores, and prints what each arm was written with, once both declare', async () => {
+    await writeFile(join(root, 'off/arm.json'), JSON.stringify({ plugin: 'none' }));
+    await writeFile(join(root, 'on/arm.json'), JSON.stringify({ plugin: '0.14.107' }));
+
+    const run = await bench(
+      ['--pattern', '.ui-consistency/patterns/list.md', '--off', 'off', '--on', 'on'],
+      root,
+    );
+
+    expect(run.code).toBe(0);
+    // Printed on every run: "none" is a meaningful value, and two runs differed
+    // by it without anybody being able to see that they had.
+    expect(run.stdout).toContain('written with:');
+    expect(run.stdout).toContain('"plugin":"none"');
+
+    // An OFF arm that could not have the plugin uninstalled declares the switch.
+    await writeFile(join(root, 'off/arm.json'), JSON.stringify({ plugin: '0.14.107', silenced: true }));
+    const silenced = await bench(
+      ['--pattern', '.ui-consistency/patterns/list.md', '--off', 'off', '--on', 'on'],
+      root,
+    );
+    expect(silenced.code).toBe(0);
+
+    await writeFile(join(root, 'off/arm.json'), JSON.stringify({ plugin: 'none' }));
   });
 });

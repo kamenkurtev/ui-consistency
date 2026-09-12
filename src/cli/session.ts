@@ -1,3 +1,4 @@
+import { SILENCED } from '../core/off.js';
 import { readdir, open } from 'node:fs/promises';
 import { join } from 'node:path';
 import { generatedVersion } from '../knowledge/parse.js';
@@ -157,6 +158,7 @@ interface Payload {
  * The `SessionStart` adapter. Never throws, and says nothing by default.
  */
 export async function sessionResponse(stdin: string): Promise<SessionResponse | null> {
+  if (SILENCED()) return null;
   let cwd = process.cwd();
   try {
     const parsed: unknown = JSON.parse(stdin);

@@ -174,3 +174,36 @@ describe('the UserPromptSubmit adapter', () => {
     expect(said).not.toContain('blockReason');
   });
 });
+
+describe('the one switch that silences every channel', () => {
+  /**
+   * The OFF arm of the benchmark is written in a harness that has the plugin
+   * installed, and the hook hands it the derived contract on every write —
+   * which is the treatment (#71). `UIC_OFF` is how a session gets a plugin that
+   * says nothing, and it has to cover every channel or it closes one door and
+   * leaves the others open.
+   */
+  it('says nothing from the prompt adapter', async () => {
+    await pattern('one', '---\npattern: one\nholder: PageShell\n---\n\n## Where it is used\n\n`src/A.tsx`\n');
+    expect(await promptContext(root, 'add a new screen')).not.toBeNull();
+
+    process.env['UIC_OFF'] = '1';
+    try {
+      expect(await promptContext(root, 'add a new screen')).toBeNull();
+    } finally {
+      delete process.env['UIC_OFF'];
+    }
+  });
+
+  it('is off by default, and off for the values that mean off', async () => {
+    await pattern('one', '---\npattern: one\nholder: PageShell\n---\n\n## Where it is used\n\n`src/A.tsx`\n');
+    for (const value of ['', '0', 'false', 'FALSE']) {
+      process.env['UIC_OFF'] = value;
+      try {
+        expect(await promptContext(root, 'add a new screen'), `UIC_OFF=${value}`).not.toBeNull();
+      } finally {
+        delete process.env['UIC_OFF'];
+      }
+    }
+  });
+});

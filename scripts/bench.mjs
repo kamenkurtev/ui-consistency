@@ -47,7 +47,7 @@
 // the batch order — `01-*.tsx`, `02-*.tsx` — because position is the measurement.
 
 import { execFile } from 'node:child_process';
-import { readdir, stat } from 'node:fs/promises';
+import { readdir, readFile, stat } from 'node:fs/promises';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -84,6 +84,36 @@ async function fixedBeforeTheRun(patternPath) {
   if (dirty.stdout.trim() !== '') return { ok: false, why: 'it has uncommitted changes' };
   const when = await run('git', ['log', '-1', '--format=%cI', '--', resolve(patternPath)], dir);
   return { ok: true, committed: when.stdout.trim() || null };
+}
+
+/**
+ * What was live while this arm was written, as the arm itself records it.
+ *
+ * **Required, and an arm without it is refused** (#71). The OFF arm is written
+ * inside a harness that has the plugin installed, so its `PostToolUse` hook
+ * fires on every write it makes and hands it the derived contract — the
+ * treatment, through a door nothing in either prompt closes. Deleting the
+ * pattern file does not help: since #38 a pattern is derived on the edit
+ * already being made where no approved one covers the kind.
+ *
+ * Two runs were performed with no valid OFF arm before this was noticed, and
+ * the second arm's conformance was indistinguishable from the treatment's on
+ * the one prop that separated them.
+ *
+ * So it is declared rather than assumed, and the declaration is what the scorer
+ * reads. `{"plugin": "none"}` on an OFF arm, or the version string with
+ * `"silenced": true` where the harness could not have it uninstalled — which
+ * `UIC_OFF` makes possible and `bench.mjs` cannot verify after the fact, so it
+ * is recorded and printed rather than checked.
+ */
+async function armWasWrittenWith(dir) {
+  const raw = await readFile(join(dir, 'arm.json'), 'utf8').catch(() => null);
+  if (raw === null) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
 
 /** The screens one arm wrote, in batch order. */
@@ -253,12 +283,37 @@ if (!fixed.ok && !override) {
 const tasks = JSON.parse(await (await import('node:fs/promises')).readFile(TASKS, 'utf8'));
 
 const scored = {};
+const wrote = {};
 for (const [arm, dir] of Object.entries(arms)) {
   const files = await screensOf(dir);
   if (files === null) {
     console.error(`bench: ${dir} is not a readable directory.`);
     process.exit(1);
   }
+
+  // **Refused, not assumed.** An arm that does not say what was live while it
+  // was written cannot be told from a contaminated one, and a contaminated arm
+  // that looks clean is the whole of #71.
+  const declared = await armWasWrittenWith(dir);
+  if (declared === null) {
+    console.error(`bench: ${dir}/arm.json is missing or unreadable.`);
+    console.error('');
+    console.error('Each arm records what was live while it was written — the plugin version, or');
+    console.error('"none" — because the OFF arm is written in a harness that has the plugin and its');
+    console.error('hook feeds it the derived contract on every write. Deleting the pattern file does');
+    console.error('not close that door. Two runs were scored before this was noticed (#71).');
+    console.error('');
+    console.error('  {"plugin": "none"}                      the plugin was not installed');
+    console.error('  {"plugin": "0.14.107", "silenced": true} installed, UIC_OFF set for that session');
+    process.exit(1);
+  }
+  if (arm === 'off' && declared.plugin !== 'none' && declared.silenced !== true) {
+    console.error(`bench: the OFF arm at ${dir} was written with the plugin live (${declared.plugin}).`);
+    console.error('That is the treatment, so there is no baseline to compare against. Re-run the');
+    console.error('arm with the plugin uninstalled, or with UIC_OFF set for its session.');
+    process.exit(1);
+  }
+  wrote[arm] = declared;
   // From the working directory, not from the pattern's own folder: the arm's
   // paths are given relative to where this was invoked, and resolving them
   // against `.ui-consistency/patterns/` made every file unreadable — which
@@ -274,6 +329,9 @@ const sameSize = scored.off.screens.length === scored.on.screens.length;
 const short = Math.min(scored.off.screens.length, scored.on.screens.length);
 
 const report = {
+  // Printed on every run, because "none" is a meaningful value and two runs
+  // differed by it without anybody being able to see that they had.
+  writtenWith: wrote,
   pattern: { file: basename(patternPath), name: scored.on.pattern ?? scored.off.pattern, committed: fixed.committed ?? null, guardOverridden: override },
   batch: { off: scored.off.screens.length, on: scored.on.screens.length, comparable: sameSize, minimumBatch: tasks.minimumBatch },
   conformance: {
@@ -304,6 +362,9 @@ const report = {
 if (wantsJson) {
   console.log(JSON.stringify(report, null, 2));
 } else {
+  console.log(
+    `\nwritten with: off = ${JSON.stringify(report.writtenWith.off)}, on = ${JSON.stringify(report.writtenWith.on)}`,
+  );
   console.log(`\npattern: ${report.pattern.name ?? report.pattern.file}${report.pattern.guardOverridden ? '  (pre-run guard OVERRIDDEN with --i-know)' : `  committed ${report.pattern.committed ?? 'unknown'}`}`);
   console.log(`batch:   off ${report.batch.off}, on ${report.batch.on}${sameSize ? '' : '  — NOT COMPARABLE, the arms differ in length'}`);
   if (short < tasks.minimumBatch) {
