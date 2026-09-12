@@ -1,17 +1,21 @@
 /**
  * The one switch that silences every channel this plugin speaks through.
  *
- * **It exists for the benchmark, and the benchmark is why it has to exist**
- * (#71). The OFF arm is written inside a harness with the plugin installed, so
- * its `PostToolUse` hook fires on every write the arm makes and hands it the
- * derived contract — the treatment, arriving through a door the benchmark did
- * not close. Deleting the pattern file from the OFF tree does not help: since
- * #38 a pattern is *derived on the edit already being made* where no approved
- * one covers the kind, which is the whole point of that work and is working
- * correctly. There was nothing in either prompt to remove.
+ * ~~**It exists for the benchmark, and the benchmark is why it has to exist**
+ * (#71).~~ **The benchmark is gone with the command it scored through (#77)**,
+ * and this switch is kept on its own merits: a session that wants a silent
+ * plugin can have one, from an environment variable, with nothing to
+ * uninstall.
  *
- * Two runs were performed with no valid OFF arm before this was noticed, and
- * the second arm's conformance was indistinguishable from the treatment's.
+ * The reason it was needed is worth keeping written down, because it is the
+ * shape of mistake any future measurement will make. The OFF arm was written
+ * inside a harness with the plugin installed, so its `PostToolUse` hook fired
+ * on every write the arm made and handed it the derived contract — the
+ * treatment, arriving through a door the benchmark did not close. Deleting the
+ * pattern file from the OFF tree did not help either, because a pattern was
+ * derived on the edit already being made. Two runs were performed with no valid
+ * OFF arm before this was noticed, and the second arm's conformance was
+ * indistinguishable from the treatment's.
  *
  * Not a licence check and not a kill switch for users: it is off by default,
  * nothing reads it in normal operation, and a session that sets it gets a plugin

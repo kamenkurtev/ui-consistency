@@ -354,23 +354,15 @@ describe('what counts as a part, and how far the chain reaches', () => {
   });
 
   /**
-   * The family search must keep its old reach. It is bounded by relative
+   * ~~The family search must keep its old reach. It is bounded by relative
    * imports deliberately — a page and its grid are one screen, and a component
-   * the whole workspace shares is not that page's own business.
+   * the whole workspace shares is not that page's own business.~~
+   *
+   * **The family search is gone (#77)**, so there is no second caller to keep
+   * apart from this one. What survives is `specifiersOf`, which resolves
+   * nothing and leaves resolution to its caller — asserted by the cases above,
+   * which are about `uic group` following a specifier written as a package name
+   * or through a `tsconfig` alias (#62). That was the half this case existed to
+   * protect from the other one.
    */
-  it('leaves the relative-only rule the family search relies on alone', async () => {
-    const { importedBy } = await import('../../src/sources/siblings.js');
-    await mkdir(join(root, 'src'), { recursive: true });
-    await writeFile(join(root, 'src/Own.tsx'), 'export const Own = () => <div />;\n');
-    const screen = join(root, 'src/Page.tsx');
-    await writeFile(
-      screen,
-      'import { Own } from "./Own";\nimport { Shared } from "@app/ui/Shared";\nexport const P = () => <Own />;\n',
-    );
-
-    const found = [...(await importedBy(screen))];
-
-    expect(found.join(' ')).toContain('Own');
-    expect(found.join(' ')).not.toContain('Shared');
-  });
 });

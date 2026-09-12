@@ -16,12 +16,18 @@ Run the checks. Do not judge the file by eye first — the deterministic answer
 is free, certain, and usually enough.
 
 ```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" review <file...>
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <file...>
 ```
 
-`review` runs every deterministic check, prints what it found, and **stops
-there if it found anything**. A file with something certainly wrong does not
-need an opinion about whether it feels right.
+There used to be a command of this skill's own name that ran the checks *and*
+assembled the evidence for the fuzzy half. **It is gone (#77) and `check` is
+what is left**: it runs the deterministic checks and prints what it found. The
+evidence half was 193 lines gathering what the neighbours agree about and
+handing it to you — which is `ui-consistency:pattern`, and you read the
+neighbours yourself.
+
+**If it found something, stop there.** A file with something certainly wrong
+does not need an opinion about whether it feels right.
 
 ## Reading the output
 
@@ -34,10 +40,13 @@ Two things it says nothing about, by design:
 - **Test files, stories and `__mocks__`.** A test renders a raw `<button>` to
   assert something about a button. If the user is asking about one of those,
   say so rather than pretending the silence is a pass.
-- **Anything no curated rule covers.** If `.ui-consistency/` is empty,
-  the fuzzy half stays quiet. Say so, and offer to write the rule down — one
-  heading in that directory is enough — rather than inventing a standard the
-  project never stated.
+- **Anything no curated rule covers.** If `.ui-consistency/` is empty, the
+  page-rule and substitution checks have nothing to apply. Say so, and offer to
+  write the rule down — one heading in that directory is enough — rather than
+  inventing a standard the project never stated.
+- **Whether this screen matches its neighbours.** `check` answers about the
+  file; that question is `ui-consistency:pattern`, and it needs the family's
+  files open. Run it rather than guessing from one file.
 
 ## When the tool is silent and the user is still unhappy
 

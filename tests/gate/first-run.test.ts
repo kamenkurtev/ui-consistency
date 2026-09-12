@@ -106,7 +106,11 @@ describe('the first-run acceptance harness', () => {
     expect(run.code).toBe(0);
     expect(run.stdout).toContain('No level answered with empty output and exit 0');
     // Every command named, so a level that was not run cannot hide in a verdict.
-    for (const command of ['scan', 'check', 'inventory', 'place', 'pattern', 'patterns', 'tree', 'group', 'log']) {
+    // ~~`pattern` and `patterns`~~ — gone with the commands (#77). The list is
+    // not the guard: `covers every command the binary says it has` above reads
+    // them off the usage line, so a command that exists and is not exercised
+    // fails the harness whatever this line happens to say.
+    for (const command of ['scan', 'check', 'inventory', 'place', 'tree', 'group', 'log']) {
       expect(run.stdout).toContain(command);
     }
     // Which files the per-file answers are about, because one file's luck is

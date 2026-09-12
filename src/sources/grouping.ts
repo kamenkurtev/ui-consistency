@@ -2,7 +2,7 @@ import { relative } from 'node:path';
 import { resolverFor } from './resolve.js';
 import { flatLines, screenTree } from './tree.js';
 import { trailingWord } from './names.js';
-import { isScreenFile, specifiersOf } from './siblings.js';
+import { isScreenFile, specifiersOf } from './screen-files.js';
 
 export interface Group {
   /** The shared structure, one line per level, already indented. */

@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { dirname } from 'node:path';
+
 import { cachedPackages } from '../layers/cache.js';
 import { readConfig, applyConfig } from '../layers/config.js';
 import { resolveChain } from '../layers/chain.js';
@@ -7,13 +7,7 @@ import { cachedInventory } from '../inventory/cache.js';
 import { checkSource } from './check.js';
 import { runEngine } from './engine.js';
 import { parseKnowledge } from '../knowledge/parse.js';
-import { buildAdvice } from '../ai/advice.js';
-import { neighbourSource } from '../sources/neighbours.js';
-import { observeUsage } from '../sources/usage.js';
-import { resolveSource, statedConventions } from '../sources/adapter.js';
-import type { SourceModel } from '../sources/adapter.js';
 import { knowledgeDir } from '../knowledge/paths.js';
-import { markupOf, pairOf } from '../sources/pair.js';
 import type { Finding, Inventory, Layer, Violation } from '../types.js';
 
 /**
@@ -127,21 +121,12 @@ export async function analyzeProject(
 
   const inventoryFor = inventoryReader(rootDir);
 
-  const models = new Map<string, SourceModel | null>();
-  const sourceFor = async (dir: string, file: string): Promise<SourceModel | null> => {
-    if (models.has(dir)) return models.get(dir) ?? null;
-    const model = await resolveSource(file, { knowledge, storybookDir: rootDir }).catch(() => null);
-    models.set(dir, model);
-    return model;
-  };
-
   const findings: Finding[] = [];
   for (const file of files) {
-    // No skip on an empty chain. Only three checks read one — imports, deprecated
-    // usage, and the layer half of substitutions — and they return nothing
-    // without it on their own. Style literals, an emoji standing in for an
-    // icon, a stated page rule and a written-down substitution need no package
-    // to have been detected at all.
+    // No skip on an empty chain. Only two checks read one — imports and the
+    // layer half of substitutions — and they return nothing without it on
+    // their own. A stated page rule and a written-down substitution need no
+    // package to have been detected at all.
     //
     // Skipping was already wrong for templates, and the comment that used to
     // sit here said so: requiring a chain kept an Angular repository silent
@@ -154,74 +139,19 @@ export async function analyzeProject(
     const source = await readFile(file, 'utf8').catch(() => null);
     if (source === null) continue;
 
-    // The cascade decides what "correct" is for this file; `statedConventions`
-    // decides which of its answers may produce a hard finding.
-    //
-    // Cached per directory: the neighbour adapter reads every sibling, so a
-    // batch over one directory would otherwise be quadratic — 300 real files
-    // went from 3.7 ms each to 10 ms before this.
-    const model = await sourceFor(dirname(file), file);
-
+    // ~~The cascade decides what "correct" is for this file~~ — **there is no
+    // cascade (#77).** The prop check took its allowed set from a reference
+    // screen, a Storybook story or the neighbouring files, and all three of
+    // those readers were the derivation this removed. What survives is what a
+    // person wrote down.
     const result = await runEngine(file, source, {
       chain,
       inventory: await inventoryFor(chain),
       knowledge,
-      conventions: statedConventions(model),
-      ...(model === null ? {} : { conventionsFrom: model.kind }),
       withinLayer: options.withinLayer === true,
     });
     findings.push(...result.tier1);
   }
 
   return findings;
-}
-
-/**
- * The advisory context for one file, or null.
- *
- * The harness path, and the reason this plugin needs no credentials: a hook
- * cannot call a model without a key nobody configured, so it does not try. It
- * hands the agent already reading the code the project's own rules and what
- * the file structurally is, and asks for a judgement.
- *
- * Only ever offered on a file the deterministic checks passed — the caller
- * enforces that, because something certainly wrong does not need an opinion
- * about whether it feels right.
- */
-export async function adviseProject(rootDir: string, file: string): Promise<string | null> {
-  // No early return on an empty knowledge base any more. What the screens
-  // beside this one are made of, and how they write it, needs nothing declared
-  // — and refusing to say it until somebody had written rules is why a fresh
-  // install looked like it did nothing at all.
-  const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-
-  const source = await readFile(file, 'utf8').catch(() => null);
-  if (source === null) return null;
-
-  const neighbours = await neighbourSource()
-    .describe(file)
-    .catch(() => null);
-
-  const usage = await observeUsage(file).catch(() => null);
-
-  // A screen written as a pair: the class was handed in, the markup is beside
-  // it, and reading only the class found no structure at all (#229).
-  const pair = await pairOf(file).catch(() => null);
-  const markup = pair === null ? null : await markupOf(pair.identity, source).catch(() => null);
-
-  return buildAdvice({
-    filePath: file,
-    source,
-    ...(markup === null ? {} : { markup }),
-    knowledge,
-    ...(usage === null ? {} : { usage }),
-    ...(neighbours === null
-      ? {}
-      : {
-          neighbours: {
-            ...(neighbours.holder === undefined ? {} : { holder: neighbours.holder }),
-            components: neighbours.components,
-          },
-        }),
-  });
 }

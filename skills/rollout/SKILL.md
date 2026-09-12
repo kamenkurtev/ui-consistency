@@ -54,7 +54,7 @@ Record, per file, one of `todo`, `done`, `parked — <why>`.
 
 1. **Re-read the contract.** Every time. Not remembered.
 2. Make the change.
-3. `uic diff --contract <contract> <this file>` — silence, or fix it now.
+3. Read the file back against the pattern — nothing to say, or fix it now.
 4. Mark it `done` in the queue.
 
 Never hold all the files in context. That accumulation is what makes late files
@@ -73,8 +73,13 @@ Silence about it is what turns "27 of 30" into something nobody can audit.
 ## 5. Verify the whole set, not the last file
 
 ```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" diff --contract <contract> <every file touched>
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <every file touched>
 ```
+
+That is the deterministic half. The half this step exists for is the other one:
+read every file in the queue **against the pattern, together** —
+`ui-consistency:verify` is that, and it is reading rather than a command since
+#77.
 
 The step that replaces a person opening every page. **22 of 30 done correctly
 looks exactly like 30 of 30 until something compares them**, and the per-file

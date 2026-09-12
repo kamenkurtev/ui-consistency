@@ -9,17 +9,20 @@ This is the moment a person otherwise spends opening every page and comparing it
 with the others by eye. It answers one question: **which of the screens I just
 touched do not match what we agreed.**
 
-## Run it over everything that changed
+## Read the pattern, then read every screen that changed
 
-```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" diff --contract <contract.json> <file...>
-```
+A command did this comparison. **It is gone (#77): you do it.** Read
+`${CLAUDE_PLUGIN_ROOT}/rules/pattern-file.md` first — it is what the file you
+are about to read states, and in what form — then take the pattern file for the
+kind —
+`.ui-consistency/patterns/<name>.md`, per `rules/pattern-file.md` — and the
+file list from `git diff --name-only` or the batch's own queue, so the set
+verified is the set that changed rather than a set somebody remembered.
 
-The contract is the file `ui-consistency:pattern` saved — it prints the path.
-Use `git diff --name-only` (or the batch's own queue) for the file list, so the
-set verified is the set that changed rather than a set somebody remembered.
+**Apply it per file, and name the files of another kind rather than measuring
+them.** A screen the pattern does not cover is not a deviating screen.
 
-It reports per screen and stays silent about the ones that match:
+Report per screen and stay silent about the ones that match:
 
 ```
 src/pages/Words/Words.tsx
@@ -27,12 +30,16 @@ src/pages/Words/Words.tsx
   writes <IonButton> without expand="block", which 4 of the 5 screens of this kind write
 ```
 
-Exit 1 means at least one screen deviates, so this can sit in a build gate.
+**Hand over what you cannot evaluate** rather than printing nothing for it: the
+prose rules under `## Rules`, and anything under `## Still to be written`.
+Printing nothing there would let a screen pass against rules nobody checked.
 
-**Guiding work needs no approval; failing a build does.** A derived contract is
+**Guiding work needs no approval; failing a build does.** A derived pattern is
 free to steer thirty files — it only has to be the same on file thirty as on
-file one. Putting it in CI is the moment somebody should have read it, because
-that is the one place where something derived can fail something.
+file one. ~~Putting it in CI is the moment somebody should have read it~~ —
+**and there is no longer a command to put in CI (#77).** What this reports is
+for a person to act on. Failing a build on it is #76's open question; nothing
+here does it.
 
 ## With no contract
 

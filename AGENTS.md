@@ -17,13 +17,19 @@ against the same thing.
 
 What it writes down is a **pattern file**: one Markdown file per pattern in
 `.ui-consistency/patterns/`, committed and reviewed. Where nothing has been
-written down about the kind, `uic pattern <screen> --establish` writes the
-measured half of one — marked `derived: true` and dated, with the parts no
-extraction can produce named as missing. Nobody is asked anything, and nothing
-about it is approval. Prose with a structure
-block, named slots, per-component props with the strength of each, and rules in
-sentences. `uic diff --contract <that file> <screens>` verifies a set against
-it and prints separately what it could not evaluate.
+written down about the kind, `ui-consistency:pattern` writes the measured half of
+one — marked `derived: true` and dated, with the parts no reading of the code can
+produce named as missing. Nobody is asked anything, and nothing about it is
+approval. Prose with a structure block, named slots, per-component props with
+the strength of each, and rules in sentences. `ui-consistency:verify` reads a
+finished set against it and says separately what it could not evaluate.
+
+~~A command wrote that file and another compared against it.~~ **Both are gone
+(#77): the agent reads the family's screens and writes the sentences.** 2 839
+lines answered *"these 8 share `PageLayout`; 7 of 7 write a test id"*, which is
+what opening 8 files answers — and it could never add the two things the file
+most needs: **why** a screen differs, and what a slot is allowed to hold
+instead.
 
 ## The rules
 
@@ -89,8 +95,8 @@ When the work is about screens, this is the order. **Do not wait to be asked.**
 Nothing is spent until UI work starts. Under Claude Code the same text arrives
 from the session hook; ~~and a prompt about screens also gets the list of
 patterns the project has written down before anything is written; here both
-arrive from this file and from `uic patterns`, which is the whole difference
-between the harnesses.~~ **that second channel is gone and the harnesses no
+arrive from this file and from the command that listed what was written down,
+which is the whole difference between the harnesses.~~ **that second channel is gone and the harnesses no
 longer differ there (#80).** It fired on a regular expression over English
 words, which is a worse copy of the judgement each skill's `description` already
 carries. The patterns still reach the agent before anything is written — through
@@ -101,58 +107,48 @@ Each is invocable on its own and none requires another to have run — so an
 agent definition can order them by name (`ui-consistency:pattern`, and so on)
 beside whatever else it uses.
 
-**Only Claude Code runs the per-edit hook.** Under Codex, Cursor or Gemini CLI
-the same check is a command you place yourself, after each file rather than
-after the batch:
+**Only Claude Code runs the per-edit hook**, and it reports the deterministic
+checks and nothing else. Under Codex, Cursor or Gemini CLI you run `uic check`
+after each file rather than after the batch.
 
-```
-uic diff --contract <contract> <the file just written>
-```
+~~**But every harness has the MCP server** (#33). All four manifests declare it,
+so it starts with the plugin and nobody configures anything. Six tools:
+`pattern`, `deviations`, `tree`, `props`, `group`, `findings`.~~
 
-**But every harness has the MCP server** (#33). All four manifests declare it,
-so it starts with the plugin and nobody configures anything. Ask it rather than
-shelling out where it is there: the parameters are typed arrays, so a glob
-cannot be mistaken for a path, and the pattern files come back as **resources**
-— list and read them without knowing where they live. Six tools:
+**The server is gone (#77), and what it existed for is better served without
+it.** Six tools onto functions that no longer exist; its case for existing was
+that the three harnesses with no hook had no way to get the pattern before the
+write. The rules above and the skills below do that on every harness, with
+nothing to configure, no protocol to keep, and no server that can wedge. The
+`mcpServers` block is out of all four manifests.
 
-| tool | what it answers |
-| --- | --- |
-| `pattern` | what screens of this screen's kind look like here, and the pattern file if one covers it |
-| `deviations` | where a set of screens departs from a named pattern, per file |
-| `tree` | what one screen renders, through the files it imports |
-| `props` | which props each of a set writes on one component |
-| `group` | a set of screens grouped by what they are composed of |
-| `findings` | the deterministic findings for a set |
-
-It answers about the project it was started in and says which on stderr at
-startup. Nothing requires it: with no server running, this file and the CLI are
-the whole surface, exactly as before. Where an
-input is missing they degrade — deriving instead of refusing — rather than
-demanding a pipeline.
+**What to do instead of asking a tool for a fact**: read the files. The family's
+screens, the route table, the props each one writes — the skills say which files
+and in what order, and reading three of them is cheaper than the 2 839 lines
+that used to answer for you and were wrong on the next repository's
+convention.
 
 ## The CLI
 
 ```
-uic pattern <screen> [--save]      what screens of this kind look like here
-uic pattern <screen> --establish   write it down as a pattern file, derived and dated
-uic pattern <screen> --refresh     re-count an established one; every sentence in it is kept
-uic mcp                            the MCP server on stdio; your harness starts it, not you
-uic diff --contract <c> <files>    where the screens you touched left it (a pattern file or a saved contract)
-uic diff --contract <c> --json …   the same, per file and machine-readable; unmeasured comes back null, never 0
 uic place <screen>                 route, trail, and where it is registered
 uic tree <screen> [--depth N]      what it renders, resolved through its children
-uic props <Component> <files>      which props each file writes on it, and where they diverge
 uic group <files> [--depth N]      the screens grouped by what they are composed of
-uic patterns [screen]              the patterns written down, and which one covers a screen
 uic check <files>                  the deterministic findings; exits 1 on any
 uic scan                           the packages detected, and how
-uic review <screen>                the findings, plus evidence for a second opinion
 uic shapes <files>                 shapes rebuilt or repeated
 uic inventory <file>               the layer chain for one file, and what it exports
 uic log                            what has been found here while somebody worked
 ```
 
-`check`, `diff` and `shapes` take **files, not glob patterns** — they rely on the
+**Seven commands went in one change (#77)**: the ones that derived a pattern,
+wrote it down, re-counted it, listed what was written down, compared a set
+against it, gathered evidence for a second opinion, and served all of that over
+a protocol. Every one of them is a skill now, and the skill reads the files. If
+you remember one of them and it is not above, that is why — `ui-consistency:pattern`
+and `ui-consistency:verify` are where that work is.
+
+`check` and `shapes` take **files, not glob patterns** — they rely on the
 shell to expand. A quoted `"src/**/*.tsx"` names no file, and is refused with
 exit 1 rather than checked and passed; use `$(git ls-files '*.tsx')`.
 

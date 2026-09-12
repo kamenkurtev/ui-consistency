@@ -96,9 +96,21 @@ describe('the skills', () => {
       expect(description.toLowerCase()).toMatch(/\buse (this )?when\b|\bwhen the user\b/);
     });
 
-    it(`${skill} tells the agent to run the command rather than guess`, async () => {
+    /**
+     * ~~tells the agent to run the command rather than guess~~
+     *
+     * **A skill is no longer required to run a command (#77)**, and demanding
+     * it would now be demanding the shape #76 is removing: two of these do
+     * their work by reading the project's files against a rule, and there is no
+     * binary left to call for it. What the assertion was actually protecting is
+     * unchanged and is what is asserted: a skill must be **grounded in
+     * something outside itself** — the binary, or a rule in `rules/` — rather
+     * than telling an agent to decide from what a screen usually looks like,
+     * which is the failure every rule in that directory exists to prevent.
+     */
+    it(`${skill} grounds itself in the binary or a rule, rather than guessing`, async () => {
       const text = await readFile(`${dir}/${skill}/SKILL.md`, 'utf8');
-      expect(text).toContain('uic.mjs');
+      expect(text).toMatch(/uic\.mjs|rules\/[a-z-]+\.md/);
     });
   }
 });
@@ -325,7 +337,11 @@ describe('the other harnesses', () => {
   it('ships the context file the non-Claude harnesses read', async () => {
     const { readFileSync } = await import('node:fs');
     const agents = readFileSync(fileURLToPath(new URL('../AGENTS.md', import.meta.url)), 'utf8');
-    expect(agents).toContain('uic pattern');
+    // ~~`uic pattern`~~ — that command is a skill now (#77). What this asserts
+    // is that the file a non-Claude harness loads actually carries the surface:
+    // the rules it reads instead of a hook, and a command it can still run.
+    expect(agents).toContain('rules/');
+    expect(agents).toContain('uic check');
     expect((await read('gemini-extension.json'))['contextFileName']).toBe('AGENTS.md');
   });
 });

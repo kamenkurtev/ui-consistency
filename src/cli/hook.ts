@@ -1,15 +1,7 @@
 import { dirname, relative, resolve } from 'node:path';
-import { readFile } from 'node:fs/promises';
 import { analyzeProject } from './index.js';
 import { SILENCED } from '../core/off.js';
-import { settled } from '../ai/settled.js';
 import { record } from './log.js';
-import { contractDeviations, contractsForScreen, isContract } from '../checks/contract.js';
-import { regionsOf } from '../sources/regions.js';
-import { templateKind } from '../parse/template.js';
-import type { ScreenPattern } from '../sources/pattern.js';
-import { contractsFor } from './log.js';
-import { cachedPattern } from '../sources/pattern-cache.js';
 import { formatFinding } from '../core/format.js';
 import { findProjectRoot } from '../layers/detect.js';
 import { touchedBy, within } from './touched.js';
@@ -131,65 +123,28 @@ export async function hookResponse(stdin: string): Promise<HookResponse | null> 
   ).catch(() => null);
   const said = findings.filter((finding) => within(touched, finding.line));
 
-  if (said.length === 0) {
-    // Nothing certain is wrong. The other thing worth saying on an edit is that
-    // this screen differs from the other screens of its kind — from a contract
-    // somebody approved where one exists, and otherwise from one derived here.
-    //
-    // ~1 KB of *observation* about neighbouring screens was injected here once
-    // and ignored — measured on a real run — and the answer
-    // was to say nothing at all without an approved contract. That went too far
-    // (#231): it left the pattern half reachable only by running a command per
-    // kind and saving the result, which nobody does thirty times — so on a
-    // project that had written nothing down the tool was 93% an import checker.
-    //
-    // What is injected now is a **deviation**, and only where there is one. A
-    // screen written like its siblings is still silent, which is the property
-    // P4 was about. Nothing derived fails anything here; approval belongs at the
-    // one place it can, which is `uic diff --contract` in a build gate (#209).
-    //
-    // Debounced per file: during active development most edits are
-    // intermediate, and repeating the same line on every keystroke is how
-    // anything becomes noise.
-    if (!(await settled(root, absolute))) return null;
-
-    const { said: deviations, derived } = await deviationsFromContract(root, absolute).catch(
-      () => ({ said: [] as string[], derived: null as ScreenPattern | null }),
-    );
-    if (deviations.length === 0) return null;
-
-    await record(
-      root,
-      deviations.map((one) => ({
-        file: absolute,
-        line: 1,
-        level: 'page-pattern' as const,
-        message: one,
-      })),
-      { rootDir: root },
-    );
-
-    return {
-      hookSpecificOutput: {
-        hookEventName: 'PostToolUse',
-        additionalContext: [
-          derived === null
-            ? 'ui-consistency: this screen has left the contract for its kind:'
-            : 'ui-consistency: this screen differs from the other screens of its kind here',
-          // Where the family came from, and the names. An agent handed a family
-          // it can see is nonsense will say so; one handed a bare assertion
-          // cannot (#255).
-          ...(derived === null ? [] : [`(${provenance(root, derived)}, and it fails nothing):`]),
-          '',
-          ...deviations.map((one) => `- ${one}`),
-          '',
-          derived === null
-            ? 'Fix them in this turn, or say which are deliberate.'
-            : 'Follow them where they fit, and say so where this screen is deliberately different.',
-        ].join('\n'),
-      },
-    };
-  }
+  // ~~Nothing certain is wrong. The other thing worth saying on an edit is
+  // that this screen differs from the other screens of its kind — from a
+  // contract somebody approved where one exists, and otherwise from one derived
+  // here.~~
+  //
+  // **That whole channel is gone (#77), and it is the largest single thing #76
+  // gives up.** It derived the pattern on the edit already being made, so
+  // nobody had to run anything for the tool to know — #38's claim, and the
+  // answer to the 93%-an-import-checker problem #231 was about. What replaced
+  // it is `ui-consistency:pattern`, reached by its own description before the
+  // write rather than after it, which is where the pattern was always worth
+  // more: an agent told the pattern first writes the right screen once, and one
+  // told afterwards has to be persuaded to change working code.
+  //
+  // What is **not** given up is the property that made it safe: nothing derived
+  // ever failed an edit here, and nothing does now. The only place derived
+  // material may fail anything was a person putting a contract check in a build
+  // gate, and that is #76's open question rather than this file's.
+  //
+  // So a file the deterministic checks pass is silent — which was already the
+  // rule for a screen written like its siblings.
+  if (said.length === 0) return null;
 
   const text = said
     .map((finding) => formatFinding({ ...finding, file: relative(root, finding.file) }))
@@ -201,93 +156,4 @@ export async function hookResponse(stdin: string): Promise<HookResponse | null> 
       additionalContext: `ui-consistency found code that does not match this project's own design system:\n\n${text}\n\nFix them in this turn.`,
     },
   };
-}
-
-/**
- * Where a derived contract came from, said so the agent can judge it.
- *
- * *"derived from the 8 screens registered beside it"* and *"derived from files
- * in its folder"* are not equally trustworthy, and the second names the files
- * because that is what makes a nonsense family visible on sight.
- */
-function provenance(root: string, contract: ScreenPattern): string {
-  const names = contract.family.map((one) => relative(root, one));
-  // A pattern file is a person's sentence, reviewed in a pull request, so the
-  // "nobody approved it" that belongs on the other two would be false here —
-  // the *shape* was approved even though the reading of the code is fresh.
-  if (contract.from === 'pattern') {
-    return `read just now from the ${names.length} screens the project's pattern file names`;
-  }
-  return contract.from === 'routes'
-    ? `derived just now from the ${names.length} screens the route table registers beside it — nobody approved it`
-    : `derived just now from files in its folder — ${names.join(', ')} — nobody approved it`;
-}
-
-/**
- * What this screen has done that the contract for its kind does not.
- *
- * ~~Only against a contract a person approved. Nothing derived is checked here:
- * an observation nobody accepted has no business failing an edit.~~
- *
- * **The premise was withdrawn, and by then it was doing the opposite of its
- * job** (#231). Nothing here fails an edit — the hook returns context, never a
- * block — so a derived contract was being withheld from a path it could not
- * gate. The effect was that a project got the pattern half only if somebody had
- * run a command per kind and saved the result, which nobody was going to do
- * thirty times.
- *
- * So: an approved contract wins where one exists, and where none does the
- * pattern is derived here and said to be derived. Approval still belongs at the
- * one place derived material *can* fail something — a person putting
- * `uic diff --contract` in a build gate (#209).
- */
-async function deviationsFromContract(
-  root: string,
-  file: string,
-): Promise<{ said: string[]; derived: ScreenPattern | null }> {
-  const nothing = { said: [], derived: null };
-
-  const source = await readFile(file, 'utf8').catch(() => null);
-  if (source === null) return nothing;
-
-  const approved: ScreenPattern[] = [];
-  for (const path of await contractsFor(root)) {
-    const raw = await readFile(path, 'utf8').catch(() => null);
-    if (raw === null) continue;
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      continue;
-    }
-    if (isContract(parsed)) approved.push(parsed);
-  }
-
-  // Which contract this screen is *of*, before asking how it departs from one.
-  // Asking every contract and keeping every answer is what made a second
-  // contract worse than one (#152).
-  const holder = regionsOf(source, templateKind(file) ?? undefined)?.holder ?? null;
-  const matching = contractsForScreen(approved, holder);
-
-  // Nobody has to run anything. Where no approved contract covers this kind,
-  // what screens of it look like is derived on the edit already being made —
-  // once per kind and area, from a cache keyed by the files it came from.
-  const fresh =
-    matching.length === 0 && holder !== null
-      ? await cachedPattern(root, file, holder).catch(() => null)
-      : null;
-  const contracts = fresh === null ? matching : [fresh];
-
-  const said: string[] = [];
-  for (const contract of contracts) {
-    const deviations = contractDeviations(relative(root, file), source, contract);
-    // Null means the file is not a screen at all — a test, a story. An empty
-    // list means it was measured and matched. The caller must be able to tell
-    // those apart, so neither is a deviation.
-    if (deviations === null) return nothing;
-    if (deviations.length === 0) return nothing;
-    said.push(...deviations.map((one) => one.message));
-  }
-
-  return { said, derived: fresh };
 }

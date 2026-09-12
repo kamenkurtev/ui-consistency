@@ -103,10 +103,10 @@ Tell the user, plainly:
 - this screen is now the reference for its kind;
 - `ui-consistency:pattern` will answer from the family once there are three,
   and until then it answers from this pointer —
-  `uic pattern --kind <kind>` reads it;
+  `ui-consistency:pattern` reads it;
 - **nothing here gates anything.** Nothing derived may fail an edit, and
-  nothing decided here fails one either, until somebody puts
-  `uic diff --contract` in a build.
+  nothing decided here fails one either. The one place derived material could
+  ever fail anything was a person choosing to put it in a build gate.
 
 ## What this must not do
 

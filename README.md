@@ -138,16 +138,16 @@ the only requirement.
 > Code there is no per-edit gate**, and wiring one into the other harnesses is
 > open work.
 >
-> **What every harness does have, since #33, is the MCP server.** All four
-> manifests declare it, it starts with the plugin, and it is the one surface an
-> agent can reach on its own initiative without a hook and without you running
-> anything. Six tools — the pattern for a screen, the deviations of a set from
-> a pattern file, the tree of one screen, the props matrix, the grouping, the
-> deterministic findings — and the pattern files as resources, which is the half
-> a CLI cannot offer: the agent lists and reads them without knowing a path
-> convention. Typed arrays instead of shell globs, so the commonest wrong call
-> is gone. Nothing requires it: the hook, the CLI and the skills work unchanged
-> with no server running, and a wedged one degrades to silence.
+> ~~**What every harness does have, since #33, is the MCP server.** All four
+> manifests declare it, and it is the one surface an agent can reach on its own
+> initiative without a hook. Six tools, and the pattern files as resources.~~
+>
+> **The server is gone (#77).** Six tools onto functions that no longer exist —
+> and what it existed for is what replaced them: a **skill** is reached by the
+> model's own judgement on every harness, needs nothing configured, has no
+> protocol to keep and no server to wedge. The `mcpServers` block is out of all
+> four manifests. So on the three harnesses with no hook, the skills and the
+> rules are the whole surface, which is also the half that was always portable.
 
 ## Composing it into your own agent
 
@@ -281,19 +281,19 @@ called `Button` — which is a vocabulary. On every project that names things
 differently it matched nothing and **said nothing**, and silence is
 indistinguishable from a clean result. So the built-in names went.
 
-Raw elements are still checked. They are checked against the **contract**, where
-the answer is derived from your own screens rather than assumed:
+Raw elements are still checked, and since #77 that is `ui-consistency:pattern`
+rather than a command: the pattern for the kind lists the raw elements the
+family avoids, and a screen rendering one is named against it —
 
 ```
-$ uic diff --contract <c> src/orders/ShipmentsList.tsx
 src/orders/ShipmentsList.tsx
   renders a raw <table>; no screen of this kind does
 ```
 
 The element is named from the HTML specification; the replacement is not named at
-all, because the contract's own vocabulary already says what this project renders
-instead. And it only fires against a contract **a person approved** — which is
-the difference between a rule and a guess.
+all, because the pattern's own vocabulary already says what this project renders
+instead. And the answer comes from **your own screens** rather than a built-in
+list — which is the difference between a rule and a guess.
 
 ## What it works with
 
@@ -394,21 +394,23 @@ The plugin installs a hook, not a command — it does not put anything on your
 ```bash
 uic=path/to/ui-consistency/bin/uic.mjs
 
-node $uic pattern src/orders/OrderList.tsx --save   # what screens of this kind look like here
-node $uic pattern src/orders/OrderList.tsx --establish  # write it down as a pattern file to review
-node $uic diff --contract <c> src/orders/*.tsx      # where the screens you touched left it — <c> is a pattern file or a saved contract
 node $uic place src/orders/OrderList.tsx            # folder, route, and the breadcrumb trail
 node $uic tree src/orders/OrderList.tsx             # what it renders, followed into its children
-node $uic props OrdersGrid $(git ls-files 'src/orders/*.tsx')  # which props each file writes on it
 node $uic group $(git ls-files 'src/**/*Page.tsx')  # the screens grouped by what they are made of
-node $uic patterns src/orders/OrderList.tsx         # which pattern covers this screen, and what has moved
 node $uic check $(git ls-files '*.tsx')             # exits 1 if anything is wrong — your CI gate
 node $uic scan                                      # the packages detected, how, and what each exports
 node $uic shapes $(git ls-files '*.tsx')            # shapes rebuilt or repeated
-node $uic review src/orders/OrderList.tsx           # the checks, plus the evidence for a second opinion
 node $uic log                                       # what it has found here while you worked
 node $uic inventory src/orders/OrderList.tsx        # what this file's chain exports, and from where
 ```
+
+**Seven commands were removed in one change (#77)** — the ones that derived a
+pattern, wrote it down, re-counted it, listed what was written, compared a set
+against it, gathered evidence for a second opinion, and served all of that over
+MCP. Each is a skill now, and the skill reads your files:
+`ui-consistency:pattern` establishes the pattern, `ui-consistency:verify` reads a
+finished set against it. There is nothing to put in CI for those, which is the
+one thing the change costs and is stated plainly below.
 
 > **`check` takes files, not glob patterns**, and relies on the shell to expand
 > them — so a *quoted* glob arrives as one literal string. It says so and exits
@@ -457,10 +459,10 @@ has here, which is more than a decision and less than a spec. One Markdown file
 per pattern in `.ui-consistency/patterns/`, written by the agent from reading
 your code and reviewed by you in a pull request. Until you have reviewed it,
 it says so: a file the tool established carries `derived: true` and the date
-it was measured, and names under `## Still to be written` the parts no
-extraction can produce — and `uic pattern <screen> --refresh` re-counts such a
-file later without touching a sentence anybody wrote into it — which alternatives a slot allows, the rules no
-checker can evaluate, and whether a screen that differs does so deliberately:
+it was measured, and names under `## Still to be written` the parts no reading
+of the code can produce — which alternatives a slot allows, the rules no checker
+can evaluate, and whether a screen that differs does so deliberately. The skill
+re-counts such a file later without touching a sentence anybody wrote into it:
 
 ~~~~markdown
 ---
@@ -510,18 +512,22 @@ described rather than described as disagreeing.
 screen. `OrdersGrid`, `InvoicesGrid` and `CustomersGrid` are one thing your
 project agrees about, and counting by name never sees it.
 
-`uic diff --contract <that file> <screens>` verifies a finished set against it,
-exits 1 where something deviates, and **prints what it could not evaluate** — the
-prose rules, and any slot written for a person — because printing silence for
-those would let a screen pass against rules nobody checked.
+`ui-consistency:verify` reads a finished set against it and **says what it could
+not evaluate** — the prose rules, and any slot written for a person — because
+silence about those would let a screen pass against rules nobody checked.
+
+~~A command did that and exited 1 where something deviated.~~ **It is gone
+(#77), and so is the one place derived material could fail a build.** That is
+the honest cost of the change and it is stated again under *What it does not
+do*: rules and skills cannot fail a build on their own.
 
 **List every member**, not a sample: that list is how a screen is matched to its
 pattern and how staleness is checked, so a truncated one quietly loses both.
 
-`uic patterns` lists what you have and says which files have changed since a
-pattern was read. Ask about one screen — `uic patterns src/pages/OrdersPage.tsx`
-— and *"no pattern covers it"* is a real answer: it means this is a shape nobody
-has written down yet.
+The patterns are Markdown in your repository, so listing them is `ls` and
+reading one is reading a file. *"No pattern covers this screen"* is a real
+answer rather than a failure: it means this is a shape nobody has written down
+yet, and `ui-consistency:pattern` is what writes the first one.
 
 Every *fact* about the code is derived fresh every time, because a stored copy of
 what the code says can only be wrong — every staleness problem in this project
@@ -615,9 +621,11 @@ which file, which line, which kind, and the message.
 **It is not free of your code.** A finding quotes what it found — `color:
 '#ff0000' is a hardcoded colour` — so the log carries those literals, one line
 and at most eighty characters each. No file contents, no surrounding lines, no
-AST, and never more than the finding needed to name. The contracts beside it
-carry more: `uic pattern --save` records the prop values and class strings a
-family agrees on, verbatim.
+AST, and never more than the finding needed to name. ~~The contracts beside it
+carry more: a saved contract records the prop values and class strings a family
+agrees on, verbatim.~~ **There are no saved contracts any more (#77)** — the
+command that wrote them is gone, and a pattern file is Markdown in your own
+repository where you can read exactly what it says.
 
 Beside it, `repo.txt` holds the **absolute path** of the repository the log is
 of — four checkouts mean four logs, and their own paths are deliberately

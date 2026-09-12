@@ -159,25 +159,33 @@ reason is unchanged: the commonest answer to a template is nothing. Not derived 
 either: the nesting must be read from the project, and *tabs, accordions, forms*
 came out of one repository and the next one nests differently.
 
-The plugin's job is to put the facts in front of the agent — `uic tree` for the
-nesting, `uic props` for the agreement, `uic group` for which screens are of a
-kind — and the agent's job is to write the sentences. **No model is called from
-this tool**, here as everywhere.
+~~The plugin's job is to put the facts in front of the agent — three commands
+for the nesting, the prop agreement and which screens are of a kind — and the
+agent's job is to write the sentences.~~
 
-`uic pattern <screen> --establish` writes the measured half of one: the
-frontmatter, the structure block, the props with their counts and the member
-list, marked `derived: true` and dated, with what no extraction can produce
-named under `## Still to be written`. Answer those before building from it.
+**The second half was always the point, and now it is the whole of it (#77).**
+The agent reads the family's files and writes the sentences.
+`ui-consistency:pattern` is the method. **No model is called from this tool**,
+here as everywhere: the agent reading the code is the one doing this.
 
-`uic pattern <screen> --refresh` brings such a file back up to date. It rewrites
-what was **counted** — the frontmatter, the structure strengths, the props, the
-avoided elements, the wiring, the member list — and leaves every other section
-exactly as found, `## Still to be written` included, because the tool wrote that
-one *and* invited a person to answer it. It refuses a file with no
-`derived: true`: a person wrote that, and it has no derived half. And it derives
-the family **without reading the file it is refreshing**, or the member list
-would be its own family and a screen that has since joined the kind could never
-enter it.
+Write the measured half first — the frontmatter, the structure block, the props
+with their counts, the member list — marked `derived: true` and dated, with what
+no reading of the code can produce named under `## Still to be written`. Answer
+those before building from it.
+
+**Refreshing is reading again, and no longer a command (#77)** —
+two rules govern it. Rewrite only what was **counted** — the frontmatter, the
+structure strengths, the props, the avoided elements, the wiring, the member
+list — and leave every other section exactly as found, `## Still to be written`
+included, because that section was written *and* a person was invited to answer
+it, and nothing in the file says whether they did. And **refuse a file with no
+`derived: true`**: a person wrote that one, and it has no derived half.
+
+The trap in it is worth keeping written down, because a whole test suite was
+green with it in: **a refresh may not read the file it is refreshing.** The
+pattern file outranks everything read off the code, so re-deriving with the file
+in place reads its own member list back as the family, and a screen that has
+since joined the kind can never enter it.
 
 ## What reads this file
 
