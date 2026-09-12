@@ -1,6 +1,6 @@
 import { readFile, stat } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
-import { findProjectRoot } from '../layers/detect.js';
+import { declaresWorkspaces, findProjectRoot } from '../layers/detect.js';
 import { regionsOf, type PageRegions, type Region } from './regions.js';
 import { rawMarkupOf, shapeOf } from './extract.js';
 import { parseModule, walk } from '../parse/parse.js';
@@ -502,7 +502,6 @@ export async function patternOf(
 
   let from = family.from;
   let read = await readAll(family.screens);
-  if (read.length < MIN_FAMILY) return null;
 
   // No answer at all when the page asked about could not be read. Carrying on
   // would describe the screens around it with confidence — a full skeleton,
@@ -514,6 +513,20 @@ export async function patternOf(
   const asking = read.find((one) => one.path === asked);
   if (asking === undefined) return null;
   let reference: Reading = asking;
+
+  // **The size check moved below the holder channel, and that was a defect of
+  // its own** (#66). `read.length < MIN_FAMILY` returned null here, *before*
+  // the retry — so the channel that exists for when the cheaper ones found
+  // nothing could never run when they found nothing at all. It ran only where
+  // they returned three or more screens of the **wrong** holder, which is the
+  // shape #35's own evidence had: 12 candidates, all of a different holder.
+  //
+  // It is also why no test caught the bound being wrong. A fixture with one
+  // screen in one library and five sharing a holder in another is inert — the
+  // folder walk finds no siblings, `read.length` is 1, and the function returns
+  // before the channel it was written to exercise. #66 reported that fixture as
+  // answering nothing "with and without a `package.json`", which is exactly
+  // this and not a fault in the fixture.
 
   // Screens of the same kind, where the kind can be read at all. A list screen
   // and the forms beside it share only what every screen has — measured on a
@@ -563,6 +576,11 @@ export async function patternOf(
       }
     }
   }
+
+  // The size check, here rather than above the holder channel — see the note by
+  // `asking`. Nothing has been derived at this point, so a family too small
+  // still answers null and says nothing, exactly as before.
+  if (read.length < MIN_FAMILY) return null;
 
   const narrowed = sameHolder.length >= MIN_FAMILY;
 
@@ -700,6 +718,27 @@ async function familyFromPattern(
 }
 
 /**
+ * Why the holder channel had nothing to search, where it had nothing.
+ *
+ * **Paid for only when there is no answer**, which is the same shape
+ * `src/core/coverage.ts` uses: a run that reported something has already said
+ * what it saw, and this is the one moment the reason is worth a second walk up
+ * the tree.
+ *
+ * A family assembled across an unknown boundary is worse than no family, so a
+ * screen that no `package.json` bounds gets no holder search at all — the Nx
+ * shape this plugin calls normal, libraries bounded by `tsconfig` aliases.
+ * Telling a user *"fewer than three screens of this kind"* about a search that
+ * never ran is a quiet miss, and quiet misses are what #37 exists to prevent
+ * (#66).
+ */
+export async function noPackageBounds(target: string): Promise<boolean> {
+  const root = await findProjectRoot(dirname(target));
+  if (root === null) return false;
+  return (await appRootFor(target, root)) === null;
+}
+
+/**
  * The application the screen belongs to, which is not the workspace.
  *
  * A holder search bounded at the repository root would put one app's screens
@@ -717,7 +756,24 @@ async function familyFromPattern(
 async function appRootFor(screen: string, root: string): Promise<string | null> {
   let current = dirname(screen);
   for (;;) {
-    if (await stat(join(current, 'package.json')).then(() => true, () => false)) return current;
+    // **The root bounds a screen only where the root is one application**
+    // (#66). The walk used to accept any `package.json`, so it reached the
+    // repository root, found the workspace manifest every JS monorepo has, and
+    // returned that — the bound was the whole workspace. On a real
+    // four-application monorepo the holder channel answered a family of 23 of
+    // which **22 belonged to a different application**, and
+    // `uic pattern --establish` wrote a file whose opening sentence says *found
+    // in this application*.
+    //
+    // But "the root is out of bounds" flatly is wrong the other way, and the
+    // #35 tests said so: in a single-package app the root manifest **is** the
+    // application, and that is the shape the channel was written for — every
+    // screen in its own folder, nothing else to bound it. So the question is
+    // not whether a manifest is there but what it describes: a root declaring
+    // `workspaces`, or carrying a `pnpm-workspace.yaml`, is several
+    // applications and bounds nothing.
+    const manifest = await stat(join(current, 'package.json')).then(() => true, () => false);
+    if (manifest && !(current === root && (await declaresWorkspaces(current)))) return current;
     if (current === root) return null;
     const up = dirname(current);
     if (up === current) return null;

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { patternOf } from '../../src/sources/pattern.js';
+import { noPackageBounds, patternOf } from '../../src/sources/pattern.js';
 
 let root: string;
 
@@ -887,6 +887,99 @@ describe('a kind that no route table registers', () => {
     expect(freshly?.from).not.toBe('pattern');
     expect(freshly?.family).toHaveLength(4);
     expect(freshly?.family.some((one) => one.includes('RetryDialog'))).toBe(true);
+  });
+
+  /**
+   * The bound, and the two defects that hid each other (#66).
+   *
+   * `appRootFor` tested for a `package.json` *before* testing whether it had
+   * reached the root, so on a workspace whose root has one — every JS monorepo
+   * — it returned the repository root and the holder channel was bounded at the
+   * workspace. On a real four-application monorepo that answered a family of 23
+   * of which 22 belonged to a different application.
+   *
+   * And it could not be caught, because `patternOf` returned null on a family
+   * smaller than three **before** reaching the holder retry. A fixture of
+   * exactly this shape was therefore inert: the folder walk finds no siblings
+   * next to the reference, and the function returns before the channel it was
+   * written to exercise. Both had to move for either to be testable.
+   */
+  it('does not search the holder family across a workspace it has no package to bound', async () => {
+    // The Nx shape: a manifest at the root and nowhere else, libraries bounded
+    // by `tsconfig` aliases.
+    await writeFile(join(root, 'package.json'), '{"name":"workspace","workspaces":["libs/*"]}');
+    await writeFile(
+      join(root, 'tsconfig.json'),
+      JSON.stringify({ compilerOptions: { baseUrl: '.', paths: { '@x/*': ['libs/*'] } } }),
+    );
+
+    const target = await screen('libs/app-a/src/lib/pages/AgentList.tsx', page('PageShell', ['Filters', 'AgentsGrid']));
+    // Five screens sharing the holder, in a different application.
+    for (const name of ['One', 'Two', 'Three', 'Four', 'Five']) {
+      await screen(`libs/app-b/src/lib/pages/${name}.tsx`, page('PageShell', ['Filters', `${name}Grid`]));
+    }
+
+    const derived = await patternOf(target, { byHolder: true });
+
+    // Silent, and that is the answer: a family across an unknown boundary is
+    // worse than no family.
+    expect(derived).toBeNull();
+    // And the reason is available rather than being a quiet miss.
+    expect(await noPackageBounds(target)).toBe(true);
+  });
+
+  /**
+   * The half that no fixture reached, and the reason the bound could not be
+   * tested (#66): `patternOf` returned null on a family smaller than three
+   * **before** the holder retry, so the channel that exists for when the
+   * cheaper ones found nothing never ran when they found nothing at all. It ran
+   * only where they returned three or more screens of the *wrong* holder.
+   *
+   * Here the folder walk reaches nothing — the reference is alone in its own
+   * branch and the siblings are scattered far from it — so this passes only
+   * because the size check moved below the retry.
+   */
+  it('searches by holder even when the cheaper channels found nothing at all', async () => {
+    // A single-package application: the root manifest *is* the application, so
+    // the root bounds the search.
+    await writeFile(join(root, 'package.json'), '{"name":"app"}');
+
+    const target = await screen(
+      'src/features/agents/list/view/AgentList.tsx',
+      page('PageShell', ['Filters', 'AgentsGrid']),
+    );
+    for (const name of ['One', 'Two', 'Three']) {
+      await screen(
+        `src/features/${name.toLowerCase()}/detail/panel/${name}.tsx`,
+        page('PageShell', ['Filters', `${name}Grid`]),
+      );
+    }
+
+    const derived = await patternOf(target, { byHolder: true });
+
+    expect(derived?.from).toBe('holder');
+    expect(derived?.family).toHaveLength(4);
+    expect(derived?.kind).toBe('PageShell');
+  });
+
+  /** A library with a manifest of its own is bounded, and stays inside it. */
+  it('bounds the holder family at the library that has a manifest', async () => {
+    await writeFile(join(root, 'package.json'), '{"name":"workspace","workspaces":["libs/*"]}');
+    await mkdir(join(root, 'libs/app-b'), { recursive: true });
+    await writeFile(join(root, 'libs/app-b/package.json'), '{"name":"@x/app-b"}');
+
+    const target = await screen('libs/app-b/src/lib/pages/One.tsx', page('PageShell', ['Filters', 'OneGrid']));
+    for (const name of ['Two', 'Three', 'Four']) {
+      await screen(`libs/app-b/src/lib/pages/${name}.tsx`, page('PageShell', ['Filters', `${name}Grid`]));
+    }
+    // And one in a neighbouring application, which must not be drawn in.
+    await screen('libs/app-a/src/lib/pages/Elsewhere.tsx', page('PageShell', ['Filters', 'ElsewhereGrid']));
+
+    const derived = await patternOf(target, { byHolder: true });
+
+    expect(derived).not.toBeNull();
+    expect(derived?.family.some((one) => one.includes('app-a'))).toBe(false);
+    expect(await noPackageBounds(target)).toBe(false);
   });
 
   /** Another file stating a kind is still somebody stating a kind. */
