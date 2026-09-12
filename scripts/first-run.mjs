@@ -177,19 +177,18 @@ function callsFor(root, screens) {
     ['check', [['check', ...some]]],
     ['check --list', [['check', '--list', ...some]]],
     ['inventory', each('inventory')],
-    ['place', each('place')],
-    ['tree', each('tree')],
-    ['group', [['group', ...some]]],
     ['shapes', [['shapes', ...some]]],
     ['log', [['log']]],
   ];
 
-  // ~~`pattern`, `patterns`, `props`, `review` and `diff`.~~ **Gone with the
-  // commands (#77), and leaving them in was worse than useless**: each answered
-  // with the usage line, which this harness classifies as `refused` — a valid
-  // answer — so five rows reported *"the tool refused, correctly"* about
-  // commands that do not exist. That is the false pass this whole harness was
-  // written against, one level out.
+  // ~~`pattern`, `patterns`, `props`, `review`, `diff`, `place`, `tree`,
+  // `group`.~~ **Gone with the commands (#77, #78), and leaving them in was
+  // worse than useless**: each answered with the usage line, which this harness
+  // classifies as `refused` — a valid answer — so eight rows reported *"the tool
+  // refused, correctly"* about commands that do not exist. That is the false
+  // pass this whole harness was written against, one level out. It happened
+  // twice, once per change, which is why the guard below is the thing to trust
+  // and this list is not.
   //
   // The completeness guard below is what keeps this honest: it reads the
   // commands off the usage line, so a command that exists and is not exercised

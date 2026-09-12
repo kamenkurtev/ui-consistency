@@ -55,74 +55,6 @@ describe('the built binary', () => {
     expect(run.stdout).toContain('LegacyButton is deprecated in @fixture/core.');
   });
 
-  it('prints the tree of a screen, and exits 0 whatever it finds', async () => {
-    // A fact supplier, never a gate: the exit code says the command ran, not
-    // that the screen is good. Run against the shipped bundle because that is
-    // where argument parsing and exit codes actually live.
-    const root = await mkdtemp(join(tmpdir(), 'uic-tree-bin-'));
-    await mkdir(join(root, 'src'), { recursive: true });
-    await writeFile(join(root, 'package.json'), '{"name":"app"}');
-    await writeFile(
-      join(root, 'src/OrdersPage.tsx'),
-      "import { OrdersGrid } from './OrdersGrid';\n" +
-        "import { Button } from '@acme/design';\n" +
-        'export const OrdersPage = () => (\n  <PageLayout>\n    <OrdersGrid />\n' +
-        '    <Button />\n  </PageLayout>\n);\n',
-    );
-    await writeFile(join(root, 'src/OrdersGrid.tsx'), 'export const OrdersGrid = () => <DataGrid />;\n');
-
-    const run = await uic(['tree', 'src/OrdersPage.tsx'], root);
-
-    expect(run.code).toBe(0);
-    expect(run.stdout).toContain('2 levels');
-    expect(run.stdout).toContain('OrdersGrid  src/OrdersGrid.tsx');
-    // The whole point of the walk: what the screen file names is not what it is
-    // made of, and the grid's own root is a level down.
-    expect(run.stdout).toContain('DataGrid');
-    expect(run.stdout).toContain('Button  (external)');
-    await rm(root, { recursive: true, force: true });
-  });
-
-  it('groups screens that differ only in the name of their grid', async () => {
-    // And reads every file it was given: the first path was being dropped by
-    // the flag filter, which a fixture would not have shown.
-    const root = await mkdtemp(join(tmpdir(), 'uic-group-bin-'));
-    await mkdir(join(root, 'src'), { recursive: true });
-    await writeFile(join(root, 'package.json'), '{"name":"app"}');
-    for (const grid of ['Orders', 'Invoices', 'Customers']) {
-      await writeFile(
-        join(root, `src/${grid}Page.tsx`),
-        `export const P = () => (\n  <PageShell>\n    <FilterBar />\n    <${grid}Grid />\n  </PageShell>\n);\n`,
-      );
-    }
-
-    const run = await uic(
-      ['group', 'src/OrdersPage.tsx', 'src/InvoicesPage.tsx', 'src/CustomersPage.tsx'],
-      root,
-    );
-
-    expect(run.code).toBe(0);
-    expect(run.stdout).toContain('3 screens');
-    expect(run.stdout).toContain('1 group');
-    expect(run.stdout).toContain('*Grid');
-    await rm(root, { recursive: true, force: true });
-  });
-
-  it('refuses a file that renders nothing rather than printing an empty tree', async () => {
-    // An empty answer and "this is not a screen" are different facts, and the
-    // second must not arrive as a clean-looking blank.
-    const root = await mkdtemp(join(tmpdir(), 'uic-tree-none-'));
-    await writeFile(join(root, 'package.json'), '{"name":"app"}');
-    await writeFile(join(root, 'notes.ts'), 'export const x = 1;\n');
-
-    const run = await uic(['tree', 'notes.ts'], root);
-
-    expect(run.code).toBe(0);
-    expect(run.stderr).toContain('Nothing to read');
-    expect(run.stdout).toBe('');
-    await rm(root, { recursive: true, force: true });
-  });
-
   it('exits 0 on a file with nothing to say about it', async () => {
     const run = await uic(['check', 'apps/orders/src/index.ts'], fixture);
     expect(run.code).toBe(0);
@@ -147,7 +79,7 @@ describe('the built binary', () => {
   it('refuses an unknown subcommand', async () => {
     const run = await uic(['frobnicate'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stderr).toContain('Usage: uic <place|tree|group|scan|check|shapes|inventory|log>');
+    expect(run.stderr).toContain('Usage: uic <scan|check|shapes|inventory|log>');
   });
 
   it('says what to do when given no files', async () => {
@@ -504,9 +436,11 @@ describe('the three silences a user has to be able to tell apart', () => {
    * a working tool while three were dead (#70).
    */
   it('says a chain check could not run even when another check found something', async () => {
-    // The chainless check is a **stated page rule** since #79 — the style check
-    // it used to be is `rules/raw-values.md` now. Which check speaks is not the
-    // point; that one does, while the chain checks say they could not, is.
+    // The chainless check was the style check, then a stated page rule; **both
+    // are rules now (#79, #78) and what is left is the curated substitution**,
+    // which is the last check that needs no package chain. Which check speaks
+    // is not the point; that one does, while the chain checks say they could
+    // not, is.
     const dir = await project({
       'package.json': '{"name":"root","workspaces":["packages/*"]}',
       // Nothing readable under any name: no entry, built or conventional.
@@ -514,18 +448,15 @@ describe('the three silences a user has to be able to tell apart', () => {
       'packages/widgets/src/entry.ts': 'export const Button = () => null;\n',
       'packages/app/package.json': '{"name":"@ws/app","dependencies":{"@ws/widgets":"*"}}',
       '.ui-consistency/pages.md':
-        '# Pages\n\n## Page structure\n\n' +
-        'A page is `<PageLayout>` holding, in order: `<PageHeader>`, `<PageBody>`.\n',
-      'packages/app/src/Page.tsx':
-        'import { Button } from "@ws/widgets";\n' +
-        'export const P = () => (\n  <PageLayout>\n    <PageBody><Button /></PageBody>\n' +
-        '    <PageHeader />\n  </PageLayout>\n);\n',
+        '# Pages\n\n## Action grids\n\n' +
+        'A page of actions uses `<app-action-grid>`, never a raw `<app-legacy-grid>`.\n',
+      'packages/app/src/page.component.html': '<app-legacy-grid></app-legacy-grid>\n',
     });
 
-    const run = await uic(['check', 'packages/app/src/Page.tsx'], dir);
+    const run = await uic(['check', 'packages/app/src/page.component.html'], dir);
 
     // A check that needs no chain still found something…
-    expect(run.stdout).toContain('"Page structure" says the order is header, content.');
+    expect(run.stdout).toContain('"Action grids" says to use app-action-grid');
     // …and the ones that need one say they did not run, rather than their
     // silence reading as a clean result.
     expect(run.stderr).toContain('did not run');
@@ -534,20 +465,6 @@ describe('the three silences a user has to be able to tell apart', () => {
     await rm(dir, { recursive: true, force: true });
   });
 
-  it('blind: nothing routes the screen, and it says that rather than a path', async () => {
-    const dir = await project({
-      'package.json': '{"name":"blind"}',
-      'src/widgets/Chart.tsx': 'export const Chart = () => null;\n',
-    });
-
-    const placed = await uic(['place', 'src/widgets/Chart.tsx'], dir);
-    expect(placed.stderr).toContain('Nothing routes');
-    // Never a guessed path from the folder name, which would be the one answer
-    // worse than silence.
-    expect(placed.stdout).not.toContain('"path"');
-
-    await rm(dir, { recursive: true, force: true });
-  });
 });
 
 describe('the built binary > under a different name', () => {

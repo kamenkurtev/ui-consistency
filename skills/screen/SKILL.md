@@ -52,13 +52,14 @@ next screen gets copied from it.
 
 ## 4. For a new screen, settle where it goes first
 
-```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" place <an existing screen of this kind>
-```
+Read `${CLAUDE_PLUGIN_ROOT}/rules/routes-and-breadcrumbs.md`, then read the
+project's own router: the folder, how the route is registered, and the trail the
+breadcrumb follows — which is in the router, not in the file being written, and
+is the single thing most often got wrong.
 
-The folder, how the route is registered, and the trail the breadcrumb follows —
-which is in the router, not in the file being written, and is the single thing
-most often got wrong.
+A command answered this and is gone (#78). The rule carries what it knew, and
+carries it further: what mounts a pathless array, when a path composes and the
+four times it must not, and paths written as constants rather than literals.
 
 ## 5. Check the screen before moving on
 

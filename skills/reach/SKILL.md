@@ -33,20 +33,27 @@ Every line you report is exactly one of these. Nothing else is admissible.
 ## What to run
 
 Cheap deterministic inspection over a **sample**, never the whole repository.
-~~Five commands~~ **four, since the pattern command became a skill (#77)** — and a
-handful of screens is the whole of it.
+~~Five commands~~ **three, since the derivation became a skill (#77) and the
+route and anatomy readers became rules (#78)** — and a handful of screens is
+the whole of it.
 
 ```
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" scan
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" inventory <the nearest shared package>
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" place <three or four real screens>
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <the same three or four>
 ```
 
-For the levels above those — the family, the pattern, the props — run
-`ui-consistency:pattern` on one of the same screens. It reports which of the
+For every level above those — placement, the family, the pattern, the props —
+run `ui-consistency:pattern` on one of the same screens. It reports which of the
 three answers applies for itself, in the same three words this skill uses, and
 *"fewer than three screens of this kind"* is the design rather than a fault.
+
+**A level that is now a rule is reported differently, and the difference
+matters**: there is no command to be silent, so *blind* stops being a thing a
+run demonstrates and becomes a thing the rule states — a class-based style
+system, a router this project registers some way nothing has written down. Say
+which rule was read and what it could not answer about **this** project, and
+never that a level worked because nothing was reported.
 
 Pick the screens from different areas of the application, not three files in one
 folder. Three files in one folder answer for that folder.
@@ -55,16 +62,21 @@ folder. Three files in one folder answer for that folder.
 
 | Level | Works when | Stated-nothing when | Blind when |
 | --- | --- | --- | --- |
-| **layers** | `scan` names a mechanism and lists packages with edges | — | `scan` finds no packages: say which two mechanisms were looked for, and that the three checks reading a chain are the only ones affected |
+| **layers** | `scan` names a mechanism and lists packages with edges | — | `scan` finds no packages: say which two mechanisms were looked for, and that the two checks reading a chain are the only ones affected |
 | **imports** | a chain exists and `check` reports or clears real files | — | no chain — and say so, rather than reporting a clean file |
 | ~~**style literals**~~, ~~**emoji-as-icon**~~ | — | — | **Not levels any more (#79).** They are `rules/raw-values.md`, and this skill has nothing to report about them: whether an agent read a rule is not a coverage fact, and answering anyway would be the invented reassurance this skill exists to prevent. The rule states its own limit — a class-based system (Tailwind, CSS modules, styled-components) is out of reach of anything reading one file — where the agent reads it. |
 | ~~**deprecated usage**~~ | — | — | **Gone with them (#79):** the marker is in the imported component's own source, which the agent reads. |
-| **prop values** | a source of truth is injected | no reference and no curated set — the commonest case | — |
-| **page rules, substitutions** | a rule file exists and was retrieved | `.ui-consistency/` is empty | a rule exists but names files it does not apply to |
-| **placement** | `place` returns a path and where it is declared | — | `place` says nothing routes any of the sample |
-| **the family** | `pattern` returns a family of three or more real screens | — | the family is one screen, or is the target's own parts |
-| **the contract** | `skeleton`, `configuration` or `body` carry something | fewer than three screens of the kind — this is the design, and `ui-consistency:decide` is the next step | `regionsIn` is `null` with a holder present |
-| **the contract's props** | `configuration` carries entries | `configuration` is empty and `propsUnmeasured` is `null` — the family was read and agrees on no props | `propsUnmeasured` is set: three screens, so the props were counted over two and never asked (#41) |
+| ~~**prop values**~~ | — | — | **Not a level any more (#78).** Its allowed set came from a reference screen, a story or the neighbouring files, and all three readers were the derivation #77 removed; a prop check with no injected source of truth invents one. Props are read by `ui-consistency:pattern` now, with the strength of each stated as a count. |
+| **substitutions** | a rule file exists and was retrieved | `.ui-consistency/` is empty | a rule exists but names files it does not apply to |
+| ~~**page rules**~~ | — | — | **Gone with the region reader (#78).** *A page is `<PageLayout>` holding, in order, header then content* is a sentence somebody wrote; `ui-consistency:pattern` reads it and the screen, which is what the check did and can also say why a screen differs. |
+| **placement** | the router states a path for the screen, and which table declares it | — | nothing in the project routes any of the sample, or it registers routes some way `routes-and-breadcrumbs.md` does not cover — say which |
+| **the family** | three or more real screens of the same kind, and **say which channel found them** — a pattern file, the route table, the same holder, the folders | — | the family is one screen, or is the target's own parts, which is a wrong family rather than a weak one |
+| **the pattern** | a holder, a role order, or what the holder holds carries something | fewer than three screens of the kind — this is the design, and `ui-consistency:decide` is the next step | the project has no named regions at all, or is built from raw markup: `anatomy.md` names both shapes, and neither is a clean result |
+| **the props** | counted over the family, each with its strength as a count | the family was read and agrees on no props | a family of exactly three: the props are counted over the two beside the reference, below what it takes to tell a convention from a copy — say that rather than *no conventions* |
+
+~~Those four were fields of a JSON contract a command printed.~~ **They are what
+`ui-consistency:pattern` reports (#77, #78).** The three answers are unchanged
+and so is the rule: never a level called working because nothing was reported.
 
 Two readings that are easy to get backwards and are worth stating out loud:
 

@@ -53,14 +53,23 @@ icon; a component you have marked `@deprecated`; a prop value outside your
 declared set; the page rules you have written down; and the substitutions you
 have written down.~~
 
-**Four, since #79.** Raw colours and sizes, and an emoji standing in for an
-icon, are `rules/raw-values.md` — you wrote the line, so you can see the
-literal in it, and a rule is obeyed *while* it is written rather than reported
-after. The `@deprecated` marker went with them: the agent reading the import's
-own source sees it, and the check needed the package chain that #81 removes
-anyway. What the program checks is: imports resolve to the nearest layer that
-exports them; a prop value outside your declared set; the page rules you have
-written down; and the substitutions you have written down.
+~~**Four, since #79.**~~ **Two, after #77 and #78.** Raw colours and sizes, and
+an emoji standing in for an icon, are `rules/raw-values.md` — you wrote the
+line, so you can see the literal in it, and a rule is obeyed *while* it is
+written rather than reported after. The `@deprecated` marker went with them: the
+agent reading the import's own source sees it. The prop check went with the
+three readers that supplied its allowed set, because a prop check with no
+injected source of truth invents one; props are read by
+`ui-consistency:pattern` now, each with its strength stated as a count. The
+page-rule check went with the region reader it evaluated against, and *a page is
+`<PageLayout>` holding, in order, header then content* is a sentence somebody
+wrote — the skill reads it and the screen, and can also say **why** a screen
+differs.
+
+What the program checks is: imports resolve to the nearest layer that exports
+them, and the substitutions you have written down. **#81 removes the chain the
+first of those reads**, which leaves one — and that is the shape #76 decided
+on.
 
 **A raw element where your own component exists is not among them, deliberately.**
 That check needed a built-in map from `<button>` to a component called `Button`,

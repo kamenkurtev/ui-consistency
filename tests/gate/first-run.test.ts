@@ -106,11 +106,13 @@ describe('the first-run acceptance harness', () => {
     expect(run.code).toBe(0);
     expect(run.stdout).toContain('No level answered with empty output and exit 0');
     // Every command named, so a level that was not run cannot hide in a verdict.
-    // ~~`pattern` and `patterns`~~ — gone with the commands (#77). The list is
-    // not the guard: `covers every command the binary says it has` above reads
-    // them off the usage line, so a command that exists and is not exercised
-    // fails the harness whatever this line happens to say.
-    for (const command of ['scan', 'check', 'inventory', 'place', 'tree', 'group', 'log']) {
+    // ~~`pattern`, `patterns`, `place`, `tree`, `group`~~ — gone with the
+    // commands (#77, #78). The list is not the guard: `covers every command the
+    // binary says it has` above reads them off the usage line, so a command
+    // that exists and is not exercised fails the harness whatever this line
+    // happens to say. This line is why it is worth saying twice: it was edited
+    // once per change and neither edit is what keeps the harness honest.
+    for (const command of ['scan', 'check', 'inventory', 'shapes', 'log']) {
       expect(run.stdout).toContain(command);
     }
     // Which files the per-file answers are about, because one file's luck is
@@ -152,7 +154,11 @@ describe('the first-run acceptance harness', () => {
     }[];
 
     expect(reports).toHaveLength(1);
-    expect(reports[0]!.rows.length).toBeGreaterThan(8);
+    // One row per command the binary admits to having, plus `check --list`.
+    // ~~More than eight~~ — the count follows the surface (#77, #78), so the
+    // assertion is against what the usage line says rather than a number that
+    // has to be edited whenever a command goes.
+    expect(reports[0]!.rows.length).toBeGreaterThan(4);
     // Counts and classifications, never the source it read — the same rule the
     // log keeps, and this output is meant to be pasted into a record.
     expect(run.stdout).not.toContain('export const OnePage');
