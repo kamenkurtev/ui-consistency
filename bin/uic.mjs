@@ -14510,6 +14510,9 @@ async function expandPattern(rootDir, pattern2) {
   }
   return current;
 }
+async function declaresWorkspaces(rootDir) {
+  return (await workspacePatterns(rootDir)).length > 0;
+}
 async function workspacePatterns(rootDir) {
   const yaml = await readFile2(join2(rootDir, "pnpm-workspace.yaml"), "utf8").catch(() => null);
   if (yaml !== null) {
@@ -22133,7 +22136,6 @@ async function patternOf2(target, options = {}) {
   };
   let from = family.from;
   let read = await readAll(family.screens);
-  if (read.length < MIN_FAMILY) return null;
   const asked = (await pairOf(target))?.identity ?? target;
   const asking = read.find((one) => one.path === asked);
   if (asking === void 0) return null;
@@ -22157,6 +22159,7 @@ async function patternOf2(target, options = {}) {
       }
     }
   }
+  if (read.length < MIN_FAMILY) return null;
   const narrowed = sameHolder.length >= MIN_FAMILY;
   if (!narrowed && from === "folder") return null;
   const screens = narrowed ? sameHolder : read;
@@ -22214,10 +22217,16 @@ async function familyFromPattern(root, target, ignoring) {
   const screens = covering.members.filter((member) => member !== where2).map((member) => resolve6(root, member));
   return screens.length + 1 < MIN_FAMILY ? null : { screens, from: "pattern" };
 }
+async function noPackageBounds(target) {
+  const root = await findProjectRoot(dirname10(target));
+  if (root === null) return false;
+  return await appRootFor(target, root) === null;
+}
 async function appRootFor(screen, root) {
   let current = dirname10(screen);
   for (; ; ) {
-    if (await stat9(join16(current, "package.json")).then(() => true, () => false)) return current;
+    const manifest = await stat9(join16(current, "package.json")).then(() => true, () => false);
+    if (manifest && !(current === root && await declaresWorkspaces(current))) return current;
     if (current === root) return null;
     const up = dirname10(current);
     if (up === current) return null;
@@ -23731,7 +23740,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.106";
+var VERSION = "0.14.107";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -25450,6 +25459,13 @@ async function pattern(rootDir, args) {
   if (refresh) return refreshFile(rootDir, reference, decided?.kind);
   const found = await patternOf2(reference, { byHolder: true });
   if (found === null) {
+    if (await noPackageBounds(reference).catch(() => false)) {
+      console.error("No pattern found, and the holder search never ran: no package.json between");
+      console.error(`${relative13(rootDir, reference)} and the repository root bounds it, so searching`);
+      console.error("would have crossed into whatever else the workspace holds.");
+      console.error("Add a package.json to this library, or name the family in a pattern file.");
+      return establish || refresh ? 1 : 0;
+    }
     console.error("No pattern found: fewer than three screens of this kind to compare.");
     console.error("Decide it here, and this screen becomes the first of its kind.");
     console.error("ui-consistency:decide walks the anatomy and records the decision.");

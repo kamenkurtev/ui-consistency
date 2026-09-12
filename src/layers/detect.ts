@@ -68,6 +68,19 @@ async function expandPattern(rootDir: string, pattern: string): Promise<string[]
   return current;
 }
 
+/**
+ * Does this directory declare a workspace, rather than being one application?
+ *
+ * The distinction the holder channel's bound turns on (#66). A `package.json`
+ * at the root of a single-package app **is** the application, and bounding a
+ * holder search there is right. A root that declares `workspaces` — or a
+ * `pnpm-workspace.yaml` — is not an application: it is several, and a search
+ * bounded there puts one application's screens into another's family.
+ */
+export async function declaresWorkspaces(rootDir: string): Promise<boolean> {
+  return (await workspacePatterns(rootDir)).length > 0;
+}
+
 /** The workspace patterns this project declares, from whichever tool declares them. */
 async function workspacePatterns(rootDir: string): Promise<string[]> {
   const yaml = await readFile(join(rootDir, 'pnpm-workspace.yaml'), 'utf8').catch(() => null);

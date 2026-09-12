@@ -7,7 +7,7 @@ import { readConfig, applyConfig } from '../layers/config.js';
 import { buildInventory } from '../inventory/build.js';
 import { exportedSymbolsFromSource } from '../inventory/exports.js';
 import { parseKnowledge } from '../knowledge/parse.js';
-import { patternOf } from '../sources/pattern.js';
+import { noPackageBounds, patternOf } from '../sources/pattern.js';
 import { readDecisions } from '../knowledge/decisions.js';
 import { placementOf } from '../sources/routes.js';
 import { markupOf, pairOf } from '../sources/pair.js';
@@ -152,6 +152,19 @@ async function pattern(rootDir: string, args: string[]): Promise<number> {
   if (found === null) {
     // The honest answer, and a useful one: it means this screen is the first of
     // its kind, and what is decided about it becomes the pattern for the next.
+    // **Which of the two it is** (#66). A screen no package bounds gets no
+    // holder search at all — bounding it at the workspace would put one
+    // application's screens into another's family — and reporting that as
+    // *fewer than three screens of this kind* is a search that never ran,
+    // described as a result. Asked only here, where there is nothing else to
+    // say, exactly as `coverageOf` is.
+    if (await noPackageBounds(reference).catch(() => false)) {
+      console.error('No pattern found, and the holder search never ran: no package.json between');
+      console.error(`${relative(rootDir, reference)} and the repository root bounds it, so searching`);
+      console.error('would have crossed into whatever else the workspace holds.');
+      console.error('Add a package.json to this library, or name the family in a pattern file.');
+      return establish || refresh ? 1 : 0;
+    }
     console.error('No pattern found: fewer than three screens of this kind to compare.');
     console.error('Decide it here, and this screen becomes the first of its kind.');
     // A dead end until #233: the honest answer, and then nothing to act on. The
