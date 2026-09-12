@@ -1,5 +1,13 @@
 # ui-consistency
 
+> **The CLI and the per-edit gate described below are being withdrawn (#76).**
+> Decided 2026-09-12 after a day of manual testing against three real
+> monorepos: the TypeScript goes and this becomes a set of rules and skills.
+> Everything here describes what the plugin does today and still works; none of
+> it is a statement of direction. What the program derives is what the skills
+> will derive — the same seven levels, read by the agent instead of by 15 618
+> lines that keep being corrected on the next repository's convention.
+
 Your agent writes a screen. It renders, it type-checks, it passes review — and it
 looks nothing like the four screens beside it. A raw `<button>` where your
 library exports one. `fontSize: 12` where the scale has a token. A detail view

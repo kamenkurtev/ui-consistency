@@ -92,6 +92,23 @@ The two load-bearing decisions, so they are not accidentally violated:
 
 ## Architecture
 
+> **Superseded, and the whole of this section is what is being withdrawn (#76).**
+> The decision taken on 2026-09-12, after a day of manual testing against three
+> real monorepos: **the TypeScript goes and this becomes a set of rules and
+> skills**, the shape `superpowers` has. What follows describes what exists
+> today, not what is being built. Read it to understand the code that is being
+> removed, never as a statement of direction.
+>
+> The measurement that settled it: `superpowers` is 29 322 lines of Markdown to
+> 10 788 of code, **2.7:1 toward the instructions**. This project is 1 469 to
+> 15 618, **1:10.6 toward the program** — a factor of twenty-eight in the wrong
+> direction. `docs/concept.md` had already described both the right shape and
+> the exact failure, and neither this file nor the code followed it.
+>
+> The conversion is #77 (pattern derivation), #78 (routes and anatomy), #79 (raw
+> values), #80 (the trigger), #81 (the package graph, decided against a bar
+> rather than an argument). Anything below that those close is gone with them.
+
 One deterministic core, several thin surfaces:
 
 - `core` — changed files + knowledge → list of findings (`src/core/engine.ts`)
@@ -105,9 +122,13 @@ One deterministic core, several thin surfaces:
 
 Keep the core independent of the hook. Everything else is a wrapper, never a second implementation.
 
-**The program is the fact supplier; the rules and the skills are the instructions.** The ratio was 19:1 in favour of the program, which is the inverse of the shape that makes a library of instructions portable at all. Where a rule and a list in `src/` would carry the same knowledge, only one of them may exist — two copies is the one outcome worse than either alone.
+~~**The program is the fact supplier; the rules and the skills are the instructions.** The ratio was 19:1 in favour of the program, which is the inverse of the shape that makes a library of instructions portable at all.~~ **The direction was right and the rate meant it never arrived: 19:1 is stale and the figure at the withdrawal is 1:10.6 (#76), so the program is not being rebalanced against the instructions — it is being removed and they become the whole of it.** Where a rule and a list in `src/` would carry the same knowledge, only one of them may exist — two copies is the one outcome worse than either alone.
 
 ## Scope
+
+> **The same withdrawal governs this section (#76).** It is what the program
+> does today, not what is being built; the levels survive as rules and skills,
+> the code under them does not.
 
 **v1, shipped: import resolution.** A symbol imported from a layer less derived than the file's own chain allows. The layer chain is derived from the dependency graph, never declared.
 
