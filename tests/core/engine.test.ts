@@ -27,25 +27,27 @@ function context(over: Partial<EngineContext> = {}): EngineContext {
 }
 
 describe('the engine collects every deterministic check', () => {
-  it('reports an import violation and a style literal from one file', async () => {
+  // ~~reports an import violation and a style literal from one file~~ — the
+  // style check is `rules/raw-values.md` now (#79), so there is no second
+  // deterministic level to collect alongside the import one here.
+  it('reports an import violation', async () => {
     const source = [
       "import { Button } from '@fixture/ui';",
-      'export const W = () => <Button sx={{ fontSize: 12 }}>Go</Button>;',
+      'export const W = () => <Button>Go</Button>;',
     ].join('\n');
 
     const { tier1 } = await runEngine(FILE, source, context());
-    const levels = tier1.map((f) => f.level);
-    expect(levels).toContain('import');
-    expect(levels).toContain('style');
+    expect(tier1.map((f) => f.level)).toContain('import');
   });
 
   it('returns findings in file order, whichever check produced them', async () => {
     const source = [
       "import { Button } from '@fixture/ui';",
+      "import { LegacyCard } from '@orders/common';",
       '',
       'export const W = () => (',
       '  <div>',
-      "    <span style={{ color: '#333' }}>x</span>",
+      '    <LegacyCard />',
       '  </div>',
       ');',
     ].join('\n');
@@ -62,7 +64,13 @@ describe('the engine collects every deterministic check', () => {
 });
 
 describe('which files the engine judges at all', () => {
-  const source = "export const W = () => <button style={{ margin: 8 }}>Go</button>;\n";
+  // Observed through the import check. It was the style check, which is a rule
+  // now (#79); the property under test — which files are judged at all — is
+  // unchanged and is not about any particular check.
+  const source = [
+    "import { Button } from '@fixture/ui';",
+    'export const W = () => <Button>Go</Button>;',
+  ].join('\n');
 
   it('leaves tests alone — a raw element there is often the point of the test', async () => {
     const { tier1 } = await runEngine('/repo/apps/orders/src/W.test.tsx', source, context());
@@ -89,7 +97,12 @@ describe('which files the engine judges at all', () => {
 });
 
 describe('one fix, one finding', () => {
-  it('does not report a deprecated import and its usages as separate problems', async () => {
+  // ~~does not report a deprecated import and its usages as separate
+  // problems~~ — **there is only the import now (#79).** The usage check read a
+  // `@deprecated` marker the agent reading the import's own source sees for
+  // itself, and it needed the package chain, which #81 removes anyway. With one
+  // report there is nothing to collapse, and the collapse went with it.
+  it('reports the deprecated import, once', async () => {
     const source = [
       "import { LegacyCard } from '@orders/common';",
       'export const W = () => <LegacyCard />;',
@@ -97,9 +110,8 @@ describe('one fix, one finding', () => {
 
     const { tier1 } = await runEngine(FILE, source, context());
     const deprecated = tier1.filter((f) => f.level === 'deprecated' || f.reason === 'deprecated');
-    // The usage is where the code has to change, so the usage is what is said.
     expect(deprecated).toHaveLength(1);
-    expect(deprecated[0]!.line).toBe(2);
+    expect(deprecated[0]!.line).toBe(1);
   });
 
   it('still reports a deprecated import that is never rendered', async () => {
@@ -183,9 +195,11 @@ describe('tier 2 never runs when the deterministic checks already spoke', () => 
 
   it('does not fire when tier 1 found something — the cheap answer wins', async () => {
     const review = vi.fn(async () => []);
+    // Dirty through the import check since the style check became a rule
+    // (#79). Which check spoke is not what this asserts — that one did is.
     const dirty = [
-      "import { WidgetCard } from '@orders/common';",
-      'export const RevenueWidget = () => <WidgetCard sx={{ fontSize: 12 }}>x</WidgetCard>;',
+      "import { Button } from '@fixture/ui';",
+      'export const RevenueWidget = () => <Button>x</Button>;',
     ].join('\n');
 
     const { tier1, tier2 } = await runEngine(FILE, dirty, context({ knowledge, review }));

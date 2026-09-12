@@ -47,11 +47,20 @@ A plain program over the AST. It runs in the `PostToolUse` hook and reports in
 the same turn as the edit, before the agent has moved on. **0.09–0.2 s per
 edit**, no network, no credentials, no tokens.
 
-It checks seven things: imports resolve to the nearest layer that exports them;
-raw colours and sizes where a token belongs; an emoji standing in for an icon; a
-component you have marked `@deprecated`; a prop value outside your declared set;
-the page rules you have written down; and the substitutions you have written
-down.
+~~It checks seven things: imports resolve to the nearest layer that exports
+them; raw colours and sizes where a token belongs; an emoji standing in for an
+icon; a component you have marked `@deprecated`; a prop value outside your
+declared set; the page rules you have written down; and the substitutions you
+have written down.~~
+
+**Four, since #79.** Raw colours and sizes, and an emoji standing in for an
+icon, are `rules/raw-values.md` — you wrote the line, so you can see the
+literal in it, and a rule is obeyed *while* it is written rather than reported
+after. The `@deprecated` marker went with them: the agent reading the import's
+own source sees it, and the check needed the package chain that #81 removes
+anyway. What the program checks is: imports resolve to the nearest layer that
+exports them; a prop value outside your declared set; the page rules you have
+written down; and the substitutions you have written down.
 
 **A raw element where your own component exists is not among them, deliberately.**
 That check needed a built-in map from `<button>` to a component called `Button`,
@@ -191,8 +200,12 @@ file in your repository, reviewed in a pull request like anything else. The
 tool reads it and enforces exactly that.
 
 The cost is real and worth stating: **with no rules written, the tool cannot
-catch the four failures above.** It still catches raw values, emoji, deprecated
-components and mis-resolved imports — those need nothing. But *"use
+catch the four failures above.** ~~It still catches raw values, emoji,
+deprecated components and mis-resolved imports — those need nothing.~~ **Raw
+values and emoji are `rules/raw-values.md` now (#79)** — still free, still
+needing nothing written down about *your* project, and reaching the agent
+before the line rather than after it. Mis-resolved imports are what the program
+still catches for nothing. But *"use
 `<ActionGrid>`, never a raw `<Grid>`"* is a decision only your team can make,
 and the tool will not make it for you.
 

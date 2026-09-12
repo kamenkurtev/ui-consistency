@@ -351,23 +351,34 @@ describe('what the hook derives when nobody has approved anything', () => {
  * ignore was correct scope discipline.
  */
 describe('which findings the hook interrupts for', () => {
-  const OLD_LINE = "    <span style={{ color: '#ff0000' }}>written a year ago</span>";
+  // ~~A style literal.~~ **Observed through a curated substitution rule since
+  // #79**, the style check having become `rules/raw-values.md`. What is
+  // asserted here is which *lines* the hook speaks about, which is not about
+  // any one check — so the observable moved and the property did not. The
+  // template path is what carries a per-line finding needing no package chain,
+  // which is what the old observable had going for it.
+  const OLD_LINE = '  <app-legacy-grid>written a year ago</app-legacy-grid>';
 
   const project = async (): Promise<{ root: string; file: string }> => {
     const root = await mkdtemp(join(tmpdir(), 'uic-scope-'));
     await mkdir(join(root, 'src'), { recursive: true });
+    await mkdir(join(root, '.ui-consistency'), { recursive: true });
     await writeFile(join(root, 'package.json'), '{"name":"scope"}');
-    const file = join(root, 'src/Widget.tsx');
+    await writeFile(
+      join(root, '.ui-consistency/pages.md'),
+      [
+        '# Pages',
+        '',
+        '## Action grids',
+        '',
+        'A page of actions uses `<app-action-grid>`, never a raw `<app-legacy-grid>`.',
+        '',
+      ].join('\n'),
+    );
+    const file = join(root, 'src/widget.component.html');
     await writeFile(
       file,
-      [
-        'export const Widget = () => (',
-        '  <div>',
-        OLD_LINE,
-        '    <p>the line the edit touched!</p>',
-        '  </div>',
-        ');',
-      ].join('\n'),
+      ['<div>', OLD_LINE, '  <p>the line the edit touched!</p>', '</div>'].join('\n'),
     );
     return { root, file };
   };
@@ -397,7 +408,7 @@ describe('which findings the hook interrupts for', () => {
       new_string: OLD_LINE,
     })) as { hookSpecificOutput: { additionalContext: string } } | null;
 
-    expect(response?.hookSpecificOutput.additionalContext).toContain('#ff0000');
+    expect(response?.hookSpecificOutput.additionalContext).toContain('app-legacy-grid');
     await rm(root, { recursive: true, force: true });
   });
 
@@ -411,7 +422,7 @@ describe('which findings the hook interrupts for', () => {
 
     const { readLog } = await import('../../src/cli/log.js');
     const entries = await readLog(root);
-    expect(entries.some((one) => one.message.includes('#ff0000'))).toBe(true);
+    expect(entries.some((one) => one.message.includes('app-legacy-grid'))).toBe(true);
     await rm(root, { recursive: true, force: true });
   });
 
@@ -422,7 +433,7 @@ describe('which findings the hook interrupts for', () => {
       JSON.stringify({ tool_name: 'Write', tool_input: { file_path: file }, cwd: root }),
     )) as { hookSpecificOutput: { additionalContext: string } } | null;
 
-    expect(response?.hookSpecificOutput.additionalContext).toContain('#ff0000');
+    expect(response?.hookSpecificOutput.additionalContext).toContain('app-legacy-grid');
     await rm(root, { recursive: true, force: true });
   });
 
@@ -443,7 +454,7 @@ describe('which findings the hook interrupts for', () => {
       }),
     )) as { hookSpecificOutput: { additionalContext: string } } | null;
 
-    expect(response?.hookSpecificOutput.additionalContext).toContain('#ff0000');
+    expect(response?.hookSpecificOutput.additionalContext).toContain('app-legacy-grid');
     await rm(root, { recursive: true, force: true });
   });
 

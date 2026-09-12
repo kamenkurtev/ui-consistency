@@ -1018,7 +1018,7 @@ async function warnIfNothingWasChecked(rootDir: string, files: string[]): Promis
   // which layer a file belongs to, and saying so precisely is the difference
   // between a warning somebody acts on and one they learn to skip.
   console.error(`\nNone of the ${files.length} file(s) given belongs to a detected package.`);
-  console.error('The checks that read one — imports, deprecated usage — did not run.');
+  console.error('The checks that read one — the import check, and the layer half of substitutions — did not run.');
   console.error('This is a detection gap, not a clean result.');
   if (packages.length === 0) {
     console.error('No packages were detected at all — run `uic scan` to see what was looked for.');
@@ -1220,7 +1220,7 @@ async function check(rootDir: string, args: string[]): Promise<number> {
   // about the run rather than about any file in it.
   if (findings.length > 0 && !(await someFileIsOnAChain(rootDir, absolute))) {
     console.error('Note: no file in this set belongs to a package whose entry point could be read,');
-    console.error('so imports, deprecated usage and the layer half of substitutions did not run.');
+    console.error('so the import check and the layer half of substitutions did not run.');
     console.error('`uic inventory <file>` says which layers were tried. What is above is the four');
     console.error('checks that need no chain.');
   }

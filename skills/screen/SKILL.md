@@ -8,7 +8,9 @@ description: Use when writing or changing one screen — "add a settings page", 
 Read once, before the first file: `${CLAUDE_PLUGIN_ROOT}/rules/anatomy.md`,
 `what-a-screen-is.md` (how many files a screen is here),
 `family-and-particulars.md` (what belongs to the reference alone and must not be
-copied) and `routes-and-breadcrumbs.md` (where the trail comes from).
+copied), `routes-and-breadcrumbs.md` (where the trail comes from) and
+`raw-values.md` (colours, lengths and emoji — obey it while you write the line,
+which is the whole of why it is a rule and no longer a check).
 
 The contract is the input you write **from**, not a report you read afterwards.
 If there is none, run `ui-consistency:pattern` first — one command, against the
