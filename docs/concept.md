@@ -125,9 +125,31 @@ the world that was tried as a list in the program first and broke silently on
 the neighbouring case; written as a paragraph it is applied with judgement, and
 a rule that is wrong is wrong *visibly*.
 
-So the shape is: **the program supplies facts, the rules and skills are the
+~~So the shape is: **the program supplies facts, the rules and skills are the
 instructions.** That is also what makes it portable — a harness with no hook
-still gets the whole of the second half.
+still gets the whole of the second half.~~
+
+**Right, and never applied — so the shape is now the rules and skills alone
+(#76).** This paragraph was written before a line of the program existed and it
+predicted the failure exactly: the paragraph above it says every rule in
+`rules/` is knowledge that *"was tried as a list in the program first and broke
+silently on the neighbouring case."* Five of the six defects found in a single
+day of testing against three real monorepos were in that program, in the 83% of
+it that derives judgement rather than reporting facts — a family bounded at the
+repository root so 22 of 23 members came from another application; 527 groups
+over 833 screens whose largest was a bare `div`; every package chain unreadable
+on one repository, killing three checks silently; a pattern that existed only if
+somebody typed a command per kind; and a channel gated on English words that
+never once fired for the user it was developed against.
+
+The ratio is the measurement, not the anecdote: `superpowers` is 2.7:1 toward
+its instructions, this project 1:10.6 toward its program. The supply of
+neighbouring cases is unbounded, so fixing cannot converge — and each fix did
+hold, which is what made the loop hard to see.
+
+What survives of the original claim is the second sentence. Portability was the
+reason given for the rules being the important half, and it is the reason the
+program goes: a harness with no hook now gets **all** of it.
 
 There is nothing to set up and nothing to audit. Both existed and were deleted:
 what the tool stores is a few lines of intent, and every fact about the code is
