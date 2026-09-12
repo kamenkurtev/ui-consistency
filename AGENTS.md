@@ -1,5 +1,10 @@
 # ui-consistency
 
+> **The CLI half of this is being withdrawn (#76).** Decided 2026-09-12: the
+> TypeScript goes and the skills library becomes the whole of it. What follows
+> describes what exists today and still works — read it as that, never as a
+> statement of direction. The rules below are the half that survives.
+
 A skills library plus a small deterministic CLI, for keeping the screens an
 agent writes consistent with the ones a project already has.
 
