@@ -23505,6 +23505,12 @@ function sayCoverage(found) {
 import { dirname as dirname13, relative as relative11, resolve as resolve8 } from "node:path";
 import { readFile as readFile26 } from "node:fs/promises";
 
+// src/core/off.ts
+var SILENCED = () => {
+  const value = process.env["UIC_OFF"];
+  return value !== void 0 && value !== "" && value.toLowerCase() !== "0" && value.toLowerCase() !== "false";
+};
+
 // src/ai/settled.ts
 import { readFile as readFile23, writeFile as writeFile5 } from "node:fs/promises";
 import { join as join19 } from "node:path";
@@ -23632,6 +23638,7 @@ function filePathFrom(payload) {
   return CHECKABLE2.test(path) ? path : null;
 }
 async function hookResponse(stdin) {
+  if (SILENCED()) return null;
   let payload;
   try {
     const parsed = JSON.parse(stdin);
@@ -23740,7 +23747,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.107";
+var VERSION = "0.14.108";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -23813,6 +23820,7 @@ async function sessionContext(rootDir) {
   return said.join("\n\n");
 }
 async function sessionResponse(stdin) {
+  if (SILENCED()) return null;
   let cwd = process.cwd();
   try {
     const parsed = JSON.parse(stdin);
@@ -23829,6 +23837,7 @@ async function sessionResponse(stdin) {
 var ABOUT_SCREENS = /\b(screens?|pages?|dialogs?|modals?|drawers?|panels?|widgets?|forms?|grids?|tables?|layouts?|components?|views?|ui)\b/i;
 var A_WHOLE_SET = /\b(all (?:the |of )?|every|each of|the rest|remaining|across (?:the|all|every)|throughout|everywhere|one by one|in bulk|consistent(?:ly)? across|\d{2,})\b/i;
 async function promptContext(rootDir, text) {
+  if (SILENCED()) return null;
   if (!ABOUT_SCREENS.test(text)) return null;
   const { patterns: patterns2 } = await patternFiles(rootDir).catch(() => ({ patterns: [] }));
   if (patterns2.length === 0) {

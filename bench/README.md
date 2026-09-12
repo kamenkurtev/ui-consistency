@@ -18,11 +18,34 @@ What a run needs, and the order is not taste:
 3. **One tree per arm-run**, so no arm reads another's screens as neighbours,
    and **the pattern file deleted from the OFF trees** rather than left there and
    not mentioned.
-4. **One agent per arm-run, writing all the screens in one session, in the order
+
+4. **The plugin is not live while the OFF arm is written, and deleting the
+   pattern file is not how you achieve that** (#71). Deleting it removes the
+   *approved contract*; it does not remove the plugin, and since #38 a pattern
+   is **derived on the edit already being made** where no approved one covers
+   the kind. So the `PostToolUse` hook hands the OFF arm the treatment on every
+   write, through a door neither prompt closes. Two runs were scored before this
+   was noticed; the second arm's conformance reached the treatment's exactly.
+
+   Either uninstall the plugin for the session that writes the OFF arm, or set
+   **`UIC_OFF=1`**, which silences the hook, the prompt adapter and the session
+   line. Then **record it**: each arm directory needs an `arm.json`, and
+   `bench.mjs` refuses to score an arm without one and refuses an OFF arm that
+   says the plugin was live.
+
+   ```json
+   { "plugin": "none" }
+   { "plugin": "0.14.107", "silenced": true }
+   ```
+
+   The scorer cannot verify this after the fact — the files are on disk and the
+   session is gone — so it is declared, printed on every run, and the refusal is
+   what makes forgetting it loud rather than silent.
+5. **One agent per arm-run, writing all the screens in one session, in the order
    `tasks.json` gives.** This is the whole mechanism: drift is attention thinning
    within a session, and a fresh agent per file deletes the thing being measured.
    Same model on every arm.
-5. **`prompt-off.md` and `prompt-on.md` as written**, with these substitutions
+6. **`prompt-off.md` and `prompt-on.md` as written**, with these substitutions
    and no others — the seed prompt is everything after the `---` in each file:
 
    | in the prompt | supplied from |
@@ -38,7 +61,7 @@ What a run needs, and the order is not taste:
    was under test. `tests/gate/bench-prompts.test.ts` fails if either file names
    a repository, a framework or a kind — which both of them did, so a run was
    impossible anywhere but the machine they were written on (#56).
-6. **The ON arm must not be told to optimise the score** (#57). This is the
+7. **The ON arm must not be told to optimise the score** (#57). This is the
    subtlest way to get a run wrong and it was got wrong the first time: the arm
    was told to run `uic diff --contract` on each file and fix what it reported —
    *the scorer's own command, against the scorer's own pattern.* Its score was
@@ -52,7 +75,7 @@ What a run needs, and the order is not taste:
    Benchmarking the per-edit gate is a different experiment needing a metric the
    arm was not told to optimise, and it must not be folded into this one.
 
-7. **The whole list, not the first fifteen** (#63). A count-based drift curve
+8. **The whole list, not the first fifteen** (#63). A count-based drift curve
    came back flat over 18 screens, and a flat curve has two readings that call
    for opposite responses: the batch is too short, or drift is not positional at
    all — and the second would mean `skills/rollout`, whose whole shape assumes
@@ -72,12 +95,12 @@ What a run needs, and the order is not taste:
    accumulation; if both are flat, position is not the axis. Not built, because
    nothing yet says the single-session curve bends at all.
 
-8. **More than one run per arm.** Two bound the weather rather than measuring it;
+9. **More than one run per arm.** Two bound the weather rather than measuring it;
    report the range and never a mean of two.
 
 Then:
 
-9. **Score it.**
+10. **Score it.**
 
 ```
 npm run bench -- --pattern <repo>/.ui-consistency/patterns/<kind>.md \
