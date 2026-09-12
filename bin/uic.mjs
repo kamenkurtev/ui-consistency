@@ -14695,19 +14695,25 @@ var ENTRY_CANDIDATES = [
   "index.js"
 ];
 async function entryFileFor(packageRoot) {
+  const readable = async (path) => await readFile3(path, "utf8").catch(() => null) !== null;
   const raw = await readFile3(join3(packageRoot, "package.json"), "utf8").catch(() => null);
   if (raw !== null) {
     try {
       const pkg = JSON.parse(raw);
       for (const field of [pkg.source, pkg.module, pkg.main]) {
-        if (typeof field === "string") return join3(packageRoot, field);
+        if (typeof field !== "string") continue;
+        const declared = join3(packageRoot, field);
+        if (await readable(declared)) return declared;
+        for (const suffix of [".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx", "/index.js"]) {
+          if (await readable(`${declared}${suffix}`)) return `${declared}${suffix}`;
+        }
       }
     } catch {
     }
   }
   for (const candidate of ENTRY_CANDIDATES) {
     const path = join3(packageRoot, candidate);
-    if (await readFile3(path, "utf8").catch(() => null) !== null) return path;
+    if (await readable(path)) return path;
   }
   return null;
 }
@@ -23747,7 +23753,7 @@ import { readdir as readdir11, open } from "node:fs/promises";
 import { join as join21 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.108";
+var VERSION = "0.14.109";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -26009,6 +26015,21 @@ async function givenFiles(rootDir, files) {
   }
   return { absolute, problems };
 }
+async function someFileIsOnAChain(rootDir, files) {
+  const config = await readConfig(rootDir).catch(() => null);
+  const packages = applyConfig(await cachedPackages(rootDir).catch(() => []), config);
+  if (packages.length === 0) return false;
+  const prefer = config?.prefer ?? [];
+  for (const file of files) {
+    const chain = resolveChain(file, packages, prefer);
+    if (chain.length === 0) continue;
+    const inventory2 = await cachedInventory(rootDir, chain).catch(() => null);
+    if (inventory2 !== null && Object.values(inventory2.layers).some((one) => Object.keys(one).length > 0)) {
+      return true;
+    }
+  }
+  return false;
+}
 function sayHowToNameFiles(problems) {
   for (const problem of problems) console.error(problem);
   console.error("Name the files, or let the shell name them: $(git ls-files '*.tsx')");
@@ -26063,6 +26084,12 @@ async function check(rootDir, args) {
     console.log(`${formatFinding({ ...finding, file: relative13(rootDir, finding.file) })}
 `);
   }
+  if (findings.length > 0 && !await someFileIsOnAChain(rootDir, absolute)) {
+    console.error("Note: no file in this set belongs to a package whose entry point could be read,");
+    console.error("so imports, deprecated usage and the layer half of substitutions did not run.");
+    console.error("`uic inventory <file>` says which layers were tried. What is above is the four");
+    console.error("checks that need no chain.");
+  }
   return findings.length > 0 ? 1 : 0;
 }
 async function inventory(rootDir, args) {
@@ -26101,6 +26128,8 @@ async function inventory(rootDir, args) {
     console.error(`Nothing readable on the ${chain.length} layer(s) ${named2} sits on:`);
     for (const layer of chain.slice(0, 10)) console.error(`  ${layer.name}`);
     console.error("Every one of them is external, or its entry point could not be read.");
+    console.error('A workspace package naming a built entry \u2014 `"main": "./index.js"` in a checkout \u2014');
+    console.error("is the second case, and `src/index.ts` beside it is what would be read instead.");
     return 1;
   }
   return 0;
