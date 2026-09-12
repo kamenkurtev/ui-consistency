@@ -57,7 +57,7 @@ instructions, and the CLI below is the fact supplier.
 | Skill | When |
 | --- | --- |
 | `pattern` | before writing or changing screens — establishes the contract |
-| `place` (via `uic place`) | where a new screen goes: folder, route, trail |
+| ~~`place` (via `uic place`)~~ | where a new screen goes: folder, route, trail — **`rules/routes-and-breadcrumbs.md` now (#78)**, which carries what the reader knew and more: what mounts a pathless array, when a path composes and the four times it must not, and paths written as constants |
 | `screen` | writing one screen against the contract |
 | `rollout` | applying an agreed pattern across many screens |
 | `verify` | before handing the work over |
@@ -131,9 +131,6 @@ convention.
 ## The CLI
 
 ```
-uic place <screen>                 route, trail, and where it is registered
-uic tree <screen> [--depth N]      what it renders, resolved through its children
-uic group <files> [--depth N]      the screens grouped by what they are composed of
 uic check <files>                  the deterministic findings; exits 1 on any
 uic scan                           the packages detected, and how
 uic shapes <files>                 shapes rebuilt or repeated
@@ -141,12 +138,14 @@ uic inventory <file>               the layer chain for one file, and what it exp
 uic log                            what has been found here while somebody worked
 ```
 
-**Seven commands went in one change (#77)**: the ones that derived a pattern,
-wrote it down, re-counted it, listed what was written down, compared a set
-against it, gathered evidence for a second opinion, and served all of that over
-a protocol. Every one of them is a skill now, and the skill reads the files. If
-you remember one of them and it is not above, that is why — `ui-consistency:pattern`
-and `ui-consistency:verify` are where that work is.
+**Ten commands went in two changes (#77, #78)**: the ones that derived a
+pattern, wrote it down, re-counted it, listed what was written down, compared a
+set against it, gathered evidence for a second opinion, served all of that over
+a protocol, answered where a screen is routed, walked what a screen renders, and
+grouped screens by shape. Every one of them is a skill or a rule now, and both
+read the files. If you remember one and it is not above, that is why —
+`ui-consistency:pattern` and `ui-consistency:verify` are where that work is, and
+`rules/routes-and-breadcrumbs.md` and `rules/anatomy.md` are what they read.
 
 `check` and `shapes` take **files, not glob patterns** — they rely on the
 shell to expand. A quoted `"src/**/*.tsx"` names no file, and is refused with

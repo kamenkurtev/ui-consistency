@@ -92,9 +92,12 @@ drift a family had the less was said about it — `dataTestId` at 7 of 8 was
 dropped — which is the inverse of useful. A slot with one dominant
 alternative and two rare ones reads as exactly that.
 
-**The structure block is the shape `uic tree` prints.** The derived reading and
-the written pattern use one vocabulary, so a person comparing them is comparing
-like with like, and the verifier is not translating between two notations.
+**The structure block is the shape `anatomy.md` describes** — one line per
+level, indented, following what each component returns one file hop at a time.
+~~The shape a command printed.~~ **That command is gone (#78)**, and the
+vocabulary is what matters: the reading and the written pattern use one, so a
+person comparing them compares like with like and nobody translates between two
+notations.
 
 **A slot is named in angle brackets and may state alternatives.** `<content>` is
 a slot; `PageShell` is a component. A pattern that allows three kinds of content

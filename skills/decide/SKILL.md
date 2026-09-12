@@ -59,7 +59,9 @@ Every role takes one of exactly three answers, and the third is a real answer:
 
 The breadcrumb is the one to slow down on. It comes from the **route
 hierarchy**, not from the page title, which is why it is got wrong nearly every
-time. `uic place <a screen>` will say what the router knows.
+time. `${CLAUDE_PLUGIN_ROOT}/rules/routes-and-breadcrumbs.md` is how to read the
+router for it — where the table is per framework, how a path composes, and the
+four times it must not.
 
 `roles-and-names.md` is the one to have read first: a role with no answer is an
 answer, and inventing a name to fill a gap is the failure this whole step exists
