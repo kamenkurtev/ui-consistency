@@ -28,9 +28,11 @@ and hands back only what this one does differently — nothing saved, nothing
 approved, nothing failed.
 
 **On day one, on a project that has written nothing down**, what runs is the
-deterministic half — raw colours and lengths, an emoji standing in for an icon,
-imports that resolve to the wrong layer — plus those derived-contract
-advisories. The curated checks stay quiet, because you have not curated
+deterministic half — ~~raw colours and lengths, an emoji standing in for an
+icon, imports that resolve to the wrong layer~~ **imports that resolve to the
+wrong layer; raw colours, lengths and emoji are a rule the agent obeys while
+writing rather than a check that reports afterwards (#79)** — plus those
+derived-contract advisories. The curated checks stay quiet, because you have not curated
 anything yet, and that quiet is the design rather than a fault. `ui-consistency:reach`
 is the answer to *"is it doing anything?"*: it reports, level by level, whether
 each one worked, is quiet because you have stated nothing, or is blind here and
@@ -77,7 +79,7 @@ part is never on the critical path.
 
 | | What | Cost |
 | --- | --- | --- |
-| **Tier 1** | Seven deterministic checks, on every edit, reported in the same turn | ~0.12 s, no model |
+| **Tier 1** | ~~Seven~~ **four** deterministic checks, on every edit, reported in the same turn (#79) | ~0.12 s, no model |
 | **Tier 2** | The contract — agreed *before* the writing, measured after | one skill invocation |
 | **Tier 3** | Skills you invoke by name | only when you ask |
 
@@ -230,28 +232,22 @@ is derived from your repository — nothing to declare. If `@acme/orders` depend
 on `@acme/ui`, which depends on some external UI library, that is the chain, and
 `@acme/ui` wins for anything it exports.
 
-**Raw values where your design system has a token** — a colour or a length
-written into `style` or `sx`:
+~~**Raw values where your design system has a token**~~, ~~**emoji standing in
+for an icon**~~ and ~~**deprecated components where they are used**~~ — **all
+three are gone from the program (#79).**
 
-```
-src/Card.tsx:3
-fontSize: 12 is a raw number written into a style object.
-```
+The first two are a rule instead: `rules/raw-values.md`. Your agent wrote the
+line, so it can see the literal in it without a program parsing the file back,
+and a rule is obeyed *while* the line is written rather than reported after it —
+at no per-edit cost, on every harness, in any language. The rule keeps every
+exception these checks had learnt the hard way: zero is zero, relative units are
+not raw values, a bare number on a spacing key in `sx` is a theme multiplier and
+correct, and fixed widths and heights are a layout decision rather than a
+bypassed token.
 
-Numbers on spacing keys in `sx` are left alone: `sx={{ mt: 2 }}` is a theme
-multiplier, which is the correct form. Fixed widths and heights are left alone
-too — almost no design system has a width token.
-
-**Emoji standing in for an icon:**
-
-```
-apps/orders/src/RevenueWidget.tsx:5
-🔔 is an emoji used as an icon. Use the design system's icon component so it matches the others.
-```
-
-**Deprecated components where they are used**, not only where they are imported —
-the usage is the line that has to change. It reads standard JSDoc `@deprecated`
-and names the replacement when there is a `{@link}`.
+The third read a JSDoc `@deprecated` marker in the imported component's own
+source — which the agent reading that source sees for itself — and it needed the
+package chain, which is going the same way.
 
 **Prop values outside the set your project allows.** The allowed set is injected
 from a source of truth — a reference component, or something you curated. With no
@@ -316,8 +312,9 @@ imports your code actually contains — which is what Nx does for its own graph.
 
 Mixed repositories work: a package with a manifest is taken at its word, and the
 aliases fill in the rest. A single-package project with no workspaces at all is
-just the degenerate case — the style, emoji, page-rule and substitution checks do
-not need layers to fire.
+just the degenerate case — ~~the style, emoji, page-rule and substitution checks
+do~~ **the page-rule and substitution checks do** not need layers to fire, and
+`rules/raw-values.md` needs nothing at all (#79).
 
 Run `uic scan` to see what was found. If it prints no packages, neither mechanism
 matched — [open an issue](https://github.com/kamenkurtev/ui-consistency/issues),
@@ -349,7 +346,7 @@ what survives having no JavaScript semantics: hardcoded values in a literal
 substitutions — including custom element names, since `<app-action-grid>` is a
 component in every sense that matters here.~~
 
-**That list was the *deterministic* half, and it read as the whole of it.** Those three still apply and are still the only checks that can *fail*
+**That list was the *deterministic* half, and it read as the whole of it.** ~~Those three still apply~~ **One of the three does: the substitutions you wrote down. The other two are `rules/raw-values.md` now (#79), which applies to a template exactly as to a `.tsx` because a rule is not a parser.** It is still the only check that can *fail*
 anything in a template. But the pattern half applies too: the holder, the family,
 what the holder holds, how the screens beside this one write the components they
 share, and the contract measured against all of it. It did not, and the reason
@@ -378,11 +375,14 @@ Mantine, Radix, Ant, or a design system you built from nothing.
 
 Two honest limits:
 
-- The style check reads the `style` attribute and the `sx` prop. `sx` is spelled
-  the same by MUI, Chakra and Theme UI, and its spacing-key semantics are read as
-  MUI reads them.
-- **Tailwind classes, CSS modules and styled-components are out of reach of it.**
-  A per-file AST check cannot see what `text-sm` resolves to. Class *lists* are
+- ~~The style check reads the `style` attribute and the `sx` prop.~~ **The check
+  is a rule now (#79)**, and the `sx` semantics went into it: a bare number on a
+  spacing key is a theme multiplier, read as MUI reads it, and `sx` is spelled
+  the same by MUI, Chakra and Theme UI.
+- **Tailwind classes, CSS modules and styled-components are out of reach.**
+  Nothing reading one file can see what `text-sm` resolves to — which the rule
+  says in the place the agent reads it, rather than handing back a clean report.
+  Class *lists* are
   compared for the contract (`pattern` intersects them by token), but no finding
   is made about a class name.
 
@@ -700,7 +700,8 @@ passed. Validation here means a real repository at real scale, and running the
 
 ## What it does not do
 
-It will tell you `fontSize: 12` is a raw value. It will not tell you that a
+~~It will tell you `fontSize: 12` is a raw value.~~ **The rule tells your agent
+not to write one (#79).** Neither will tell you that a
 typography variant exists for it — theme and `defaultProps` resolution is
 deliberately deferred, because reading a theme correctly is a compiler problem
 and reading it *incorrectly* produces confident wrong findings.
