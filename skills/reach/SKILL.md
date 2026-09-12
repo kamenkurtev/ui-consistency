@@ -33,15 +33,20 @@ Every line you report is exactly one of these. Nothing else is admissible.
 ## What to run
 
 Cheap deterministic inspection over a **sample**, never the whole repository.
-Five commands and a handful of screens is the whole of it.
+~~Five commands~~ **four, since the pattern command became a skill (#77)** — and a
+handful of screens is the whole of it.
 
 ```
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" scan
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" inventory <the nearest shared package>
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" place <three or four real screens>
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" pattern <one of them>
 node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <the same three or four>
 ```
+
+For the levels above those — the family, the pattern, the props — run
+`ui-consistency:pattern` on one of the same screens. It reports which of the
+three answers applies for itself, in the same three words this skill uses, and
+*"fewer than three screens of this kind"* is the design rather than a fault.
 
 Pick the screens from different areas of the application, not three files in one
 folder. Three files in one folder answer for that folder.

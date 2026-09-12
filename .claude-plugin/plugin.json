@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
-  "version": "0.14.111",
+  "version": "0.14.112",
   "description": "Establishes what screens of a kind already look like in your project, and checks the ones you write against it",
   "author": {
     "name": "Kamen Kurtev"
@@ -14,14 +14,5 @@
     "consistency",
     "screens",
     "frontend"
-  ],
-  "mcpServers": {
-    "ui-consistency": {
-      "command": "node",
-      "args": [
-        "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs",
-        "mcp"
-      ]
-    }
-  }
+  ]
 }
