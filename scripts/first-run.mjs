@@ -178,21 +178,24 @@ function callsFor(root, screens) {
     ['check --list', [['check', '--list', ...some]]],
     ['inventory', each('inventory')],
     ['place', each('place')],
-    ['pattern', each('pattern')],
-    ['patterns', [['patterns']]],
     ['tree', each('tree')],
-    // The component to read comes from the repository, never from a list here:
-    // no component name may be hardcoded anywhere a finding can come from, and
-    // a harness naming one would be measuring its own guess.
-    ['props', first === undefined ? [] : [['props', componentIn(first), ...some]]],
     ['group', [['group', ...some]]],
     ['shapes', [['shapes', ...some]]],
-    ['review', each('review')],
     ['log', [['log']]],
-    // Nothing has been written down on a first run, so this is the refusal
-    // path: it must say what it could not read rather than printing nothing.
-    ['diff', each('diff', ['--contract', '.ui-consistency/patterns/nothing.md'])],
   ];
+
+  // ~~`pattern`, `patterns`, `props`, `review` and `diff`.~~ **Gone with the
+  // commands (#77), and leaving them in was worse than useless**: each answered
+  // with the usage line, which this harness classifies as `refused` — a valid
+  // answer — so five rows reported *"the tool refused, correctly"* about
+  // commands that do not exist. That is the false pass this whole harness was
+  // written against, one level out.
+  //
+  // The completeness guard below is what keeps this honest: it reads the
+  // commands off the usage line, so a command that exists and is not exercised
+  // here fails the harness rather than escaping it. What those five did is a
+  // skill now, and *does an agent follow this instruction* is not a question a
+  // one-shot binary can be asked.
 
   // **Nothing is filtered out.** A row dropped for want of a file is a level
   // nobody ran, reported as a level that does not exist — and on a directory
@@ -217,20 +220,15 @@ async function commandsOfBinary(cwd) {
 }
 
 /**
- * `mcp` is a server and not a one-shot: it reads stdin until the client closes
- * it, so it has no output to classify and cannot be run this way. It has its
- * own acceptance suite against the shipped bundle (`tests/mcp/server.test.ts`),
- * which is where the same question — does it answer, or is it silent — is
- * asked of it.
+ * ~~`mcp` is a server and not a one-shot, so it has no output to classify.~~
+ *
+ * **The server is gone (#77) and the set is empty.** It is kept rather than
+ * removed because the *rule* is what matters and the next long-running command
+ * would silently fail the harness without it: a command that reads stdin until
+ * a client closes it cannot be classified by running it once. The commands come
+ * off the usage line, so an empty set costs nothing.
  */
-const NOT_ONE_SHOT = new Set(['mcp']);
-
-/** A component this file renders, read off the file name — the repository's own
- *  word for it, and the only source a harness is allowed to take it from. */
-const componentIn = (path) => {
-  const name = path.split('/').pop() ?? '';
-  return name.replace(/\.[^.]+$/, '').replace(/[^A-Za-z0-9]/g, '') || 'Root';
-};
+const NOT_ONE_SHOT = new Set([]);
 
 async function measure(root) {
   const screens = await screensIn(root);

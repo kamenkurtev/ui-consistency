@@ -63,9 +63,13 @@ most often got wrong.
 ## 5. Check the screen before moving on
 
 ```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" diff --contract <contract> <the file>
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <the file>
 ```
 
-Silence means it matches. Anything reported is either a real deviation or a
+That is the deterministic half. Then read the file back against the pattern
+yourself — a command did that comparison and is gone (#77) — which costs one
+more read of a file you have just written.
+
+Nothing to say means it matches. Anything reported is either a real deviation or a
 deliberate difference worth naming — say which, rather than changing working
 code to quiet a report.

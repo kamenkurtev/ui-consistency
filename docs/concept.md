@@ -73,16 +73,20 @@ it.
 It is silent unless it is **certain**. That is not modesty — see *the rule that
 governs everything*, below.
 
-**And Tier 2 now reaches the same turn, without anybody running anything.**
-Where an approved contract covers the kind it wins — *covers*, which until #3
-it did not have to, so one saved contract made every dialog and panel in the
-project a page that had left its contract; where none does, the
-pattern is derived from the edit being made and the sentence handed over says it
-was derived and where the family came from. Nothing derived can fail an edit —
-it goes into the agent's context, never into a failure — which is what makes
-deriving it safe with no signature on it. Requiring a person to run `uic pattern`
-per kind first is why a project that had written nothing down got, in effect, an
-import checker.
+~~**And Tier 2 now reaches the same turn, without anybody running anything.**
+Where an approved contract covers the kind it wins; where none does, the pattern
+is derived from the edit being made and the sentence handed over says it was
+derived and where the family came from. Nothing derived can fail an edit — it
+goes into the agent's context, never into a failure — which is what makes
+deriving it safe with no signature on it.~~
+
+**That channel is gone, and it is the largest single thing this change gives up
+(#77).** It was true, and 2 839 lines paid for it. What replaces it is a skill
+reached by its own description **before** the write rather than after it — which
+is where the pattern was always worth more, because an agent told the pattern
+first writes the right screen once, and one told afterwards has to be persuaded
+to change working code. The safety property survives by there being nothing left
+on that path to fail an edit.
 
 **And what the hook says is scoped to what the tool call wrote.** A
 finding outside those lines is recorded in the log and not injected: telling an
