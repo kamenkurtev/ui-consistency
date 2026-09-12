@@ -41,7 +41,6 @@ import { formatFinding } from '../core/format.js';
 import { coverageOf, sayCoverage, type Coverage } from '../core/coverage.js';
 import { hookResponse } from './hook.js';
 import { sessionResponse } from './session.js';
-import { promptResponse } from './prompt.js';
 import { serveMcp } from '../mcp/server.js';
 import { cachedInventory } from '../inventory/cache.js';
 import { KNOWLEDGE_DIR, MOVED, knowledgeDir } from '../knowledge/paths.js';
@@ -1339,20 +1338,6 @@ async function session(): Promise<number> {
 }
 
 /**
- * The `UserPromptSubmit` adapter, as a subcommand.
- *
- * Plain text on stdout, because that is what this event turns into context.
- * Silence and exit 0 everywhere else: a prompt that is not about screens must
- * cost nothing, and a hook that cannot decide must never be the reason a prompt
- * does not go through.
- */
-async function prompt(): Promise<number> {
-  const said = await promptResponse(await readStdin()).catch(() => null);
-  if (said !== null) console.log(said);
-  return 0;
-}
-
-/**
  * The MCP server, on stdio, over the project this was started in.
  *
  * **The root is the working directory and never a parameter.** A `root` on each
@@ -1606,8 +1591,6 @@ export async function main(argv: string[]): Promise<number> {
       return hook();
     case 'session':
       return session();
-    case 'prompt':
-      return prompt();
     case 'mcp':
       return mcp(rootDir);
     default:

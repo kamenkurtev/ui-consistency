@@ -75,18 +75,26 @@ When the work is about screens, this is the order. **Do not wait to be asked.**
    whole set rather than trusting thirty separate turns. **Nobody has to ask for
    it**: the shape of the work is what decides, so a prompt naming a set —
    *all the*, *every*, *the rest* — is a rollout whether or not the word was
-   typed. Under Claude Code the prompt hook says so; here this line is the
-   whole of the trigger.
+   typed. ~~Under Claude Code the prompt hook says so; here this line is the
+   whole of the trigger.~~ **This line and `rollout`'s own description are the
+   whole of the trigger on every harness now (#80)** — the hook that said it
+   under Claude Code matched a list of English words, so it said nothing to
+   anybody prompting in another language.
 4. `verify` before handing the work over. `review` for a second opinion on one
    screen, when asked.
 5. `reach` when you cannot tell whether this project is clean or this tool is
    blind here. Those look identical and are not.
 
 Nothing is spent until UI work starts. Under Claude Code the same text arrives
-from the session hook, and a prompt about screens also gets the list of patterns
-the project has written down before anything is written; here both arrive from
-this file and from `uic patterns`, which is the whole difference between the
-harnesses.
+from the session hook; ~~and a prompt about screens also gets the list of
+patterns the project has written down before anything is written; here both
+arrive from this file and from `uic patterns`, which is the whole difference
+between the harnesses.~~ **that second channel is gone and the harnesses no
+longer differ there (#80).** It fired on a regular expression over English
+words, which is a worse copy of the judgement each skill's `description` already
+carries. The patterns still reach the agent before anything is written — through
+`pattern`, reached by its description, in whatever language the work is being
+discussed in.
 
 Each is invocable on its own and none requires another to have run — so an
 agent definition can order them by name (`ui-consistency:pattern`, and so on)
