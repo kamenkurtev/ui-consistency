@@ -1,21 +1,16 @@
 import { importSentence } from './format.js';
 import { checkSource } from './check.js';
-import { propFindings } from '../checks/props.js';
 import { retrieve } from '../knowledge/retrieve.js';
 import { substitutionRules } from '../knowledge/rules.js';
 import { substitutionFindings } from '../checks/substitution.js';
-import { pageRules } from '../knowledge/page-rules.js';
-import { pageFindings } from '../checks/page.js';
 import { templateFindings } from '../checks/template.js';
 import { templateKind, parseTemplate } from '../parse/template.js';
 import type {
-  SourceKind,
   Finding,
   Inventory,
   Knowledge,
   KnowledgeFragment,
   Layer,
-  PropConventions,
   Violation,
 } from '../types.js';
 
@@ -31,10 +26,6 @@ export interface EngineContext {
   inventory: Inventory;
   /** Curated rules. Absent or empty means Tier 2 has nothing to judge against. */
   knowledge?: Knowledge;
-  /** Allowed prop values, from a source of truth. Never invented here. */
-  conventions?: PropConventions;
-  /** Which source stated them, so a finding can say where its set came from. */
-  conventionsFrom?: SourceKind;
   /**
    * Tier 2, injected. Absent means no fuzzy review exists for this project —
    * the deterministic checks still run, which is the whole point of the tiers.
@@ -109,10 +100,9 @@ export async function runEngine(
         ? { fragments: [] }
         : { fragments: retrieve(source, ctx.knowledge, { filePath, terms: elements }) };
     return {
-      tier1: [
-        ...templateFindings(filePath, source, substitutionRules(retrieved)),
-        ...pageFindings(filePath, source, pageRules(retrieved)),
-      ].sort((a, b) => a.line - b.line),
+      tier1: templateFindings(filePath, source, substitutionRules(retrieved)).sort(
+        (a, b) => a.line - b.line,
+      ),
     };
   }
 
@@ -129,11 +119,6 @@ export async function runEngine(
 
   const tier1 = [
     ...imports,
-    ...(ctx.conventions === undefined
-      ? []
-      : propFindings(filePath, source, ctx.conventions, ctx.conventionsFrom)),
-    // Level one: the page's own structure, against a stated page rule.
-    ...pageFindings(filePath, source, pageRules(retrieved)),
     // Curated "use X, never Y" rules. Deterministic because the rule is a
     // declaration somebody wrote, not a pattern inferred from the code next
     // door — no rule, no finding.

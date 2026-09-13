@@ -1,15 +1,11 @@
 import { readFile, realpath, stat } from 'node:fs/promises';
-import { dirname, relative, resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 import { detectionSources } from '../layers/detect.js';
 import { cachedPackages, clearPackageCache } from '../layers/cache.js';
 import { resolveChain, contains } from '../layers/chain.js';
 import { readConfig, applyConfig } from '../layers/config.js';
 import { buildInventory } from '../inventory/build.js';
 import { exportedSymbolsFromSource } from '../inventory/exports.js';
-import { placementOf } from '../sources/routes.js';
-import { screenTree, DEFAULT_DEPTH, MAX_DEPTH, type TreeNode } from '../sources/tree.js';
-import { groupScreens } from '../sources/grouping.js';
-import { findProjectRoot } from '../layers/detect.js';
 import { readLog, readSeen, summarise, logPath } from './log.js';
 import { shapeReport } from '../checks/shapes.js';
 import { formatFinding } from '../core/format.js';
@@ -31,218 +27,6 @@ import { analyzeProject } from '../core/project.js';
  * the breadcrumb is the one got wrong nearly every time — because the trail
  * lives in the router, not in the file being edited.
  */
-/**
- * What one screen renders, resolved through the repository.
- *
- * A fact supplier and nothing else: no verdict, no advice, exit 0 whatever it
- * finds. It exists because answering *"what is this screen actually made of"*
- * needed a script written from scratch every session and thrown away — and
- * because the answer is not in the screen's own file. Reading the file alone
- * put 11 of 132 screens in one bucket; following one hop put 26 there.
- *
- * Every leaf says why it is one. `external` is where the walk is meant to stop,
- * `beyond` is the depth bound, `local` is declared in the file that uses it,
- * and `unresolved` is a specifier that led nowhere — which is a gap in the
- * reading and must never be mistaken for the bottom of the screen.
- */
-async function tree(rootDir: string, args: string[]): Promise<number> {
-  const file = pathsIn(args)[0];
-  if (file === undefined) {
-    console.error(`Usage: uic tree <screen> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
-    return 1;
-  }
-
-  const depth = depthIn(args);
-
-  const absolute = resolve(rootDir, file);
-  const root = (await findProjectRoot(dirname(absolute))) ?? rootDir;
-  const walked = await screenTree(root, absolute, depth === undefined ? {} : { depth });
-
-  if (walked === null) {
-    // Not a green result. A file with no component in it is not a screen, and
-    // saying nothing about it would read as a screen with nothing in it.
-    console.error(`Nothing to read in ${relative(rootDir, absolute)}.`);
-    console.error('Either it renders no component, or it is not a screen file.');
-    return 0;
-  }
-
-  console.log(
-    `${relative(root, absolute)} — ${walked.depth} ${walked.depth === 1 ? 'level' : 'levels'}, ` +
-      `${walked.read.length} ${walked.read.length === 1 ? 'file' : 'files'} read` +
-      `${walked.truncated ? ', stopped by the depth' : ''}`,
-  );
-  for (const line of branch(walked.root, 0, null)) console.log(line);
-  return 0;
-}
-
-/**
- * One node per line, indented by its depth. Stable, so a diff of two runs is a
- * diff of two screens.
- *
- * **A file is printed only where the walk moved to one**, which is the whole
- * readability of this output. Every node carries the file it was read from, so
- * printing it on all of them repeats the parent's path on the element that
- * parent renders — `DataGrid  src/grids/OrdersGrid.tsx` reads as *DataGrid
- * lives here*, which is not what it says. Printed on the hop alone, the column
- * means one thing: this is where the walk went next.
- */
-function branch(node: TreeNode, indent: number, from: string | null): string[] {
-  const moved = node.file !== null && node.file !== from;
-  const where = node.at === 'project' ? (moved ? `  ${node.file}` : '') : `  (${node.at})`;
-  // Said on the node it is about rather than as a child of the same name.
-  const stopped = node.holderAt === undefined ? '' : `  (holder in a ${node.holderAt})`;
-  // Passed as data, not held. Said, because a tree that prints it as a child
-  // claims a shape the file does not have.
-  const through = node.via === undefined ? '' : `  ← ${node.via}`;
-  return [
-    `${'  '.repeat(indent)}${node.name}${where}${stopped}${through}`,
-    ...node.children.flatMap((child) => branch(child, indent + 1, node.file)),
-  ];
-}
-
-/**
- * A set of screens, grouped by what they are composed of.
- *
- * The third of the scans that were rewritten by hand every session. A name
- * survives into a signature only where more than one screen renders it, so nine
- * list screens that differ on the name of their grid are one group and not nine
- * — derived from the set in hand, never from a list of layout components.
- */
-async function group(rootDir: string, args: string[]): Promise<number> {
-  const files = pathsIn(args);
-  if (files.length === 0) {
-    console.error(`Usage: uic group <file...> [--depth N]   (1-${MAX_DEPTH}, default ${DEFAULT_DEPTH})`);
-    return 1;
-  }
-
-  const { absolute, problems } = await givenFiles(rootDir, files);
-  for (const problem of problems) console.error(problem);
-  if (absolute.length === 0) {
-    console.error('No file to read, so there is nothing to group.');
-    return 1;
-  }
-
-  const grouped = await groupScreens(rootDir, absolute, depthIn(args));
-  const inGroups = grouped.groups.reduce((count, one) => count + one.members.length, 0);
-  const screens = inGroups + grouped.ungrouped.length + grouped.shapeless.length;
-  // Both counts, because a few groups over many files reads as agreement and a
-  // few groups over a few screens is a small answer (#32).
-  const skipped = grouped.notScreens.length;
-  console.log(
-    `${grouped.given} ${grouped.given === 1 ? 'file' : 'files'}, ` +
-      `${screens} ${screens === 1 ? 'screen' : 'screens'}` +
-      `${grouped.given === 0 ? '' : ` (${Math.round((screens / grouped.given) * 100)}% of what was given)`}` +
-      `${skipped === 0 ? '' : `, ${skipped} not a screen`}, read ${grouped.depth} ` +
-      `${grouped.depth === 1 ? 'level' : 'levels'} — ${grouped.groups.length} ` +
-      `${grouped.groups.length === 1 ? 'group' : 'groups'}`,
-  );
-
-  // **A reader has to be able to tell a pattern from a list** (#58). 527 groups
-  // over 833 screens is not 527 findings; it is a grouping that found nothing,
-  // and printed as a ranked list it reads as the opposite. So the ratio is
-  // stated, and where it is near one the answer is said in words.
-  //
-  // The proportion of files called screens is in the heading for the same
-  // reason: two real React monorepos of comparable size disagreed by a factor
-  // of three — 14% against 43% — and a number nobody can see is a disagreement
-  // nobody can find.
-  if (grouped.groups.length > 0 && inGroups > 0) {
-    const per = inGroups / grouped.groups.length;
-    console.log(
-      `${per.toFixed(1)} screens per group` +
-        (per < 2.5
-          ? ' — that is a list and not a grouping: these screens mostly share nothing.'
-          : ''),
-    );
-  }
-
-  for (const one of grouped.groups) {
-    console.log(`\n${one.members.length} ${one.members.length === 1 ? 'screen' : 'screens'}`);
-    for (const line of one.signature) console.log(`  ${line}`);
-    console.log(`  e.g. ${one.members[0]}`);
-  }
-  if (grouped.ungrouped.length > 0) {
-    const n = grouped.ungrouped.length;
-    console.log(
-      `\n${n} ${n === 1 ? 'screen shares' : 'screens share'} nothing with any of these\n  ` +
-        grouped.ungrouped.join('\n  '),
-    );
-  }
-  if (grouped.shapeless.length > 0) {
-    const n = grouped.shapeless.length;
-    console.log(
-      `\n${n} ${n === 1 ? 'screen renders' : 'screens render'} one node and nothing under it, so` +
-        ` there is no shape to group by — a leaf, or a holder whose children could not be read\n  ` +
-        grouped.shapeless.join('\n  '),
-    );
-  }
-  if (grouped.notScreens.length > 0) {
-    console.log(
-      `\nnot screens — nothing rendered in them, a name saying what they are,` +
-        ` or a part another of these files imports\n  ${grouped.notScreens.join('\n  ')}`,
-    );
-  }
-  return 0;
-}
-
-/**
- * The paths in an argument list, with the flags and their values removed.
- *
- * `--depth`'s value is a bare word and would otherwise be taken as a file:
- * `uic tree --depth 3 src/OrdersPage.tsx` read `3`. Written once because both
- * commands that take a depth have the same hole.
- */
-function pathsIn(args: string[]): string[] {
-  const at = args.findIndex((arg) => arg === '--depth');
-  const value = at === -1 ? -1 : at + 1;
-  return args.filter((arg, index) => !arg.startsWith('-') && index !== value);
-}
-
-/** `--depth 3` or `--depth=3`, and nothing where it was not asked for. */
-function depthIn(args: string[]): number | undefined {
-  const at = args.findIndex((arg) => arg === '--depth' || arg.startsWith('--depth='));
-  if (at === -1) return undefined;
-  const depth = Number.parseInt(args[at]?.split('=')[1] ?? args[at + 1] ?? '', 10);
-  return Number.isNaN(depth) ? undefined : depth;
-}
-
-async function place(rootDir: string, args: string[]): Promise<number> {
-  const file = args.find((arg) => !arg.startsWith('-'));
-  if (file === undefined) {
-    console.error('Usage: uic place <screen>');
-    return 1;
-  }
-
-  const absolute = resolve(rootDir, file);
-  const root = (await findProjectRoot(dirname(absolute))) ?? rootDir;
-  const placed = await placementOf(absolute, root);
-
-  if (placed.style === null) {
-    console.error(`Nothing routes ${relative(rootDir, absolute)}.`);
-    console.error('Either it is not a screen, or its route is registered somewhere this cannot');
-    console.error('read. Say where, rather than letting a path be guessed from the folder.');
-    return 0;
-  }
-
-  console.log(
-    JSON.stringify(
-      {
-        ...placed,
-        ...(placed.declaredIn === null
-          ? {}
-          : {
-              declaredIn: {
-                ...placed.declaredIn,
-                file: relative(rootDir, placed.declaredIn.file),
-              },
-            }),
-      },
-      null,
-      2,
-    ),
-  );
-  return 0;
-}
 
 async function scan(rootDir: string): Promise<number> {
   // What `init` used to print, kept because it is the only way a repository
@@ -307,8 +91,9 @@ async function warnIfNothingWasChecked(rootDir: string, files: string[]): Promis
   const onAChain = files.filter((file) => resolveChain(file, packages, prefer).length > 0);
   if (onAChain.length > 0) return;
 
-  // Not "nothing was checked" any more: style, emoji, page rules and curated
-  // substitutions all ran. What could not run is everything that needs to know
+  // Not "nothing was checked" any more: the curated substitutions ran. ~~Style,
+  // emoji and page rules too~~ — those are rules now (#79, #78). What could not
+  // run is everything that needs to know
   // which layer a file belongs to, and saying so precisely is the difference
   // between a warning somebody acts on and one they learn to skip.
   console.error(`\nNone of the ${files.length} file(s) given belongs to a detected package.`);
@@ -826,12 +611,6 @@ export async function main(argv: string[]): Promise<number> {
   const rootDir = process.cwd();
 
   switch (command) {
-    case 'place':
-      return place(rootDir, rest);
-    case 'tree':
-      return tree(rootDir, rest);
-    case 'group':
-      return group(rootDir, rest);
     case 'scan':
       return scan(rootDir);
     case 'check':
@@ -847,7 +626,7 @@ export async function main(argv: string[]): Promise<number> {
     case 'session':
       return session();
     default:
-      console.error('Usage: uic <place|tree|group|scan|check|shapes|inventory|log>');
+      console.error('Usage: uic <scan|check|shapes|inventory|log>');
       return 1;
   }
 }

@@ -101,7 +101,7 @@ export function sayCoverage(found: Coverage): string[] {
   // The curated half, which is silent until somebody writes something down.
   if (found.stated === 0) {
     said.push(
-      `Nothing is written down in ${KNOWLEDGE_DIR}/, so the page rules and substitution checks had nothing to apply.`,
+      `Nothing is written down in ${KNOWLEDGE_DIR}/, so the substitution check had nothing to apply.`,
     );
   }
 

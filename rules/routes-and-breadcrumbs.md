@@ -39,6 +39,67 @@ name is a confident wrong answer.
 - **A `redirect` is not a route to a screen**, and a mock or a fixture is not the
   router. Both have produced confident wrong answers.
 
+## A path and a registration are two different facts
+
+Keep them apart. An entry with **no path of its own still names the table**, and
+losing that second fact is how a screen falls back onto guessing from its own
+folder. *"This table registers this screen and states no path for it"* is a
+complete, useful answer: the family is still the screens that table registers,
+and only the trail is unknown.
+
+## Composing a path, and the four times you must not
+
+The unit is the route **object**, not the line, and the path composes down the
+tree. Reading a table as text gave **52 invented paths out of 117 screens** on
+one real repository, each borrowed from a neighbouring entry.
+
+Then compose the mount on top — for **every** entry in the table, not only the
+pathless ones. A mount shifts an entry that states a path just as much:
+`{ path: 'detail/:id' }` in an array mounted at `orders` is `/orders/detail/:id`,
+and answering `/detail/:id` is a partial path presented as a whole one. Find the
+mounting file **by content, never by name** — on that repository it is called
+`shellConfig.tsx` and matches no routing-file pattern.
+
+Four things never compose:
+
+- **A parent's trailing `*` is how it admits children, not a segment of their
+  paths.** `{ path: 'settings/*' }` gives a child `/settings/…` and a trail with
+  no `*` in it.
+- **A path the table wrote absolute is already whole.** `{ path: '/admin/audit' }`
+  takes nothing from above it, in its own table or in the one that mounts it.
+- **Two tables mounting the same array** under different paths: answer no path.
+- **A search you did not finish**, or an exported name too generic to be
+  evidence: answer no path.
+
+In all four, **answer nothing rather than a prefix** — a partial path presented
+as a whole one is the worst available answer. And where the entry states a path
+of its own, leave it exactly as the table wrote it: refusing to compose is not
+refusing to answer.
+
+## The path may not be a literal at all
+
+A project that keeps its paths in an enum, a frozen object or a module of
+exported strings writes every `path:` as a **name**. Reading only literals
+answered *no path* for every screen in one real application — the registration
+found 117 times and the path never.
+
+Resolve a constant **by value**: from the table's own declarations, and one hop
+through the imports that bring in a name a path is written with. Never read
+`RoutePaths.Dashboard` as `'dashboard'` from the member's spelling — that is
+guessing at a project's naming, which is what every rule here exists to stop. A
+template literal with one part you cannot resolve answers nothing, not a partial
+path.
+
+**Say which it was.** A path resolved from a constant is worth knowing about
+before it is repeated back to somebody.
+
+## Where the table is
+
+Walk **outward from the screen**, not down from the repository root. A search
+that started at the root and stopped four directories down was silent for every
+screen in a monorepo, because a route table in `libs/<area>/<pkg>/src/lib/` is
+five deep.
+
 ## The breadcrumb, specifically
 
 **Derive it from the route hierarchy, never from the page title.** A title is
