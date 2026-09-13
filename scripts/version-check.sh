@@ -4,17 +4,10 @@ set -euo pipefail
 # Does this working tree change what ships without moving the version?
 #
 # Read against `origin/main` and against the **working tree** on both sides: a
-# bump you have made but not yet committed is a bump, and a gate that says
-# otherwise sends you round a pointless loop. The first version of this check
-# did exactly that.
+# bump you have made but not yet committed is a bump.
 #
-# ~~Skip the whole thing when HEAD is origin/main, because there is nothing to
-# compare.~~ **Withdrawn: HEAD is origin/main on every branch that has not been
-# committed yet**, which is when this is run — `uic-pr.md` step 1 is *run the
-# gate*, before either review, and a person checking the gate is green has not
-# usually committed. Every one of those runs reported green on the one thing
-# this check exists for. What "nothing to compare" actually means is *no
-# shipped file differs*, and the diff below already says that.
+# It does not skip when HEAD is origin/main: that is every branch with nothing
+# committed yet, which is exactly when the gate is run.
 
 SHIPPED='src/ bin/ hooks/ skills/ .claude-plugin/'
 

@@ -8,11 +8,9 @@ import { join } from 'node:path';
 /**
  * Evidence from a private repository keeps its numbers and loses its names.
  *
- * This repository's culture is to record what real runs found, with real
- * numbers, in docblocks and fixtures and findings documents. The numbers are
- * the value; the names came along with them — components, screens, route
- * files, test-id prefixes — and the plan of record is to publish (#7, #265), at
- * which point every one of them ships.
+ * Real runs against private repositories produce numbers worth recording, and
+ * names — components, screens, route files, test-id prefixes — that must not
+ * ship in a public repository.
  *
  * The rule (`.claude/rules/uic-docs.md`): before a measurement is written down
  * anywhere, every project-specific identifier is renamed to a neutral

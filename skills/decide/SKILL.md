@@ -30,8 +30,7 @@ Facts to choose *from*, so the answers are the project's own components rather
 than invented ones. None of this is a pattern; three files are not an agreement
 and two are not either.
 
-Two commands answered this and are gone (#81, #89). **Read the project
-instead**, which is the same two questions asked of the files:
+Read the project for two things:
 
 - **which packages the project has, and which one holds the shared components.**
   Its workspace file — `pnpm-workspace.yaml`, or `workspaces` in the root
@@ -112,14 +111,12 @@ Tell the user, plainly:
   and until then it answers from this pointer —
   `ui-consistency:pattern` reads it;
 - **nothing here gates anything.** Nothing derived may fail an edit, and
-  nothing decided here fails one either. The one place derived material could
-  ever fail anything was a person choosing to put it in a build gate.
+  nothing decided here fails one either.
 
 ## What this must not do
 
-- **Not draft prose nobody asked for.** A setup command this project once had
-  and deleted left a real repository with 285 lines of *"Use `<Alert>`. Say here
-  when it applies and what it replaces."* — a skeleton for 700 components with
-  no rule in it. Write the answers the user gave and nothing else.
+- **Not draft prose nobody asked for.** A generated skeleton — *"Use `<Alert>`.
+  Say here when it applies and what it replaces."* for every component — is
+  hundreds of lines with no rule in it. Write the answers the user gave and nothing else.
 - **Not invent a kind.** The holder is a fact; a label is a guess.
 - **Not gate anything**, and not promise that it will.

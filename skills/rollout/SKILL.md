@@ -9,16 +9,10 @@ The failure this exists for: **the pattern is already decided, and the
 twenty-seventh page still does not match the first.** Some pages come out right,
 others do not, and it is found by a person opening them one at a time.
 
-**It starts because the work is that shape, not because it was asked for**
-(#28). More than two or three screens taking the same change is this loop,
-whether or not anybody typed the word. ~~Under Claude Code the prompt hook
-names it as soon as a prompt reads as a set.~~ **That hook is gone (#80): it
-matched English words, so it named nothing for anybody working in another
-language, and this skill's own description is what reaches it now.** What it
-does not do is start
-itself: a queue written to disk off a guess about English, before a file has
-been read, would be a process nobody asked for. The judgement that the set is
-real is made here, with the files in front of you.
+**It starts because the work is that shape, not because it was asked for.**
+More than two or three screens taking the same change is this loop, whether or
+not anybody typed the word. The judgement that the set is real is made here,
+with the files in front of you.
 
 Read `${CLAUDE_PLUGIN_ROOT}/rules/raw-values.md` once before the first file —
 it applies to every line of every screen in the queue — and
@@ -73,8 +67,7 @@ Silence about it is what turns "27 of 30" into something nobody can audit.
 ## 5. Verify the whole set, not the last file
 
 Read every file in the queue **against the pattern, together** —
-`ui-consistency:verify` is that, and it is reading rather than a command
-(#77, #89).
+that is `ui-consistency:verify`.
 
 The step that replaces a person opening every page. **22 of 30 done correctly
 looks exactly like 30 of 30 until something compares them**, and the per-file

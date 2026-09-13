@@ -1,7 +1,7 @@
 # Raw values: colours, lengths, and emoji standing in for icons
 
-You wrote the line. You can see the literal in it without a program parsing the
-file back, which is what this replaced (#79).
+You wrote the line. You can see the literal in it — obey this while writing it,
+not afterwards.
 
 ## The rule, while you write
 
@@ -49,7 +49,7 @@ reason the blanket version of the rule is worse than this one.
 
 It states **the project's position** — which is what a rule is for. It does not
 claim a token exists for the value you wrote: nothing here reads a theme, and
-the check this replaced had that claim removed for exactly that reason (#64).
+a claim about a token nobody checked is a confident wrong answer.
 
 So: name the literal, say the project takes this from its scale or its palette,
 and where the project has more than one theme preset **say which**. Where the

@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 // Move the shipped version, in every file that carries it.
 //
-// The version lives in ~~three~~ **seven** places — one manifest per harness,
-// plus `package.json` and `src/version.ts` — and only `plugin.json` is read
-// when a plugin updates, so the other six drift with nothing to complain.
-// Doing it by hand means remembering all of them and remembering to do it at
-// all — and the second half failed twice in one day (#36, #43). Three was
-// right until the Codex, Cursor and Gemini manifests arrived; the same figure
-// was in `.claude/rules/uic-git.md` and is corrected there too.
+// The version lives in seven places — one manifest per harness, plus
+// `package.json` and `src/version.ts` — and only `plugin.json` is read when a
+// plugin updates, so the other six drift with nothing to complain.
 //
 // Usage: npm run bump [patch|minor|major]     (patch by default)
 

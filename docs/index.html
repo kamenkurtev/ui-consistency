@@ -310,11 +310,10 @@
 <div class="page">
 
   <header class="masthead">
-    <div class="eyebrow">Internal · install and try</div>
+    <div class="eyebrow">Install and try</div>
     <h1>Try ui-consistency</h1>
-    <p class="standfirst">A plugin that checks the screens your agent writes against the screens your project already has — in the same turn as the edit, not in a pipeline two days later.</p>
+    <p class="standfirst">Skills and rules that make your coding agent build screens the way your project already builds them. Like superpowers, but for UI.</p>
     <div class="meta">
-      <span>v0.14.79</span>
       <span>Node 20+</span>
       <span>No build step</span>
       <span><a href="https://github.com/kamenkurtev/ui-consistency">github.com/kamenkurtev/ui-consistency</a></span>
@@ -323,12 +322,9 @@
 
   <section>
     <h2>What it actually does</h2>
-    <p>It works everything out from your repository. There is no built-in list of good components, no framework it prefers, and <strong>no model call anywhere in the tool</strong> — so it costs nothing per edit and works with whatever agent you already use.</p>
-    <p>A finding looks like this. <code>@acme/ui</code> is a placeholder for whatever your packages are called; the tool has never heard of it, it read your dependency graph:</p>
-    <pre class="out">apps/orders/src/OrderList.tsx:1
-Button is imported from @vendor/ui.
-@acme/ui exports Button and is nearer on this file's chain.
-→ import { Button } from '@acme/ui'</pre>
+    <p>Before your agent builds or changes a screen, it reads the screens of that kind your project already has — the holder, the order of the regions, which component fills each role, the props most of them are written with — and writes that down as a pattern file in <code>.ui-consistency/patterns/</code>.</p>
+    <p>Then every screen is written from that file, one at a time, so the thirtieth matches the first. At the end, every screen touched is compared against it.</p>
+    <p>There is no built-in list of components, no framework it prefers, no API key and nothing to configure.</p>
   </section>
 
   <section>
@@ -339,20 +335,18 @@ Button is imported from @vendor/ui.
         <div class="step-n">01</div>
         <div class="step-body">
           <h3>Add the marketplace and install</h3>
-          <p>In Claude Code, three commands:</p>
+          <p>In Claude Code:</p>
           <pre class="term"><span class="p">/</span>plugin marketplace add kamenkurtev/ui-consistency
-<span class="p">/</span>plugin install ui-consistency@kkurtev-plugins
-<span class="p">/</span>reload-plugins</pre>
-          <p>Nothing to build and no <code>npm install</code> — the bundle ships committed. Node 20 or later is the only requirement.</p>
+<span class="p">/</span>plugin install ui-consistency@kkurtev-plugins</pre>
+          <p>Gemini CLI, Codex and Cursor have manifests too — see the README.</p>
         </div>
       </li>
 
       <li class="step">
         <div class="step-n">02</div>
         <div class="step-body">
-          <h3>Open a project and edit a screen</h3>
-          <p>That is the whole setup. The per-edit check registers itself as a <code>PostToolUse</code> hook and reports in the same turn, while the agent still has the file in its hands and changing it costs nothing.</p>
-          <p>You do not have to run anything for it to know what your screens look like. On the edit your agent is already making, it derives what screens of that kind look like here and hands back only what this one does differently — nothing saved, nothing approved, nothing failed.</p>
+          <h3>Ask for a screen</h3>
+          <p>That is the whole setup. The agent picks up the skills on its own: it establishes the pattern first, then writes the screen from it. Where there is nothing to copy — the first screen of a kind — it asks you what the screen should look like, and writes down only what you answered.</p>
         </div>
       </li>
 
@@ -360,7 +354,6 @@ Button is imported from @vendor/ui.
         <div class="step-n">03</div>
         <div class="step-body">
           <h3>Ask it whether it is doing anything</h3>
-          <p>This is the step worth not skipping, and the honest part. On day one, on a project that has written nothing down, what runs is the deterministic half — raw colours and lengths, an emoji standing in for an icon, imports resolving to the wrong layer — plus the derived advisories. The curated checks stay quiet <em>because nobody has curated anything yet</em>.</p>
           <pre class="term"><span class="p">&gt;</span> use ui-consistency:reach</pre>
           <p>It answers level by level, and there are only three answers:</p>
           <dl class="silences">
@@ -377,7 +370,7 @@ Button is imported from @vendor/ui.
               <dd>it cannot see here, and here is why</dd>
             </div>
           </dl>
-          <p>No score and no grade. A level is never called working just because it produced no findings — that distinction is the whole point of the command.</p>
+          <p>No score and no grade.</p>
         </div>
       </li>
 
@@ -385,62 +378,36 @@ Button is imported from @vendor/ui.
   </section>
 
   <section>
-    <h2>What Tier 1 checks on every edit</h2>
-    <p>Seven deterministic checks, roughly 0.12 s, no model. It is silent unless it is <em>certain</em> — a check that guesses gets switched off within a week, and a switched-off check costs more than every finding it would have made.</p>
-    <p>Real output, from a throwaway project:</p>
-    <pre class="out">src/Card.tsx:1
-color: '#ff0000' is a colour literal.
-
-src/Card.tsx:1
-🔔 is an emoji used as an icon. Use the design system's icon component so it matches the others.</pre>
-    <p>Numbers on spacing keys in <code>sx</code> are left alone — <code>sx={{ mt: 2 }}</code> is a theme multiplier, which is the correct form. Fixed widths and heights are left alone too: almost no design system has a width token. Tests, stories and <code>__mocks__</code> are not checked at all.</p>
-    <p>There is deliberately <strong>no</strong> "that is a raw <code>&lt;button&gt;</code>, use <code>Button</code>" check. Saying that needs a built-in map from an element to a component name, which is a vocabulary — and on every project that names things differently it matched nothing and said nothing. Raw elements are checked against a contract derived from your own screens instead.</p>
-  </section>
-
-  <section>
-    <h2>The skills, when you want to drive it</h2>
-    <p>Invoke by name. None requires another to have run — where an input is missing they derive it or say so, rather than refusing, so you can start anywhere.</p>
+    <h2>The skills</h2>
+    <p>The agent uses them on its own; you can also invoke any of them by name.</p>
     <div class="skills">
       <div class="skill"><code>ui-consistency:pattern</code><span>what screens of this kind look like here</span></div>
-      <div class="skill"><code>ui-consistency:screen</code><span>write one against that</span></div>
+      <div class="skill"><code>ui-consistency:decide</code><span>the first screen of a kind, when there is nothing to copy</span></div>
+      <div class="skill"><code>ui-consistency:screen</code><span>write one against the pattern</span></div>
       <div class="skill"><code>ui-consistency:rollout</code><span>apply it across many, one file per turn</span></div>
       <div class="skill"><code>ui-consistency:verify</code><span>compare the finished set, before a PR</span></div>
       <div class="skill"><code>ui-consistency:review</code><span>a second opinion on one screen</span></div>
-      <div class="skill"><code>ui-consistency:decide</code><span>the first screen of a kind, when there is nothing to derive</span></div>
       <div class="skill"><code>ui-consistency:reach</code><span>which of the three silences you are looking at</span></div>
-    </div>
-    <div class="aside">
-      <p>There is also a CLI for a whole-project pass or a CI gate. It is not on your <code>PATH</code> — call the bundle directly:</p>
-      <pre class="term">node path/to/bin/uic.mjs check $(git ls-files '*.tsx')</pre>
-      <p>It exits 1 if anything is wrong. <code>check</code> takes files, not glob patterns, and relies on the shell to expand them — a quoted glob is refused rather than silently checking nothing.</p>
     </div>
   </section>
 
   <section>
     <div class="notice">
-      <h3>One thing to be careful about when you report back</h3>
-      <p>If you test this on our own codebase, <strong>keep the numbers and drop the names.</strong> When you file something, rename every component, screen, route file and test-id prefix to a neutral equivalent of the same shape — <code>OrdersGrid</code> for a PascalCase grid, <code>app-orders-grid</code> for its selector form, <code>acme-orders-page</code> for a test-id.</p>
-      <p>The repository is public now. The lesson and the counts are what make a report useful; the provenance is what you do not want in it.</p>
+      <h3>When you report back</h3>
+      <p><strong>Keep the numbers and drop the names.</strong> Rename every component, screen, route file and test-id prefix to a neutral equivalent of the same shape — <code>OrdersGrid</code> for a PascalCase grid, <code>app-orders-grid</code> for its selector form.</p>
     </div>
   </section>
 
   <section>
     <h2>Reporting something</h2>
-    <p>The house style is a reproduction in an empty directory using the shipped bundle. It is worth the five minutes: it separates a defect in the tool from something about our repository, and it is what a fix gets tested against.</p>
-    <pre class="term"><span class="c"># copy bin/uic.mjs alone into an empty directory</span>
-mkdir -p /tmp/repro/src &amp;&amp; cd /tmp/repro
-echo '{"name":"r"}' &gt; package.json
-<span class="c"># ...the smallest files that show it...</span>
-node /path/to/uic.mjs check src/Thing.tsx</pre>
     <ul class="plain">
-      <li>Say what you observed and what you expected, and paste the output unedited.</li>
-      <li>If the answer was <em>silence</em>, say which command was silent — that is the most valuable report there is, and the three silences above are why.</li>
+      <li>Say what you asked the agent, what it did, and what you expected.</li>
+      <li>If nothing happened, paste what <code>ui-consistency:reach</code> said — it tells apart a quiet project from a blind plugin.</li>
       <li>Issues go to <a class="link" href="https://github.com/kamenkurtev/ui-consistency/issues">the tracker</a>.</li>
     </ul>
   </section>
 
   <footer>
-    <p>Only the Claude Code path has been run end to end. Cursor registers <code>sessionStart</code> only and Codex's hook file is empty, so everywhere except Claude Code what you get today is the skills and the CLI, not the per-edit gate.</p>
     <p>Free and open source, MIT. No network, no telemetry, no account, no key.</p>
   </footer>
 
