@@ -8,7 +8,7 @@ npm run typecheck
 # built binary as a subprocess, and testing yesterday's bundle would pass
 # while today's is broken.
 echo "==> build"
-if [ -f src/cli/index.ts ]; then
+if [ -f src/cli/main.ts ]; then
   npm run build
 else
   # The CLI arrives with the core. Until then there is nothing to bundle, and

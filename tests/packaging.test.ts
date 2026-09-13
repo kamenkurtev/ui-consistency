@@ -46,13 +46,31 @@ describe('the shipped version', () => {
 });
 
 describe('the hooks the plugin registers', () => {
-  it('runs the checker after an edit and says one line at session start', async () => {
+  /**
+   * ~~Runs the checker after an edit, and says one line at session start.~~
+   *
+   * **`SessionStart` alone since #89, and that is the shape rather than an
+   * omission.** `PostToolUse` ran the deterministic checks on every edit, and
+   * there are none — so the hook had nothing to say, and a hook that says
+   * *"remember to read the rules"* on every write is the ~1 KB of observation
+   * that was injected once, measured, and ignored. #80 set the precedent by
+   * removing the prompt channel on exactly that ground.
+   *
+   * What survives is the one thing a hook does better than anything else: on a
+   * fresh session, telling an agent which skills exist and in what order they
+   * fire (#9). That is instructions, which is what this plugin is, and an
+   * installed plugin has no other way to say it.
+   *
+   * **So all four harnesses are now the same shape**, which is the largest
+   * single claim this change overturns — Claude Code was the only one with a
+   * per-edit gate wired, and there is no gate anywhere.
+   */
+  it('says one line at session start, and registers nothing else', async () => {
     const hooks = (await read('hooks/hooks.json')) as {
       hooks: Record<string, { hooks: { command: string; timeout?: number }[] }[]>;
     };
 
-    expect(Object.keys(hooks.hooks)).toContain('PostToolUse');
-    expect(Object.keys(hooks.hooks)).toContain('SessionStart');
+    expect(Object.keys(hooks.hooks)).toEqual(['SessionStart']);
 
     const session = hooks.hooks['SessionStart']?.[0]?.hooks[0];
     expect(session?.command).toContain('uic.mjs" session');
@@ -184,25 +202,45 @@ describe('how the skills are named', () => {
   });
 });
 
-describe('what the checks are allowed to know', () => {
+/** Every `.ts` under a directory, recursively. */
+function sourcesUnder(dir: string): string[] {
+  const found: string[] = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = `${dir}/${entry.name}`;
+    if (entry.isDirectory()) found.push(...sourcesUnder(path));
+    else if (entry.name.endsWith('.ts')) found.push(path);
+  }
+  return found;
+}
+
+describe('what the program is allowed to know', () => {
   it('hardcodes no component name anywhere a finding can come from', async () => {
     // The first thing the owner noticed about this plugin, and the right thing
     // to notice: `Button`, `TextField`, `MenuItem`, `DataGrid` are one library's
     // names. Every team names its own components, and every framework has its
     // own pseudo-HTML elements — a project whose input is `Textbox` matched none
     // of it and got silence, which is indistinguishable from a clean result.
-    const { readdirSync, readFileSync } = await import('node:fs');
-    const dir = fileURLToPath(new URL('../src/checks', import.meta.url));
+    // ~~`src/checks`~~ — **the whole program, since #89.** There are no checks;
+    // what is left is 419 lines of hook adapter, and the rule is unchanged and
+    // now trivially satisfiable, which is the point. It stays because the day
+    // somebody adds a list of component names back, this is what says no.
+    const { readFileSync } = await import('node:fs');
+    const dir = fileURLToPath(new URL('../src', import.meta.url));
 
     const named: string[] = [];
-    for (const file of readdirSync(dir).filter((name) => name.endsWith('.ts'))) {
-      const source = readFileSync(`${dir}/${file}`, 'utf8')
+    for (const file of sourcesUnder(dir)) {
+      const source = readFileSync(file, 'utf8')
         // Comments may discuss the names; only code may not carry them.
         .replace(/\/\*[\s\S]*?\*\//g, '')
         .replace(/\/\/[^\n]*/g, '')
         // The parser's own node types are not a design system's vocabulary.
         .replace(/\.type\s*[!=]==?\s*'[A-Za-z]+'/g, '')
-        .replace(/case\s+'[A-Za-z]+':/g, '');
+        .replace(/case\s+'[A-Za-z]+':/g, '')
+        // Nor are the **harness's** own names. `SessionStart` is a field value
+        // Claude Code reads back; spelling it differently means the hook says
+        // nothing. Exempt by exact name rather than by shape, so a component
+        // name cannot enter by looking like a protocol one.
+        .replace(/'(?:SessionStart|PostToolUse|UserPromptSubmit)'/g, '');
 
       for (const match of source.matchAll(/['"]([A-Z][a-z]+[A-Za-z]*)['"]/g)) {
         named.push(`${file}: ${match[1]!}`);
@@ -228,46 +266,23 @@ describe('what the checks are allowed to know', () => {
    * The list is meant to shrink. #203 measures what these are buying; whether
    * they stay is that answer, not this test's.
    */
-  it('carries no vendor prop vocabulary that has not been declared here', async () => {
-    const declared: Record<string, string> = {
-      sx: "MUI, Chakra and Theme UI spell the system prop identically — an ecosystem convention rather than one product's, and `style` beside it is the DOM's own",
-      m: 'MUI spacing shorthand — undefended, kept only until #203 says what it buys',
-      mt: 'MUI spacing shorthand',
-      mr: 'MUI spacing shorthand',
-      mb: 'MUI spacing shorthand',
-      ml: 'MUI spacing shorthand',
-      mx: 'MUI spacing shorthand',
-      my: 'MUI spacing shorthand',
-      p: 'MUI spacing shorthand',
-      pt: 'MUI spacing shorthand',
-      pr: 'MUI spacing shorthand',
-      pb: 'MUI spacing shorthand',
-      pl: 'MUI spacing shorthand',
-      px: 'MUI spacing shorthand',
-      py: 'MUI spacing shorthand',
-      spacing: 'MUI spacing shorthand',
-    };
-
-    const { readdirSync, readFileSync } = await import('node:fs');
-    const dir = fileURLToPath(new URL('../src/checks', import.meta.url));
-
-    const found: string[] = [];
-    for (const file of readdirSync(dir).filter((name) => name.endsWith('.ts'))) {
-      const source = readFileSync(`${dir}/${file}`, 'utf8')
-        .replace(/\/\*[\s\S]*?\*\//g, '')
-        .replace(/\/\/[^\n]*/g, '');
-
-      // Short lowercase string literals are what a prop shorthand looks like.
-      // CSS property names are not vendor vocabulary and are spelled with a
-      // hyphen or in full, so they do not match.
-      for (const match of source.matchAll(/'([a-z]{1,2}|spacing|sx)'/g)) {
-        const name = match[1]!;
-        if (declared[name] === undefined) found.push(`${file}: '${name}'`);
-      }
-    }
-
-    expect(found).toEqual([]);
-  });
+  /**
+   * ~~Carries no vendor prop vocabulary that has not been declared here.~~
+   *
+   * **The list is empty and the module holding it is gone (#89).** It declared
+   * seventeen MUI spacing shorthands — `mt`, `px`, `spacing` — each kept with a
+   * reason, in a module both dialects shared, and the list was meant to shrink.
+   * It shrank to nothing when the style check became `rules/raw-values.md`
+   * (#79) and the check modules went with the rest.
+   *
+   * The knowledge itself survives, in the one place it can be wrong visibly:
+   * `rules/raw-values.md` says a bare number on a spacing key in `sx` is a
+   * theme multiplier and correct. That is a sentence somebody can read and
+   * argue with, rather than a `Set` that silently disagreed with the
+   * neighbouring dialect for weeks.
+   *
+   * The rule above now scans the whole program, which is what this one was for.
+   */
 
   /**
    * The same argument again, one level out: the rules are instructions an agent
@@ -337,11 +352,12 @@ describe('the other harnesses', () => {
   it('ships the context file the non-Claude harnesses read', async () => {
     const { readFileSync } = await import('node:fs');
     const agents = readFileSync(fileURLToPath(new URL('../AGENTS.md', import.meta.url)), 'utf8');
-    // ~~`uic pattern`~~ — that command is a skill now (#77). What this asserts
-    // is that the file a non-Claude harness loads actually carries the surface:
-    // the rules it reads instead of a hook, and a command it can still run.
+    // ~~`uic pattern`~~, ~~`uic check`~~ — both are skills and rules now (#77,
+    // #89), and there is no command a harness runs. What this asserts is that
+    // the file a non-Claude harness loads actually carries the surface: the
+    // rules and the skills, which are the whole of it.
     expect(agents).toContain('rules/');
-    expect(agents).toContain('uic check');
+    expect(agents).toContain('ui-consistency:pattern');
     expect((await read('gemini-extension.json'))['contextFileName']).toBe('AGENTS.md');
   });
 });

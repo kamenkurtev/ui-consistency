@@ -65,12 +65,8 @@ four times it must not, and paths written as constants rather than literals.
 
 ## 5. Check the screen before moving on
 
-```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <the file>
-```
-
-That is the deterministic half. Then read the file back against the pattern
-yourself — a command did that comparison and is gone (#77) — which costs one
+Read the file back — against the rules you read in step 0, and against the
+pattern for its kind. A command did both and is gone (#77, #89); this costs one
 more read of a file you have just written.
 
 Nothing to say means it matches. Anything reported is either a real deviation or a

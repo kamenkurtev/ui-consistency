@@ -41,11 +41,17 @@ rather than a better prompt.
 
 Three tiers, ordered by cost, and the ordering is the whole design.
 
-### Tier 1 — deterministic, every edit, no model
+### ~~Tier 1 — deterministic, every edit, no model~~
 
-A plain program over the AST. It runs in the `PostToolUse` hook and reports in
+~~A plain program over the AST. It runs in the `PostToolUse` hook and reports in
 the same turn as the edit, before the agent has moved on. **0.09–0.2 s per
-edit**, no network, no credentials, no tokens.
+edit**, no network, no credentials, no tokens.~~
+
+**There is no Tier 1, and there is no `PostToolUse` hook (#89).** The tiers were
+ordered by cost and the cheapest won so completely that it took the others: the
+instructions an agent reads *before* it writes cost nothing per edit, work on
+every harness and in every language, and are wrong **visibly** when they are
+wrong. What follows is the record of the program that was.
 
 ~~It checks seven things: imports resolve to the nearest layer that exports
 them; raw colours and sizes where a token belongs; an emoji standing in for an
@@ -252,10 +258,17 @@ A linter runs in CI, after the code is written, in a list nobody reads to the
 end. By then the screen exists, the pattern is set, and fixing it is a
 refactor.
 
-This runs **in the same turn as the edit**, while the agent still has the file
+~~This runs **in the same turn as the edit**, while the agent still has the file
 in its hands and changing it costs nothing. That is the entire reason for the
 `PostToolUse` hook, and it is why speed is a hard constraint rather than a nice
-property.
+property.~~
+
+**The argument survives the hook and is the reason the hook is not needed
+(#89).** *Before the code is written* beats *in the same turn as the edit* by
+exactly the margin that *in the same turn* beat *in CI*: an agent that has read
+the rule writes the right line once, and one told afterwards has to be persuaded
+to change working code. Speed stopped being a constraint when nothing runs per
+edit.
 
 **Changing it costs nothing only for what the agent just wrote**, and the
 hook used to ignore that: it ran every check over the whole file, so an agent
