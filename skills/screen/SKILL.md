@@ -10,7 +10,9 @@ Read once, before the first file: `${CLAUDE_PLUGIN_ROOT}/rules/anatomy.md`,
 `family-and-particulars.md` (what belongs to the reference alone and must not be
 copied), `routes-and-breadcrumbs.md` (where the trail comes from) and
 `raw-values.md` (colours, lengths and emoji — obey it while you write the line,
-which is the whole of why it is a rule and no longer a check).
+which is the whole of why it is a rule and no longer a check) and
+`imports-and-layers.md` (where each symbol comes from — the one fact that is not
+in the file you are writing).
 
 The contract is the input you write **from**, not a report you read afterwards.
 If there is none, run `ui-consistency:pattern` first — one command, against the

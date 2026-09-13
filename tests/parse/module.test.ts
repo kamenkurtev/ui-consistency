@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parseModule } from '../../src/parse/parse.js';
-import { exportedSymbolsFromSource } from '../../src/inventory/exports.js';
+import { exportedSymbolsFromSource } from '../../src/parse/exports.js';
 
 /**
  * A decorated class is every Angular component (#253).

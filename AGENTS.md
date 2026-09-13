@@ -48,6 +48,7 @@ the three that have no hook.
 | `what-a-decision-is.md` | what belongs in a decisions file, and the one test for it |
 | `pattern-file.md` | what a pattern file states and how — the artifact the work is done from |
 | `raw-values.md` | no colour literal, no absolute length, no emoji where an icon belongs — and the four exceptions that stop it flooding |
+| `imports-and-layers.md` | where a symbol comes from: the one fact that is not in the file, so the project writes it down |
 
 Read them directly if your harness has no skill mechanism: they are the
 instructions, and the CLI below is the fact supplier.
@@ -132,18 +133,17 @@ convention.
 
 ```
 uic check <files>                  the deterministic findings; exits 1 on any
-uic scan                           the packages detected, and how
 uic shapes <files>                 shapes rebuilt or repeated
-uic inventory <file>               the layer chain for one file, and what it exports
 uic log                            what has been found here while somebody worked
 ```
 
-**Ten commands went in two changes (#77, #78)**: the ones that derived a
+**Twelve commands went in three changes (#77, #78, #81)**: the ones that derived a
 pattern, wrote it down, re-counted it, listed what was written down, compared a
 set against it, gathered evidence for a second opinion, served all of that over
-a protocol, answered where a screen is routed, walked what a screen renders, and
-grouped screens by shape. Every one of them is a skill or a rule now, and both
-read the files. If you remember one and it is not above, that is why —
+a protocol, answered where a screen is routed, walked what a screen renders,
+grouped screens by shape, reported the packages detected, and listed what a
+file's chain exports. Every one of them is a skill or a rule now, and both read
+the files. If you remember one and it is not above, that is why —
 `ui-consistency:pattern` and `ui-consistency:verify` are where that work is, and
 `rules/routes-and-breadcrumbs.md` and `rules/anatomy.md` are what they read.
 

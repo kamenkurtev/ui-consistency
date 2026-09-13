@@ -50,24 +50,17 @@ describe('the built binary', () => {
   it('reports the fixture violations and exits 1', async () => {
     const run = await uic(['check', 'apps/orders/src/List.tsx'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stdout).toContain('apps/orders/src/List.tsx:1');
-    expect(run.stdout).toContain("→ import { Button } from '@fixture/core'");
-    expect(run.stdout).toContain('LegacyButton is deprecated in @fixture/core.');
+    // ~~An import violation and a deprecated import.~~ **Both checks are gone
+    // (#79, #81)**; the fixture trips the one check left, which is the
+    // project's own written-down substitution.
+    expect(run.stdout).toContain('apps/orders/src/List.tsx:3');
+    expect(run.stdout).toContain('"Action grids" says to use ActionGrid');
   });
 
   it('exits 0 on a file with nothing to say about it', async () => {
     const run = await uic(['check', 'apps/orders/src/index.ts'], fixture);
     expect(run.code).toBe(0);
     expect(run.stdout.trim()).toBe('');
-  });
-
-  it('includes own-layer findings only when asked', async () => {
-    const dialog = 'packages/core/src/components/Dialog.tsx';
-    expect((await uic(['check', dialog], fixture)).code).toBe(0);
-
-    const asked = await uic(['check', '--within-layer', dialog], fixture);
-    expect(asked.code).toBe(1);
-    expect(asked.stdout).toContain("this file is in @fixture/core; use the layer's own Button.");
   });
 
   it('refuses an unknown option rather than guessing', async () => {
@@ -79,19 +72,13 @@ describe('the built binary', () => {
   it('refuses an unknown subcommand', async () => {
     const run = await uic(['frobnicate'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stderr).toContain('Usage: uic <scan|check|shapes|inventory|log>');
+    expect(run.stderr).toContain('Usage: uic <check|shapes|log>');
   });
 
   it('says what to do when given no files', async () => {
     const run = await uic(['check'], fixture);
     expect(run.code).toBe(1);
-    expect(run.stderr).toContain('Usage: uic check [--within-layer] <file...>');
-  });
-
-  it('prints per-layer export counts on scan', async () => {
-    const run = await uic(['scan'], fixture);
-    expect(run.code).toBe(0);
-    expect(run.stdout).toMatch(/@fixture\/core: 3 exports, 1 deprecated/);
+    expect(run.stderr).toContain('Usage: uic check [--list] <file...>');
   });
 
   describe('hook', () => {
@@ -111,7 +98,7 @@ describe('the built binary', () => {
       const parsed = JSON.parse(run.stdout);
       expect(parsed.hookSpecificOutput.hookEventName).toBe('PostToolUse');
       expect(parsed.hookSpecificOutput.additionalContext).toContain(
-        "→ import { Button } from '@fixture/core'",
+        'ActionGrid',
       );
     });
 
@@ -134,75 +121,6 @@ describe('the built binary', () => {
     });
   });
 
-  describe('scan', () => {
-    let workspace: string;
-
-    beforeAll(async () => {
-      // A throwaway copy: init writes a file, and the shared fixture must not
-      // gain one that later runs would then read as configuration.
-      workspace = await mkdtemp(join(tmpdir(), 'uic-init-'));
-      await mkdir(join(workspace, 'packages/core/src'), { recursive: true });
-      await writeFile(
-        join(workspace, 'package.json'),
-        JSON.stringify({ name: 'root', private: true, workspaces: ['packages/*'] }),
-      );
-      await writeFile(
-        join(workspace, 'packages/core/package.json'),
-        JSON.stringify({ name: '@t/core', source: 'src/index.ts' }),
-      );
-      await writeFile(join(workspace, 'packages/core/src/index.ts'), 'export const A = 1;\n');
-    });
-
-    it('says so rather than writing anything when there is no project', async () => {
-      const empty = await mkdtemp(join(tmpdir(), 'uic-empty-'));
-      const run = await uic(['scan'], empty);
-      expect(run.code).toBe(1);
-      expect(run.stderr).toContain('No packages detected');
-      await rm(empty, { recursive: true, force: true });
-    });
-
-    // There are two ways packages get found and a repository has no idea which
-    // one applies to it. When the answer is "none", naming what was looked for
-    // is the difference between a bug report and a user concluding the tool is
-    // broken — which is how this defect was found in the first place.
-    it('names the mechanism that found the packages', async () => {
-      const run = await uic(['scan'], workspace);
-      expect(run.stdout).toContain('package.json workspaces');
-    });
-
-    it('names the aliases when that is what found them', async () => {
-      const aliased = await mkdtemp(join(tmpdir(), 'uic-alias-'));
-      await cp(fileURLToPath(new URL('../fixtures/nx-ws', import.meta.url)), aliased, {
-        recursive: true,
-      });
-      const run = await uic(['scan'], aliased);
-      expect(run.stdout).toContain('tsconfig.base.json');
-      expect(run.stdout).toContain('@fixture/core');
-      await rm(aliased, { recursive: true, force: true });
-    });
-
-    it('names both mechanisms it looked for when it finds none', async () => {
-      const empty = await mkdtemp(join(tmpdir(), 'uic-empty2-'));
-      const run = await uic(['scan'], empty);
-      expect(run.stderr).toContain('workspaces');
-      expect(run.stderr).toContain('compilerOptions.paths');
-      await rm(empty, { recursive: true, force: true });
-    });
-  });
-});
-
-describe('scan on a project with no workspace of any kind', () => {
-  it('names the root manifest rather than trailing off', async () => {
-    const solo = await mkdtemp(join(tmpdir(), 'uic-solo-'));
-    await mkdir(join(solo, 'src'), { recursive: true });
-    await writeFile(join(solo, 'package.json'), JSON.stringify({ name: 'solo', version: '1.0.0' }));
-    await writeFile(join(solo, 'src/index.ts'), 'export const A = 1;\n');
-
-    const run = await uic(['scan'], solo);
-    expect(run.stdout).not.toMatch(/via\s*:/);
-    expect(run.stdout).toContain('package.json');
-    await rm(solo, { recursive: true, force: true });
-  });
 });
 
 describe('the queue the batch driver builds', () => {
@@ -225,55 +143,6 @@ describe('the queue the batch driver builds', () => {
     const run = await uic(['check', '--list', 'packages/core/src/index.ts'], fixture);
     expect(run.code).toBe(0);
     expect(run.stdout.trim()).toBe('');
-  });
-});
-
-describe('what a subagent is told about a file', () => {
-  it('prints the file’s chain, nearest first', async () => {
-    const run = await uic(['inventory', 'apps/orders/src/List.tsx'], fixture);
-    expect(run.code).toBe(0);
-    const chain = run.stdout
-      .split('\n')
-      .filter((line) => line.startsWith('#'))
-      .map((line) => line.slice(1).trim());
-    expect(chain.length).toBeGreaterThan(1);
-    expect(chain[0]).toContain('orders');
-  });
-
-  it('prints what the layers on that chain export', async () => {
-    const run = await uic(['inventory', 'apps/orders/src/List.tsx'], fixture);
-    expect(run.stdout).toContain('Button');
-  });
-
-  it('leaves out the hundreds of layers that export nothing readable', async () => {
-    // On Backstage one file's chain is 476 layers, of which 399 are external
-    // packages with no source to read. Handing all of that to a subagent is
-    // the context flood the whole driver exists to avoid.
-    const run = await uic(['inventory', 'apps/orders/src/List.tsx'], fixture);
-    expect(run.stdout).not.toContain('exports nothing');
-    for (const line of run.stdout.split('\n').filter((l) => l.startsWith('#'))) {
-      expect(line).not.toContain('react');
-    }
-  });
-
-  /**
-   * ~~Is silent about a file on no chain, rather than failing.~~
-   *
-   * **Withdrawn (#37).** That was written as a courtesy and it is the exact
-   * failure the tool is organised against: empty output with exit 0 says
-   * *nothing to report* where the truth is *this file belongs to nothing I
-   * detected*, and a user cannot tell those apart. On one real repository it
-   * was 400 screen files reported as success without one of them being looked
-   * at. It still prints no inventory — there is none — but it says why, and the
-   * exit code no longer claims a result.
-   */
-  it('says a file on no chain belongs to no package, rather than nothing', async () => {
-    const run = await uic(['inventory', 'nowhere/X.tsx'], fixture);
-
-    expect(run.stdout.trim()).toBe('');
-    expect(run.stderr).toContain('belongs to no detected package');
-    expect(run.stderr).toContain('detection gap and not a clean result');
-    expect(run.code).toBe(1);
   });
 });
 
@@ -357,112 +226,12 @@ describe('the built binary > a repository with no package it can detect', () => 
     // On stderr, where every coverage answer in this tool goes: stdout is for
     // findings, and there are none to print.
     expect(run.stderr).toContain('1 of 1 file(s) read');
-    expect(run.stderr).toContain('the import check did not run');
-    expect(run.stderr).toContain('detection gap, not a clean result');
+    // ~~The import check could not run; a detection gap and not a clean
+    // result.~~ **There is no chain to be missing (#81)**, so the honest
+    // coverage answer is smaller and is the one this asserts: what was read,
+    // and that the project has written nothing down for the one check left.
     expect(run.stderr).toContain('Nothing is written down');
-  });
-
-  it('says which checks did not run, rather than that nothing was checked', async () => {
-    const run = await uic(['check', 'src/W.tsx'], workspace);
-
-    expect(run.stderr).toContain(
-      'The checks that read one — the import check, and the layer half of substitutions — did not run.',
-    );
-    expect(run.stderr).toContain('detection gap, not a clean result');
-    expect(run.stderr).not.toContain('nothing was checked');
-  });
-});
-
-describe('the three silences a user has to be able to tell apart', () => {
-  /**
-   * A user cannot tell "my project is clean" from "this tool is blind here"
-   * (#234), and every command's silence looks the same as its success. The
-   * whole repository is organised around those being different, so the answers
-   * a reader is pointed at have to be **distinguishable** on the three shapes.
-   *
-   * One fixture per outcome, driven through the built binary. This is not a
-   * test of the skill's prose — it is a test that the evidence the skill reads
-   * says three different things.
-   */
-  const project = async (
-    files: Record<string, string>,
-  ): Promise<string> => {
-    const dir = await mkdtemp(join(tmpdir(), 'uic-reach-'));
-    for (const [path, body] of Object.entries(files)) {
-      await mkdir(dirname(join(dir, path)), { recursive: true });
-      await writeFile(join(dir, path), body, 'utf8');
-    }
-    return dir;
-  };
-
-  /**
-   * A workspace package whose manifest names a **built** entry point — the file
-   * the build emits, absent in the checkout this plugin runs in. The declared
-   * entry was taken without looking, so the path answered nothing and the
-   * conventional candidates beneath it were never tried. On one real React
-   * monorepo that was 15 of 15 workspace packages: no chain readable anywhere,
-   * so the three checks that need one could not fire at all (#70).
-   */
-  it('reads a package whose manifest names a built entry point that is not there', async () => {
-    const dir = await project({
-      'package.json': '{"name":"root","workspaces":["packages/*"]}',
-      // `index.js` and `index.d.ts` are what the build emits. Neither exists.
-      'packages/widgets/package.json': '{"name":"@ws/widgets","main":"./index.js","types":"./index.d.ts"}',
-      'packages/widgets/src/index.ts':
-        'export const Button = () => null;\n' +
-        '/** @deprecated Use {@link Button} instead. */\n' +
-        'export const OldButton = () => null;\n',
-      'packages/app/package.json': '{"name":"@ws/app","dependencies":{"@ws/widgets":"*"}}',
-      'packages/app/src/Page.tsx':
-        'import { OldButton } from "@ws/widgets";\nexport const P = () => <OldButton />;\n',
-    });
-
-    const listed = await uic(['inventory', 'packages/app/src/Page.tsx'], dir);
-    expect(listed.stdout).toContain('OldButton');
-    expect(listed.stdout).toContain('@ws/widgets');
-
-    // And the chain checks fire, which is the whole point: falling back is why
-    // there are two detection mechanisms.
-    const run = await uic(['check', 'packages/app/src/Page.tsx'], dir);
-    expect(run.stdout).toContain('OldButton is deprecated');
-
-    await rm(dir, { recursive: true, force: true });
-  });
-
-  /**
-   * Coverage is paid for only where there are no findings, which leaves a hole
-   * one level below the one #37 closed: a command that finds *something* said
-   * nothing about which of its checks ran. 31 findings from four checks read as
-   * a working tool while three were dead (#70).
-   */
-  it('says a chain check could not run even when another check found something', async () => {
-    // The chainless check was the style check, then a stated page rule; **both
-    // are rules now (#79, #78) and what is left is the curated substitution**,
-    // which is the last check that needs no package chain. Which check speaks
-    // is not the point; that one does, while the chain checks say they could
-    // not, is.
-    const dir = await project({
-      'package.json': '{"name":"root","workspaces":["packages/*"]}',
-      // Nothing readable under any name: no entry, built or conventional.
-      'packages/widgets/package.json': '{"name":"@ws/widgets","main":"./index.js"}',
-      'packages/widgets/src/entry.ts': 'export const Button = () => null;\n',
-      'packages/app/package.json': '{"name":"@ws/app","dependencies":{"@ws/widgets":"*"}}',
-      '.ui-consistency/pages.md':
-        '# Pages\n\n## Action grids\n\n' +
-        'A page of actions uses `<app-action-grid>`, never a raw `<app-legacy-grid>`.\n',
-      'packages/app/src/page.component.html': '<app-legacy-grid></app-legacy-grid>\n',
-    });
-
-    const run = await uic(['check', 'packages/app/src/page.component.html'], dir);
-
-    // A check that needs no chain still found something…
-    expect(run.stdout).toContain('"Action grids" says to use app-action-grid');
-    // …and the ones that need one say they did not run, rather than their
-    // silence reading as a clean result.
-    expect(run.stderr).toContain('did not run');
-    expect(run.stderr).toContain('the import check');
-
-    await rm(dir, { recursive: true, force: true });
+    expect(run.stderr).toContain('the design rather than a fault');
   });
 
 });
@@ -482,19 +251,23 @@ describe('the built binary > under a different name', () => {
       join(workspace, 'package.json'),
       JSON.stringify({ name: 'renamed', version: '1.0.0' }),
     );
+    await writeFile(join(workspace, 'A.tsx'), 'export const A = () => <div />;\n');
     const copy = join(workspace, 'tools-check.mjs');
     await cp(binary, copy);
 
-    const run = await new Promise<{ code: number; stdout: string }>((done) => {
-      execFile(process.execPath, [copy, 'scan'], { cwd: workspace }, (error, stdout) => {
+    // Driven through `check` since `scan` went with the package graph (#81).
+    // What this asserts is the entry-point guard, not any command.
+    const run = await new Promise<{ code: number; stdout: string; stderr: string }>((done) => {
+      execFile(process.execPath, [copy, 'check', 'A.tsx'], { cwd: workspace }, (error, stdout, stderr) => {
         done({
           code: error === null ? 0 : Number((error as { code?: number }).code ?? 1),
           stdout,
+          stderr,
         });
       });
     });
 
-    expect(run.stdout).toContain('Detected packages');
+    expect(run.stderr).toContain('No findings');
     expect(run.code).toBe(0);
 
     await rm(workspace, { recursive: true, force: true });
