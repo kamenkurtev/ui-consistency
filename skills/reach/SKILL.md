@@ -33,19 +33,16 @@ Every line you report is exactly one of these. Nothing else is admissible.
 ## What to run
 
 Cheap deterministic inspection over a **sample**, never the whole repository.
-~~Five commands~~ **one, and the rules** — the derivation became a skill (#77),
-the route and anatomy readers became rules (#78), and the package graph went
-with the import check (#81). A handful of screens is still the whole of it.
+~~Five commands~~ **none** — the derivation became a skill (#77), the route and
+anatomy readers became rules (#78), the package graph went with the import
+check (#81), and the last check went with the rest (#89). A handful of screens
+is still the whole of it, and now it is all reading.
 
-```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <three or four real screens>
-```
-
-**That one command is now the smaller half of the answer.** What this skill
-reports on is mostly the rules and the skills, and the question about each is
-not *did it run* but **has this project stated what it needs, and can it be read
-here**. Read `${CLAUDE_PLUGIN_ROOT}/rules/` and check each against the project in
-front of you.
+**So the question about each level changed, and that is the substance of this
+skill now.** It is no longer *did the command run* — there is no command. It is
+**has this project stated what this level needs, and can that be read here**.
+Read `${CLAUDE_PLUGIN_ROOT}/rules/` and check each against the project in front
+of you.
 
 For every level above those — placement, the family, the pattern, the props —
 run `ui-consistency:pattern` on one of the same screens. It reports which of the

@@ -131,12 +131,16 @@ work around.
 No build step and no `npm install`: the bundle is committed. Node 20 or later is
 the only requirement.
 
-> **What you get differs per harness, and it is worth being precise about.** The
-> `PostToolUse` gate — the part that reports in the same turn as the edit — is
-> registered in `hooks/hooks.json`, which Claude Code reads. Cursor's hook file
-> registers `sessionStart` only; Codex's is empty. **Everywhere except Claude
-> Code there is no per-edit gate**, and wiring one into the other harnesses is
-> open work.
+> ~~**What you get differs per harness, and it is worth being precise about.**
+> The `PostToolUse` gate is registered in `hooks/hooks.json`, which Claude Code
+> reads; everywhere except Claude Code there is no per-edit gate, and wiring one
+> into the other harnesses is open work.~~
+>
+> **What you get is the same on all four harnesses (#89), and the open work is
+> closed by there being no gate to wire.** `hooks/hooks.json` registers
+> `SessionStart` and nothing else: one line telling a session which skills exist
+> and in what order. Codex, Cursor and Gemini CLI read the same text from
+> `AGENTS.md`.
 >
 > ~~**What every harness does have, since #33, is the MCP server.** All four
 > manifests declare it, and it is the one surface an agent can reach on its own
@@ -169,15 +173,13 @@ ui-consistency:reach       which of three silences you are looking at
 or say so, rather than refusing — `verify` has a section for having no contract,
 `pattern` for finding nothing. So an ordering can start anywhere.
 
-**Without the `PostToolUse` gate, one step becomes yours to place.** On Claude
-Code the hook checks every edit as it happens. Everywhere else, that check is a
-command, and it goes after each file rather than at the end:
+~~**Without the `PostToolUse` gate, one step becomes yours to place.** On Claude
+Code the hook checks every edit as it happens. Everywhere else that check is a
+command, and it goes after each file rather than at the end.~~
 
-```bash
-node path/to/bin/uic.mjs diff --contract <contract> src/pages/Orders.tsx
-```
-
-That is the same comparison the hook makes, run deliberately. Putting it after
+**No harness has a gate and none needs a command placed (#89).** The step is
+reading the file back against the rules and the pattern, which every skill
+already says to do. Putting it after
 each file rather than after all thirty is the whole point — a queue that is
 checked at the end tells you which of thirty went wrong, not which one to stop
 at.
@@ -395,45 +397,31 @@ Two honest limits:
   compared for the contract (`pattern` intersects them by token), but no finding
   is made about a class name.
 
-## The CLI
+## ~~The CLI~~ — one command, and it is a hook
 
-The plugin installs a hook, not a command — it does not put anything on your
-`PATH`. For CI or a whole-project pass, call the bundle:
+The plugin installs a **hook**, not a command. Since #89 the bundle has one
+subcommand, and it is the one `hooks/hooks.json` calls:
 
 ```bash
-uic=path/to/ui-consistency/bin/uic.mjs
-
-node $uic check $(git ls-files '*.tsx')             # exits 1 if anything is wrong — your CI gate
-node $uic shapes $(git ls-files '*.tsx')            # shapes rebuilt or repeated
-node $uic log                                       # what it has found here while you worked
+node path/to/ui-consistency/bin/uic.mjs session   # the SessionStart adapter
 ```
 
-**Twelve commands were removed in three changes (#77, #78, #81)** — the ones that derived
-a pattern, wrote it down, re-counted it, listed what was written, compared a set
-against it, gathered evidence for a second opinion, served all of that over MCP,
-answered where a screen is routed, walked what a screen renders, grouped screens
-by shape, reported the packages detected, and listed what a file's chain
-exports. Each is a skill or a rule now, and both read your files:
-`ui-consistency:pattern` establishes the pattern, `ui-consistency:verify` reads a
-finished set against it, and `rules/routes-and-breadcrumbs.md` and
-`rules/anatomy.md` are what they read while doing it. There is nothing to put in
-CI for those, which is the one thing the change costs and is stated plainly
-below.
+**Fourteen commands were removed in four changes (#77, #78, #81, #89)** — the
+ones that derived a pattern, wrote it down, re-counted it, listed what was
+written, compared a set against it, gathered evidence for a second opinion,
+served all of that over MCP, answered where a screen is routed, walked what a
+screen renders, grouped screens by shape, reported the packages detected, listed
+what a file's chain exports, ran the deterministic checks, found repeated
+shapes, and read back the log. **The bundle went from 907 KB to 6.**
 
-> **`check` takes files, not glob patterns**, and relies on the shell to expand
-> them — so a *quoted* glob arrives as one literal string. It says so and exits
-> 1 rather than checking nothing and passing:
->
-> ```
-> $ uic check "src/**/*.tsx"
-> src/**/*.tsx matched no file. Globs are expanded by your shell, so a quoted
-> pattern arrives here literally.
-> Name the files, or let the shell name them: $(git ls-files '*.tsx')
-> ```
->
-> A directory and a path that is not there are refused the same way. Until
-> 0.14.28 all three checked nothing and exited 0, which made any CI line written
-> that way green forever.
+Each is a skill or a rule now, and both read your files: `ui-consistency:pattern`
+establishes the pattern, `ui-consistency:verify` reads a finished set against it,
+and `rules/` is what they read while doing it.
+
+> **There is nothing to put in CI, and that is the cost of the change rather
+> than an oversight.** Nothing fails a build without an agent in the room. It is
+> stated again under *What it does not do*, because it is the thing somebody
+> will look for first.
 
 `shapes` answers a different question from the rest: *have you rebuilt something
 that already exists, and does this shape repeat often enough to be worth
@@ -621,75 +609,18 @@ Both lines go in the decisions file above. `.uicrc.json` with `{"prefer": [...],
 "ignore": [...]}` is still read and merged with them — a config that quietly
 stops being read is a silent change of behaviour in somebody's repository.
 
-## The log
+## ~~The log~~
 
-Every finding the hook reports is appended to a log — one JSON line each: when,
-which file, which line, which kind, and the message.
+**Gone with the findings (#89).** It recorded what was found while you worked —
+five fields per entry, values quoted at one line and eighty characters, in a
+directory outside your repository created owner-only. With no check there is
+nothing to record, so the log, the recurrence state, `repo.txt`, `UIC_LOG=off`
+and the directory itself are all removed.
 
-**It is not free of your code.** A finding quotes what it found — `color:
-'#ff0000' is a hardcoded colour` — so the log carries those literals, one line
-and at most eighty characters each. No file contents, no surrounding lines, no
-AST, and never more than the finding needed to name. ~~The contracts beside it
-carry more: a saved contract records the prop values and class strings a family
-agrees on, verbatim.~~ **There are no saved contracts any more (#77)** — the
-command that wrote them is gone, and a pattern file is Markdown in your own
-repository where you can read exactly what it says.
-
-Beside it, `repo.txt` holds the **absolute path** of the repository the log is
-of — four checkouts mean four logs, and their own paths are deliberately
-relative, so nothing else would say which is which.
-
-Read all of it before you hand it to anybody, and turn it off with `UIC_LOG=off`
-if that is not a call you want to make — that stops the log, the recurrence
-state and `repo.txt` together. It lives outside your repository — nothing
-to gitignore, nothing to accidentally commit — in a directory this tool creates
-owner-only and refuses to use if anything else owns the name.
-
-`uic log` reads it back, and the part worth reading is at the bottom:
-
-```
-Said more than once — told, and not acted on:
-      3x src/dashboard/RevenueWidget.tsx:6
-         fontSize: 12 is a raw number written into a style object.
-
-Said about many different files:
-     84 files  @material-ui/core is imported where @backstage/ui is nearer.
-      9 files  fontSize: 12 is a raw number written into a style object.
-
-Findings that did not come back:
-      4  acted on — the file was checked again and this was gone
-     31  not known — the file was never checked again
-```
-
-~~A finding that appears once and never again was acted on.~~
-
-**Withdrawn, and the tool no longer says it either.** A finding appears
-once and never again for two different reasons, and only one of them is good
-news: the file was checked again and the finding was gone, or the file was never
-checked again and nothing was learned. Measured over sixty files edited once
-each, *every* finding looked acted on — nothing could have come back — and the
-log reported a clean sheet it had no basis for. The third block above is what it
-says now, and on a normal session most of it is **not known**.
-
-The same finding on the same line an hour later means either the finding is
-wrong, or it is right and nothing is doing anything about it. Both are worth
-knowing, and neither is visible any other way. Nine files means the project has
-an opinion it has not written down — or has written one that nothing is
-following.
-
-For imports that claim is made about the **source**, not the sentence: every
-import finding names its own symbol, so two files taking different things from
-the same wrong package never share a message, and this half used to be silent
-about them entirely — which on a project that has written nothing down is 93% of
-everything the tool produces.
-
-Each finding is written once per edit, not once per save: the recurrence lives
-beside the log in `seen.jsonl`, so `3x` means three separate edits.
-
-The report counts **lines, not symbols.** One `import` statement naming four
-symbols from the wrong package is four findings for the check — each symbol
-resolves separately — and one entry here, because it is one edit to make. The
-log itself still holds the four; the grouping is in the reading.
+Worth saying plainly because the old text made a promise about them: the log was
+**not** free of your code — a finding quotes what it found, so literals from your
+files were written to disk. That surface no longer exists. Nothing this plugin
+ships writes anything outside the directory you point it at.
 
 ## Philosophy
 

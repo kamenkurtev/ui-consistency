@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@fixture/core": ["libs/core/src/index.ts"]
-    }
-  }
-}
