@@ -203,7 +203,7 @@ than refusing.
 | | When |
 | --- | --- |
 | `ui-consistency:pattern` | before writing — establishes what screens of this kind look like here, for you to approve |
-| `uic place` *(CLI)* | where a new screen goes: folder, route, and the trail a breadcrumb follows |
+| ~~`uic place` *(CLI)*~~ | where a new screen goes: folder, route, and the trail a breadcrumb follows — **a rule since #78**, `rules/routes-and-breadcrumbs.md`, which your agent reads against your own router |
 | `ui-consistency:screen` | writing one screen against that contract |
 | `ui-consistency:rollout` | applying an agreed pattern across many screens |
 | `ui-consistency:verify` | before handing the work over — the finished set against the contract |
@@ -249,10 +249,15 @@ The third read a JSDoc `@deprecated` marker in the imported component's own
 source — which the agent reading that source sees for itself — and it needed the
 package chain, which is going the same way.
 
-**Prop values outside the set your project allows.** The allowed set is injected
-from a source of truth — a reference component, or something you curated. With no
-source of truth there is no finding, because a set guessed from surrounding code
-would enforce whatever mistake happened to be most common.
+~~**Prop values outside the set your project allows.**~~ **Gone (#78), and for
+its own stated reason.** The allowed set was injected from a source of truth — a
+reference component, a Storybook story, or the neighbouring files — and all
+three of those readers were the pattern derivation that became a skill. A prop
+check with no injected source of truth guesses one from surrounding code and
+enforces whatever mistake happened to be most common, which is the single thing
+it was built not to do. Props are read by `ui-consistency:pattern` now, each with
+its strength stated as a count: *"7 of the 8 screens of this kind write
+`dataTestId`; this one does not"*.
 
 **The substitutions you have written down** — `use X, never Y`, in your own
 words, and they work on custom element names too:
@@ -263,8 +268,12 @@ src/card.component.html:3
 app-action-grid" says to use app-data-grid.
 ```
 
-**The page rules you have written down** — what the structure of a screen of this
-kind must be.
+~~**The page rules you have written down** — what the structure of a screen of
+this kind must be.~~ **Gone with the region reader it measured against (#78).**
+*A page is `<PageLayout>` holding, in order, header then content* is a sentence
+you wrote; `ui-consistency:pattern` reads it and reads the screen, which is what
+the check did — and it can also say **why** a screen differs, which the check
+never could.
 
 Test files, stories and `__mocks__` are not checked. A test renders a raw
 `<button>` to assert something about a button, which is the point of the test
@@ -394,9 +403,6 @@ The plugin installs a hook, not a command — it does not put anything on your
 ```bash
 uic=path/to/ui-consistency/bin/uic.mjs
 
-node $uic place src/orders/OrderList.tsx            # folder, route, and the breadcrumb trail
-node $uic tree src/orders/OrderList.tsx             # what it renders, followed into its children
-node $uic group $(git ls-files 'src/**/*Page.tsx')  # the screens grouped by what they are made of
 node $uic check $(git ls-files '*.tsx')             # exits 1 if anything is wrong — your CI gate
 node $uic scan                                      # the packages detected, how, and what each exports
 node $uic shapes $(git ls-files '*.tsx')            # shapes rebuilt or repeated
@@ -404,13 +410,16 @@ node $uic log                                       # what it has found here whi
 node $uic inventory src/orders/OrderList.tsx        # what this file's chain exports, and from where
 ```
 
-**Seven commands were removed in one change (#77)** — the ones that derived a
-pattern, wrote it down, re-counted it, listed what was written, compared a set
-against it, gathered evidence for a second opinion, and served all of that over
-MCP. Each is a skill now, and the skill reads your files:
+**Ten commands were removed in two changes (#77, #78)** — the ones that derived
+a pattern, wrote it down, re-counted it, listed what was written, compared a set
+against it, gathered evidence for a second opinion, served all of that over MCP,
+answered where a screen is routed, walked what a screen renders, and grouped
+screens by shape. Each is a skill or a rule now, and both read your files:
 `ui-consistency:pattern` establishes the pattern, `ui-consistency:verify` reads a
-finished set against it. There is nothing to put in CI for those, which is the
-one thing the change costs and is stated plainly below.
+finished set against it, and `rules/routes-and-breadcrumbs.md` and
+`rules/anatomy.md` are what they read while doing it. There is nothing to put in
+CI for those, which is the one thing the change costs and is stated plainly
+below.
 
 > **`check` takes files, not glob patterns**, and relies on the shell to expand
 > them — so a *quoted* glob arrives as one literal string. It says so and exits
