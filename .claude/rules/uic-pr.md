@@ -29,10 +29,8 @@ either edits the input of the next one, or judges its output.
    is a style problem. A missed security problem ships.
 
 6. **The concept documents**, per `uic-docs.md`. Read them against the change
-   and say in the PR body which were read and what was found. Where something
-   found to be wrong has already been quoted elsewhere, **mark it deprecated
-   where it stands** rather than replacing it quietly — the copies outlive the
-   original, and a silent replacement gives nobody a reason to doubt them.
+   and say in the PR body which were read and what was found. Fix what is wrong,
+   and its copies.
 
 7. **`npm run gate` again**, if anything above changed code.
 

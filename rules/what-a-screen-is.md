@@ -14,8 +14,8 @@ otherwise half of it is missing and the half that is there looks empty.
 
 Read as two unrelated files, an Angular screen produces nothing at either half:
 the class has no markup to compare and the template has no identity beyond its
-own tags. On a real Angular monorepo of 179 components, everything above the
-import check was silent for exactly that reason. (That check is gone — #81 — but the lesson is about reading half a screen, not about the check.)
+own tags. On a real Angular monorepo of 179 components, reading them apart left
+everything silent for exactly that reason.
 
 And a folder-routed screen has **no siblings at all, forever, by the
 framework's design** — every one of them is `page.tsx` alone with its layout —

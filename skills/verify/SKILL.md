@@ -11,12 +11,9 @@ touched do not match what we agreed.**
 
 ## Read the pattern, then read every screen that changed
 
-A command did this comparison. **It is gone (#77): you do it.** Read
-`${CLAUDE_PLUGIN_ROOT}/rules/pattern-file.md` first — it is what the file you
-are about to read states, and in what form — then take the pattern file for the
-kind —
-`.ui-consistency/patterns/<name>.md`, per `rules/pattern-file.md` — and the
-file list from `git diff --name-only` or the batch's own queue, so the set
+Read `${CLAUDE_PLUGIN_ROOT}/rules/pattern-file.md` first — it is what the file
+you are about to read states, and in what form — then take the pattern file for
+the kind, `.ui-consistency/patterns/<name>.md`, and the file list from `git diff --name-only` or the batch's own queue, so the set
 verified is the set that changed rather than a set somebody remembered.
 
 **Apply it per file, and name the files of another kind rather than measuring
@@ -36,10 +33,8 @@ Printing nothing there would let a screen pass against rules nobody checked.
 
 **Guiding work needs no approval; failing a build does.** A derived pattern is
 free to steer thirty files — it only has to be the same on file thirty as on
-file one. ~~Putting it in CI is the moment somebody should have read it~~ —
-**and there is no longer a command to put in CI (#77).** What this reports is
-for a person to act on. Failing a build on it is #76's open question; nothing
-here does it.
+file one. What this reports is for a person to act on; nothing here fails a
+build.
 
 ## With no contract
 
@@ -64,6 +59,6 @@ An observation nobody has accepted is worth reading and worth nothing more.
   to assert something.
 - Nothing about a component a screen does not render. A contract says how a
   component is written where it appears, not that every screen must have one.
-- Nothing at all if none of the paths given was a screen: it says so and exits
-  non-zero rather than reporting that everything matched, because a green result
-  over work nothing looked at is worse than no result.
+- Nothing at all if none of the paths given was a screen — and it says so
+  rather than reporting that everything matched, because a green result over
+  work nothing looked at is worse than no result.
