@@ -58,7 +58,10 @@ describe('what the program offers to run', () => {
         .match(/case '([a-z-]+)':/g)
         ?.map((one) => one.slice(6, -2)) ?? [],
     );
-    expect(real.size).toBeGreaterThan(5);
+        // ~~More than five.~~ **The surface shrinks as commands become skills and
+    // rules (#77, #78, #81), so the floor is that there is a surface at all**;
+    // what this test is for is the *names*, below, not the count.
+    expect(real.size).toBeGreaterThan(1);
 
     const offered: string[] = [];
     for (const path of await sources(join(ROOT, 'src'))) {

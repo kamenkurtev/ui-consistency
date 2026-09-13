@@ -227,10 +227,23 @@ fail a check on its own — see [Philosophy](#philosophy).
 
 ## What Tier 1 checks
 
-**Imports resolve to the nearest layer that exports the symbol.** The layer chain
-is derived from your repository — nothing to declare. If `@acme/orders` depends
-on `@acme/ui`, which depends on some external UI library, that is the chain, and
-`@acme/ui` wins for anything it exports.
+~~**Imports resolve to the nearest layer that exports the symbol.** The layer
+chain is derived from your repository — nothing to declare.~~ **Gone (#81), and
+it is the one thing here that is genuinely given up.**
+
+It was the only capability an agent cannot reach by reading the file in front of
+it — *which package is nearer on this file's chain* is a fact about the whole
+repository's dependency graph. It was also the one that worked on **one
+repository shape in three**: 81 findings on a `tsconfig`-alias workspace, **0**
+on a `package.json` workspace where every chain was unreadable, near-nothing on
+an Angular monorepo. A capability that answers on one shape in three is not kept
+on the argument that it is needed.
+
+`rules/imports-and-layers.md` is what replaces it — a sentence your project
+writes once: *"take `styled` from `@ws/ui`, never from `@mui/material`"*. That
+needs no graph, works everywhere, and can say **why**, which the chain never
+could. What you give up is that the graph said it without anybody writing
+anything down.
 
 ~~**Raw values where your design system has a token**~~, ~~**emoji standing in
 for an icon**~~ and ~~**deprecated components where they are used**~~ — **all
@@ -308,33 +321,20 @@ list — which is the difference between a rule and a guess.
 
 ### Repository layouts
 
-**A single-package app and a 229-package monorepo both work.** Package layout is
-detected, never configured, by either of two mechanisms:
+**A single-package app and a 229-package monorepo both work — and since #81
+neither needs detecting.** There is nothing to configure because there is
+nothing to lay out: the rules and the skills read the files you point them at,
+and a rule about where `styled` comes from is the same sentence in a one-package
+app as in a 229-package workspace.
 
-**Manifests.** `pnpm-workspace.yaml` or `package.json` → `workspaces` names the
-packages; each package's `dependencies` gives the order between them.
-
-**`tsconfig` path aliases.** `compilerOptions.paths` names them instead. This is
-how an **Nx** workspace works, where libraries routinely have no `package.json`
-at all. Since nothing declares dependencies there, the order is read from the
-imports your code actually contains — which is what Nx does for its own graph.
-
-Mixed repositories work: a package with a manifest is taken at its word, and the
-aliases fill in the rest. A single-package project with no workspaces at all is
-just the degenerate case — ~~the style, emoji, page-rule and substitution checks
-do~~ **the page-rule and substitution checks do** not need layers to fire, and
-`rules/raw-values.md` needs nothing at all (#79).
-
-Run `uic scan` to see what was found. If it prints no packages, neither mechanism
-matched — [open an issue](https://github.com/kamenkurtev/ui-consistency/issues),
-because that is a bug rather than a configuration step.
-
-> **One thing to know about the derived graph.** Reading edges out of imports
-> means parsing every source file — about half a second on ten thousand — so the
-> result is cached and refreshed when your `tsconfig` aliases change, not on
-> every edit. The consequence: the first time you import from one existing
-> library into another, the hook may not know about that edge until you run
-> `uic scan`. What that costs you is a missed finding, never a wrong one.
+~~Package layout was detected by two mechanisms — workspace manifests, and
+`tsconfig` path aliases for the Nx shape where libraries have no
+`package.json` — and the derived graph was cached because reading edges out of
+imports parses every source file.~~ **All of it went with the import check it
+fed (#81).** The bar it failed is in that section above; the honest summary is
+that on the `package.json`-workspace shape, 15 of 15 packages named an entry
+point that only exists after a build, so nothing resolved and the check was
+silently dead while other checks reported findings.
 
 ### Frameworks
 
@@ -404,17 +404,16 @@ The plugin installs a hook, not a command — it does not put anything on your
 uic=path/to/ui-consistency/bin/uic.mjs
 
 node $uic check $(git ls-files '*.tsx')             # exits 1 if anything is wrong — your CI gate
-node $uic scan                                      # the packages detected, how, and what each exports
 node $uic shapes $(git ls-files '*.tsx')            # shapes rebuilt or repeated
 node $uic log                                       # what it has found here while you worked
-node $uic inventory src/orders/OrderList.tsx        # what this file's chain exports, and from where
 ```
 
-**Ten commands were removed in two changes (#77, #78)** — the ones that derived
+**Twelve commands were removed in three changes (#77, #78, #81)** — the ones that derived
 a pattern, wrote it down, re-counted it, listed what was written, compared a set
 against it, gathered evidence for a second opinion, served all of that over MCP,
-answered where a screen is routed, walked what a screen renders, and grouped
-screens by shape. Each is a skill or a rule now, and both read your files:
+answered where a screen is routed, walked what a screen renders, grouped screens
+by shape, reported the packages detected, and listed what a file's chain
+exports. Each is a skill or a rule now, and both read your files:
 `ui-consistency:pattern` establishes the pattern, `ui-consistency:verify` reads a
 finished set against it, and `rules/routes-and-breadcrumbs.md` and
 `rules/anatomy.md` are what they read while doing it. There is nothing to put in

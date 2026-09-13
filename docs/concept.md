@@ -277,14 +277,22 @@ pipeline is the fallback, not the point.
 
 Nothing is configured. Everything is detected:
 
-- **The layer chain** comes from your workspace manifests, or from `tsconfig`
-  path aliases where libraries have no `package.json` (the normal Nx shape).
-- **What each layer exports** is scanned from the source, never hand-written —
-  a hand-written inventory is stale in the week it is written.
-- **What "correct" is** comes from a cascade: a **pattern file** your project
-  has written, then the route table it writes, then a reference screen you point
-  at, then your curated rules, then Storybook, then the files next door. The
-  first one that has an answer wins, and when none does the tool is silent.
+- ~~**The layer chain** comes from your workspace manifests, or from `tsconfig`
+  path aliases.~~ ~~**What each layer exports** is scanned from the source.~~
+  **Both went with the import check they fed (#81)** — one repository shape in
+  three, against a bar that says a capability answers correctly on all of them
+  or does not ship. Where a symbol comes from is now
+  `rules/imports-and-layers.md`, a sentence your project writes once.
+- ~~**What "correct" is** comes from a cascade: a pattern file, then the route
+  table, then a reference screen, then your curated rules, then Storybook, then
+  the files next door.~~ **There is no cascade (#77).** What "correct" is comes
+  from `ui-consistency:pattern` reading your own screens — the same channels in
+  the same order, with the reading done by the agent rather than by 2 839 lines
+  that were wrong on the next repository's convention. Storybook is not among
+  them any more: it was a source of truth for prop values, and a prop check with
+  no injected source of truth invents one.
+- **Nothing is stored but intent.** Every fact about the code is read afresh,
+  because a stored copy of what the code says can only be wrong.
 
 **The pattern file is the one thing worth writing down.** One Markdown file per
 pattern in `.ui-consistency/patterns/`, written by the agent from reading your

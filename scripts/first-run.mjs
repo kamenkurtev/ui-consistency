@@ -173,22 +173,23 @@ function callsFor(root, screens) {
     perFile.map((file) => [command, ...before, file]);
 
   const rows = [
-    ['scan', [['scan']]],
     ['check', [['check', ...some]]],
     ['check --list', [['check', '--list', ...some]]],
-    ['inventory', each('inventory')],
     ['shapes', [['shapes', ...some]]],
     ['log', [['log']]],
   ];
 
   // ~~`pattern`, `patterns`, `props`, `review`, `diff`, `place`, `tree`,
-  // `group`.~~ **Gone with the commands (#77, #78), and leaving them in was
+  // `group`, `scan`, `inventory`.~~ **Gone with the commands (#77, #78, #81),
+  // and leaving them in was
   // worse than useless**: each answered with the usage line, which this harness
   // classifies as `refused` — a valid answer — so eight rows reported *"the tool
   // refused, correctly"* about commands that do not exist. That is the false
   // pass this whole harness was written against, one level out. It happened
-  // twice, once per change, which is why the guard below is the thing to trust
-  // and this list is not.
+  // **three times, once per change**, which is why the guard below is the thing
+  // to trust and this list is not — and why the rule is written here rather
+  // than remembered: a row removed from the binary and left here is not a test
+  // that fails, it is a test that passes for the wrong reason.
   //
   // The completeness guard below is what keeps this honest: it reads the
   // commands off the usage line, so a command that exists and is not exercised
