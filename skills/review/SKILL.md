@@ -15,19 +15,13 @@ second opinion goes wrong.
 Run the checks. Do not judge the file by eye first — the deterministic answer
 is free, certain, and usually enough.
 
-```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <file...>
-```
-
 There used to be a command of this skill's own name that ran the checks *and*
-assembled the evidence for the fuzzy half. **It is gone (#77) and `check` is
-what is left**: it runs the deterministic checks and prints what it found. The
-evidence half was 193 lines gathering what the neighbours agree about and
-handing it to you — which is `ui-consistency:pattern`, and you read the
-neighbours yourself.
+assembled the evidence for the fuzzy half. **Both halves are gone (#77, #89)**,
+and this skill is the reading rather than the reading of a report.
 
-**If it found something, stop there.** A file with something certainly wrong
-does not need an opinion about whether it feels right.
+So: read the file against the rules above, and against the pattern for its kind
+if one is written down. Report what you find as facts with the fix attached —
+the literal, the line, the rule it is against — never as a score.
 
 ## Reading the output
 

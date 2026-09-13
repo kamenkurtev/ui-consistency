@@ -31,7 +31,13 @@ that made them worth writing. Where you need the original, it is in the archive.
 
 A plugin — Claude Code first, with manifests for Codex, Cursor and Gemini CLI — that keeps AI-generated UI consistent with the project's **own** component vocabulary and prop conventions, **while the code is being written** — not in a pipeline afterwards.
 
-Claude Code is the only harness with the `PostToolUse` gate wired (`hooks/hooks.json`). Elsewhere the skills and the CLI are the whole surface. Do not write anything that assumes the hook is running.
+~~Claude Code is the only harness with the `PostToolUse` gate wired (`hooks/hooks.json`). Elsewhere the skills and the CLI are the whole surface.~~
+
+**There is no gate on any harness (#89), and all four are now the same shape.** This is the largest single claim the conversion overturns, and it is the one this file opened with. `PostToolUse` ran the deterministic checks, and there are none — the last one went with #89, the rest with #79, #78 and #81. What the hook would say instead is *"remember to read the rules"* on every write, which is the ~1 KB of observation that was injected here once, measured on a real run, and ignored.
+
+`SessionStart` survives alone, because a session being told which skills exist and in what order they fire (#9) is **instructions**, and an installed plugin has no other way to say it. The same text is in `AGENTS.md` for the three harnesses that read that instead.
+
+The old instruction is now unconditional rather than a caveat: **nothing may assume a hook is running**, because on the edit path nothing is.
 
 Read these two before proposing anything:
 
@@ -123,16 +129,21 @@ The two load-bearing decisions, so they are not accidentally violated:
 > which is the `superpowers` shape this was measured against, where the code is
 > hooks and scripts supporting the instructions rather than being the product.
 >
-> **What is deliberately still here and has no issue behind it**: `uic check`,
-> `uic shapes` and the knowledge reader under them. #76's scope list names
-> `check` and `shapes` as going too; nothing has decided what a hook with
-> nothing to run is for, and that is the next conversation rather than a
-> silently-taken decision. The
+> **#89 closed the gap this notice used to name.** `check`, `shapes`, `log`,
+> the engine, the knowledge reader and the parsers are gone, and with no check
+> to run the `PostToolUse` hook went with them. `src/` is **419 lines** against
+> `rules/` + `skills/` at **1 531** — **1:10.6 at the withdrawal, 3.7:1 toward
+> the instructions now**, against `superpowers`' 2.7:1. The bundle is 6 KB,
+> from 907.
+>
+> What the program is: a `SessionStart` adapter, the knowledge-directory paths,
+> the generated-file marker, and `UIC_OFF`. Hooks and scripts supporting the
+> instructions, which is the shape #76 measured against. The
 > paragraphs are kept rather than deleted because each carries the evidence that
 > made it worth writing, and because the same sentences are quoted in commit
 > messages and issue bodies that will outlive them.
 
-One deterministic core, several thin surfaces:
+~~One deterministic core, several thin surfaces:~~ **One skills library, one rules directory, and a six-kilobyte hook (#89).** What follows is the record of the core that was.
 
 - `core` — changed files + knowledge → list of findings (`src/core/engine.ts`)
 - ~~prompt adapter — `UserPromptSubmit`, **before anything is written** (#27, `src/cli/prompt.ts`). Where the prompt is about screens it puts the patterns the project has written down in front of the agent, and says plainly when there are none — **and where none covers the kind, the instruction is to establish one, not to ask for one (#38)**. A channel that only reports what a project has written down opens onto nothing on a fresh install, which is the whole case it exists for; the agent is already reading the code the pattern would be derived from, so it derives it and writes it down, and the user is asked nothing and runs nothing. An agent told the pattern first writes the right screen once; one told afterwards has to be persuaded to change working code, and each report it declines teaches that the channel is skippable. **`PreToolUse` is deliberately unwired**: its output accepts a permission decision and nothing else, so the only way to be heard there is to interrupt the write — which is the same failure with an extra step, and forbidden by *nothing derived may fail an edit*. The trigger is a list of English words, never of component names, and a prompt that is not about screens reads no file.~~

@@ -1,5 +1,0 @@
-{
-  "name": "nx-workspaces-root",
-  "private": true,
-  "workspaces": ["apps/*", "libs/*/*"]
-}

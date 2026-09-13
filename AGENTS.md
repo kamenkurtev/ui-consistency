@@ -108,9 +108,10 @@ Each is invocable on its own and none requires another to have run — so an
 agent definition can order them by name (`ui-consistency:pattern`, and so on)
 beside whatever else it uses.
 
-**Only Claude Code runs the per-edit hook**, and it reports the deterministic
-checks and nothing else. Under Codex, Cursor or Gemini CLI you run `uic check`
-after each file rather than after the batch.
+~~**Only Claude Code runs the per-edit hook.**~~ **No harness does (#89), and
+all four are the same shape now.** There are no deterministic checks left to
+run; what this file and `rules/` carry is read before the line is written, which
+is where it was always worth more.
 
 ~~**But every harness has the MCP server** (#33). All four manifests declare it,
 so it starts with the plugin and nobody configures anything. Six tools:
@@ -132,20 +133,21 @@ convention.
 ## The CLI
 
 ```
-uic check <files>                  the deterministic findings; exits 1 on any
-uic shapes <files>                 shapes rebuilt or repeated
-uic log                            what has been found here while somebody worked
+uic session                        the SessionStart adapter; your harness calls it, not you
 ```
 
-**Twelve commands went in three changes (#77, #78, #81)**: the ones that derived a
-pattern, wrote it down, re-counted it, listed what was written down, compared a
-set against it, gathered evidence for a second opinion, served all of that over
-a protocol, answered where a screen is routed, walked what a screen renders,
-grouped screens by shape, reported the packages detected, and listed what a
-file's chain exports. Every one of them is a skill or a rule now, and both read
-the files. If you remember one and it is not above, that is why —
+**That is the whole binary. Fourteen commands went in four changes (#77, #78,
+#81, #89)**: the ones that derived a pattern, wrote it down, re-counted it,
+listed what was written down, compared a set against it, gathered evidence for a
+second opinion, served all of that over a protocol, answered where a screen is
+routed, walked what a screen renders, grouped screens by shape, reported the
+packages detected, listed what a file's chain exports, ran the deterministic
+checks, found repeated shapes, and read back the log.
+
+**So there is nothing to shell out to.** Every one of them is a skill or a rule,
+and both are read. If you remember a command and it is not above, that is why —
 `ui-consistency:pattern` and `ui-consistency:verify` are where that work is, and
-`rules/routes-and-breadcrumbs.md` and `rules/anatomy.md` are what they read.
+the rules above are what they read while doing it.
 
 `check` and `shapes` take **files, not glob patterns** — they rely on the
 shell to expand. A quoted `"src/**/*.tsx"` names no file, and is refused with

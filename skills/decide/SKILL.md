@@ -30,14 +30,19 @@ Facts to choose *from*, so the answers are the project's own components rather
 than invented ones. None of this is a pattern; three files are not an agreement
 and two are not either.
 
-```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" scan
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" inventory <the nearest shared package>
-```
+Two commands answered this and are gone (#81, #89). **Read the project
+instead**, which is the same two questions asked of the files:
 
-`scan` names the layers and how they were detected. `inventory` lists what a
-package exports and what is marked `@deprecated`, so a component nobody should
-use any more is not the one that gets chosen here.
+- **which packages the project has, and which one holds the shared components.**
+  Its workspace file — `pnpm-workspace.yaml`, or `workspaces` in the root
+  `package.json`, or `compilerOptions.paths` in `tsconfig.json` — names them.
+- **what that package exports, and what is marked `@deprecated`.** Its entry
+  point says so, and the JSDoc marker names the replacement in its `{@link}`.
+  A component nobody should use any more must not be the one chosen here.
+
+`${CLAUDE_PLUGIN_ROOT}/rules/imports-and-layers.md` is the rule about which of
+them a screen should import from, and it is worth writing down here if the
+project has not.
 
 If there is even one screen that already exists, read it. One screen is an
 example to point at, never a majority.

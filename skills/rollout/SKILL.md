@@ -72,14 +72,9 @@ Silence about it is what turns "27 of 30" into something nobody can audit.
 
 ## 5. Verify the whole set, not the last file
 
-```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <every file touched>
-```
-
-That is the deterministic half. The half this step exists for is the other one:
-read every file in the queue **against the pattern, together** —
-`ui-consistency:verify` is that, and it is reading rather than a command since
-#77.
+Read every file in the queue **against the pattern, together** —
+`ui-consistency:verify` is that, and it is reading rather than a command
+(#77, #89).
 
 The step that replaces a person opening every page. **22 of 30 done correctly
 looks exactly like 30 of 30 until something compares them**, and the per-file

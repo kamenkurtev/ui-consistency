@@ -1,7 +1,7 @@
 import { SILENCED } from '../core/off.js';
 import { readdir, open } from 'node:fs/promises';
 import { join } from 'node:path';
-import { generatedVersion } from '../knowledge/parse.js';
+import { generatedVersion } from '../knowledge/generated.js';
 import { VERSION } from '../version.js';
 import { KNOWLEDGE_DIR as DIR, knowledgeDir, MOVED } from './../knowledge/paths.js';
 
