@@ -29,8 +29,9 @@ Read before proposing anything:
   `.claude/ui-consistency/` is still read as a fallback and reported when used.
 
 **Nothing may assume a hook is running.** There is no check on the edit path on
-any harness. Claude Code and Cursor run the session hook; Codex and Gemini CLI
-read `AGENTS.md` instead.
+any harness. Claude Code runs the session hook; Cursor has a session-hook
+manifest that has not been run end to end; Codex and Gemini CLI read `AGENTS.md`
+instead.
 
 The private `kamenkurtev/ui-consistency-archive` holds the history before this
 repository's single root commit, and the old tracker. Issue numbers here point
