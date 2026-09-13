@@ -17,20 +17,10 @@ Everything else these rules cover can be seen in the screen being written. This
 cannot: *which package is nearer on this file's chain* is a fact about the
 dependency graph of the whole repository. **So it has to be written down.**
 
-A program computed it once — 977 lines resolving workspace manifests and
-`tsconfig` aliases into a layer chain — and it answered on **one repository
-shape in three** (#81):
-
-| shape | import findings |
-|---|---|
-| `tsconfig`-alias workspace | 81 |
-| `package.json` workspace | **0** — every chain unreadable |
-| Angular monorepo | near nothing — 15 of 179 files in a detected package |
-
-A capability that works on one shape of three is not kept on the argument that
-it is needed. What is given up with it is real and worth stating: the graph
-named the nearer source **without anybody writing anything down**. A rule has to
-be written first, and until it is, nothing here is said.
+Computing it from workspace manifests and `tsconfig` aliases works on one
+repository shape and fails silently on the next. A sentence the project writes
+works on every shape, and can say **why** — which a computed chain never could.
+Until it is written, nothing here is said.
 
 ## What the project writes down
 
@@ -71,13 +61,11 @@ Where a project has no rule and its screens disagree, that is worth one
 sentence: *"these four screens import `styled` from two different places; which
 is it?"* — asked once, written down once, never typed again.
 
-## What went with the graph, so it is not looked for
+## What this does not do
 
-There is no build gate. The import check was the last thing that could **fail**
-something with no agent in the room, and it went with the graph it read — the
-two are the same piece of code. Anything here is read by an agent while it
-writes, which means it costs nothing per edit, works on every harness and in
-every language, and guarantees nothing.
+There is no build gate. This is read by an agent while it writes, which means it
+costs nothing per edit, works on every harness and in every language, and
+guarantees nothing.
 
 Read by: `ui-consistency:screen`, `ui-consistency:pattern`,
 `ui-consistency:review`, `ui-consistency:rollout`.

@@ -5,40 +5,16 @@ import { join } from 'node:path';
 /**
  * Nothing this plugin ships may name a command or a skill that was deleted.
  *
- * Three releases removed `uic init`, `uic audit`, `ui-consistency:init` and
- * `ui-consistency:audit`, and four places went on telling people to run them —
- * one of them from the `SessionStart` hook, into every session (#150). The
- * documentation made the same mistake, from #123 on 16 August until #143.
- *
- * **It caught something in every one of #79, #77, #78 and #81**, which is why
- * it survives the change that deleted most of the suite around it. Its module
- * half is gone with the modules — the program is 419 lines and prints one
- * usage line — and its prose half is now the **whole** point: the skills and
- * the rules *are* the product, so a dangling name in one of them is an
- * instruction to run something that does not exist, handed to an agent that
- * will try.
- *
- * The tension this rule lives with is worth keeping written down.
- * `.claude/rules/uic-docs.md` says to strike a withdrawn statement through
- * rather than replace it silently. In `skills/` and `rules/` those two
- * collide, and **this guard wins**: a struck-through command in a file an agent
- * acts on is still a name it can read and run. So there the withdrawal stays
- * and the dead name goes — *"a command did this and is gone (#78)"*. In
- * `CLAUDE.md`, `README.md`, `AGENTS.md` and `docs/concept.md`, which are prose
- * *about* the project rather than instructions *to* an agent, the names are
- * struck in place as that rule requires.
+ * The skills and the rules *are* the product, so a dangling name in one of them
+ * is an instruction to run something that does not exist, handed to an agent
+ * that will try.
  */
 
 const ROOT = new URL('../', import.meta.url).pathname;
 
 /**
- * Two spellings, and the second was a hole in this guard until #89.
- *
- * `uic check` is how prose names a command. `node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check`
- * is how a skill actually **invokes** one, and it is the spelling an agent
- * copies and runs — and it was matched by nothing here, because the text
- * between `uic` and the command is `.mjs"`. Four skills were still invoking a
- * removed command with this file green.
+ * Two spellings: `uic check` is how prose names a command, and
+ * `node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check` is how a skill invokes one.
  */
 const COMMAND = /\buic(?:\.mjs"?)? ([a-z][\w-]*)/g;
 const SKILL = /\bui-consistency:([a-z][\w-]*)/g;

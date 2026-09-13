@@ -47,23 +47,10 @@ describe('the shipped version', () => {
 
 describe('the hooks the plugin registers', () => {
   /**
-   * ~~Runs the checker after an edit, and says one line at session start.~~
-   *
-   * **`SessionStart` alone since #89, and that is the shape rather than an
-   * omission.** `PostToolUse` ran the deterministic checks on every edit, and
-   * there are none — so the hook had nothing to say, and a hook that says
-   * *"remember to read the rules"* on every write is the ~1 KB of observation
-   * that was injected once, measured, and ignored. #80 set the precedent by
-   * removing the prompt channel on exactly that ground.
-   *
-   * What survives is the one thing a hook does better than anything else: on a
-   * fresh session, telling an agent which skills exist and in what order they
-   * fire (#9). That is instructions, which is what this plugin is, and an
-   * installed plugin has no other way to say it.
-   *
-   * **So all four harnesses are now the same shape**, which is the largest
-   * single claim this change overturns — Claude Code was the only one with a
-   * per-edit gate wired, and there is no gate anywhere.
+   * `SessionStart` alone. A hook on every edit would have nothing to say but
+   * *"remember to read the rules"*, which gets ignored. At session start it
+   * tells an agent which skills exist and in what order they fire, and an
+   * installed plugin has no other way to say that.
    */
   it('says one line at session start, and registers nothing else', async () => {
     const hooks = (await read('hooks/hooks.json')) as {
@@ -115,16 +102,9 @@ describe('the skills', () => {
     });
 
     /**
-     * ~~tells the agent to run the command rather than guess~~
-     *
-     * **A skill is no longer required to run a command (#77)**, and demanding
-     * it would now be demanding the shape #76 is removing: two of these do
-     * their work by reading the project's files against a rule, and there is no
-     * binary left to call for it. What the assertion was actually protecting is
-     * unchanged and is what is asserted: a skill must be **grounded in
-     * something outside itself** — the binary, or a rule in `rules/` — rather
-     * than telling an agent to decide from what a screen usually looks like,
-     * which is the failure every rule in that directory exists to prevent.
+     * A skill must be grounded in something outside itself — the binary, or a
+     * rule in `rules/` — rather than telling an agent to decide from what a
+     * screen usually looks like.
      */
     it(`${skill} grounds itself in the binary or a rule, rather than guessing`, async () => {
       const text = await readFile(`${dir}/${skill}/SKILL.md`, 'utf8');
@@ -153,46 +133,10 @@ describe('what the shipped bundle does not carry', () => {
   });
 });
 
-describe('the batch driver command', () => {
-  const path = fileURLToPath(new URL('../commands/uic-fix.md', import.meta.url));
-
-  it('exists and declares itself', async () => {
-    const text = await readFile(path, 'utf8');
-    expect(text).toMatch(/^---\n[\s\S]*name:\s*uic-fix/);
-    expect(text.toLowerCase()).toMatch(/\buse when\b/);
-  });
-
-  it('gates on the checker, never on what the subagent claims', async () => {
-    // Without this the command is a suggestion with extra steps. The project
-    // has shipped a clean-looking result that checked nothing three times.
-    const text = await readFile(path, 'utf8');
-    expect(text).toContain('Believe neither');
-    expect(text).toContain('exit 0');
-  });
-
-  it('bounds the retries and names what it parked', async () => {
-    const text = await readFile(path, 'utf8');
-    expect(text).toMatch(/two further attempts/i);
-    expect(text).toMatch(/by name/i);
-  });
-
-  it('builds its queue with --list, not by reading every finding', async () => {
-    const text = await readFile(path, 'utf8');
-    expect(text).toContain('check --list');
-  });
-
-  it('gives a subagent one file and forbids the rest', async () => {
-    const text = await readFile(path, 'utf8');
-    expect(text).toContain('One file path');
-    expect(text).toMatch(/edit only this file/i);
-  });
-});
-
 describe('how the skills are named', () => {
   it('never repeats the plugin name inside a skill name', async () => {
     // `superpowers` names its skills `brainstorming` and invokes them as
     // `superpowers:brainstorming` — the plugin is a namespace, not a prefix.
-    // Ours carried it twice: `ui-consistency-init` inside `ui-consistency`.
     const dir = fileURLToPath(new URL('../skills', import.meta.url));
     const { readdir } = await import('node:fs/promises');
 
@@ -220,10 +164,8 @@ describe('what the program is allowed to know', () => {
     // names. Every team names its own components, and every framework has its
     // own pseudo-HTML elements — a project whose input is `Textbox` matched none
     // of it and got silence, which is indistinguishable from a clean result.
-    // ~~`src/checks`~~ — **the whole program, since #89.** There are no checks;
-    // what is left is 419 lines of hook adapter, and the rule is unchanged and
-    // now trivially satisfiable, which is the point. It stays because the day
-    // somebody adds a list of component names back, this is what says no.
+    // It stays because the day somebody adds a list of component names back,
+    // this is what says no.
     const { readFileSync } = await import('node:fs');
     const dir = fileURLToPath(new URL('../src', import.meta.url));
 
@@ -251,45 +193,11 @@ describe('what the program is allowed to know', () => {
   });
 
   /**
-   * The same argument, for prop names, which the rule above does not cover.
-   *
-   * `Button` and `DataGrid` are one library's component names. `sx`, `mt` and
-   * `px` are one library's *prop* names, and the reasoning is identical: every
-   * team names its own, and a built-in lexicon matched nothing on a project that
-   * spells things differently.
-   *
-   * This does not forbid them. It requires each to be listed here with a reason,
-   * so a vendor's vocabulary cannot enter by nobody looking — which is how
-   * fifteen MUI shorthand keys ended up in the module both dialects share (#200,
-   * #195).
-   *
-   * The list is meant to shrink. #203 measures what these are buying; whether
-   * they stay is that answer, not this test's.
-   */
-  /**
-   * ~~Carries no vendor prop vocabulary that has not been declared here.~~
-   *
-   * **The list is empty and the module holding it is gone (#89).** It declared
-   * seventeen MUI spacing shorthands — `mt`, `px`, `spacing` — each kept with a
-   * reason, in a module both dialects shared, and the list was meant to shrink.
-   * It shrank to nothing when the style check became `rules/raw-values.md`
-   * (#79) and the check modules went with the rest.
-   *
-   * The knowledge itself survives, in the one place it can be wrong visibly:
-   * `rules/raw-values.md` says a bare number on a spacing key in `sx` is a
-   * theme multiplier and correct. That is a sentence somebody can read and
-   * argue with, rather than a `Set` that silently disagreed with the
-   * neighbouring dialect for weeks.
-   *
-   * The rule above now scans the whole program, which is what this one was for.
-   */
-
-  /**
    * The same argument again, one level out: the rules are instructions an agent
    * acts on, and a vendor's component name in one of them is a vocabulary
-   * shipped as prose (#232).
+   * shipped as prose.
    *
-   * A denylist rather than the pattern match used on `src/checks` above, because
+   * A denylist rather than the pattern match used on `src/` above, because
    * Markdown has no literals to isolate and a rule legitimately writes
    * `PageLayout` and `OrdersPage` in a worked example — invented names, which is
    * the point. Its failure mode is a name nobody thought of, which is a missed
@@ -352,10 +260,8 @@ describe('the other harnesses', () => {
   it('ships the context file the non-Claude harnesses read', async () => {
     const { readFileSync } = await import('node:fs');
     const agents = readFileSync(fileURLToPath(new URL('../AGENTS.md', import.meta.url)), 'utf8');
-    // ~~`uic pattern`~~, ~~`uic check`~~ — both are skills and rules now (#77,
-    // #89), and there is no command a harness runs. What this asserts is that
-    // the file a non-Claude harness loads actually carries the surface: the
-    // rules and the skills, which are the whole of it.
+    // The file a non-Claude harness loads must carry the surface: the rules and
+    // the skills.
     expect(agents).toContain('rules/');
     expect(agents).toContain('ui-consistency:pattern');
     expect((await read('gemini-extension.json'))['contextFileName']).toBe('AGENTS.md');

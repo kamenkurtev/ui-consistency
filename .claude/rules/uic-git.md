@@ -35,11 +35,9 @@
   fails to say so.
 - `npm run bump` (`minor` / `major` when it is more than a fix) moves every file
   that carries the version. Do not edit them by hand.
-- ~~all three files that carry the version~~ — **seven, since the Codex, Cursor
-  and Gemini manifests arrived.** The figure was right when it was written and
-  is quoted in `scripts/bump.mjs` as well; both are corrected. Only
-  `.claude-plugin/plugin.json` is read when a plugin updates, so the other six
-  drift with nothing to complain — which is the whole reason the script exists.
+- Seven files carry the version. Only `.claude-plugin/plugin.json` is read when
+  a plugin updates, so the other six drift with nothing to complain — which is
+  why the script exists.
 - The gate enforces this: a branch touching `src/`, `bin/`, `hooks/`, `skills/`
   or `.claude-plugin/` while leaving the version where `main` has it fails. Docs,
   tests and rules alone need no bump.

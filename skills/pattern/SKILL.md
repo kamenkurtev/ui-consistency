@@ -9,11 +9,10 @@ Nothing here judges finished code. This decides what "right" is for this kind of
 screen **before** the writing, from the project's own screens, and writes it down
 so it can be re-read rather than remembered.
 
-**You do the reading.** There was a program that derived this — 2 839 lines of
-it — and it is gone (#77). It answered *"these 8 screens share `PageLayout`; 7
-of 7 write `scrollable="false"`; 7 of 7 write a test id"*, which is what you
-answer by opening the 8 files, with two things it could never add: **why** a
-screen differs, and what a slot is allowed to hold instead.
+**You do the reading.** Open the family's files: *"these 8 screens share
+`PageLayout`; 7 of 8 write a test id"* is what that answers, and only a reader
+can add the two things that matter most — **why** a screen differs, and what a
+slot is allowed to hold instead.
 
 ## 0. Read the rules once — per task, not per file
 

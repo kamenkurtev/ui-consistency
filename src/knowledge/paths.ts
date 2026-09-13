@@ -6,10 +6,8 @@ import { resolve } from 'node:path';
  *
  * Not under `.claude/`, which is where Claude Code keeps *its* configuration.
  * What lives here is the project's intent about its own screens — committed,
- * reviewed in a pull request, read by whichever agent is in the room. This
- * repository ships manifests for Claude Code, Codex, Cursor and Gemini CLI, and
- * a Codex user was being asked to commit their team's design decisions into a
- * directory named after a different vendor's tool (#145).
+ * reviewed in a pull request, read by whichever agent is in the room, on any of
+ * the harnesses this plugin supports.
  */
 export const KNOWLEDGE_DIR = '.ui-consistency';
 

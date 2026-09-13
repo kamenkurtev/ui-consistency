@@ -94,10 +94,8 @@ alternative and two rare ones reads as exactly that.
 
 **The structure block is the shape `anatomy.md` describes** — one line per
 level, indented, following what each component returns one file hop at a time.
-~~The shape a command printed.~~ **That command is gone (#78)**, and the
-vocabulary is what matters: the reading and the written pattern use one, so a
-person comparing them compares like with like and nobody translates between two
-notations.
+The reading and the written pattern use one vocabulary, so a person comparing
+them compares like with like.
 
 **A slot is named in angle brackets and may state alternatives.** `<content>` is
 a slot; `PageShell` is a component. A pattern that allows three kinds of content
@@ -111,8 +109,7 @@ works.
 
 **"Where it is used" is an index and not a heading, and it is complete.** A
 pattern is not defined by its members; the list exists so a reader can go and
-look — and because *selection and staleness both read it*. ~~An abbreviated
-list is fine, since it is only an index.~~ **It is not:** a truncated list
+look — and because *selection and staleness both read it*. A truncated list
 lets a screen the pattern really covers fall through to the holder match, or to
 nothing where two patterns claim the holder, and reports staleness on two files
 out of nine. The file is written by an agent that has just read all nine, so
@@ -146,54 +143,43 @@ this repository came from such a copy. So the file states `observed:` and the
 files it was read from, and where those have changed the pattern is reported
 stale at the point it is used — never by an audit somebody must remember to run.
 
-This is a real change from the JSON contract, which was ephemeral on purpose:
-kept outside the repository, re-assembled per file, discarded. That was right
-for a derived artifact and is wrong for an approved one — a thing a person
-signed off in a pull request has to be the thing that is still there tomorrow.
-The staleness the ephemerality was avoiding is answered by re-deriving the
-facts rather than by refusing to store the intent.
+The intent is stored because a thing a person signed off in a pull request has
+to still be there tomorrow; the facts are re-derived so that storing it does not
+make it stale.
 
 ## How one comes to exist
 
 Written by **the agent, from reading the code, in one pass**, and reviewed by a
-person in a pull request. Not hand-authored from a template — that is the setup
-step this project deleted once and replaced with a conversation, and the
-reason is unchanged: the commonest answer to a template is nothing. Not derived by a hand-written classifier
+person in a pull request. Not hand-authored from a template — the commonest
+answer to a template is nothing. Not derived by a hand-written classifier
 either: the nesting must be read from the project, and *tabs, accordions, forms*
 came out of one repository and the next one nests differently.
 
-~~The plugin's job is to put the facts in front of the agent — three commands
-for the nesting, the prop agreement and which screens are of a kind — and the
-agent's job is to write the sentences.~~
-
-**The second half was always the point, and now it is the whole of it (#77).**
-The agent reads the family's files and writes the sentences.
-`ui-consistency:pattern` is the method. **No model is called from this tool**,
-here as everywhere: the agent reading the code is the one doing this.
+The agent reads the family's files and writes the sentences;
+`ui-consistency:pattern` is the method.
 
 Write the measured half first — the frontmatter, the structure block, the props
 with their counts, the member list — marked `derived: true` and dated, with what
 no reading of the code can produce named under `## Still to be written`. Answer
 those before building from it.
 
-**Refreshing is reading again, and no longer a command (#77)** —
-two rules govern it. Rewrite only what was **counted** — the frontmatter, the
+**Refreshing is reading again**, and two rules govern it. Rewrite only what was **counted** — the frontmatter, the
 structure strengths, the props, the avoided elements, the wiring, the member
 list — and leave every other section exactly as found, `## Still to be written`
 included, because that section was written *and* a person was invited to answer
 it, and nothing in the file says whether they did. And **refuse a file with no
 `derived: true`**: a person wrote that one, and it has no derived half.
 
-The trap in it is worth keeping written down, because a whole test suite was
-green with it in: **a refresh may not read the file it is refreshing.** The
+**A refresh may not read the file it is refreshing.** The
 pattern file outranks everything read off the code, so re-deriving with the file
 in place reads its own member list back as the family, and a screen that has
 since joined the kind can never enter it.
 
 ## What reads this file
 
-`src/knowledge/pattern-file.ts` parses it, and only three parts are read as
-data: the frontmatter, the structure block and the member list. Everything else
+The agent writing the next screen, `ui-consistency:verify`, and a person in a
+pull request. Three parts carry structure: the frontmatter, the structure block
+and the member list. Everything else
 is kept as the prose it is and handed over. A file missing a section says less;
 it is not invalid. A heading spelled differently is prose, not an error — a
 format that fights its author is a format nobody writes.

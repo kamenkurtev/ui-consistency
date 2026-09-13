@@ -5,11 +5,8 @@ import { pathToFileURL } from 'node:url';
 /**
  * The whole of the binary: one hook, one command.
  *
- * ~~`uic <pattern|patterns|diff|place|tree|props|group|scan|check|review|shapes|inventory|log|mcp>`.~~
- * **Fourteen commands went in four changes (#77, #78, #81, #89)**, and what is
- * left is the `SessionStart` adapter — a session being told which skills exist
- * and in what order they fire (#9). That is instructions, not a check, which
- * is the whole of what this plugin is now.
+ * The `SessionStart` adapter: a session is told which skills exist and in what
+ * order they fire.
  *
  * It stays a subcommand rather than becoming the default, because
  * `hooks/hooks.json` names it and a harness that calls it by name must keep
@@ -33,11 +30,9 @@ async function readStdin(): Promise<string> {
   return Buffer.concat(chunks).toString('utf8');
 }
 
-// By identity, not by name. This used to be `argv[1].endsWith('uic.mjs')`, so a
-// copy of the bundle under any other name — a wrapper, a symlink, a CI step —
-// exited 0 having done nothing (#189). `realpath` comes back with symlinks
-// already followed, and `argv[1]` is `-` when a script is piped in on stdin,
-// which resolving used to throw on.
+// By identity, not by name, so a copy of the bundle under another name — a
+// wrapper, a symlink — still runs. `realpath` follows symlinks, and `argv[1]` is
+// `-` when a script is piped in on stdin.
 if (process.argv[1] !== undefined) {
   const entry = await realpath(process.argv[1])
     .then((real) => pathToFileURL(real).href)

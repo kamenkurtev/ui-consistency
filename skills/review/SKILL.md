@@ -1,58 +1,41 @@
 ---
 name: review
-description: Use when the user asks whether a screen or component fits the rest of the app — "does this look right", "review this page", "is this consistent with our other screens", or before shipping a new screen. Runs the project's deterministic design-system checks and, where the project has written rules down, hands the agent already in the room the evidence for a second opinion on whether the screen matches the pattern its neighbours follow. No key: there is nothing to configure.
+description: Use when the user asks whether a screen or component fits the rest of the app — "does this look right", "review this page", "is this consistent with our other screens", or before shipping a new screen. Reads the screen against the project's rules and the pattern for its kind, and reports what differs as facts with the fix attached. No key: there is nothing to configure.
 ---
 
-# Deep design review of a screen
+# Review one screen
 
 Read `${CLAUDE_PLUGIN_ROOT}/rules/raw-values.md` and
-`${CLAUDE_PLUGIN_ROOT}/rules/roles-and-names.md` first. The first is what used
-to be the style and emoji checks (#79) and is now yours to apply by reading the
-file. The second is the rule that
-stops an empty answer being read as a clean one, which is the commonest way a
-second opinion goes wrong.
+`${CLAUDE_PLUGIN_ROOT}/rules/roles-and-names.md` first. The first says which
+literals do not belong in a screen; the second stops an empty answer being read
+as a clean one, which is the commonest way a review goes wrong.
 
-Run the checks. Do not judge the file by eye first — the deterministic answer
-is free, certain, and usually enough.
+Then read the file against those rules, against anything written in
+`.ui-consistency/`, and against the pattern for its kind if one is written down.
+Report what you find as facts with the fix attached — the literal, the line, the
+rule it is against — never as a score.
 
-There used to be a command of this skill's own name that ran the checks *and*
-assembled the evidence for the fuzzy half. **Both halves are gone (#77, #89)**,
-and this skill is the reading rather than the reading of a report.
-
-So: read the file against the rules above, and against the pattern for its kind
-if one is written down. Report what you find as facts with the fix attached —
-the literal, the line, the rule it is against — never as a score.
-
-## Reading the output
-
-Each finding is a fact with the fix attached. Apply them in the file, then run
-the command again — clean output means the deterministic layer has nothing
-left to say.
-
-Two things it says nothing about, by design:
+## What it says nothing about
 
 - **Test files, stories and `__mocks__`.** A test renders a raw `<button>` to
   assert something about a button. If the user is asking about one of those,
   say so rather than pretending the silence is a pass.
-- **Anything no curated rule covers.** If `.ui-consistency/` is empty, the
-  page-rule and substitution checks have nothing to apply. Say so, and offer to
-  write the rule down — one heading in that directory is enough — rather than
-  inventing a standard the project never stated.
-- **Whether this screen matches its neighbours.** `check` answers about the
-  file; that question is `ui-consistency:pattern`, and it needs the family's
-  files open. Run it rather than guessing from one file.
+- **Anything no written rule covers.** If `.ui-consistency/` is empty, there is
+  nothing project-specific to apply. Say so, and offer to write the rule down —
+  one heading in that directory is enough — rather than inventing a standard the
+  project never stated.
+- **Whether this screen matches its neighbours**, without the family's files
+  open. That is `ui-consistency:pattern`; run it rather than guessing from one
+  file.
 
-## When the tool is silent and the user is still unhappy
+## When nothing is wrong and the user is still unhappy
 
-Then the mismatch is real but not yet written down. The useful move is to help
-the user *state* the rule — a heading and two sentences in
-`.ui-consistency/` — so the next screen is caught automatically. Do not
-substitute your own taste for the project's rules; that is the failure this
-plugin exists to prevent.
+Then the mismatch is real but not yet written down. Help the user *state* the
+rule — a heading and two sentences in `.ui-consistency/` — so the next screen
+follows it. Do not substitute your own taste for the project's rules; that is
+the failure this plugin exists to prevent.
 
 ## One screen, not a set
 
-This reads a single screen and offers a judgement about it. For "did every page
-I touched come out the same", use `ui-consistency:verify`, which compares a set
-against the contract agreed for its kind — a different question, and the one a
-person otherwise answers by opening every page.
+For "did every page I touched come out the same", use `ui-consistency:verify`,
+which compares a set against the pattern for its kind.

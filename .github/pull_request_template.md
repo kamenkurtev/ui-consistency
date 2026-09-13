@@ -28,8 +28,3 @@ result** and belongs here.
 Which of `CLAUDE.md`, `docs/concept.md`, `README.md`,
 `AGENTS.md` and `skills/*/SKILL.md` you read against this change, and what you
 found. **"Read, nothing false" is a result.**
-
-<!--
-Anything found wrong that has already been quoted elsewhere is marked
-deprecated where it stands, not replaced quietly.
--->
