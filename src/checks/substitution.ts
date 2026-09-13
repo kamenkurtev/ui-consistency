@@ -1,25 +1,8 @@
 import { parseModule, walk } from '../parse/parse.js';
-import { exportedSymbolsOf } from '../inventory/exports.js';
+import { exportedSymbolsOf } from '../parse/exports.js';
 import type { SubstitutionRule } from '../knowledge/rules.js';
-import type { Finding, Inventory, Layer } from '../types.js';
+import type { Finding } from '../types.js';
 import { quoted } from '../core/quote.js';
-
-/** The nearest layer this file may import from that exports `symbol`. */
-function reachableExporter(symbol: string, chain: Layer[], inventory: Inventory): string | null {
-  const own = chain[0];
-  if (own === undefined) return null;
-  // Own layer plus direct dependencies, as everywhere else: a transitively
-  // reachable package does not resolve under a strict node_modules layout, so
-  // naming it would be advice that does not compile.
-  const importable = new Set([own.name, ...own.dependencies]);
-
-  for (const layer of chain) {
-    if (!importable.has(layer.name)) continue;
-    const entry = inventory.layers[layer.name]?.[symbol];
-    if (entry !== undefined && !entry.deprecated) return layer.name;
-  }
-  return null;
-}
 
 /**
  * Tier 1: a component the project has written down as the wrong one, rendered
@@ -33,15 +16,25 @@ function reachableExporter(symbol: string, chain: Layer[], inventory: Inventory)
  * Deterministic and curated: the rule is a declaration a person wrote, not a
  * pattern inferred from neighbouring code. No rule, no finding — which is why
  * this can be a hard finding at all.
+ *
+ * ~~It also asked which layer exports the replacement, and said nothing where
+ * none on this file's chain did.~~ **Name-only since #81**, with the package
+ * graph. That silence was the whole of the check on two repository shapes in
+ * three — a chain readable on 0 of 15 sampled files on one real
+ * `package.json`-workspace monorepo — so a rule a person had written down
+ * produced nothing there, while the template dialects, which never had a chain
+ * to ask, reported it. The asymmetry was an accident of which parser the file
+ * went through, and removing it makes the two halves agree.
+ *
+ * What is lost is the `, which @ws/ui exports` clause. That is now the
+ * project's own sentence to write, in `rules/imports-and-layers.md`.
  */
 export function substitutionFindings(
   filePath: string,
   source: string,
   rules: SubstitutionRule[],
-  chain: Layer[],
-  inventory: Inventory,
 ): Finding[] {
-  if (rules.length === 0 || chain.length === 0) return [];
+  if (rules.length === 0) return [];
 
   const ast = parseModule(source, filePath);
   if (ast === null) return [];
@@ -50,15 +43,11 @@ export function substitutionFindings(
   // would fault the design system for existing.
   const ownExports = exportedSymbolsOf(ast);
 
-  const wanted = new Map<string, { rule: SubstitutionRule; from: string }>();
+  const wanted = new Map<string, { rule: SubstitutionRule }>();
   for (const rule of rules) {
     if (ownExports.has(rule.canonical)) continue;
-    const from = reachableExporter(rule.canonical, chain, inventory);
-    // Nothing on this file's chain offers the replacement, so there is no fix
-    // to name and therefore nothing worth saying.
-    if (from === null) continue;
     for (const name of rule.forbidden) {
-      if (!wanted.has(name)) wanted.set(name, { rule, from });
+      if (!wanted.has(name)) wanted.set(name, { rule });
     }
   }
   if (wanted.size === 0) return [];
@@ -77,8 +66,7 @@ export function substitutionFindings(
       level: 'reuse',
       source: 'knowledge',
       symbol: node.name.name,
-      expectedFrom: match.from,
-      message: `<${quoted(node.name.name)}> is not what this project uses here. "${quoted(match.rule.subject)}" says to use ${quoted(match.rule.canonical)}, which ${quoted(match.from)} exports.`,
+      message: `<${quoted(node.name.name)}> is not what this project uses here. "${quoted(match.rule.subject)}" says to use ${quoted(match.rule.canonical)}.`,
     });
   });
 

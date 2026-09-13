@@ -33,15 +33,19 @@ Every line you report is exactly one of these. Nothing else is admissible.
 ## What to run
 
 Cheap deterministic inspection over a **sample**, never the whole repository.
-~~Five commands~~ **three, since the derivation became a skill (#77) and the
-route and anatomy readers became rules (#78)** — and a handful of screens is
-the whole of it.
+~~Five commands~~ **one, and the rules** — the derivation became a skill (#77),
+the route and anatomy readers became rules (#78), and the package graph went
+with the import check (#81). A handful of screens is still the whole of it.
 
 ```
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" scan
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" inventory <the nearest shared package>
-node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <the same three or four>
+node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check <three or four real screens>
 ```
+
+**That one command is now the smaller half of the answer.** What this skill
+reports on is mostly the rules and the skills, and the question about each is
+not *did it run* but **has this project stated what it needs, and can it be read
+here**. Read `${CLAUDE_PLUGIN_ROOT}/rules/` and check each against the project in
+front of you.
 
 For every level above those — placement, the family, the pattern, the props —
 run `ui-consistency:pattern` on one of the same screens. It reports which of the
@@ -62,8 +66,7 @@ folder. Three files in one folder answer for that folder.
 
 | Level | Works when | Stated-nothing when | Blind when |
 | --- | --- | --- | --- |
-| **layers** | `scan` names a mechanism and lists packages with edges | — | `scan` finds no packages: say which two mechanisms were looked for, and that the two checks reading a chain are the only ones affected |
-| **imports** | a chain exists and `check` reports or clears real files | — | no chain — and say so, rather than reporting a clean file |
+| ~~**layers**~~, ~~**imports**~~ | — | — | **Not levels any more (#81).** The package graph answered on one repository shape in three, which is what settled it against the bar rather than the argument. Where a symbol comes from is `rules/imports-and-layers.md`, a sentence the project writes once — so the question here is not *did a chain resolve* but **has this project written that rule**, and if not, say so and offer to help write it. |
 | ~~**style literals**~~, ~~**emoji-as-icon**~~ | — | — | **Not levels any more (#79).** They are `rules/raw-values.md`, and this skill has nothing to report about them: whether an agent read a rule is not a coverage fact, and answering anyway would be the invented reassurance this skill exists to prevent. The rule states its own limit — a class-based system (Tailwind, CSS modules, styled-components) is out of reach of anything reading one file — where the agent reads it. |
 | ~~**deprecated usage**~~ | — | — | **Gone with them (#79):** the marker is in the imported component's own source, which the agent reads. |
 | ~~**prop values**~~ | — | — | **Not a level any more (#78).** Its allowed set came from a reference screen, a story or the neighbouring files, and all three readers were the derivation #77 removed; a prop check with no injected source of truth invents one. Props are read by `ui-consistency:pattern` now, with the strength of each stated as a count. |

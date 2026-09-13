@@ -1,4 +1,3 @@
-import { Button } from 'some-ui-lib';
-import { LegacyButton } from '@fixture/core';
+import { Grid } from 'some-ui-lib';
 
-export const List = () => null;
+export const List = () => <Grid />;

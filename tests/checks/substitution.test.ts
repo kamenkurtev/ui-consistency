@@ -1,27 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { substitutionRules } from '../../src/knowledge/rules.js';
 import { substitutionFindings } from '../../src/checks/substitution.js';
-import type { Inventory, Knowledge, Layer } from '../../src/types.js';
+import type { Knowledge } from '../../src/types.js';
 
 const FILE = '/repo/apps/dash/src/ActionsPage.tsx';
-
-const CHAIN: Layer[] = [
-  { name: '@acme/dash', root: '/repo/apps/dash', dependencies: ['@acme/ui'] },
-  { name: '@acme/ui', root: '/repo/packages/ui', dependencies: [] },
-];
-
-const INVENTORY: Inventory = {
-  layers: {
-    '@acme/ui': {
-      ActionGrid: { deprecated: false, replacement: null },
-      Grid: { deprecated: false, replacement: null },
-      DetailLayout: { deprecated: false, replacement: null },
-      Dialog: { deprecated: false, replacement: null },
-      WidgetCard: { deprecated: false, replacement: null },
-      Box: { deprecated: false, replacement: null },
-    },
-  },
-};
 
 function knowledge(body: string, subject = 'Rule', kind = 'pages'): Knowledge {
   return {
@@ -30,7 +12,7 @@ function knowledge(body: string, subject = 'Rule', kind = 'pages'): Knowledge {
 }
 
 function find(source: string, base: Knowledge) {
-  return substitutionFindings(FILE, source, substitutionRules(base), CHAIN, INVENTORY);
+  return substitutionFindings(FILE, source, substitutionRules(base));
 }
 
 describe('reading substitution rules out of curated Markdown', () => {
@@ -113,18 +95,22 @@ describe('the check the rules drive', () => {
     expect(find('export const P = () => <Grid />;\n', other)).toEqual([]);
   });
 
-  it('says nothing when nothing on the chain exports the replacement', () => {
-    // Advice that does not compile is worse than silence.
-    const empty: Inventory = { layers: { '@acme/ui': { Grid: { deprecated: false, replacement: null } } } };
-    const findings = substitutionFindings(
-      FILE,
-      'export const P = () => <Grid />;\n',
-      substitutionRules(grids),
-      CHAIN,
-      empty,
-    );
-    expect(findings).toEqual([]);
-  });
+  /**
+   * ~~says nothing when nothing on the chain exports the replacement~~
+   *
+   * **The check is name-only since #81**, with the package graph it asked. That
+   * silence was the whole of the check on two repository shapes in three — the
+   * chain was readable on 0 of 15 sampled files on one real
+   * `package.json`-workspace monorepo — so a rule a person had written down
+   * produced nothing there, while the template dialects, which never had a
+   * chain to ask, reported it. The asymmetry was an accident of which parser
+   * the file went through.
+   *
+   * What was right about it is unchanged and is not lost: advice that does not
+   * compile is worse than silence. It is now the project's own sentence to
+   * write, in `rules/imports-and-layers.md`, where it can also say **why** —
+   * which a chain never could.
+   */
 
   it('lets the file that implements the canonical component render the raw one', () => {
     // <ActionGrid> has to be built out of <Grid>. Faulting it would fault the

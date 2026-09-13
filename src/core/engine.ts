@@ -1,51 +1,29 @@
-import { importSentence } from './format.js';
-import { checkSource } from './check.js';
 import { retrieve } from '../knowledge/retrieve.js';
 import { substitutionRules } from '../knowledge/rules.js';
 import { substitutionFindings } from '../checks/substitution.js';
 import { templateFindings } from '../checks/template.js';
 import { templateKind, parseTemplate } from '../parse/template.js';
-import type {
-  Finding,
-  Inventory,
-  Knowledge,
-  KnowledgeFragment,
-  Layer,
-  Violation,
-} from '../types.js';
-
-/** What Tier 2 is given: the edit, and only the rules that bear on it. */
-export interface ReviewRequest {
-  filePath: string;
-  source: string;
-  fragments: KnowledgeFragment[];
-}
+import type { Finding, Knowledge } from '../types.js';
 
 export interface EngineContext {
-  chain: Layer[];
-  inventory: Inventory;
   /** Curated rules. Absent or empty means Tier 2 has nothing to judge against. */
   knowledge?: Knowledge;
-  /**
-   * Tier 2, injected. Absent means no fuzzy review exists for this project —
-   * the deterministic checks still run, which is the whole point of the tiers.
-   */
-  review?: (request: ReviewRequest) => Promise<Finding[]>;
   /** Judge test and story files too. Off by default; see `GENERATED`. */
   includeTestFiles?: boolean;
-  /** Report findings whose expected layer is the file's own (v1's policy). */
-  withinLayer?: boolean;
 }
 
 export interface EngineResult {
-  /** Deterministic, complete, and already computed. */
-  tier1: Finding[];
   /**
-   * The fuzzy review, deferred. Present only when Tier 1 is clean, a reviewer
-   * exists and a rule applies. Awaiting it is the caller's choice — the edit
-   * path never does.
+   * Deterministic, complete, and already computed.
+   *
+   * ~~And `tier2`, the fuzzy review, deferred.~~ **The injection point went with
+   * the thing that filled it (#81).** `src/ai/advice.ts` assembled the evidence
+   * and handed it to the agent, and #77 removed it because that *is* a skill —
+   * but the hook-point stayed, so the engine carried a `review` callback
+   * nothing supplied and a branch nothing reached. Dead since #77 and removed
+   * here with the rest.
    */
-  tier2?: Promise<Finding[]>;
+  tier1: Finding[];
 }
 
 /**
@@ -58,24 +36,14 @@ export interface EngineResult {
  */
 const GENERATED = /(\.(?:test|spec|stories|story)\.[jt]sx?$)|(^|\/)__(?:tests|mocks)__\//;
 
-function importFinding(violation: Violation): Finding {
-  return {
-    ...violation,
-    level: violation.reason === 'deprecated' ? 'deprecated' : 'import',
-    message:
-      violation.reason === 'deprecated'
-        ? `${violation.symbol} is deprecated in ${violation.importedFrom}.`
-        : importSentence([violation.symbol], violation.importedFrom, violation.expectedFrom),
-  };
-}
-
 /**
- * Every deterministic check over one file, then — only if they all passed —
- * the offer of a fuzzy review.
+ * Every deterministic check over one file.
  *
- * The ordering is the cost argument. Tier 1 is free and certain, so it runs
- * always and first; Tier 2 costs tokens, so it never runs on a file that
- * already has an answer, and never at all where no curated rule applies.
+ * ~~Then — only if they all passed — the offer of a fuzzy review. The ordering
+ * is the cost argument.~~ **There is one tier (#81)**, and the cost argument
+ * won everywhere rather than being abandoned: the fuzzy half is the agent
+ * reading a rule before it writes, which costs nothing per edit and is the
+ * whole of what `rules/` is for.
  */
 export async function runEngine(
   filePath: string,
@@ -93,8 +61,6 @@ export async function runEngine(
     // Retrieval reads JavaScript, and there is none here — so the elements
     // the template actually uses are handed to it directly.
     const elements = parseTemplate(source, kind).map((node) => node.name);
-    // One retrieval, two readings of it. Retrieval parses; doing it twice on
-    // the per-edit path was pure duplicated work.
     const retrieved =
       ctx.knowledge === undefined
         ? { fragments: [] }
@@ -106,51 +72,32 @@ export async function runEngine(
     };
   }
 
-  const imports = checkSource(filePath, source, ctx.chain, ctx.inventory)
-    .filter((violation) => ctx.withinLayer === true || violation.withinOwnLayer !== true)
-    .map(importFinding);
-
-  // Retrieved once and read by both curated checks below. The JSX path needs
-  // no `terms`: it has an AST, and retrieval reads it directly.
+  // ~~The import check ran here first.~~ **It is gone with the package graph
+  // (#81)**, which is what it read: the chain was readable on 0 of 15 sampled
+  // files on one real `package.json`-workspace monorepo and on near-nothing in
+  // an Angular one, so it answered on one repository shape in three. What
+  // replaces it is `rules/imports-and-layers.md`, a sentence a person writes
+  // once per project.
+  //
+  // Retrieved once. The JSX path needs no `terms`: it has an AST, and
+  // retrieval reads it directly.
   const retrieved =
     ctx.knowledge === undefined
       ? { fragments: [] }
       : { fragments: retrieve(source, ctx.knowledge, { filePath }) };
 
   const tier1 = [
-    ...imports,
     // Curated "use X, never Y" rules. Deterministic because the rule is a
     // declaration somebody wrote, not a pattern inferred from the code next
     // door — no rule, no finding.
     //
-    // Scoped by the same retrieval Tier 2 uses, so a rule only speaks about
-    // what it is about. Applied globally, the widget rule told a *form* to use
+    // Scoped by retrieval, so a rule only speaks about what it is about. Applied globally, the widget rule told a *form* to use
     // a WidgetCard — a finding citing a rule that does not apply is worse than
     // no finding, because it teaches people to stop reading them.
     ...(ctx.knowledge === undefined
       ? []
-      : substitutionFindings(
-          filePath,
-          source,
-          substitutionRules(retrieved),
-          ctx.chain,
-          ctx.inventory,
-        )),
+      : substitutionFindings(filePath, source, substitutionRules(retrieved))),
   ].sort((a, b) => a.line - b.line);
 
-  if (tier1.length > 0) return { tier1 };
-  if (ctx.review === undefined || ctx.knowledge === undefined) return { tier1 };
-
-  const fragments = retrieved.fragments;
-  if (fragments.length === 0) return { tier1 };
-
-  const review = ctx.review;
-  // Not awaited: the caller decides whether to wait, and the edit path does
-  // not. A reviewer that fails is a reviewer that said nothing — a missed
-  // fuzzy finding is cheaper than an interrupted edit.
-  const tier2 = Promise.resolve()
-    .then(() => review({ filePath, source, fragments }))
-    .catch(() => []);
-
-  return { tier1, tier2 };
+  return { tier1 };
 }

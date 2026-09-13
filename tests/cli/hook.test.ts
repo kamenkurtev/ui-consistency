@@ -23,8 +23,11 @@ describe('hookResponse', () => {
     const response = await hookResponse(payload());
     expect(response?.hookSpecificOutput.hookEventName).toBe('PostToolUse');
     const context = response?.hookSpecificOutput.additionalContext ?? '';
-    expect(context).toContain("→ import { Button } from '@fixture/core'");
-    expect(context).toContain('LegacyButton is deprecated');
+    // ~~An import violation and a deprecated import.~~ **Both checks are gone
+    // (#79, #81)**; the fixture's offending file now trips the one check left,
+    // which is the project's own written-down substitution. What this asserts —
+    // that the hook returns findings as additional context — is unchanged.
+    expect(context).toContain('ActionGrid');
   });
 
   it('says nothing at all when the file is clean', async () => {
@@ -36,7 +39,7 @@ describe('hookResponse', () => {
   it('reports paths relative to the project, not the machine', async () => {
     const response = await hookResponse(payload());
     const context = response?.hookSpecificOutput.additionalContext ?? '';
-    expect(context).toContain('apps/orders/src/List.tsx:1');
+    expect(context).toContain('apps/orders/src/List.tsx:3');
     expect(context).not.toContain(root);
   });
 

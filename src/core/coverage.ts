@@ -1,52 +1,46 @@
 import { readFile } from 'node:fs/promises';
-import { cachedPackages } from '../layers/cache.js';
-import { readConfig, applyConfig } from '../layers/config.js';
-import { resolveChain } from '../layers/chain.js';
-import { knowledgeDir, KNOWLEDGE_DIR } from '../knowledge/paths.js';
 import { parseKnowledge } from '../knowledge/parse.js';
+import { knowledgeDir, KNOWLEDGE_DIR } from '../knowledge/paths.js';
 
 /**
- * What a run could see, said out loud when it found nothing.
+ * What a run was able to look at, so *clean* and *blind* are different answers.
  *
- * A run that reports nothing is either a clean project or a blind tool, and
- * from outside they are identical — which is what `skills/reach` exists to
- * prevent and what happened inside the CLI: 400 screen files reported as
- * success, in silence, on a repository where nothing had been looked at (#37).
+ * A command answering with empty output and exit 0 makes those the same answer,
+ * which is how 400 screen files were reported as success on a repository where
+ * nothing had been looked at (#37).
  *
- * This is paid for **only where there are no findings**, which is exactly when
- * it is worth knowing and the one time nobody is waiting on a list. A run with
- * findings has already said what it saw.
+ * **It has almost nothing left to report, and that is the point (#81).** It
+ * used to say which of seven checks could not run and why — a package chain
+ * unreadable, a style dialect out of reach of a per-file AST check. Six of
+ * those checks are rules now, and a rule has no coverage to report: whether an
+ * agent read one is not a fact this program can observe, and answering anyway
+ * would be the invented reassurance this file exists to prevent. Each rule
+ * states its own limit in the place the agent reads it, which is also where it
+ * can say what to do about it.
+ *
+ * So two facts remain, and both are about *this* run: how many of the files
+ * named could be read, and whether the project has written anything down for
+ * the one check that is left.
  */
 export interface Coverage {
   /** Files named, and files whose contents could actually be read. */
   given: number;
   read: number;
-  /** Files a detected package owns, so the three chain checks could run. */
-  onAChain: number;
-  /** Packages detection found at all. */
-  packages: number;
-  /** Whether the project has written anything down for the curated checks. */
+  /** Whether the project has written anything down for the curated check. */
   stated: number;
 }
 
 /** What the run was able to look at, read once over the files it was given. */
 export async function coverageOf(rootDir: string, files: string[]): Promise<Coverage> {
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  const prefer = config?.prefer ?? [];
-
   const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir).catch(() => null);
 
   const found: Coverage = {
     given: files.length,
     read: 0,
-    onAChain: 0,
-    packages: packages.length,
     stated: knowledge?.fragments.length ?? 0,
   };
 
   for (const file of files) {
-    if (resolveChain(file, packages, prefer).length > 0) found.onAChain++;
     const source = await readFile(file, 'utf8').catch(() => null);
     if (source === null) continue;
     found.read++;
@@ -60,9 +54,8 @@ export async function coverageOf(rootDir: string, files: string[]): Promise<Cove
  *
  * *It works and here is what it read*, *it is quiet because the project has
  * stated nothing*, or *it is blind here, and here is why* — the same three
- * `skills/reach` is built on, available from the CLI rather than only from a
- * skill. Never a score, and never a level called working because it produced no
- * findings.
+ * `skills/reach` is built on. Never a score, and never a level called working
+ * because it produced no findings.
  */
 export function sayCoverage(found: Coverage): string[] {
   const said: string[] = [];
@@ -74,34 +67,15 @@ export function sayCoverage(found: Coverage): string[] {
     return said;
   }
 
-  // The three that need to know which layer a file belongs to. Everything else
-  // ran on every file, whatever detection found.
-  if (found.onAChain === 0) {
-    said.push(
-      found.packages === 0
-        ? 'No package was detected, so the import check did not run.'
-        : `No file belongs to any of the ${found.packages} detected package(s), so the import check did not run.`,
-    );
-    said.push('That is a detection gap, not a clean result — `uic scan` shows what was looked for.');
-  } else if (found.onAChain < found.read) {
-    said.push(
-      `${found.onAChain} of them belong to a detected package; the import check did not run on the other ${found.read - found.onAChain}.`,
-    );
-  }
-
-  // ~~What the style check can see, and what it cannot see by construction.~~
-  //
-  // **Gone with the check (#79).** Raw colours, lengths and emoji are
-  // `rules/raw-values.md` now, obeyed while the line is written; a coverage
-  // report has nothing to say about whether an agent read a rule, and saying
-  // something anyway would be the invented reassurance #37 exists to prevent.
-  // The rule states its own limit — a class-based system is out of reach — in
-  // the place the agent reads it.
-
-  // The curated half, which is silent until somebody writes something down.
   if (found.stated === 0) {
     said.push(
       `Nothing is written down in ${KNOWLEDGE_DIR}/, so the substitution check had nothing to apply.`,
+    );
+    said.push('That is the design rather than a fault — and it is most of what this tool is:');
+    said.push('the rules and the skills are read by your agent before it writes, not by this.');
+  } else {
+    said.push(
+      `${found.stated} rule(s) written down in ${KNOWLEDGE_DIR}/, and none of them applied here.`,
     );
   }
 

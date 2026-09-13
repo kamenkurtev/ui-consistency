@@ -1,16 +1,8 @@
 #!/usr/bin/env node
 
 // src/cli/index.ts
-import { readFile as readFile14, realpath as realpath2, stat as stat7 } from "node:fs/promises";
-import { relative as relative5, resolve as resolve6 } from "node:path";
-
-// src/layers/detect.ts
-import { readFile as readFile2, readdir as readdir2, stat as stat2 } from "node:fs/promises";
-import { basename as basename2, dirname as dirname2, join as join2, resolve as resolve2, sep as sep2 } from "node:path";
-
-// src/layers/tsconfig.ts
-import { readFile, readdir, stat } from "node:fs/promises";
-import { basename, dirname, join, relative as relative2, resolve, sep } from "node:path";
+import { readFile as readFile6, realpath, stat as stat2 } from "node:fs/promises";
+import { relative as relative3, resolve as resolve4 } from "node:path";
 
 // node_modules/@babel/parser/lib/index.js
 var Position = class {
@@ -14283,362 +14275,7 @@ function childNodes(node) {
   return out;
 }
 
-// src/layers/chain.ts
-import { relative, isAbsolute } from "node:path";
-function contains(root, filePath) {
-  const rel = relative(root, filePath);
-  return rel !== "" && !rel.startsWith("..") && !isAbsolute(rel);
-}
-function owningPackage(filePath, packages) {
-  let best = null;
-  for (const pkg of packages) {
-    if (!contains(pkg.root, filePath)) continue;
-    if (best === null || pkg.root.length > best.root.length) best = pkg;
-  }
-  return best;
-}
-function resolveChain(filePath, packages, prefer = []) {
-  const owner = owningPackage(filePath, packages);
-  if (owner === null) return [];
-  const byName = new Map(packages.map((p) => [p.name, p]));
-  const ordered = [];
-  const done = /* @__PURE__ */ new Set();
-  const onStack = /* @__PURE__ */ new Set();
-  const visit = (name) => {
-    if (done.has(name) || onStack.has(name)) return;
-    onStack.add(name);
-    const pkg = byName.get(name);
-    for (const dep of pkg?.dependencies ?? []) visit(dep);
-    onStack.delete(name);
-    done.add(name);
-    ordered.push({ name, root: pkg?.root ?? null, dependencies: pkg?.dependencies ?? [] });
-  };
-  visit(owner.name);
-  ordered.reverse();
-  if (prefer.length === 0) return ordered;
-  const rank = (layer) => {
-    if (layer.name === owner.name) return -1;
-    const index = prefer.indexOf(layer.name);
-    return index === -1 ? prefer.length : index;
-  };
-  return ordered.map((layer, index) => ({ layer, index })).sort((a, b) => rank(a.layer) - rank(b.layer) || a.index - b.index).map(({ layer }) => layer);
-}
-function layerFor(specifier, chain) {
-  if (specifier.startsWith(".")) return null;
-  let best = null;
-  for (const layer of chain) {
-    if (specifier !== layer.name && !specifier.startsWith(`${layer.name}/`)) continue;
-    if (best === null || layer.name.length > best.name.length) best = layer;
-  }
-  return best;
-}
-
-// src/layers/tsconfig.ts
-import { realpath } from "node:fs/promises";
-var TSCONFIG_CANDIDATES = ["tsconfig.base.json", "tsconfig.json"];
-function parseTsconfig(raw) {
-  const withoutComments2 = raw.replace(
-    /"(?:[^"\\]|\\.)*"|\/\*[\s\S]*?\*\/|\/\/[^\n]*/g,
-    (match) => match.startsWith('"') ? match : ""
-  ).replace(/,(\s*[}\]])/g, "$1");
-  try {
-    return JSON.parse(withoutComments2);
-  } catch {
-    return null;
-  }
-}
-async function tsconfigPaths(rootDir) {
-  for (const candidate of TSCONFIG_CANDIDATES) {
-    const found = await pathsIn(join(rootDir, candidate), 0);
-    if (found !== null) return found;
-  }
-  return null;
-}
-var MAX_EXTENDS_DEPTH = 8;
-async function pathsIn(file, depth) {
-  const raw = await readFile(file, "utf8").catch(() => null);
-  if (raw === null) return null;
-  const config = parseTsconfig(raw);
-  if (config === null) return null;
-  const options = config["compilerOptions"];
-  const paths = options !== null && typeof options === "object" ? options.paths : null;
-  if (paths !== null && paths !== void 0 && typeof paths === "object") {
-    const entries = Object.entries(paths).flatMap(
-      ([key, value]) => Array.isArray(value) && value.every((v) => typeof v === "string") ? [[key, value]] : []
-    );
-    if (entries.length > 0) {
-      const declaredBase = options.baseUrl;
-      const baseUrl = resolve(dirname(file), typeof declaredBase === "string" ? declaredBase : ".");
-      return { paths: Object.fromEntries(entries), baseUrl, file };
-    }
-  }
-  if (depth >= MAX_EXTENDS_DEPTH) return null;
-  const extended = config["extends"];
-  if (typeof extended !== "string" || !extended.startsWith(".")) return null;
-  const target = resolve(dirname(file), extended);
-  for (const suffix of ["", ".json"]) {
-    const found = await pathsIn(`${target}${suffix}`, depth + 1);
-    if (found !== null) return found;
-  }
-  return null;
-}
-async function packageRootFor(target) {
-  const isDirectory = await stat(target).then(
-    (s) => s.isDirectory(),
-    () => false
-  );
-  const dir = isDirectory ? target : dirname(target);
-  return basename(dir) === "src" ? dirname(dir) : dir;
-}
-var GENERATED_DIRECTORY = /* @__PURE__ */ new Set(["dist", "build", "out", "coverage", "generated"]);
-function isGenerated(base, resolved) {
-  const inside = relative2(base, resolved);
-  if (inside.startsWith("..")) return false;
-  return inside.split(sep).some((segment) => GENERATED_DIRECTORY.has(segment) || /^\.[^.]/.test(segment));
-}
-async function insideProject(rootDir, target) {
-  const real = await realpath(target).catch(() => null);
-  if (real === null) return contains(rootDir, target);
-  const root = await realpath(rootDir).catch(() => rootDir);
-  return contains(root, real);
-}
-async function packagesFromTsconfigPaths(rootDir) {
-  const declared = await tsconfigPaths(rootDir);
-  if (declared === null) return [];
-  const base = declared.baseUrl;
-  const found = /* @__PURE__ */ new Map();
-  for (const [alias, targets] of Object.entries(declared.paths)) {
-    if (alias.includes("*")) continue;
-    const target = targets[0];
-    if (target === void 0 || target.includes("*")) continue;
-    if (found.has(alias)) continue;
-    const resolved = resolve(base, target);
-    if (resolved.split(sep).includes("node_modules")) continue;
-    if (isGenerated(base, resolved)) continue;
-    if (!await insideProject(rootDir, resolved)) continue;
-    found.set(alias, await packageRootFor(resolved));
-  }
-  return [...found].map(([name, root]) => ({ name, root }));
-}
-var SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx", ".mts", ".cts"];
-var SKIPPED_DIRECTORIES = /* @__PURE__ */ new Set([
-  "node_modules",
-  "dist",
-  "build",
-  "out",
-  "coverage",
-  ".git",
-  ".next",
-  ".nx",
-  ".cache"
-]);
-function packageNameOf(specifier) {
-  const segments = specifier.split("/");
-  return specifier.startsWith("@") ? segments.slice(0, 2).join("/") : segments[0];
-}
-function edgeFor(specifier, layers) {
-  let best = null;
-  for (const name of layers) {
-    if (specifier !== name && !specifier.startsWith(`${name}/`)) continue;
-    if (best === null || name.length > best.length) best = name;
-  }
-  return best ?? packageNameOf(specifier);
-}
-async function collectSourceFiles(dir, stopAt, into) {
-  const entries = await readdir(dir, { withFileTypes: true }).catch(() => null);
-  if (entries === null) return;
-  for (const entry of entries) {
-    const path = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      if (SKIPPED_DIRECTORIES.has(entry.name) || stopAt.has(path)) continue;
-      await collectSourceFiles(path, stopAt, into);
-      continue;
-    }
-    if (SOURCE_EXTENSIONS.some((ext) => entry.name.endsWith(ext))) into.push(path);
-  }
-}
-async function derivedDependencies(root, stopAt, layers = []) {
-  const files = [];
-  await collectSourceFiles(root, stopAt, files);
-  const dependencies = /* @__PURE__ */ new Set();
-  for (const file of files) {
-    const source = await readFile(file, "utf8").catch(() => null);
-    if (source === null) continue;
-    const ast = parseModule(source, file);
-    if (ast === null) continue;
-    for (const statement of ast.program.body) {
-      const specifier = statement.type === "ImportDeclaration" || statement.type === "ExportAllDeclaration" || statement.type === "ExportNamedDeclaration" && statement.source !== null ? statement.source?.value : void 0;
-      if (specifier === void 0 || specifier === null) continue;
-      if (specifier.startsWith(".") || specifier.startsWith("/")) continue;
-      dependencies.add(edgeFor(specifier, layers));
-    }
-  }
-  return [...dependencies].sort();
-}
-
-// src/layers/detect.ts
-async function readJson(path) {
-  try {
-    return JSON.parse(await readFile2(path, "utf8"));
-  } catch {
-    return null;
-  }
-}
-async function childDirectories(dir) {
-  const entries = await readdir2(dir, { withFileTypes: true }).catch(() => []);
-  return entries.filter((e) => e.isDirectory() && !e.name.startsWith(".") && e.name !== "node_modules").map((e) => join2(dir, e.name));
-}
-var MAX_GLOBSTAR_DEPTH = 6;
-async function descendantDirectories(dir, depth = 0) {
-  if (depth >= MAX_GLOBSTAR_DEPTH) return [dir];
-  const children = await childDirectories(dir);
-  const below = await Promise.all(children.map((child) => descendantDirectories(child, depth + 1)));
-  return [dir, ...below.flat()];
-}
-async function expandPattern(rootDir, pattern) {
-  const segments = pattern.split("/").filter((s) => s !== "" && s !== ".");
-  let current = [resolve2(rootDir)];
-  for (const segment of segments) {
-    if (segment !== "*" && segment !== "**") {
-      current = current.map((dir) => join2(dir, segment));
-      continue;
-    }
-    const expanded = await Promise.all(
-      current.map((dir) => segment === "*" ? childDirectories(dir) : descendantDirectories(dir))
-    );
-    current = expanded.flat();
-  }
-  return current;
-}
-async function workspacePatterns(rootDir) {
-  const yaml = await readFile2(join2(rootDir, "pnpm-workspace.yaml"), "utf8").catch(() => null);
-  if (yaml !== null) {
-    return [...yaml.matchAll(/^\s*-\s*['"]?([^'"\n]+)['"]?\s*$/gm)].map((m) => m[1].trim());
-  }
-  const pkg = await readJson(join2(rootDir, "package.json"));
-  const workspaces = pkg?.["workspaces"];
-  if (Array.isArray(workspaces)) {
-    return workspaces.filter((w) => typeof w === "string");
-  }
-  if (workspaces !== null && typeof workspaces === "object") {
-    const nested = workspaces.packages;
-    if (Array.isArray(nested)) return nested.filter((w) => typeof w === "string");
-  }
-  return [];
-}
-async function toPackageInfo(dir) {
-  const pkg = await readJson(join2(dir, "package.json"));
-  if (pkg === null) return null;
-  const name = pkg["name"];
-  if (typeof name !== "string") return null;
-  const dependencies = ["dependencies", "devDependencies", "peerDependencies"].flatMap((field) => {
-    const value = pkg[field];
-    return value !== null && typeof value === "object" ? Object.keys(value) : [];
-  });
-  return { name, root: dir, dependencies: [...new Set(dependencies)] };
-}
-async function declaresWorkspaceAliases(dir) {
-  const aliases = await tsconfigPaths(dir);
-  if (aliases === null || dirname2(aliases.file) !== dir) return false;
-  return (await packagesFromTsconfigPaths(dir)).length > 0;
-}
-async function findProjectRoot(startDir) {
-  let current = resolve2(startDir);
-  let nearestPackage = null;
-  for (; ; ) {
-    if ((await workspacePatterns(current)).length > 0) return current;
-    if (await declaresWorkspaceAliases(current)) return current;
-    if (nearestPackage === null && await readJson(join2(current, "package.json")) !== null) {
-      nearestPackage = current;
-    }
-    const parent = dirname2(current);
-    if (parent === current) return nearestPackage;
-    current = parent;
-  }
-}
-async function detectPackagesDetailed(rootDir) {
-  const declared = await declaredPackages(rootDir);
-  const aliased = await ownLayersAmong(rootDir, await packagesFromTsconfigPaths(rootDir));
-  if (declared.length === 0 && aliased.length === 0) {
-    const single = await toPackageInfo(rootDir);
-    return { packages: single === null ? [] : [single], derived: false };
-  }
-  const byName = new Set(declared.map((p) => p.name));
-  const byRoot = new Set(declared.map((p) => p.root));
-  const missing = aliased.filter((p) => !byName.has(p.name) && !byRoot.has(p.root));
-  const roots = [...declared, ...missing].map((p) => p.root);
-  const names = [...declared.map((p) => p.name), ...missing.map((p) => p.name)];
-  const withDerivedEdges = async (pkg) => {
-    const nested = new Set(roots.filter((r) => r !== pkg.root && r.startsWith(`${pkg.root}${sep2}`)));
-    const edges = await derivedDependencies(pkg.root, nested, names);
-    return { ...pkg, dependencies: edges.filter((edge) => edge !== pkg.name) };
-  };
-  const undeclared = declared.filter((pkg) => pkg.dependencies.length === 0);
-  const filled = await Promise.all(
-    declared.map(async (pkg) => pkg.dependencies.length === 0 ? withDerivedEdges(pkg) : pkg)
-  );
-  const added = await Promise.all(missing.map(withDerivedEdges));
-  return {
-    packages: [...filled, ...added],
-    derived: undeclared.length > 0 || missing.length > 0
-  };
-}
-async function detectionSources(rootDir) {
-  const sources = [];
-  if ((await workspacePatterns(rootDir)).length > 0) {
-    const yaml = await readFile2(join2(rootDir, "pnpm-workspace.yaml"), "utf8").catch(() => null);
-    sources.push(yaml === null ? "package.json workspaces" : "pnpm-workspace.yaml");
-  }
-  const aliases = await tsconfigPaths(rootDir);
-  if (aliases !== null) sources.push(`${basename2(aliases.file)} paths`);
-  return sources;
-}
-async function sourceDirOf(rootDir) {
-  const pkg = await readJson(join2(rootDir, "package.json"));
-  if (pkg === null) return null;
-  for (const field of ["source", "module", "main"]) {
-    const value = pkg[field];
-    if (typeof value !== "string") continue;
-    const dir = dirname2(resolve2(rootDir, value));
-    if (dir !== resolve2(rootDir)) return dir;
-  }
-  const conventional = join2(rootDir, "src");
-  const found = await stat2(conventional).catch(() => null);
-  return found?.isDirectory() === true ? conventional : null;
-}
-async function ownLayersAmong(rootDir, aliased) {
-  const sourceDir = await sourceDirOf(rootDir);
-  if (sourceDir === null) return aliased;
-  return aliased.filter((pkg) => pkg.root !== sourceDir && !pkg.root.startsWith(`${sourceDir}${sep2}`));
-}
-async function declaredPackages(rootDir) {
-  const patterns = await workspacePatterns(rootDir);
-  if (patterns.length === 0) return [];
-  const dirs = (await Promise.all(patterns.map((p) => expandPattern(rootDir, p)))).flat();
-  const found = await Promise.all(
-    dirs.map(async (dir) => {
-      const s = await stat2(dir).catch(() => null);
-      return s?.isDirectory() === true ? toPackageInfo(dir) : null;
-    })
-  );
-  return found.filter((p) => p !== null);
-}
-
-// src/layers/cache.ts
-import { readFile as readFile6, rm as rm2, stat as stat4, writeFile as writeFile2 } from "node:fs/promises";
-import { join as join7 } from "node:path";
-
-// src/inventory/cache.ts
-import { readFile as readFile5, writeFile, rm, stat as stat3 } from "node:fs/promises";
-import { join as join6 } from "node:path";
-
-// src/inventory/build.ts
-import { readFile as readFile4 } from "node:fs/promises";
-import { dirname as dirname3, join as join4 } from "node:path";
-
-// src/inventory/exports.ts
-import { readFile as readFile3 } from "node:fs/promises";
-import { join as join3 } from "node:path";
+// src/parse/exports.ts
 function exportedNamesOf(statement) {
   if (statement.type !== "ExportNamedDeclaration") return [];
   if (statement.exportKind === "type") return [];
@@ -14676,353 +14313,10 @@ function exportedSymbolsFromSource(source) {
   const ast = parseModule(source);
   return ast === null ? /* @__PURE__ */ new Set() : exportedSymbolsOf(ast);
 }
-function starReexportsFromSource(source) {
-  const ast = parseModule(source);
-  if (ast === null) return [];
-  return ast.program.body.flatMap(
-    (statement) => statement.type === "ExportAllDeclaration" && statement.exportKind !== "type" ? [statement.source.value] : []
-  );
-}
-var ENTRY_CANDIDATES = [
-  "src/index.ts",
-  "src/index.tsx",
-  "index.ts",
-  "index.tsx",
-  "src/index.js",
-  "index.js"
-];
-async function entryFileFor(packageRoot) {
-  const readable = async (path) => await readFile3(path, "utf8").catch(() => null) !== null;
-  const raw = await readFile3(join3(packageRoot, "package.json"), "utf8").catch(() => null);
-  if (raw !== null) {
-    try {
-      const pkg = JSON.parse(raw);
-      for (const field of [pkg.source, pkg.module, pkg.main]) {
-        if (typeof field !== "string") continue;
-        const declared = join3(packageRoot, field);
-        if (await readable(declared)) return declared;
-        for (const suffix of [".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx", "/index.js"]) {
-          if (await readable(`${declared}${suffix}`)) return `${declared}${suffix}`;
-        }
-      }
-    } catch {
-    }
-  }
-  for (const candidate of ENTRY_CANDIDATES) {
-    const path = join3(packageRoot, candidate);
-    if (await readable(path)) return path;
-  }
-  return null;
-}
-
-// src/inventory/deprecated.ts
-function linkTarget(text) {
-  const match = /\{@link\s+([A-Za-z_$][\w$]*)/.exec(text);
-  return match === null ? null : match[1];
-}
-function deprecationComment(comments) {
-  for (const comment of comments ?? []) {
-    if (comment.type !== "CommentBlock") continue;
-    if (/@deprecated\b/.test(comment.value)) return comment;
-  }
-  return null;
-}
-function deprecationsFromSource(source) {
-  const found = /* @__PURE__ */ new Map();
-  const ast = parseModule(source);
-  if (ast === null) return found;
-  for (const statement of ast.program.body) {
-    if (statement.type !== "ExportNamedDeclaration") continue;
-    const comment = deprecationComment(statement.leadingComments);
-    if (comment === null) continue;
-    const replacement = linkTarget(comment.value);
-    for (const name of exportedNamesOf(statement)) found.set(name, replacement);
-  }
-  return found;
-}
-
-// src/inventory/build.ts
-var readFromDisk = (path) => readFile4(path, "utf8").catch(() => null);
-var MODULE_SUFFIXES = ["", ".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx", "/index.js"];
-var MAX_STAR_DEPTH = 8;
-async function readRelative(fromFile, specifier, readSource) {
-  const base = join4(dirname3(fromFile), specifier);
-  for (const suffix of MODULE_SUFFIXES) {
-    const path = `${base}${suffix}`;
-    const source = await readSource(path);
-    if (source !== null) return { path, source };
-  }
-  return null;
-}
-async function buildInventory(layers, io = {}) {
-  const readSource = io.readSource ?? readFromDisk;
-  const resolveEntry = io.resolveEntry ?? entryFileFor;
-  const inventory2 = { layers: {} };
-  for (const layer of layers) {
-    const symbols = {};
-    inventory2.layers[layer.name] = symbols;
-    if (layer.root === null) continue;
-    const entry = await resolveEntry(layer.root);
-    if (entry === null) continue;
-    const source = await readSource(entry);
-    if (source === null) continue;
-    await collect(entry, source, symbols, readSource, /* @__PURE__ */ new Set([entry]), 0);
-  }
-  return inventory2;
-}
-async function collect(file, source, symbols, readSource, seen, depth) {
-  const deprecations = deprecationsFromSource(source);
-  for (const name of exportedSymbolsFromSource(source)) {
-    if (symbols[name] !== void 0) continue;
-    const deprecated = deprecations.has(name);
-    symbols[name] = {
-      deprecated,
-      replacement: deprecated ? deprecations.get(name) ?? null : null
-    };
-  }
-  if (depth >= MAX_STAR_DEPTH) return;
-  for (const specifier of starReexportsFromSource(source)) {
-    if (!specifier.startsWith(".")) continue;
-    const target = await readRelative(file, specifier, readSource);
-    if (target === null || seen.has(target.path)) continue;
-    seen.add(target.path);
-    await collect(target.path, target.source, symbols, readSource, seen, depth + 1);
-  }
-}
-
-// src/core/cache-dir.ts
-import { createHash } from "node:crypto";
-import { lstat, mkdir } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join as join5 } from "node:path";
-var OWNER_ONLY = 448;
-var cacheRoot = () => join5(tmpdir(), `uic-cache-${process.getuid?.() ?? "shared"}`);
-async function ensureOwned(path) {
-  await mkdir(path, { recursive: true, mode: OWNER_ONLY }).catch(() => null);
-  const found = await lstat(path).catch(() => null);
-  if (found === null || !found.isDirectory()) return false;
-  if (process.getuid !== void 0 && found.uid !== process.getuid()) return false;
-  return true;
-}
-async function ownedDir(...segments) {
-  const root = cacheRoot();
-  if (!await ensureOwned(root)) return null;
-  const path = join5(root, ...segments);
-  return await ensureOwned(path) ? path : null;
-}
-var projectKey = (rootDir) => createHash("sha256").update(rootDir).digest("hex").slice(0, 16);
-
-// src/inventory/cache.ts
-var CACHE_VERSION = 1;
-async function cacheDirFor(rootDir) {
-  return ownedDir(projectKey(rootDir));
-}
-var fileIn = (dir) => join6(dir, "inventory.json");
-async function readCache(rootDir) {
-  const empty = { version: CACHE_VERSION, chains: {} };
-  const dir = await cacheDirFor(rootDir);
-  const raw = dir === null ? null : await readFile5(fileIn(dir), "utf8").catch(() => null);
-  if (raw === null) return empty;
-  try {
-    const parsed = JSON.parse(raw);
-    return parsed.version === CACHE_VERSION && typeof parsed.chains === "object" ? parsed : empty;
-  } catch {
-    return empty;
-  }
-}
-var mtimeOf = (path) => stat3(path).then(
-  (s) => s.mtimeMs,
-  () => null
-);
-async function stillValid(sources) {
-  const checks = Object.entries(sources).map(async ([path, when]) => await mtimeOf(path) === when);
-  return (await Promise.all(checks)).every(Boolean);
-}
-async function cachedInventory(rootDir, layers, io = {}) {
-  const key = layers.map((layer) => `${layer.name}@${layer.root ?? ""}`).join(">");
-  const cache = await readCache(rootDir);
-  const hit = cache.chains[key];
-  if (hit !== void 0 && await stillValid(hit.sources)) {
-    return { layers: hit.layers };
-  }
-  const sources = {};
-  const underlying = io.readSource ?? ((path) => readFile5(path, "utf8").catch(() => null));
-  const inventory2 = await buildInventory(layers, {
-    ...io,
-    readSource: async (path) => {
-      const source = await underlying(path);
-      if (source !== null) {
-        const when = await mtimeOf(path);
-        if (when !== null) sources[path] = when;
-      }
-      return source;
-    }
-  });
-  cache.chains[key] = { sources, layers: inventory2.layers };
-  const into = await cacheDirFor(rootDir);
-  if (into !== null) {
-    await writeFile(fileIn(into), JSON.stringify(cache), "utf8").catch(() => {
-    });
-  }
-  return inventory2;
-}
-
-// src/layers/cache.ts
-var CACHE_VERSION2 = 1;
-var fileIn2 = (dir) => join7(dir, "packages.json");
-async function clearPackageCache(rootDir) {
-  const dir = await cacheDirFor(rootDir);
-  if (dir !== null) await rm2(fileIn2(dir), { force: true });
-}
-var mtimeOf2 = (path) => stat4(path).then(
-  (s) => s.mtimeMs,
-  () => null
-);
-async function cachedPackages(rootDir) {
-  const layout = await layoutSignature(rootDir);
-  const dir = await cacheDirFor(rootDir);
-  const path = dir === null ? null : fileIn2(dir);
-  const raw = path === null ? null : await readFile6(path, "utf8").catch(() => null);
-  if (raw !== null) {
-    try {
-      const cached = JSON.parse(raw);
-      if (cached.version === CACHE_VERSION2 && Array.isArray(cached.packages) && sameSignature(cached.layout, layout)) {
-        return cached.packages;
-      }
-    } catch {
-    }
-  }
-  const { packages, derived } = await detectPackagesDetailed(rootDir);
-  if (derived && path !== null) {
-    const entry = { version: CACHE_VERSION2, layout, packages };
-    await writeFile2(path, JSON.stringify(entry), "utf8").catch(() => {
-    });
-  }
-  return packages;
-}
-async function layoutSignature(rootDir) {
-  const candidates = [join7(rootDir, "package.json"), join7(rootDir, "pnpm-workspace.yaml")];
-  const aliases = await tsconfigPaths(rootDir);
-  if (aliases !== null) candidates.push(aliases.file);
-  const signature = {};
-  for (const file of candidates) {
-    const mtime = await mtimeOf2(file);
-    if (mtime !== null) signature[file] = mtime;
-  }
-  return signature;
-}
-function sameSignature(a, b) {
-  if (a === null || typeof a !== "object") return false;
-  const keys = Object.keys(b);
-  return keys.length === Object.keys(a).length && keys.every((key) => a[key] === b[key]);
-}
-
-// src/layers/config.ts
-import { readFile as readFile8, writeFile as writeFile3 } from "node:fs/promises";
-import { join as join9 } from "node:path";
-
-// src/knowledge/decisions.ts
-import { readdir as readdir4, readFile as readFile7, stat as stat5 } from "node:fs/promises";
-import { basename as basename3, join as join8, resolve as resolve4 } from "node:path";
-
-// src/knowledge/paths.ts
-import { readdir as readdir3 } from "node:fs/promises";
-import { resolve as resolve3 } from "node:path";
-var KNOWLEDGE_DIR = ".ui-consistency";
-var LEGACY_KNOWLEDGE_DIR = ".claude/ui-consistency";
-async function knowledgeDir(rootDir, sub = "") {
-  const inside = async (base) => {
-    const entries = await readdir3(resolve3(rootDir, base, sub)).catch(() => null);
-    return entries !== null && entries.length > 0;
-  };
-  if (await inside(KNOWLEDGE_DIR)) {
-    return { dir: resolve3(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
-  }
-  if (await inside(LEGACY_KNOWLEDGE_DIR)) {
-    return { dir: resolve3(rootDir, LEGACY_KNOWLEDGE_DIR, sub), legacy: true };
-  }
-  return { dir: resolve3(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
-}
-var MOVED = `${LEGACY_KNOWLEDGE_DIR}/ is the old location and is still read. Move it to ${KNOWLEDGE_DIR}/ \u2014 it is your project's intent, not one agent's configuration.`;
-
-// src/knowledge/decisions.ts
-async function readDecisions(rootDir) {
-  const { dir } = await knowledgeDir(rootDir, "decisions");
-  const entries = await readdir4(dir).catch(() => null);
-  if (entries === null) return [];
-  const decisions = [];
-  for (const entry of entries.filter((name) => /\.md$/i.test(name)).sort()) {
-    const path = join8(dir, entry);
-    const source = await readFile7(path, "utf8").catch(() => null);
-    if (source === null) continue;
-    let named = null;
-    const statements = [];
-    const listed = { prefer: [], ignore: [] };
-    for (const line of source.split("\n")) {
-      const pointer = /^\s*canon\s*:\s*(.+?)\s*$/i.exec(line);
-      if (pointer !== null) {
-        named = pointer[1];
-        continue;
-      }
-      const list = /^\s*(prefer|ignore)\s*:\s*(.+?)\s*$/i.exec(line);
-      if (list !== null) {
-        listed[list[1].toLowerCase()] = list[2].split(",").map((name) => name.trim()).filter((name) => name !== "");
-        continue;
-      }
-      const statement = /^\s*[-*]\s+(.+?)\s*$/.exec(line);
-      if (statement !== null) statements.push(statement[1]);
-    }
-    const resolved = named === null ? null : resolve4(rootDir, named);
-    const exists = resolved === null ? false : await stat5(resolved).then(() => true, () => false);
-    decisions.push({
-      kind: basename3(entry).replace(/\.md$/i, ""),
-      canon: exists ? resolved : null,
-      stale: named !== null && !exists ? named : null,
-      statements,
-      prefer: listed["prefer"] ?? [],
-      ignore: listed["ignore"] ?? [],
-      file: path
-    });
-  }
-  return decisions;
-}
-
-// src/layers/config.ts
-var CONFIG_FILE = ".uicrc.json";
-async function readConfig(rootDir) {
-  const raw = await readFile8(join9(rootDir, CONFIG_FILE), "utf8").catch(() => null);
-  let config = null;
-  if (raw !== null) {
-    try {
-      config = JSON.parse(raw);
-    } catch {
-      config = null;
-    }
-  }
-  const decided = await readDecisions(rootDir).catch(() => []);
-  const prefer = decided.flatMap((one) => one.prefer);
-  const ignore = decided.flatMap((one) => one.ignore);
-  if (prefer.length === 0 && ignore.length === 0) return config;
-  return {
-    ...config,
-    // Written intent first: it is the more recent place to say it.
-    prefer: [...prefer, ...config?.prefer ?? []],
-    ignore: [...ignore, ...config?.ignore ?? []]
-  };
-}
-function applyConfig(detected, config) {
-  if (config === null) return detected;
-  const ignored = new Set(config.ignore ?? []);
-  return detected.filter((pkg) => !ignored.has(pkg.name)).map((pkg) => {
-    const override = config.packages?.[pkg.name];
-    const dependencies = override?.dependencies ?? pkg.dependencies;
-    return { ...pkg, dependencies: dependencies.filter((dep) => !ignored.has(dep)) };
-  });
-}
 
 // src/cli/log.ts
-import { appendFile, readdir as readdir5, readFile as readFile9, rename, stat as stat6, writeFile as writeFile4 } from "node:fs/promises";
-import { join as join10, relative as relative3 } from "node:path";
+import { appendFile, readdir, readFile, rename, stat, writeFile } from "node:fs/promises";
+import { join as join2, relative } from "node:path";
 
 // src/core/format.ts
 function formatViolation(v) {
@@ -15069,14 +14363,36 @@ function readImportSentence(message) {
 }
 var importSourceSentence = (importedFrom, expectedFrom) => `${importedFrom} is imported where ${expectedFrom} is nearer.`;
 
+// src/core/cache-dir.ts
+import { createHash } from "node:crypto";
+import { lstat, mkdir } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+var OWNER_ONLY = 448;
+var cacheRoot = () => join(tmpdir(), `uic-cache-${process.getuid?.() ?? "shared"}`);
+async function ensureOwned(path) {
+  await mkdir(path, { recursive: true, mode: OWNER_ONLY }).catch(() => null);
+  const found = await lstat(path).catch(() => null);
+  if (found === null || !found.isDirectory()) return false;
+  if (process.getuid !== void 0 && found.uid !== process.getuid()) return false;
+  return true;
+}
+async function ownedDir(...segments) {
+  const root = cacheRoot();
+  if (!await ensureOwned(root)) return null;
+  const path = join(root, ...segments);
+  return await ensureOwned(path) ? path : null;
+}
+var projectKey = (rootDir) => createHash("sha256").update(rootDir).digest("hex").slice(0, 16);
+
 // src/cli/log.ts
-var logPath = (rootDir) => join10(cacheRoot(), projectKey(rootDir), "findings.jsonl");
+var logPath = (rootDir) => join2(cacheRoot(), projectKey(rootDir), "findings.jsonl");
 var MAX_BYTES = 4e6;
-var statePath = (rootDir) => join10(logPath(rootDir), "..", "seen.jsonl");
+var statePath = (rootDir) => join2(logPath(rootDir), "..", "seen.jsonl");
 var MAX_STATE_BYTES = 512e3;
 var keyOf = (entry) => `${entry.file}|${entry.line}|${entry.level}|${entry.message}`;
 var readSeen = async (rootDir) => {
-  const raw = await readFile9(statePath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile(statePath(rootDir), "utf8").catch(() => null);
   if (raw === null) return {};
   const folded = {};
   for (const line of raw.split("\n")) {
@@ -15105,16 +14421,16 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
     const path = logPath(rootDir);
     const dir = await ownedDir(projectKey(rootDir));
     if (dir === null) return;
-    await writeFile4(join10(dir, "repo.txt"), `${base}
+    await writeFile(join2(dir, "repo.txt"), `${base}
 `, "utf8").catch(() => void 0);
-    const size = await stat6(path).then(
+    const size = await stat(path).then(
       (info) => info.size,
       () => 0
     );
     if (size > MAX_BYTES) await rename(path, `${path}.1`).catch(() => void 0);
     const seen = await readSeen(rootDir);
     const state = statePath(rootDir);
-    const stateSize = await stat6(state).then(
+    const stateSize = await stat(state).then(
       (info) => info.size,
       () => 0
     );
@@ -15122,7 +14438,7 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
     for (const finding of findings) {
       const entry = {
         at,
-        file: relative3(base, finding.file) || finding.file,
+        file: relative(base, finding.file) || finding.file,
         line: finding.line,
         level: finding.level,
         message: finding.message,
@@ -15140,7 +14456,7 @@ var record = async (rootDir, findings, options = {}, kind = "finding") => {
   }
 };
 var readLog = async (rootDir) => {
-  const raw = await readFile9(logPath(rootDir), "utf8").catch(() => null);
+  const raw = await readFile(logPath(rootDir), "utf8").catch(() => null);
   if (raw === null) return [];
   const entries = /* @__PURE__ */ new Map();
   for (const line of raw.split("\n")) {
@@ -15286,7 +14602,7 @@ function canonicalChildren(nodes) {
         if (node.type === "JSXElement") nested.push(node);
       });
       const outermost = nested.filter(
-        (candidate) => !nested.some((other) => other !== candidate && contains2(other, candidate))
+        (candidate) => !nested.some((other) => other !== candidate && contains(other, candidate))
       );
       for (const element of outermost) {
         const inner = canonical(element);
@@ -15296,7 +14612,7 @@ function canonicalChildren(nodes) {
   }
   return found;
 }
-function contains2(outer, inner) {
+function contains(outer, inner) {
   const outerStart = outer.start ?? -1;
   const outerEnd = outer.end ?? -1;
   const innerStart = inner.start ?? -1;
@@ -15366,11 +14682,11 @@ function shapeReport(corpora) {
 }
 
 // src/core/coverage.ts
-import { readFile as readFile11 } from "node:fs/promises";
+import { readFile as readFile3 } from "node:fs/promises";
 
 // src/knowledge/parse.ts
-import { readdir as readdir6, readFile as readFile10 } from "node:fs/promises";
-import { basename as basename4, join as join11 } from "node:path";
+import { readdir as readdir2, readFile as readFile2 } from "node:fs/promises";
+import { basename, join as join3 } from "node:path";
 var STOPWORDS = /* @__PURE__ */ new Set([
   "a",
   "an",
@@ -15449,7 +14765,7 @@ ${body}`.matchAll(packages)) add(match[0]);
 }
 var MARKER = /<!--\s*uic:generated\b[^>]*-->/i;
 var MARKER_WINDOW = 512;
-function isGenerated2(source) {
+function isGenerated(source) {
   return MARKER.test(source.slice(0, MARKER_WINDOW));
 }
 function generatedVersion(source) {
@@ -15461,8 +14777,8 @@ function withoutComments(source) {
   return source.replace(/<!--[\s\S]*?-->/g, "");
 }
 function fragmentsFromFile(fileName, source) {
-  const kind = basename4(fileName).replace(/\.md$/i, "");
-  const generated = isGenerated2(source);
+  const kind = basename(fileName).replace(/\.md$/i, "");
+  const generated = isGenerated(source);
   const lines = withoutComments(source).split("\n");
   const fragments = [];
   let subject = null;
@@ -15493,33 +14809,47 @@ function fragmentsFromFile(fileName, source) {
   return fragments.filter((fragment) => fragment.body !== "");
 }
 async function parseKnowledge(dir) {
-  const entries = await readdir6(dir).catch(() => null);
+  const entries = await readdir2(dir).catch(() => null);
   if (entries === null) return { fragments: [] };
   const fragments = [];
   for (const entry of entries.filter((name) => /\.md$/i.test(name)).sort()) {
-    const source = await readFile10(join11(dir, entry), "utf8").catch(() => null);
+    const source = await readFile2(join3(dir, entry), "utf8").catch(() => null);
     if (source === null) continue;
     fragments.push(...fragmentsFromFile(entry, source));
   }
   return { fragments };
 }
 
+// src/knowledge/paths.ts
+import { readdir as readdir3 } from "node:fs/promises";
+import { resolve } from "node:path";
+var KNOWLEDGE_DIR = ".ui-consistency";
+var LEGACY_KNOWLEDGE_DIR = ".claude/ui-consistency";
+async function knowledgeDir(rootDir, sub = "") {
+  const inside = async (base) => {
+    const entries = await readdir3(resolve(rootDir, base, sub)).catch(() => null);
+    return entries !== null && entries.length > 0;
+  };
+  if (await inside(KNOWLEDGE_DIR)) {
+    return { dir: resolve(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
+  }
+  if (await inside(LEGACY_KNOWLEDGE_DIR)) {
+    return { dir: resolve(rootDir, LEGACY_KNOWLEDGE_DIR, sub), legacy: true };
+  }
+  return { dir: resolve(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
+}
+var MOVED = `${LEGACY_KNOWLEDGE_DIR}/ is the old location and is still read. Move it to ${KNOWLEDGE_DIR}/ \u2014 it is your project's intent, not one agent's configuration.`;
+
 // src/core/coverage.ts
 async function coverageOf(rootDir, files) {
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  const prefer = config?.prefer ?? [];
   const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir).catch(() => null);
   const found = {
     given: files.length,
     read: 0,
-    onAChain: 0,
-    packages: packages.length,
     stated: knowledge?.fragments.length ?? 0
   };
   for (const file of files) {
-    if (resolveChain(file, packages, prefer).length > 0) found.onAChain++;
-    const source = await readFile11(file, "utf8").catch(() => null);
+    const source = await readFile3(file, "utf8").catch(() => null);
     if (source === null) continue;
     found.read++;
   }
@@ -15532,26 +14862,22 @@ function sayCoverage(found) {
     said.push("None of them could be read, so nothing was checked at all.");
     return said;
   }
-  if (found.onAChain === 0) {
-    said.push(
-      found.packages === 0 ? "No package was detected, so the import check did not run." : `No file belongs to any of the ${found.packages} detected package(s), so the import check did not run.`
-    );
-    said.push("That is a detection gap, not a clean result \u2014 `uic scan` shows what was looked for.");
-  } else if (found.onAChain < found.read) {
-    said.push(
-      `${found.onAChain} of them belong to a detected package; the import check did not run on the other ${found.read - found.onAChain}.`
-    );
-  }
   if (found.stated === 0) {
     said.push(
       `Nothing is written down in ${KNOWLEDGE_DIR}/, so the substitution check had nothing to apply.`
+    );
+    said.push("That is the design rather than a fault \u2014 and it is most of what this tool is:");
+    said.push("the rules and the skills are read by your agent before it writes, not by this.");
+  } else {
+    said.push(
+      `${found.stated} rule(s) written down in ${KNOWLEDGE_DIR}/, and none of them applied here.`
     );
   }
   return said;
 }
 
 // src/cli/hook.ts
-import { dirname as dirname4, relative as relative4, resolve as resolve5 } from "node:path";
+import { dirname as dirname2, relative as relative2, resolve as resolve3 } from "node:path";
 
 // src/core/off.ts
 var SILENCED = () => {
@@ -15559,8 +14885,29 @@ var SILENCED = () => {
   return value !== void 0 && value !== "" && value.toLowerCase() !== "0" && value.toLowerCase() !== "false";
 };
 
+// src/core/project-root.ts
+import { readdir as readdir4 } from "node:fs/promises";
+import { dirname, join as join4, resolve as resolve2 } from "node:path";
+async function findProjectRoot(startDir) {
+  let current = resolve2(startDir);
+  let nearestPackage = null;
+  for (; ; ) {
+    for (const dir of [KNOWLEDGE_DIR, LEGACY_KNOWLEDGE_DIR]) {
+      const entries = await readdir4(join4(current, dir)).catch(() => null);
+      if (entries !== null) return current;
+    }
+    if (nearestPackage === null) {
+      const entries = await readdir4(current).catch(() => null);
+      if (entries !== null && entries.includes("package.json")) nearestPackage = current;
+    }
+    const parent = dirname(current);
+    if (parent === current) return nearestPackage;
+    current = parent;
+  }
+}
+
 // src/cli/touched.ts
-import { readFile as readFile12 } from "node:fs/promises";
+import { readFile as readFile4 } from "node:fs/promises";
 function rangesOf(source, text) {
   if (text === "") return [];
   const found = [];
@@ -15585,7 +14932,7 @@ async function touchedBy(toolName, input, filePath) {
     }
   }
   if (written.length === 0) return null;
-  const source = await readFile12(filePath, "utf8").catch(() => null);
+  const source = await readFile4(filePath, "utf8").catch(() => null);
   if (source === null) return null;
   const ranges = written.flatMap((text) => rangesOf(source, text));
   return ranges.length === 0 ? null : ranges;
@@ -15613,8 +14960,8 @@ async function hookResponse(stdin) {
   }
   const filePath = filePathFrom(payload);
   if (filePath === null) return null;
-  const absolute = resolve5(typeof payload.cwd === "string" ? payload.cwd : ".", filePath);
-  const root = await findProjectRoot(dirname4(absolute)) ?? (typeof payload.cwd === "string" ? payload.cwd : null);
+  const absolute = resolve3(typeof payload.cwd === "string" ? payload.cwd : ".", filePath);
+  const root = await findProjectRoot(dirname2(absolute)) ?? (typeof payload.cwd === "string" ? payload.cwd : null);
   if (root === null) return null;
   const findings = await analyzeProject(root, [absolute]).catch(() => []);
   await record(root, findings, { rootDir: root });
@@ -15625,7 +14972,7 @@ async function hookResponse(stdin) {
   ).catch(() => null);
   const said = findings.filter((finding) => within(touched, finding.line));
   if (said.length === 0) return null;
-  const text = said.map((finding) => formatFinding({ ...finding, file: relative4(root, finding.file) })).join("\n\n");
+  const text = said.map((finding) => formatFinding({ ...finding, file: relative2(root, finding.file) })).join("\n\n");
   return {
     hookSpecificOutput: {
       hookEventName: "PostToolUse",
@@ -15639,11 +14986,11 @@ Fix them in this turn.`
 }
 
 // src/cli/session.ts
-import { readdir as readdir7, open } from "node:fs/promises";
-import { join as join12 } from "node:path";
+import { readdir as readdir5, open } from "node:fs/promises";
+import { join as join5 } from "node:path";
 
 // src/version.ts
-var VERSION = "0.14.113";
+var VERSION = "0.14.114";
 
 // src/cli/session.ts
 function shapeFor(env, context) {
@@ -15691,12 +15038,12 @@ var STANDING = [
 ].join("\n");
 async function sessionContext(rootDir) {
   const { dir, legacy } = await knowledgeDir(rootDir);
-  const entries = await readdir7(dir).catch(() => null);
+  const entries = await readdir5(dir).catch(() => null);
   const files = (entries ?? []).filter((name) => /\.md$/i.test(name)).sort();
   const said = [STANDING];
   const versions = /* @__PURE__ */ new Set();
   for (const name of files.slice(0, MAX_FILES)) {
-    const head = await firstBytes(join12(dir, name));
+    const head = await firstBytes(join5(dir, name));
     if (head === null) continue;
     const version = generatedVersion(head);
     if (version !== null && version !== VERSION) versions.add(version);
@@ -15733,100 +15080,7 @@ async function sessionResponse(stdin) {
 import { pathToFileURL } from "node:url";
 
 // src/core/project.ts
-import { readFile as readFile13 } from "node:fs/promises";
-
-// src/core/check.ts
-var IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
-function subpathSymbol(specifier) {
-  const segments = specifier.split("/");
-  const bareLength = specifier.startsWith("@") ? 2 : 1;
-  if (segments.length <= bareLength) return null;
-  const last = segments[segments.length - 1];
-  return IDENTIFIER.test(last) ? last : null;
-}
-function staticImports(ast) {
-  const found = [];
-  for (const statement of ast.program.body) {
-    if (statement.type !== "ImportDeclaration") continue;
-    if (statement.importKind === "type") continue;
-    const specifier = statement.source.value;
-    const line = statement.loc?.start.line ?? 1;
-    for (const binding of statement.specifiers) {
-      if (binding.type === "ImportSpecifier") {
-        if (binding.importKind === "type") continue;
-        const imported = binding.imported;
-        if (imported.type !== "Identifier") continue;
-        found.push({ symbol: imported.name, specifier, line });
-        continue;
-      }
-      if (binding.type === "ImportDefaultSpecifier") {
-        const symbol = subpathSymbol(specifier);
-        if (symbol !== null) found.push({ symbol, specifier, line });
-      }
-    }
-  }
-  return found;
-}
-function reaches(from, to, byName) {
-  const seen = /* @__PURE__ */ new Set();
-  const queue = [...from.dependencies];
-  while (queue.length > 0) {
-    const name = queue.pop();
-    if (name === to) return true;
-    if (seen.has(name)) continue;
-    seen.add(name);
-    queue.push(...byName.get(name)?.dependencies ?? []);
-  }
-  return false;
-}
-function checkSource(filePath, source, chain, inventory2) {
-  const own = chain[0];
-  if (own === void 0) return [];
-  const ast = parseModule(source, filePath);
-  if (ast === null) return [];
-  const importable = /* @__PURE__ */ new Set([own.name, ...own.dependencies]);
-  const ownExports = exportedSymbolsOf(ast);
-  const byName = new Map(chain.map((layer) => [layer.name, layer]));
-  const violations = [];
-  for (const imported of staticImports(ast)) {
-    if (ownExports.has(imported.symbol)) continue;
-    const from = layerFor(imported.specifier, chain);
-    if (from === null) continue;
-    const nearest = chain.find(
-      (layer) => importable.has(layer.name) && inventory2.layers[layer.name]?.[imported.symbol] !== void 0 && (layer.name === from.name || reaches(layer, from.name, byName))
-    );
-    if (nearest === void 0) continue;
-    const entry = inventory2.layers[nearest.name]?.[imported.symbol];
-    if (entry === void 0) continue;
-    if (from.name !== nearest.name) {
-      violations.push({
-        file: filePath,
-        line: imported.line,
-        symbol: imported.symbol,
-        importedFrom: imported.specifier,
-        expectedFrom: nearest.name,
-        reason: "nearer-layer",
-        // Telling a file in @acme/core to `import from '@acme/core'` would be
-        // a circular import. The fact still holds; the fix is a path we do not
-        // resolve yet, so none is offered.
-        ...nearest.name === own.name ? { withinOwnLayer: true } : {}
-      });
-      continue;
-    }
-    if (entry.deprecated) {
-      violations.push({
-        file: filePath,
-        line: imported.line,
-        symbol: imported.symbol,
-        importedFrom: imported.specifier,
-        expectedFrom: nearest.name,
-        reason: "deprecated",
-        ...entry.replacement !== null ? { replacement: entry.replacement } : {}
-      });
-    }
-  }
-  return violations;
-}
+import { readFile as readFile5 } from "node:fs/promises";
 
 // src/knowledge/retrieve.ts
 var GENERIC = /* @__PURE__ */ new Set([
@@ -15994,29 +15248,16 @@ function quoted(value) {
 }
 
 // src/checks/substitution.ts
-function reachableExporter(symbol, chain, inventory2) {
-  const own = chain[0];
-  if (own === void 0) return null;
-  const importable = /* @__PURE__ */ new Set([own.name, ...own.dependencies]);
-  for (const layer of chain) {
-    if (!importable.has(layer.name)) continue;
-    const entry = inventory2.layers[layer.name]?.[symbol];
-    if (entry !== void 0 && !entry.deprecated) return layer.name;
-  }
-  return null;
-}
-function substitutionFindings(filePath, source, rules, chain, inventory2) {
-  if (rules.length === 0 || chain.length === 0) return [];
+function substitutionFindings(filePath, source, rules) {
+  if (rules.length === 0) return [];
   const ast = parseModule(source, filePath);
   if (ast === null) return [];
   const ownExports = exportedSymbolsOf(ast);
   const wanted = /* @__PURE__ */ new Map();
   for (const rule of rules) {
     if (ownExports.has(rule.canonical)) continue;
-    const from = reachableExporter(rule.canonical, chain, inventory2);
-    if (from === null) continue;
     for (const name of rule.forbidden) {
-      if (!wanted.has(name)) wanted.set(name, { rule, from });
+      if (!wanted.has(name)) wanted.set(name, { rule });
     }
   }
   if (wanted.size === 0) return [];
@@ -16032,8 +15273,7 @@ function substitutionFindings(filePath, source, rules, chain, inventory2) {
       level: "reuse",
       source: "knowledge",
       symbol: node.name.name,
-      expectedFrom: match.from,
-      message: `<${quoted(node.name.name)}> is not what this project uses here. "${quoted(match.rule.subject)}" says to use ${quoted(match.rule.canonical)}, which ${quoted(match.from)} exports.`
+      message: `<${quoted(node.name.name)}> is not what this project uses here. "${quoted(match.rule.subject)}" says to use ${quoted(match.rule.canonical)}.`
     });
   });
   return findings.sort((a, b) => a.line - b.line);
@@ -21157,13 +20397,6 @@ function templateFindings(filePath, source, rules) {
 
 // src/core/engine.ts
 var GENERATED = /(\.(?:test|spec|stories|story)\.[jt]sx?$)|(^|\/)__(?:tests|mocks)__\//;
-function importFinding(violation) {
-  return {
-    ...violation,
-    level: violation.reason === "deprecated" ? "deprecated" : "import",
-    message: violation.reason === "deprecated" ? `${violation.symbol} is deprecated in ${violation.importedFrom}.` : importSentence([violation.symbol], violation.importedFrom, violation.expectedFrom)
-  };
-}
 async function runEngine(filePath, source, ctx) {
   if (ctx.includeTestFiles !== true && GENERATED.test(filePath)) return { tier1: [] };
   const kind = templateKind(filePath);
@@ -21176,152 +20409,41 @@ async function runEngine(filePath, source, ctx) {
       )
     };
   }
-  const imports = checkSource(filePath, source, ctx.chain, ctx.inventory).filter((violation) => ctx.withinLayer === true || violation.withinOwnLayer !== true).map(importFinding);
   const retrieved = ctx.knowledge === void 0 ? { fragments: [] } : { fragments: retrieve(source, ctx.knowledge, { filePath }) };
   const tier1 = [
-    ...imports,
     // Curated "use X, never Y" rules. Deterministic because the rule is a
     // declaration somebody wrote, not a pattern inferred from the code next
     // door — no rule, no finding.
     //
-    // Scoped by the same retrieval Tier 2 uses, so a rule only speaks about
-    // what it is about. Applied globally, the widget rule told a *form* to use
+    // Scoped by retrieval, so a rule only speaks about what it is about. Applied globally, the widget rule told a *form* to use
     // a WidgetCard — a finding citing a rule that does not apply is worse than
     // no finding, because it teaches people to stop reading them.
-    ...ctx.knowledge === void 0 ? [] : substitutionFindings(
-      filePath,
-      source,
-      substitutionRules(retrieved),
-      ctx.chain,
-      ctx.inventory
-    )
+    ...ctx.knowledge === void 0 ? [] : substitutionFindings(filePath, source, substitutionRules(retrieved))
   ].sort((a, b) => a.line - b.line);
-  if (tier1.length > 0) return { tier1 };
-  if (ctx.review === void 0 || ctx.knowledge === void 0) return { tier1 };
-  const fragments = retrieved.fragments;
-  if (fragments.length === 0) return { tier1 };
-  const review = ctx.review;
-  const tier2 = Promise.resolve().then(() => review({ filePath, source, fragments })).catch(() => []);
-  return { tier1, tier2 };
+  return { tier1 };
 }
 
 // src/core/project.ts
-function inventoryReader(rootDir) {
-  const inventories = /* @__PURE__ */ new Map();
-  return async (chain) => {
-    const key = chain.map((layer) => layer.name).join(">");
-    let inventory2 = inventories.get(key);
-    if (inventory2 === void 0) {
-      inventory2 = await cachedInventory(rootDir, chain);
-      inventories.set(key, inventory2);
-    }
-    return inventory2;
-  };
-}
-async function checkProject(rootDir, files, options = {}) {
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  if (packages.length === 0) return [];
-  const prefer = config?.prefer ?? [];
-  const inventoryFor = inventoryReader(rootDir);
-  const violations = [];
-  for (const file of files) {
-    const chain = resolveChain(file, packages, prefer);
-    if (chain.length === 0) continue;
-    const source = await readFile13(file, "utf8").catch(() => null);
-    if (source === null) continue;
-    violations.push(...checkSource(file, source, chain, await inventoryFor(chain)));
-  }
-  if (options.withinLayer === true) return violations;
-  return violations.filter((violation) => violation.withinOwnLayer !== true);
-}
-async function analyzeProject(rootDir, files, options = {}) {
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  const prefer = config?.prefer ?? [];
+async function analyzeProject(rootDir, files) {
   const knowledge = await parseKnowledge((await knowledgeDir(rootDir)).dir);
-  const inventoryFor = inventoryReader(rootDir);
   const findings = [];
   for (const file of files) {
-    const chain = resolveChain(file, packages, prefer);
-    const source = await readFile13(file, "utf8").catch(() => null);
+    const source = await readFile5(file, "utf8").catch(() => null);
     if (source === null) continue;
-    const result = await runEngine(file, source, {
-      chain,
-      inventory: await inventoryFor(chain),
-      knowledge,
-      withinLayer: options.withinLayer === true
-    });
+    const result = await runEngine(file, source, { knowledge });
     findings.push(...result.tier1);
   }
   return findings;
 }
 
 // src/cli/index.ts
-async function scan(rootDir) {
-  const sources = await detectionSources(rootDir);
-  const detected = await cachedPackages(rootDir);
-  if (detected.length === 0) {
-    console.error("No packages detected.");
-    console.error("\nLooked for:");
-    console.error("  pnpm-workspace.yaml, or package.json workspaces \u2014 the package set");
-    console.error("  each package.json dependencies \u2014 the order between them");
-    console.error("  compilerOptions.paths in tsconfig.base.json or tsconfig.json \u2014 packages");
-    console.error("  that have no manifest at all, as an Nx workspace does");
-    console.error("\nNone of them matched here. That is a gap in detection rather than");
-    console.error("something for you to configure \u2014 please report what this repository");
-    console.error("looks like: https://github.com/kamenkurtev/ui-consistency/issues");
-    return 1;
-  }
-  console.log(`Detected packages, via ${sources.length > 0 ? sources.join(" and ") : "the root package.json"}:`);
-  for (const pkg of detected) {
-    console.log(`  ${pkg.name} \u2192 ${pkg.dependencies.join(", ") || "(no dependencies)"}`);
-  }
-  console.log("");
-  await clearPackageCache(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), await readConfig(rootDir));
-  const layers = packages.map((pkg) => ({
-    name: pkg.name,
-    root: pkg.root,
-    dependencies: pkg.dependencies
-  }));
-  const inventory2 = await buildInventory(layers);
-  for (const [name, symbols] of Object.entries(inventory2.layers)) {
-    const total = Object.keys(symbols).length;
-    const deprecated = Object.values(symbols).filter((s) => s.deprecated).length;
-    console.log(`${name}: ${total} exports${deprecated > 0 ? `, ${deprecated} deprecated` : ""}`);
-  }
-  return 0;
-}
-async function warnIfNothingWasChecked(rootDir, files) {
-  if (files.length === 0) return;
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  const prefer = config?.prefer ?? [];
-  const onAChain = files.filter((file) => resolveChain(file, packages, prefer).length > 0);
-  if (onAChain.length > 0) return;
-  console.error(`
-None of the ${files.length} file(s) given belongs to a detected package.`);
-  console.error("The checks that read one \u2014 the import check, and the layer half of substitutions \u2014 did not run.");
-  console.error("This is a detection gap, not a clean result.");
-  if (packages.length === 0) {
-    console.error("No packages were detected at all \u2014 run `uic scan` to see what was looked for.");
-  } else {
-    console.error("Detected packages, and where they are rooted:");
-    for (const pkg of packages.slice(0, 10)) {
-      console.error(`  ${pkg.name} \u2192 ${relative5(rootDir, pkg.root) || "."}`);
-    }
-    console.error("If none of those is where your application lives, that is the bug \u2014");
-    console.error("please report it: https://github.com/kamenkurtev/ui-consistency/issues");
-  }
-}
 var GLOB = /[*?[\]{}]/;
 async function givenFiles(rootDir, files) {
   const absolute = [];
   const problems = [];
   for (const file of files) {
-    const path = resolve6(rootDir, file);
-    const found = await stat7(path).catch(() => null);
+    const path = resolve4(rootDir, file);
+    const found = await stat2(path).catch(() => null);
     if (found === null) {
       problems.push(
         GLOB.test(file) ? `${file} matched no file. Globs are expanded by your shell, so a quoted pattern arrives here literally.` : `${file} does not exist.`
@@ -21336,38 +20458,22 @@ async function givenFiles(rootDir, files) {
   }
   return { absolute, problems };
 }
-async function someFileIsOnAChain(rootDir, files) {
-  const config = await readConfig(rootDir).catch(() => null);
-  const packages = applyConfig(await cachedPackages(rootDir).catch(() => []), config);
-  if (packages.length === 0) return false;
-  const prefer = config?.prefer ?? [];
-  for (const file of files) {
-    const chain = resolveChain(file, packages, prefer);
-    if (chain.length === 0) continue;
-    const inventory2 = await cachedInventory(rootDir, chain).catch(() => null);
-    if (inventory2 !== null && Object.values(inventory2.layers).some((one) => Object.keys(one).length > 0)) {
-      return true;
-    }
-  }
-  return false;
-}
 function sayHowToNameFiles(problems) {
   for (const problem of problems) console.error(problem);
   console.error("Name the files, or let the shell name them: $(git ls-files '*.tsx')");
 }
 async function check(rootDir, args) {
   const flags = args.filter((arg) => arg.startsWith("-"));
-  const unknown = flags.filter((flag) => flag !== "--within-layer" && flag !== "--list");
+  const unknown = flags.filter((flag) => flag !== "--list");
   if (unknown.length > 0) {
     console.error(`Unknown option: ${unknown.join(", ")}`);
-    console.error("Usage: uic check [--within-layer] [--list] <file...>");
+    console.error("Usage: uic check [--list] <file...>");
     return 1;
   }
-  const withinLayer = flags.includes("--within-layer");
   const listOnly = flags.includes("--list");
   const files = args.filter((arg) => !arg.startsWith("-"));
   if (files.length === 0) {
-    console.error("Usage: uic check [--within-layer] <file...>");
+    console.error("Usage: uic check [--list] <file...>");
     return 1;
   }
   const { absolute, problems } = await givenFiles(rootDir, files);
@@ -21375,8 +20481,7 @@ async function check(rootDir, args) {
     sayHowToNameFiles(problems);
     return 1;
   }
-  const findings = await analyzeProject(rootDir, absolute, { withinLayer });
-  if (!listOnly) await warnIfNothingWasChecked(rootDir, absolute);
+  const findings = await analyzeProject(rootDir, absolute);
   let coverage = null;
   if (findings.length === 0) {
     coverage = await coverageOf(rootDir, absolute).catch(() => null);
@@ -21391,7 +20496,7 @@ async function check(rootDir, args) {
   if (listOnly) {
     const seen = /* @__PURE__ */ new Set();
     for (const finding of findings) {
-      const path = relative5(rootDir, finding.file);
+      const path = relative3(rootDir, finding.file);
       if (seen.has(path)) continue;
       seen.add(path);
       console.log(path);
@@ -21402,58 +20507,10 @@ async function check(rootDir, args) {
     return seen.size > 0 ? 1 : 0;
   }
   for (const finding of findings) {
-    console.log(`${formatFinding({ ...finding, file: relative5(rootDir, finding.file) })}
+    console.log(`${formatFinding({ ...finding, file: relative3(rootDir, finding.file) })}
 `);
   }
-  if (findings.length > 0 && !await someFileIsOnAChain(rootDir, absolute)) {
-    console.error("Note: no file in this set belongs to a package whose entry point could be read,");
-    console.error("so the import check and the layer half of substitutions did not run.");
-    console.error("`uic inventory <file>` says which layers were tried. What is above is the four");
-    console.error("checks that need no chain.");
-  }
   return findings.length > 0 ? 1 : 0;
-}
-async function inventory(rootDir, args) {
-  const file = args.find((arg) => !arg.startsWith("-"));
-  if (file === void 0) {
-    console.error("Usage: uic inventory <file>");
-    return 1;
-  }
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  const chain = resolveChain(resolve6(rootDir, file), packages, config?.prefer ?? []);
-  const named = relative5(rootDir, resolve6(rootDir, file));
-  if (chain.length === 0) {
-    console.error(`${named} belongs to no detected package.`);
-    console.error(
-      packages.length === 0 ? "No package was detected at all \u2014 `uic scan` shows what was looked for." : `${packages.length} package(s) were detected, and none of them owns this file.`
-    );
-    console.error("There is no inventory to print, which is a detection gap and not a clean result.");
-    return 1;
-  }
-  const built = await cachedInventory(rootDir, chain);
-  let printed = 0;
-  for (const layer of chain) {
-    const symbols = built.layers[layer.name] ?? {};
-    const names = Object.keys(symbols).sort();
-    if (names.length === 0) continue;
-    printed++;
-    console.log(`# ${layer.name}`);
-    for (const name of names) {
-      const entry = symbols[name];
-      const note = entry.deprecated ? ` \u2014 deprecated${entry.replacement === null ? "" : `, use ${entry.replacement}`}` : "";
-      console.log(`  ${name}${note}`);
-    }
-  }
-  if (printed === 0) {
-    console.error(`Nothing readable on the ${chain.length} layer(s) ${named} sits on:`);
-    for (const layer of chain.slice(0, 10)) console.error(`  ${layer.name}`);
-    console.error("Every one of them is external, or its entry point could not be read.");
-    console.error('A workspace package naming a built entry \u2014 `"main": "./index.js"` in a checkout \u2014');
-    console.error("is the second case, and `src/index.ts` beside it is what would be read instead.");
-    return 1;
-  }
-  return 0;
 }
 async function hook() {
   const response = await hookResponse(await readStdin()).catch(() => null);
@@ -21482,24 +20539,17 @@ async function auditShapes(rootDir, args) {
     return 1;
   }
   const files = named;
-  const config = await readConfig(rootDir);
-  const packages = applyConfig(await cachedPackages(rootDir), config);
-  const dependedOn = new Set(packages.flatMap((pkg) => pkg.dependencies));
   const library = [];
   const app = [];
   for (const file of files) {
-    const absolute = resolve6(rootDir, file);
-    const source = await readFile14(absolute, "utf8").catch(() => null);
+    const absolute = resolve4(rootDir, file);
+    const source = await readFile6(absolute, "utf8").catch(() => null);
     if (source === null) continue;
-    const owner = packages.find((pkg) => contains(pkg.root, absolute));
-    const shared = owner !== void 0 && dependedOn.has(owner.name);
-    if (shared) {
-      const exported = [...exportedSymbolsFromSource(source)];
-      if (exported.length === 1) {
-        library.push({ component: exported[0], file: relative5(rootDir, absolute), source });
-      }
+    const exported = [...exportedSymbolsFromSource(source)];
+    if (exported.length === 1) {
+      library.push({ component: exported[0], file: relative3(rootDir, absolute), source });
     }
-    app.push({ file: relative5(rootDir, absolute), source });
+    app.push({ file: relative3(rootDir, absolute), source });
   }
   const report = shapeReport({ library, app });
   const byComponent = /* @__PURE__ */ new Map();
@@ -21603,14 +20653,10 @@ async function main(argv) {
   const [command, ...rest] = argv;
   const rootDir = process.cwd();
   switch (command) {
-    case "scan":
-      return scan(rootDir);
     case "check":
       return check(rootDir, rest);
     case "shapes":
       return auditShapes(rootDir, rest);
-    case "inventory":
-      return inventory(rootDir, rest);
     case "log":
       return showLog(rootDir);
     case "hook":
@@ -21618,17 +20664,16 @@ async function main(argv) {
     case "session":
       return session();
     default:
-      console.error("Usage: uic <scan|check|shapes|inventory|log>");
+      console.error("Usage: uic <check|shapes|log>");
       return 1;
   }
 }
 if (process.argv[1] !== void 0) {
-  const entry = await realpath2(process.argv[1]).then((real) => pathToFileURL(real).href).catch(() => null);
+  const entry = await realpath(process.argv[1]).then((real) => pathToFileURL(real).href).catch(() => null);
   if (entry === import.meta.url) process.exit(await main(process.argv.slice(2)));
 }
 export {
   analyzeProject,
-  checkProject,
   main
 };
 /*! Bundled license information:

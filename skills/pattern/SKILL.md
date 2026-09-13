@@ -31,6 +31,10 @@ screen differs, and what a slot is allowed to hold instead.
 - **`routes-and-breadcrumbs.md`** — where a route and a trail come from. The
   breadcrumb is the one got wrong nearly every time.
 - **`raw-values.md`** — applies to every line you write, whatever the kind.
+- **`imports-and-layers.md`** — where a symbol comes from. The one fact that is
+  not visible in the file, so the project states it; where it has not, the
+  family's own import lines are the evidence, and saying so is part of the
+  pattern.
 - **`pattern-file.md`** — what the file you are about to write states, and how.
 
 ## 1. A named reference and a derived family are not worth the same

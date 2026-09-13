@@ -3,7 +3,7 @@ import { analyzeProject } from './index.js';
 import { SILENCED } from '../core/off.js';
 import { record } from './log.js';
 import { formatFinding } from '../core/format.js';
-import { findProjectRoot } from '../layers/detect.js';
+import { findProjectRoot } from '../core/project-root.js';
 import { touchedBy, within } from './touched.js';
 
 /** The shape Claude Code accepts back from a `PostToolUse` hook. */
