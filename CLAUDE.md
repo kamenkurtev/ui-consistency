@@ -58,9 +58,8 @@ to this repository only — both trackers start at 1.
 
 ## Working here
 
-- The skills are validated on real projects — three large ones on the owner's
-  work machine; what fails there comes back as issues. A fixture or a small
-  local app shows an idea is right in shape, never that it holds.
+- The skills are validated on real projects, not fixtures; what fails comes back
+  as issues. A fixture shows an idea is right in shape, never that it holds.
 - Designs and plans go on the issue, not into `docs/`.
 - `tests/names.test.ts` fails on a skill or command named in `skills/` that does
   not exist. `tests/packaging.test.ts` fails on a library component name in the
