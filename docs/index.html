@@ -312,7 +312,7 @@
   <header class="masthead">
     <div class="eyebrow">Install and try</div>
     <h1>Try ui-consistency</h1>
-    <p class="standfirst">Skills and rules that make your coding agent build screens the way your project already builds them. Like superpowers, but for UI.</p>
+    <p class="standfirst">Skills that make your coding agent build pages the way your project already builds them — for any UI technology, including plain HTML and CSS.</p>
     <div class="meta">
       <span>Node 20+</span>
       <span>No build step</span>
@@ -322,9 +322,9 @@
 
   <section>
     <h2>What it actually does</h2>
-    <p>Before your agent builds or changes a screen, it reads the screens of that kind your project already has — the holder, the order of the regions, which component fills each role, the props most of them are written with — and writes that down as a pattern file in <code>.ui-consistency/patterns/</code>.</p>
-    <p>Then every screen is written from that file, one at a time, so the thirtieth matches the first. At the end, every screen touched is compared against it.</p>
-    <p>There is no built-in list of components, no framework it prefers, no API key and nothing to configure.</p>
+    <p>Before your agent builds or changes a page, it reads the page you name as the reference — top to bottom, then left to right: the holders, the components in each, how each is written, how forms validate and errors are shown — and searches how the other pages reuse those pieces. It writes that down in <code>.ui-consistency/patterns/</code>.</p>
+    <p>Then each page is written from that file, one at a time, and a separate agent compares it with the reference, region by region — after first proving it catches a difference planted on purpose.</p>
+    <p>It asks you once, only where your project contradicts itself or where it has something to propose. No script, no API key, nothing to configure.</p>
   </section>
 
   <section>
@@ -345,32 +345,16 @@
       <li class="step">
         <div class="step-n">02</div>
         <div class="step-body">
-          <h3>Ask for a screen</h3>
-          <p>That is the whole setup. The agent picks up the skills on its own: it establishes the pattern first, then writes the screen from it. Where there is nothing to copy — the first screen of a kind — it asks you what the screen should look like, and writes down only what you answered.</p>
+          <h3>Ask for a page, a feature or a refactor</h3>
+          <p>That is the whole setup. The agent picks up the skills on its own: it establishes the pattern, plans one page per task, builds from the pattern and verifies each page. With superpowers installed, the same phases add to its brainstorming and its plan instead of running a second one.</p>
         </div>
       </li>
 
       <li class="step">
         <div class="step-n">03</div>
         <div class="step-body">
-          <h3>Ask it whether it is doing anything</h3>
-          <pre class="term"><span class="p">&gt;</span> use ui-consistency:reach</pre>
-          <p>It answers level by level, and there are only three answers:</p>
-          <dl class="silences">
-            <div class="silence s-good">
-              <dt>Works</dt>
-              <dd>and here is what it read</dd>
-            </div>
-            <div class="silence s-quiet">
-              <dt>Quiet</dt>
-              <dd>because your project has stated nothing — this is the design, not a fault</dd>
-            </div>
-            <div class="silence s-blind">
-              <dt>Blind</dt>
-              <dd>it cannot see here, and here is why</dd>
-            </div>
-          </dl>
-          <p>No score and no grade.</p>
+          <h3>Read what it wrote</h3>
+          <p>The pattern file names the reference, what is reused, where values come from, what you decided, and what belongs to the reference alone. Where it could only sample, or could not read something, it says so.</p>
         </div>
       </li>
 
@@ -381,20 +365,17 @@
     <h2>The skills</h2>
     <p>The agent uses them on its own; you can also invoke any of them by name.</p>
     <div class="skills">
-      <div class="skill"><code>ui-consistency:pattern</code><span>what screens of this kind look like here</span></div>
-      <div class="skill"><code>ui-consistency:decide</code><span>the first screen of a kind, when there is nothing to copy</span></div>
-      <div class="skill"><code>ui-consistency:screen</code><span>write one against the pattern</span></div>
-      <div class="skill"><code>ui-consistency:rollout</code><span>apply it across many, one file per turn</span></div>
-      <div class="skill"><code>ui-consistency:verify</code><span>compare the finished set, before a PR</span></div>
-      <div class="skill"><code>ui-consistency:review</code><span>a second opinion on one screen</span></div>
-      <div class="skill"><code>ui-consistency:reach</code><span>which of the three silences you are looking at</span></div>
+      <div class="skill"><code>ui-consistency:establishing-patterns</code><span>how pages of this kind are built here</span></div>
+      <div class="skill"><code>ui-consistency:planning-with-patterns</code><span>one checkable task per page</span></div>
+      <div class="skill"><code>ui-consistency:building-with-patterns</code><span>one page at a time, from the pattern</span></div>
+      <div class="skill"><code>ui-consistency:verifying-against-patterns</code><span>a separate agent compares each page with the reference</span></div>
     </div>
   </section>
 
   <section>
     <div class="notice">
       <h3>When you report back</h3>
-      <p><strong>Keep the numbers and drop the names.</strong> Rename every component, screen, route file and test-id prefix to a neutral equivalent of the same shape — <code>OrdersGrid</code> for a PascalCase grid, <code>app-orders-grid</code> for its selector form.</p>
+      <p><strong>Keep the numbers and drop the names.</strong> Rename every component, page, route file and test-id prefix to a neutral equivalent of the same shape — <code>OrdersGrid</code> for a PascalCase grid, <code>app-orders-grid</code> for its selector form.</p>
     </div>
   </section>
 
@@ -402,7 +383,7 @@
     <h2>Reporting something</h2>
     <ul class="plain">
       <li>Say what you asked the agent, what it did, and what you expected.</li>
-      <li>If nothing happened, paste what <code>ui-consistency:reach</code> said — it tells apart a quiet project from a blind plugin.</li>
+      <li>Paste the pattern file it wrote, with names made neutral, and what it said it could not read.</li>
       <li>Issues go to <a class="link" href="https://github.com/kamenkurtev/ui-consistency/issues">the tracker</a>.</li>
     </ul>
   </section>
