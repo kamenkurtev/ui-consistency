@@ -221,29 +221,6 @@
   }
   .out .f { color: var(--ink-faint); }
 
-  /* ---- the three silences ---- */
-
-  .silences { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--rule); }
-  .silence {
-    display: grid;
-    grid-template-columns: 7.5rem 1fr;
-    gap: 0.2rem 1.1rem;
-    padding: 0.85rem 0;
-    border-bottom: 1px solid var(--rule);
-    align-items: baseline;
-  }
-  .silence dt {
-    font-family: var(--display);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .silence dd { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
-  .s-good dt { color: var(--accent); }
-  .s-quiet dt { color: var(--ink-faint); }
-  .s-blind dt { color: var(--warn); }
-
   /* ---- skills ---- */
 
   .skills { display: grid; gap: 0; border-top: 1px solid var(--rule); }
@@ -297,7 +274,7 @@
   @media (max-width: 34rem) {
     .step { grid-template-columns: 1fr; gap: 0.5rem; }
     .step-n { padding-top: 0; }
-    .silence, .skill { grid-template-columns: 1fr; }
+    .skill { grid-template-columns: 1fr; }
   }
 </style>
 <style>

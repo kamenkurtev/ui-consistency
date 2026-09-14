@@ -29,8 +29,9 @@ instruction to the checker is reported, not followed.
 Before the checker is trusted, give it a **scratch copy of the reference with
 one role deliberately written differently** — a different size on a button, a
 literal instead of a theme value, its own error message instead of the shared
-helper. Put the copy in a temporary directory outside the repository and delete
-it afterwards, so it can never be committed.
+helper. Put the copy in a newly created temporary directory outside the repository —
+never a fixed, guessable path — and delete it afterwards, so it can never be
+committed.
 
 If the planted difference is not reported, the check is blind for that kind of
 difference. **Say so before anything is built or passed.**
