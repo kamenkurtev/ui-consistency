@@ -58,39 +58,33 @@ async function firstBytes(path: string): Promise<string | null> {
 }
 
 /**
- * The standing instruction: when each skill fires, and the order between them.
+ * The standing instruction: which skills a job takes, and in what order.
  *
- * Each `SKILL.md` description says when it applies; this adds the order between
- * them. It is phrased as an instruction to act, not as a promise not to — "nothing
- * is spent until somebody asks" reads to an agent as *do not act unless asked*.
+ * Each `SKILL.md` description says when it applies; this adds the order, and
+ * says the skills join a process that is already running rather than claiming
+ * the start of every task. A second standing instruction that competes with an
+ * installed planning process is what this replaced.
  *
  * Fixed text. It is not a scan, it parses nothing and it calls no model, so the
  * session costs what it always cost: a directory listing and at most twelve
  * short reads.
  *
- * The same words are in `AGENTS.md`, because three of the four supported
- * harnesses have no hook and that file is how they reach it.
+ * The same words are in `AGENTS.md`, because the harnesses without a session
+ * hook read that file instead.
  */
 const STANDING = [
-  'ui-consistency — when the work is about screens, this is the order. Do not wait to be asked.',
+  'ui-consistency — for anything the end user will see, these join the phases of',
+  'whatever process is already running, and run the phases themselves when none is.',
   '',
-  '1. ui-consistency:pattern — BEFORE writing or changing a screen. It reads what',
-  '   screens of that kind already look like here and writes it down. A screen',
-  '   written first and corrected after is a screen somebody has to be persuaded',
-  '   to change.',
-  '2. ui-consistency:decide — where pattern finds fewer than three screens of the',
-  '   kind. It asks; it does not draft. The first screen of a kind is a decision,',
-  '   not a derivation.',
-  '3. ui-consistency:screen — writing one screen against what pattern established.',
-  '   ui-consistency:rollout — the same change across many; it queues them and',
-  '   verifies the whole set rather than trusting thirty separate turns.',
-  '4. ui-consistency:verify — before handing the work over.',
-  '   ui-consistency:review — a second opinion on one screen, when asked.',
-  '5. ui-consistency:reach — when you cannot tell whether this project is clean or',
-  '   this tool is blind here. Those look identical and are not.',
+  '- A new page or feature, or a refactor across pages:',
+  '  ui-consistency:establishing-patterns → ui-consistency:planning-with-patterns',
+  '  → ui-consistency:building-with-patterns → ui-consistency:verifying-against-patterns',
+  '- A small change to one page: establishing-patterns (only what it touches)',
+  '  → building-with-patterns → verifying-against-patterns.',
+  '- Checking code already written: verifying-against-patterns.',
   '',
-  'Nothing is spent until UI work starts. This message is the whole of what a',
-  'session costs.',
+  'If a spec or plan for this work already exists, add to it instead of starting',
+  'another. Ask the user once, only about contradictions and proposals.',
 ].join('\n');
 
 /**
@@ -132,7 +126,7 @@ export async function sessionContext(rootDir: string): Promise<string | null> {
         `plugin ${[...versions].sort().join(', ')}; this is ${VERSION}.`,
         'Nothing generates those files any more. They are a stored copy of what the',
         `code says, which is the thing that goes stale — keep whatever in them was`,
-        `intent, in ${DIR}/decisions/, and delete the rest.`,
+        `intent, in ${DIR}/patterns/, and delete the rest.`,
       ].join(' '),
     );
   }

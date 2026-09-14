@@ -1,57 +1,46 @@
 # ui-consistency
 
-Skills and rules that keep the screens you write consistent with the ones this
-project already has. Nothing here grades finished code: it establishes what
-screens of a kind look like **here**, writes that down as a pattern file, and
-the work is done from it.
+Skills that make the pages you write look and behave like the ones this project
+already has — the right component written the way the other pages write it, the
+project's own validation and error handling, values from the theme. For any UI
+technology, including plain HTML and CSS.
 
-## When the work is about screens, this is the order
+## Which skills a job takes
 
-Do not wait to be asked.
+For anything the end user will see, these join the phases of whatever process is
+already running, and run the phases themselves when none is.
 
-1. `ui-consistency:pattern` — BEFORE writing or changing a screen. It reads what
-   screens of that kind already look like here and writes it down. A screen
-   written first and corrected after is a screen somebody has to be persuaded
-   to change.
-2. `ui-consistency:decide` — where pattern finds fewer than three screens of the
-   kind. It asks; it does not draft. The first screen of a kind is a decision,
-   not a derivation.
-3. `ui-consistency:screen` — writing one screen against what pattern established.
-   `ui-consistency:rollout` — the same change across many; it queues them and
-   verifies the whole set rather than trusting thirty separate turns. A request
-   naming a set — *all the*, *every*, *the rest* — is a rollout whether or not
-   the word was used.
-4. `ui-consistency:verify` — before handing the work over.
-   `ui-consistency:review` — a second opinion on one screen, when asked.
-5. `ui-consistency:reach` — when you cannot tell whether this project is clean or
-   this tool is blind here. Those look identical and are not.
-
-Each skill is invocable on its own; none requires another to have run.
-
-## The rules
-
-Plain Markdown under `rules/`. Read them directly if your harness has no skill
-mechanism — they are the instructions.
-
-| Rule | What it settles |
+| The job | Skills, in order |
 | --- | --- |
-| `what-a-screen-is.md` | how many files a screen is, per framework — Angular's is a pair |
-| `anatomy.md` | the roles a screen has, in the order they are read, each as a question |
-| `family-and-particulars.md` | where a family comes from, and what must not be copied from a reference |
-| `roles-and-names.md` | roles are universal, names are local, and an empty answer is not a clean one |
-| `routes-and-breadcrumbs.md` | where a route and a trail come from, per router family |
-| `raw-values.md` | no colour literal, no absolute length, no emoji where an icon belongs |
-| `imports-and-layers.md` | where a symbol comes from — the one fact not in the file, so the project writes it down |
-| `what-a-decision-is.md` | what belongs in a decisions file |
-| `pattern-file.md` | what a pattern file states and how |
+| a new page or feature | `ui-consistency:establishing-patterns` → `ui-consistency:planning-with-patterns` → `ui-consistency:building-with-patterns` → `ui-consistency:verifying-against-patterns` |
+| a refactor across pages | the same four |
+| a small change to one page | establishing (only what it touches) → building → verifying |
+| checking code already written | verifying |
+
+If a spec or plan for this work already exists, add to it instead of starting
+another. Ask the user once, only about contradictions and proposals.
+
+- **establishing-patterns** — reads the reference page top to bottom and left to
+  right, searches what the other pages reuse and how, takes values from the
+  theme, and writes the pattern file.
+- **planning-with-patterns** — one task per page, each carrying the pattern file,
+  what not to copy, and a check by a separate agent; stops for a yes.
+- **building-with-patterns** — one page per task in a fresh context, from the
+  pattern file.
+- **verifying-against-patterns** — a separate agent compares each page with the
+  reference region by region, after proving it catches a planted difference.
+
+Read `skills/*/SKILL.md` directly if your harness has no skill mechanism — they
+are the instructions.
 
 ## What the project keeps
 
-`.ui-consistency/` in the repository root, committed:
+`.ui-consistency/` in the repository root:
 
-- `patterns/<name>.md` — one pattern file per pattern (`rules/pattern-file.md`).
-- `decisions/<kind>.md` — a few lines of intent per kind (`rules/what-a-decision-is.md`).
-- any other Markdown — the project's own rules, one per heading.
+- `patterns/<kind>.md` — how pages of one kind are built here: the role tree,
+  what is reused, where values come from, what the user decided, what belongs to
+  the reference alone. Committed.
+- `plans/<topic>.md` — the page-by-page plan, when no other process wrote one.
 
-Nothing has to be configured. Screens, roles and routes are read from the code,
-and no component name is assumed — every team names its own.
+Nothing has to be configured. Everything is read from the project, and no
+component name is assumed — every technology and every team names its own.
