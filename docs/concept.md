@@ -4,132 +4,108 @@
 
 ## The problem
 
-An agent writing UI does not know your design system. It knows React, it knows
-MUI, it knows what a good dashboard widget looks like in general — and it will
-write one. In general.
+An agent writing UI knows frameworks and component libraries in general. It does
+not know **this project**, so it writes pages that work and look wrong:
 
-So it imports `Button` from `@mui/material` when your `@acme/core` exports one.
-It writes `fontSize: 12` on a title where the four widgets beside it use a
-typography variant. It builds a detail screen as a `Dialog` when every other
-detail screen in the app is a routed page.
+- the right button, with the wrong variant, size, colour or styles, because it
+  never looked at how that button is written in that place on the other pages;
+- its own form validation, where the project validates with a library on almost
+  every page;
+- a new way of catching and showing an error, on every page it writes;
+- a literal colour or margin, where the project has a theme;
+- a snippet pasted again, where it should have become a component.
 
-Every one of those renders and passes review. And every one is a small,
-permanent divergence: the next screen is copied from this one, and a year later
-the application has four ways to do everything.
+Every one of those renders and passes review. Every one is a small, permanent
+divergence: the next page is copied from this one.
 
 **This is not a code quality problem.** Linters and type checkers pass on all of
-it. It is a *consistency with this project* problem, and the answer lives only
-in your repository and in your team's head.
+it. It is a *consistency with this project* problem, and the answer lives only in
+the repository and in the team's head.
 
 ## What was tried first
 
-Tell the agent. Thirty pages, an implementation plan naming exactly which
-components to use — and the pages still came out inconsistent. A plan is
-advisory text with nothing forcing closure: across thirty files it degrades, and
-nothing verifies that page fifteen complied.
+Tell the agent. A thirty-page refactor with a plan naming exactly which
+components to use — and the pages still came out different. A plan is text, and
+nothing checked page fifteen against it.
 
-So the answer is not a better prompt. It is a method: establish the pattern from
-the project's own screens, write it down, write every screen from the written
-pattern rather than from memory, one file at a time, and compare the finished
-set against it.
+Then programs: parsers, checks, inventories. They became thousands of lines that
+kept being wrong on the next project, and debugging them replaced the work they
+were meant to support.
 
 ## The shape
 
-Like [superpowers](https://github.com/obra/superpowers), but for UI: **skills
-and rules, and almost no code.**
+**Skills the developer's own agent follows, and nothing else.** The agent already
+reads code. The skills say how to look — in what order, what to count, what to
+ask — and the agent looks with its own tools.
 
-- **Rules** (`rules/`) — plain Markdown knowledge the agent follows while
-  writing: what a screen is per framework, its anatomy, where a family comes
-  from, where routes and breadcrumbs come from, raw values, imports. Knowledge
-  like this breaks silently when written as a list in a program; written as a
-  paragraph it is applied with judgement, and when it is wrong it is wrong
-  visibly.
-- **Skills** (`skills/`) — the method: `pattern`, `decide`, `screen`,
-  `rollout`, `verify`, `review`, `reach`. Each is reached by its description, so
-  it fires in whatever language the work is discussed in.
-- **A session hook** that tells the agent which skills exist and in what order
-  they fire. Harnesses without hooks read the same text from `AGENTS.md`.
+The work goes through four phases, the same whether a planning process such as
+superpowers is running or not:
 
-**Before the code is written** is the whole point. An agent that has read the
-pattern writes the right screen once; one told afterwards has to be persuaded to
-change working code.
+1. **Establish** — read a reference page top to bottom and left to right, search
+   what the other pages reuse and how, take values from the theme, ask once, and
+   write a pattern file.
+2. **Plan** — one task per page, each carrying what makes it checkable.
+3. **Build** — one page at a time, in a fresh context, from the pattern file.
+4. **Verify** — a separate agent compares each page with the reference, region by
+   region, and then the whole set.
 
-No model is called by the plugin. The model doing the reading is whichever one
-you are already talking to — so there is no key, nothing to configure, and the
-same plugin works under Claude Code, Codex, Cursor and Gemini CLI.
+With another process running, each phase adds to that process's spec and plan
+rather than starting a second one. It tells by what exists on disk, not by which
+plugins are installed.
 
-## The two decisions everything else follows from
+## The ideas everything else follows from
 
-### 1. Nothing derived fails anything
+### Roles are universal; names are local
 
-Nothing blocks an edit or fails a build on its own judgement. A literal the
-project has said something about — a theme, a token file, a written rule — is
-worth reporting. A literal it has said nothing about is handed to the agent as
-evidence, beside the sibling screens and the rules, and the agent decides.
+A page has a holder, a header, a content area, fields, a submit button, a way of
+showing a failure. Every technology has those roles, and every technology fills
+them with different pieces — a framework component, a custom element, a partial,
+a block of markup with a shared class. So the skills name roles and read what
+fills them from the project. A project of plain HTML and CSS goes through the
+same phases.
 
-Reporting every literal floods, and a tool that floods gets switched off.
+### A named reference outranks a count
 
-### 2. Conventions are curated, never inferred
+Eight pages sharing a convention and eight pages sharing a mistake look
+identical to a counter. So the user names the page to follow, and counting only
+separates what repeats from what belongs to that page alone. Counts are honest
+only with two more facts:
 
-You could derive the rules from frequency: see what most files do, enforce that.
-But **eight files sharing a convention and eight files sharing a mistake look
-identical.** A tool that infers rules from frequency finds the most-copied
-mistake and enforces it.
+- **where the component stands** — in one app, 10 of 18 buttons were full-width,
+  which reads as no rule; by position it was 10 of 10 in the content area and 0
+  of 4 in toolbars;
+- **how many files** — four identical buttons in one file are one page's habit.
 
-So there are two modes, and they carry different weight:
+### Ask only what the project does not answer
 
-- **A named reference** — *"use `OrderList.tsx` as reference"*, or a `canon:`
-  line in a decisions file. Somebody chose it; frequency never enters.
-- **A derived family** — screens of the same kind, read with nothing named.
-  Still worth having, because file thirty is then measured against the same
-  thing as file one. But it is statistics, and it is said to be.
+Where the reference and the rest of the project agree, the agent takes the answer
+and says so. It asks once, and only about contradictions and proposals. A tool
+that interrogates gets switched off.
+
+### A plan carries its check
+
+What failed before was a plan with nothing closing the loop. Here every page task
+carries the pattern file, what not to copy, and a check by an agent that did not
+write the page — and that checker first proves it can see, on a copy of the
+reference with one difference planted.
+
+### Silence is never success
+
+"It found nothing" can mean the pages match, or that nothing was looked at. Every
+phase says what it read, whether it sampled, and what it could not interpret.
 
 ## What it writes down
 
-**Intent, and nothing else.** Every fact about the code is read fresh, because a
-stored copy of what the code says can only go stale.
-
-- **A pattern file** — `.ui-consistency/patterns/<name>.md`, one per pattern:
-  the structure, the slots and what each allows, the props with the strength of
-  each (`5 of 6`), the rules as sentences, and every screen it covers. Written
-  by the agent from reading the code, marked `derived: true` until a person has
-  reviewed it. The format is `rules/pattern-file.md`.
-- **A decisions file** — `.ui-consistency/decisions/<kind>.md`, a few lines per
-  kind: which screen is canonical, which package to prefer, and why. Written by
-  `ui-consistency:decide` from what the user actually said.
-
-Prose, because three things a pattern must state cannot be data: an alternative
-a slot allows, a rule no checker can evaluate, and the reason one screen is
-allowed to differ.
-
-## Silence is never success
-
-*"It found nothing"* can mean the project is consistent, or that nothing was
-looked at. Those look identical and are not. Every skill says which: it worked
-and here is what it read; it is quiet because the project has stated nothing;
-or it is blind here, and here is why. `ui-consistency:reach` answers exactly
-that question.
-
-*"Fewer than three screens of this kind"* — every new area, every new project,
-the first page of any refactor — is not a dead end. `ui-consistency:decide`
-walks the anatomy as questions and writes down only what was answered.
-
-## Frameworks
-
-What a screen *is* differs by framework: one file in React, Solid and Qwik; one
-SFC in Vue and Svelte; **a pair** in Angular — `orders.component.ts` carries the
-identity and wiring, `orders.component.html` the markup, and neither is a screen
-alone. `rules/what-a-screen-is.md` states it.
-
-`rules/raw-values.md` covers literals written in a screen. A class-based system
-(Tailwind, CSS modules, styled-components) keeps its values elsewhere, and the
-rule says so rather than implying coverage.
+- **A pattern file** per kind of page — `.ui-consistency/patterns/<kind>.md`: the
+  role tree with counts and files, what is reused, where values come from, what
+  the user decided, what belongs to the reference alone.
+- **A plan** — `.ui-consistency/plans/<topic>.md`, only when no other process
+  wrote one.
 
 ## What this is not
 
 - **Not a linter.** It has no opinion about your code in general.
-- **Not a design-system opinion.** It follows *your* vocabulary. No component
-  name is built in.
-- **Not a gate.** It guides the agent while it writes; nothing fails a build.
-- **Not a service.** No network, no telemetry, no account, no key.
+- **Not a design-system opinion.** It follows *your* vocabulary.
+- **Not a gate.** Nothing fails a build.
+- **Not a program.** No parser, no network, no telemetry, no account, no key.
 - **Not for sale.** Free and open source.

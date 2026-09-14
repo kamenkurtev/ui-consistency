@@ -29,7 +29,7 @@ without `--minify`, so comments ship in `bin/uic.mjs` and are covered too.
 
 ## The documents this applies to
 
-`CLAUDE.md`, `docs/concept.md`, `README.md`, `AGENTS.md`, `rules/` and
+`CLAUDE.md`, `docs/concept.md`, `README.md`, `AGENTS.md` and
 `skills/*/SKILL.md`.
 
 Before opening a PR, read them against the change and say in the body which
