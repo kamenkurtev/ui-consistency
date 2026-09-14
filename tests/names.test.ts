@@ -5,7 +5,7 @@ import { join } from 'node:path';
 /**
  * Nothing this plugin ships may name a command or a skill that was deleted.
  *
- * The skills and the rules *are* the product, so a dangling name in one of them
+ * The skills *are* the product, so a dangling name in one of them
  * is an instruction to run something that does not exist, handed to an agent
  * that will try.
  */
@@ -23,7 +23,7 @@ function named(text: string, pattern: RegExp): string[] {
   return [...text.matchAll(new RegExp(pattern.source, 'g'))].map((match) => match[1] ?? '');
 }
 
-describe('what the skills and the rules offer to run', () => {
+describe('what the skills offer to run', () => {
   it('names only commands and skills that exist', async () => {
     const skills = new Set(await readdir(join(ROOT, 'skills')));
 
@@ -42,12 +42,7 @@ describe('what the skills and the rules offer to run', () => {
       const text = await readFile(join(ROOT, 'skills', name, 'SKILL.md'), 'utf8').catch(() => null);
       if (text !== null) prose.push({ where: `skills/${name}`, text });
     }
-    for (const name of await readdir(join(ROOT, 'rules'))) {
-      if (!name.endsWith('.md')) continue;
-      const text = await readFile(join(ROOT, 'rules', name), 'utf8').catch(() => null);
-      if (text !== null) prose.push({ where: `rules/${name}`, text });
-    }
-    expect(prose.length).toBeGreaterThan(8);
+    expect(prose.length).toBeGreaterThanOrEqual(4);
 
     const offered: string[] = [];
     for (const { where, text } of prose) {

@@ -101,16 +101,20 @@ describe('the skills', () => {
       expect(description.toLowerCase()).toMatch(/\buse (this )?when\b|\bwhen the user\b/);
     });
 
-    /**
-     * A skill must be grounded in something outside itself — the binary, or a
-     * rule in `rules/` — rather than telling an agent to decide from what a
-     * screen usually looks like.
-     */
-    it(`${skill} grounds itself in the binary or a rule, rather than guessing`, async () => {
-      const text = await readFile(`${dir}/${skill}/SKILL.md`, 'utf8');
-      expect(text).toMatch(/uic\.mjs|rules\/[a-z-]+\.md/);
-    });
   }
+
+  /**
+   * The session text is the one place that says which skill fires for which
+   * job. A skill it does not name only fires if a description happens to match;
+   * a name it carries with no skill behind it sends the agent looking for
+   * something that is not there.
+   */
+  it('are exactly the skills the session text names', async () => {
+    const session = await readFile(fileURLToPath(new URL('../src/cli/session.ts', import.meta.url)), 'utf8');
+    const named = new Set([...session.matchAll(/\bui-consistency:([a-z][\w-]*)/g)].map((m) => m[1]!));
+
+    expect([...named].sort()).toEqual([...skills].sort());
+  });
 });
 
 describe('what the shipped bundle does not carry', () => {
@@ -193,17 +197,16 @@ describe('what the program is allowed to know', () => {
   });
 
   /**
-   * The same argument again, one level out: the rules are instructions an agent
-   * acts on, and a vendor's component name in one of them is a vocabulary
-   * shipped as prose.
+   * The same argument again, one level out: the skills are instructions an
+   * agent acts on, and one technology's component name in one of them is a
+   * vocabulary shipped as prose. Every technology builds a page differently, so
+   * the skills name roles.
    *
    * A denylist rather than the pattern match used on `src/` above, because
-   * Markdown has no literals to isolate and a rule legitimately writes
-   * `PageLayout` and `OrdersPage` in a worked example — invented names, which is
-   * the point. Its failure mode is a name nobody thought of, which is a missed
-   * catch and never a wrong one.
+   * Markdown has no literals to isolate. Its failure mode is a name nobody
+   * thought of, which is a missed catch and never a wrong one.
    */
-  it('names no library component in the rules', async () => {
+  it('names no library component in the skills or AGENTS.md', async () => {
     const vendor = [
       'Button',
       'TextField',
@@ -221,14 +224,29 @@ describe('what the program is allowed to know', () => {
       'Alert',
       'Chip',
       'Modal',
+      'IonButton',
+      'IonPage',
+      'mat-button',
+      'v-btn',
+      'react-hook-form',
+      'formik',
+      'yup',
+      'zod',
     ];
 
     const { readdirSync, readFileSync } = await import('node:fs');
-    const dir = fileURLToPath(new URL('../rules', import.meta.url));
+    const skills = fileURLToPath(new URL('../skills', import.meta.url));
+    const files = [
+      ...readdirSync(skills)
+        .filter((name) => !name.startsWith('.'))
+        .map((name) => `${skills}/${name}/SKILL.md`),
+      fileURLToPath(new URL('../AGENTS.md', import.meta.url)),
+    ];
+    expect(files.length).toBeGreaterThanOrEqual(5);
 
     const found: string[] = [];
-    for (const file of readdirSync(dir).filter((name) => name.endsWith('.md'))) {
-      const text = readFileSync(`${dir}/${file}`, 'utf8');
+    for (const file of files) {
+      const text = readFileSync(file, 'utf8');
       for (const name of vendor) {
         if (new RegExp(`\\b${name}\\b`).test(text)) found.push(`${file}: ${name}`);
       }
@@ -260,10 +278,9 @@ describe('the other harnesses', () => {
   it('ships the context file the non-Claude harnesses read', async () => {
     const { readFileSync } = await import('node:fs');
     const agents = readFileSync(fileURLToPath(new URL('../AGENTS.md', import.meta.url)), 'utf8');
-    // The file a non-Claude harness loads must carry the surface: the rules and
-    // the skills.
-    expect(agents).toContain('rules/');
-    expect(agents).toContain('ui-consistency:pattern');
+    // The file a non-Claude harness loads must carry the surface: the skills and
+    // the order they fire in.
+    expect(agents).toContain('ui-consistency:establishing-patterns');
     expect((await read('gemini-extension.json'))['contextFileName']).toBe('AGENTS.md');
   });
 });

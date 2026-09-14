@@ -1,34 +1,42 @@
 # ui-consistency
 
-Your agent writes a screen. It renders, it type-checks, it passes review — and it
-looks nothing like the four screens beside it. A raw `<button>` where your
-library exports one. `fontSize: 12` where the scale has a token. A detail view
-built as a dialog when every other detail view in the app is a routed page.
+Your agent adds a button. It works — and it is the wrong size, the wrong colour,
+styled differently from every other button in that place. It builds a form and
+writes its own validation, where the project validates with a library on every
+other page. It catches an error and shows it a new way. It writes a margin in
+pixels where the project has a theme.
 
-**ui-consistency is a set of skills and rules that make your coding agent build
-screens the way your project already builds them.** Like
-[superpowers](https://github.com/obra/superpowers), but for UI.
+**ui-consistency is a set of skills that make your coding agent build pages the
+way your project already builds them** — for any UI technology, including plain
+HTML and CSS.
 
 ## How it works
 
-It starts when your agent is about to build or change a screen. Instead of
-writing one from what a screen usually looks like, it first reads the screens of
-that kind your project already has — the holder, the order of the regions,
-which component fills each role, the props most of them are written with — and
-writes that down as a **pattern file**.
+When you ask for a new page, a feature or a refactor, the agent goes through four
+phases:
 
-Then it writes the screen from that file. For thirty screens, it works one file
-at a time from the same file, so the thirtieth matches the first. When the work
-is done, it compares every screen it touched against the pattern and tells you
-what differs.
+1. **Establish.** It asks which page to follow, reads that page top to bottom
+   and left to right — the holders, the components in each, how each is written,
+   how forms validate and errors are shown — and searches how the other pages
+   reuse those pieces. Values come from your theme. It asks you once, only where
+   your project contradicts itself or where it has something to propose, such as
+   turning a copy-pasted snippet into a component.
+2. **Plan.** One task per page, each carrying the pattern and what not to copy
+   from the reference. It shows you the plan and waits for a yes.
+3. **Build.** One page at a time, from the pattern, in a fresh context.
+4. **Verify.** A separate agent compares each page with the reference, region by
+   region — after first proving it catches a difference planted on purpose — and
+   then all the pages together.
 
-Where there is nothing to copy — the first screen of a kind, a new project — it
-asks you what the screen should look like, and writes down only what you
-answered.
+A small change to one page skips the plan. Checking code that is already written
+is the last phase alone.
 
-Everything it knows about your project it reads from your repository. There is
-no built-in list of components, no framework it prefers, no API key and nothing
-to configure.
+It works on its own, and it works inside another process: with
+[superpowers](https://github.com/obra/superpowers) installed, the phases add to
+its brainstorming and its plan instead of running a second one.
+
+The agent you already use does all the reading. There is no script, no parser, no
+API key and nothing to configure.
 
 ## Installation
 
@@ -57,133 +65,79 @@ pointed at this repository.
 
 ### Anything else
 
-Point your harness at `skills/` and `rules/`. Nothing in them is
+Point your harness at `skills/` and `AGENTS.md`. Nothing in them is
 harness-specific.
 
-Node 20 or later. No build step, no `npm install`.
+## The skills
 
-## The basic workflow
+The agent picks them up on its own. You don't need to name them.
 
-1. **pattern** — before building or changing screens. Reads the screens of that
-   kind and writes down what they have in common, with how many of them agree
-   on each thing.
-2. **decide** — when there are fewer than three screens of the kind. Asks you
-   what the screen should look like, and records the answers.
-3. **screen** — writes one screen from the pattern, walking its anatomy in a
-   fixed order, and asks where the project has not decided.
-4. **rollout** — the same change across many screens. Keeps a queue on disk,
-   one file per turn, re-reading the pattern every time.
-5. **verify** — before handing the work over. Compares every screen touched
-   against the pattern and reports only what deviates.
-
-Plus **review** — a second opinion on one screen — and **reach** — *"it said
-nothing; is that good?"*: tells apart *your project is consistent*, *your
-project has stated nothing*, and *the plugin cannot see this here*.
-
-**The agent picks the skills up on its own.** You don't need to name them.
-
-## What's inside
-
-### Skills
-
-- **pattern** — establish what screens of a kind look like here
-- **decide** — the first screen of a kind
-- **screen** — write one screen against the pattern
-- **rollout** — apply a pattern across many screens
-- **verify** — compare a finished set against the pattern
-- **review** — a second opinion on one screen
-- **reach** — which of three silences you are looking at
-
-### Rules
-
-- **what-a-screen-is** — how many files a screen is, per framework
-- **anatomy** — the roles a screen has, in the order they are read
-- **family-and-particulars** — which screens are one kind, and what belongs to
-  one page alone
-- **roles-and-names** — roles are universal, names are local
-- **routes-and-breadcrumbs** — where a route and a trail come from
-- **raw-values** — no colour literal, no absolute length, no emoji for an icon
-- **imports-and-layers** — where a component should be imported from
-- **what-a-decision-is** — what belongs in a decisions file
-- **pattern-file** — the format of a pattern file
+- **establishing-patterns** — how pages of this kind are built here
+- **planning-with-patterns** — one checkable task per page
+- **building-with-patterns** — one page at a time, from the pattern
+- **verifying-against-patterns** — a separate agent compares each page with the reference
 
 ## What it writes in your repository
 
-Everything goes in `.ui-consistency/`, committed and reviewed like code.
-
-**Patterns** — `.ui-consistency/patterns/<name>.md`:
+**Patterns** — `.ui-consistency/patterns/<kind>.md`, committed and reviewed like
+code. Shown here with roles; yours carries your own component names:
 
 ~~~~markdown
 ---
-pattern: list-screen
-surface: screen
-holder: PageShell
-observed: 2026-09-09
-derived: true
+kind: form page
+reference: <path to the page you named>
+theme: <where your theme lives>
+read: 7 pages, 6 components, 3 shared files
+observed: 2026-09-14
 ---
 
-# List screen
+# Form page
 
-## Structure
+## Tree
 
 ```
-PageShell                  9 of 9
-  FilterBar                9 of 9
-  <content>                exactly one
+<page holder>
+  <header> > <toolbar> > <title>
+  <content area>
+    <form>              <your validation approach>   — 4 of 4 forms, 4 files
+      <field>           <how fields are written>     — 8 of 8, 4 files
+    <submit button>     <how it is written>          — 4 of 4, 4 files
 ```
 
-## Props
+## Reused
 
-### `PageShell`
-- `title` — 9 of 9
-- `data-testid` — 9 of 9
+- Request failure: <your shared error helper>
 
-### `*Grid`
-- `density` = "compact" — 5 of 6
+## Decided
 
-## Rules
+- Fields show their error text. (Asked: the reference did not; 6 of 8 did.)
 
-- Actions are always rendered; gating toggles `disabled` only.
+## Particular to the reference
 
-## Where it is used
-
-`src/pages/OrdersPage.tsx`, `src/pages/InvoicesPage.tsx`, …every one of them
+- <what only that page has, and is not copied>
 ~~~~
 
-`*Grid` is a slot: `OrdersGrid`, `InvoicesGrid` and `CustomersGrid` fill the same
-role under different names. `derived: true` means nobody has reviewed it yet.
-
-**Decisions** — `.ui-consistency/decisions/<kind>.md`, a few lines per kind:
-
-```markdown
-# Detail screens
-
-canon: src/orders/OrderDetail.tsx
-
-- The breadcrumb comes from the route hierarchy, not the page title.
-```
-
-**Your own rules** — any Markdown in `.ui-consistency/`, one rule per heading.
-The skills read them.
+**Plans** — `.ui-consistency/plans/<topic>.md`, when no other process wrote one.
 
 ## Philosophy
 
-- **Your conventions, not ours.** No component name is built in. Every team
-  names its own.
-- **Curated, not inferred.** Thirty screens sharing a convention and thirty
-  repeating one old mistake look the same. A reference you name outweighs any
-  count.
+- **Your conventions, not ours.** No component name is built in. Every technology
+  and every team names its own.
+- **A page you name outranks a count.** Counts come with where they were found
+  and in how many files, because four identical buttons in one file are one
+  page's habit.
 - **Before, not after.** An agent that reads the pattern first writes the right
-  screen once.
-- **Silence is never success.** Where it can say nothing, it says that and why.
+  page once.
+- **Ask only what the project does not answer.**
+- **Silence is never success.** Where it could not read something, it says so.
 
 Read [docs/concept.md](docs/concept.md) for the reasoning.
 
 ## What it does not do
 
-It is not a linter and not a CI gate — nothing fails a build. It has no opinion
-on accessibility, performance, or whether your design system is any good. It has
-one subject: *does this look like the rest of this project.*
+It is not a linter and not a CI gate — nothing fails a build. It has no opinion on
+whether your design system is any good. It has one subject: *does this look and
+behave like the rest of this project.*
 
 ## Contributing
 

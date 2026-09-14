@@ -11,8 +11,8 @@ npm run gate
 check, tests, plugin validate. The same script runs on every pull request
 (`.github/workflows/gate.yml`).
 
-Most of this plugin is Markdown — `rules/` and `skills/`. A change to how the
-agent behaves is usually a change to one of those, not to `src/`.
+The plugin is Markdown — `skills/`. A change to how the agent behaves is a
+change to a skill, not to `src/`, which holds only the session hook.
 
 ## Things that will bite a first contribution
 
@@ -34,8 +34,7 @@ rule encodes the same assumption as the rule. So:
 
 - a fix comes with a test that **fails against the unfixed code** — run it both
   ways;
-- a change to a skill or a rule is tried on a **real repository**, not only a
-  fixture;
+- a change to a skill is tried on a **real repository**, not only a fixture;
 - anything user-facing is tried with the **shipped artifact**, installed, not
   from the clone.
 
@@ -49,9 +48,10 @@ is `.claude/rules/uic-docs.md`.
 ## Filing an issue
 
 Say what you asked the agent, what it did, and what you expected — and which
-skill was involved, if you know. If the complaint is that nothing happened, say
-so: `ui-consistency:reach` tells apart *the project has stated nothing* from
-*the plugin is blind here*, and its output is the most useful thing to paste.
+phase it was in, if you know: establishing, planning, building or verifying. The
+pattern file it wrote (`.ui-consistency/patterns/`) is the most useful thing to
+paste, with names made neutral. If the complaint is that nothing happened, say
+so, and say what the agent reported it could not read.
 
 ## Before you open a pull request
 
@@ -68,4 +68,4 @@ so: `ui-consistency:reach` tells apart *the project has stated nothing* from
 ## Reading order
 
 `docs/concept.md` first — the problem and why. Then `CLAUDE.md` for the
-decisions that should not be re-litigated without a reason.
+ideas the design rests on.
