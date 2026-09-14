@@ -3,71 +3,68 @@
 ## What this is
 
 A plugin — Claude Code first, with manifests for Codex, Cursor and Gemini CLI —
-that keeps AI-generated UI consistent with the project's **own** component
-vocabulary and prop conventions, while the code is being written.
+that makes the pages an agent writes look and behave like the ones the project
+already has: the right component written the way the other pages write it, the
+project's own validation and error handling, values from the theme, repeated
+code turned into components.
 
-It is a library of **rules and skills**. The code is only what supports them.
+It is **skills and nothing else**. The only code is the session hook.
 
-Read before proposing anything:
-
-1. `docs/concept.md` — what this is and why.
-2. `rules/pattern-file.md` — what the tool writes down, and in what form.
+Read before proposing anything: `docs/concept.md`, then `skills/`.
 
 ## Layout
 
-- `rules/` — plain Markdown knowledge the agent follows while writing: anatomy,
-  routes, raw values, imports and layers, what a screen is per framework, the
-  pattern-file format.
-- `skills/` — `pattern`, `screen`, `decide`, `rollout`, `verify`, `review`,
-  `reach`. Each is reached by its `description`, in any language.
+- `skills/` — `establishing-patterns`, `planning-with-patterns`,
+  `building-with-patterns`, `verifying-against-patterns`. Each is reached by its
+  `description`, in any language.
 - `AGENTS.md` — the same instructions for harnesses that read that file instead
   of hooks.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
-  hook (`hooks/hooks.json`). It tells the session which skills exist and in what
-  order they fire. `UIC_OFF` silences it.
-- `.ui-consistency/` — where a project's patterns and decisions live;
+  hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
+  what order. `UIC_OFF` silences it.
+- `.ui-consistency/` — where a project's `patterns/` and `plans/` live;
   `.claude/ui-consistency/` is still read as a fallback and reported when used.
 
-**Nothing may assume a hook is running.** There is no check on the edit path on
-any harness. Claude Code runs the session hook; Cursor has a session-hook
-manifest that has not been run end to end; Codex and Gemini CLI read `AGENTS.md`
-instead.
+**Nothing may assume a hook is running.** Claude Code runs the session hook;
+Cursor has a session-hook manifest that has not been run end to end; Codex and
+Gemini CLI read `AGENTS.md` instead.
 
 The private `kamenkurtev/ui-consistency-archive` holds the history before this
 repository's single root commit, and the old tracker. Issue numbers here point
 to this repository only — both trackers start at 1.
 
-## Decisions not to re-litigate
+## What the design rests on
 
-1. **Nothing derived fails anything.** No model and no heuristic blocks an edit.
-   A fact about the file (a hex literal, an absolute length) is a finding only
-   where the project has stated something about it — a theme, a token file, a
-   written rule. Everything else is handed to the agent as evidence, and the
-   agent decides. Reporting every literal floods, and a tool that floods gets
-   switched off.
-2. **Conventions are curated, never inferred.** Inferring from neighbouring
-   files turns old mistakes into enforced rules. A named reference
-   ("use `OrderList.tsx` as reference") is a choice somebody made; a family read
-   with nothing named is statistics, and carries less weight. Say which one an
-   answer came from.
-3. **No component name is hardcoded.** Roles are universal, names are local. A
-   built-in vocabulary goes silent on every project that names things
-   differently, and silence looks like a clean result.
-4. **Org-agnostic.** Works for a single-package app and a monorepo, React, Vue,
-   Svelte and Angular. Structure is detected, never required as config. Never
-   design around one particular repository.
-5. **Silence is never success.** Where the tool can say nothing, it says that
-   and why.
-6. **Free.** No licence checks, telemetry or paywalls in the plugin.
+1. **The developer's agent does the reading.** No scripts, parsers or commands
+   for analysis. Every analysis program this project wrote became thousands of
+   lines that kept being wrong.
+2. **Roles, never names.** Skills and examples say *page holder, field, submit
+   button, the shared error helper*. No framework's or library's component or
+   prop name — every technology builds a page differently.
+3. **Universal.** Any UI technology, including plain HTML and CSS; a single app
+   or a monorepo. Structure is read from the project, never required as config.
+4. **A named reference outranks a count, and a count carries its spread** — where
+   the component stands, and in how many files.
+5. **Ask once, only about contradictions and proposals.**
+6. **Join the process that is running.** A spec or plan that already exists is
+   added to, not duplicated. Without one, the skills run the four phases
+   themselves.
+7. **A plan carries its check.** Every page task names the pattern file and is
+   verified by an agent that did not write it, after that agent proves it catches
+   a planted difference.
+8. **Silence is never success.** Every phase says what it read and what it could
+   not.
+9. **Free.** No licence checks, telemetry or paywalls.
 
 ## Working here
 
-- Fixtures written by the rule's author do not catch the rule's mistakes.
-  Validate against a real repository, and for anything user-facing run the
-  shipped `bin/uic.mjs` copied alone into an empty directory.
-- `tests/names.test.ts` fails on a skill or command named in `skills/` or
-  `rules/` that does not exist. `tests/private-names.test.ts` fails on private
-  names (see `uic-docs.md`).
+- The skills are validated on real projects, not fixtures; what fails comes back
+  as issues. A fixture shows an idea is right in shape, never that it holds.
+- Designs and plans go on the issue, not into `docs/`.
+- `tests/names.test.ts` fails on a skill or command named in `skills/` that does
+  not exist. `tests/packaging.test.ts` fails on a library component name in the
+  skills or `AGENTS.md`. `tests/private-names.test.ts` fails on private names
+  (see `uic-docs.md`).
 - `npm run gate` before any PR.
 
 ## Rules

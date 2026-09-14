@@ -9,8 +9,8 @@
     {
       "name": "ui-consistency",
       "source": "./",
-      "description": "Establishes what screens of a kind already look like in your project, and checks the ones you write against it",
-      "version": "0.14.116",
+      "description": "Makes the pages your agent writes look and behave like the ones your project already has, for any UI technology",
+      "version": "0.15.0",
       "author": {
         "name": "Kamen Kurtev"
       },

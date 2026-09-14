@@ -16,24 +16,29 @@ afterEach(async () => {
 
 describe('what a session is told', () => {
   it('names every skill and the order between them', async () => {
-    // It named one of the seven and left the other six to whatever the harness
-    // happened to match on.
+    // It once named one skill of several and left the rest to whatever the
+    // harness happened to match on.
     const said = (await sessionContext(root)) ?? '';
 
-    for (const skill of ['pattern', 'decide', 'screen', 'rollout', 'verify', 'review', 'reach']) {
+    for (const skill of [
+      'establishing-patterns',
+      'planning-with-patterns',
+      'building-with-patterns',
+      'verifying-against-patterns',
+    ]) {
       expect(said).toContain(`ui-consistency:${skill}`);
     }
   });
 
-  it('contains no sentence that reads as "wait to be asked"', async () => {
-    // "Nothing is generated and nothing is spent until somebody asks" was
-    // written to promise a cost and read to an agent as an instruction not to
-    // act. The promise is kept and stated as what it is.
+  it('joins a process already running instead of competing with it', async () => {
+    // A second standing instruction that claims the start of every task fights
+    // whichever planning process is installed beside it. The skills add to a
+    // spec or plan that exists, and run the phases themselves when none does.
     const said = (await sessionContext(root)) ?? '';
 
     expect(said).not.toContain('until somebody asks');
-    expect(said).toContain('Do not wait to be asked');
-    expect(said).toContain('Nothing is spent until UI work starts');
+    expect(said).toContain('already exists');
+    expect(said).toContain('only about contradictions and proposals');
   });
 
   it('says it whether or not the project has written anything down', async () => {
@@ -46,8 +51,8 @@ describe('what a session is told', () => {
     await writeFile(join(root, '.ui-consistency/rules.md'), '# Rules\n\nSomething.\n');
     const withKnowledge = await sessionContext(root);
 
-    expect(bare).toContain('ui-consistency:pattern');
-    expect(withKnowledge).toContain('ui-consistency:pattern');
+    expect(bare).toContain('ui-consistency:establishing-patterns');
+    expect(withKnowledge).toContain('ui-consistency:establishing-patterns');
   });
 
   it('still reports the old knowledge directory, beside the instruction', async () => {
@@ -58,7 +63,7 @@ describe('what a session is told', () => {
 
     const said = (await sessionContext(root)) ?? '';
 
-    expect(said).toContain('ui-consistency:pattern');
+    expect(said).toContain('ui-consistency:establishing-patterns');
     expect(said).toContain('is the old location');
   });
 

@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.14.116";
+var VERSION = "0.15.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -66,25 +66,19 @@ async function firstBytes(path) {
   }
 }
 var STANDING = [
-  "ui-consistency \u2014 when the work is about screens, this is the order. Do not wait to be asked.",
+  "ui-consistency \u2014 for anything the end user will see, these join the phases of",
+  "whatever process is already running, and run the phases themselves when none is.",
+  "Use them without being asked.",
   "",
-  "1. ui-consistency:pattern \u2014 BEFORE writing or changing a screen. It reads what",
-  "   screens of that kind already look like here and writes it down. A screen",
-  "   written first and corrected after is a screen somebody has to be persuaded",
-  "   to change.",
-  "2. ui-consistency:decide \u2014 where pattern finds fewer than three screens of the",
-  "   kind. It asks; it does not draft. The first screen of a kind is a decision,",
-  "   not a derivation.",
-  "3. ui-consistency:screen \u2014 writing one screen against what pattern established.",
-  "   ui-consistency:rollout \u2014 the same change across many; it queues them and",
-  "   verifies the whole set rather than trusting thirty separate turns.",
-  "4. ui-consistency:verify \u2014 before handing the work over.",
-  "   ui-consistency:review \u2014 a second opinion on one screen, when asked.",
-  "5. ui-consistency:reach \u2014 when you cannot tell whether this project is clean or",
-  "   this tool is blind here. Those look identical and are not.",
+  "- A new page or feature, or a refactor across pages:",
+  "  ui-consistency:establishing-patterns \u2192 ui-consistency:planning-with-patterns",
+  "  \u2192 ui-consistency:building-with-patterns \u2192 ui-consistency:verifying-against-patterns",
+  "- A small change to one page: establishing-patterns (only what it touches)",
+  "  \u2192 building-with-patterns \u2192 verifying-against-patterns.",
+  "- Checking code already written: verifying-against-patterns.",
   "",
-  "Nothing is spent until UI work starts. This message is the whole of what a",
-  "session costs."
+  "If a spec or plan for this work already exists, add to it instead of starting",
+  "another. Ask the user once, only about contradictions and proposals."
 ].join("\n");
 async function sessionContext(rootDir) {
   const { dir, legacy } = await knowledgeDir(rootDir);
@@ -106,7 +100,7 @@ async function sessionContext(rootDir) {
         `plugin ${[...versions].sort().join(", ")}; this is ${VERSION}.`,
         "Nothing generates those files any more. They are a stored copy of what the",
         `code says, which is the thing that goes stale \u2014 keep whatever in them was`,
-        `intent, in ${KNOWLEDGE_DIR}/decisions/, and delete the rest.`
+        `intent, in ${KNOWLEDGE_DIR}/patterns/, and delete the rest.`
       ].join(" ")
     );
   }
