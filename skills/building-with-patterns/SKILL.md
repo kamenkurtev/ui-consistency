@@ -30,8 +30,9 @@ what each page task does inside it.
 4. **Values through the theme**, or a named constant where the theme has none.
    No literal copied from the reference.
 5. **Do not copy what is particular to the reference.**
-6. **Where the pattern is silent**, do not invent: add it to one question for the
-   user at the end of the page, or park the page.
+6. **Where the pattern is silent**, do not invent. If the page can be written
+   without the answer, write the rest and note the gap in the plan; if it
+   cannot, park it. The gaps go to the user together, once, not page by page.
 7. **Hand the page to verification** —
    `ui-consistency:verifying-against-patterns`, run by an agent that did not
    write it.

@@ -21,8 +21,9 @@ If none exists, write `.ui-consistency/plans/<topic>.md`.
 
 1. **Calibrate the checker.** One task before anything is built:
    `ui-consistency:verifying-against-patterns` on a scratch copy of the reference
-   with one role deliberately written differently. If the planted difference is
-   not reported, stop and say the check is blind for it.
+   with one role deliberately written differently, kept outside the repository.
+   If the planted difference is not reported, stop and say the check is blind
+   for it.
 2. **Extractions the user accepted.** A shared component, partial or class is
    built before any page that uses it.
 3. **One task per page.**

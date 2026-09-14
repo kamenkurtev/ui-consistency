@@ -68,6 +68,7 @@ async function firstBytes(path) {
 var STANDING = [
   "ui-consistency \u2014 for anything the end user will see, these join the phases of",
   "whatever process is already running, and run the phases themselves when none is.",
+  "Use them without being asked.",
   "",
   "- A new page or feature, or a refactor across pages:",
   "  ui-consistency:establishing-patterns \u2192 ui-consistency:planning-with-patterns",
