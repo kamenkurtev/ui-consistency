@@ -7,6 +7,14 @@
 - This is not ceremony. The board is the only place that shows what was decided
   and why without reading the diff, and the branch naming below already assumes
   an issue number exists.
+- **Every issue carries acceptance criteria** — a `## Acceptance criteria`
+  section of short, checkable statements (`- [ ]`) saying what is true when the
+  work is done. Without them nobody can tell whether the PR finished the issue
+  or only touched it.
+  - They say **what** to verify, never where or on which projects it is tested:
+    the repository is public.
+  - The PR says which criteria it meets. An issue whose criteria are not all met
+    is not moved to `Done` — see *Project board* below.
 - **No issue needed** for a change made *inside* an issue already in progress and
   covered by its scope — a typo in the code you just wrote does not need its own
   number.
@@ -59,4 +67,4 @@ Work is tracked on GitHub Project #3 (`Todo` / `In Progress` / `Test` / `Done`).
 - **When you start working on an issue, move it to `In Progress`.** Do this before the first commit, not after.
 - **When its PR is merged, close the issue and move it to `Done`.** Both — a closed issue left in `Todo` is as misleading as an open one sitting in `Done`.
 - Every issue you open goes on the board, in `Todo`.
-- If only part of an issue shipped, don't move it to `Done`. Either leave it where it is, or split the remainder into a new issue and close the original — whichever the user prefers.
+- If only part of an issue shipped — an acceptance criterion is not met — don't move it to `Done`. Either leave it where it is, or split the remainder into a new issue and close the original — whichever the user prefers.

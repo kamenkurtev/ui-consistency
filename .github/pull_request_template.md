@@ -3,6 +3,11 @@ What changed, and why. If it fixes something, what the failure was.
 Link the issue: `Closes #<number>`, and one `Closes` per issue — `Closes #6 and #19` only parses the first.
 -->
 
+## Acceptance criteria
+
+Copy the issue's criteria and tick the ones this PR meets. One left unticked
+means the issue does not go to `Done`.
+
 ## Verification
 
 - [ ] `npm run gate` passes
