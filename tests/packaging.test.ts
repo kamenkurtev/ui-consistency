@@ -101,6 +101,14 @@ describe('the skills', () => {
       expect(description.toLowerCase()).toMatch(/\buse (this )?when\b|\bwhen the user\b/);
     });
 
+    it(`${skill} keeps its description to when, short enough not to retell the skill`, async () => {
+      // A description that summarises the steps is followed instead of the skill
+      // body. superpowers' descriptions run 79–234 characters; the four here
+      // were 407–476 and retold every step.
+      const description = (await frontmatter(skill))['description'] ?? '';
+      expect(description.length).toBeLessThanOrEqual(250);
+    });
+
   }
 
   /**

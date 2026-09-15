@@ -1,6 +1,6 @@
 ---
 name: establishing-patterns
-description: Use when about to build or change anything the end user sees — a new page or feature, a refactor across pages, a small change to one screen — and when the user names a page to follow ("like this page", "same as the others") or there is nothing to copy yet. Reads the reference top to bottom and left to right, searches what the other pages reuse and how, takes values from the theme, asks once about contradictions and proposals, and writes .ui-consistency/patterns/<kind>.md.
+description: Use when building or changing a page, a feature or a set of pages — above all when the user names a page to follow, or new UI could come out unlike its neighbours in size, colour, styles, validation, error handling, spacing or contrast.
 ---
 
 # Establishing the pattern

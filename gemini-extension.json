@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
   "description": "Makes the pages your agent writes look and behave like the ones your project already has, for any UI technology",
-  "version": "0.15.7",
+  "version": "0.15.8",
   "contextFileName": "AGENTS.md"
 }
