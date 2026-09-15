@@ -96,6 +96,28 @@ a component, a custom element, a partial, a shared class — and where it belong
 the shared or core layer if other modules paste it too, the module if only this
 one does. Declined, the snippet is written the same way as the others.
 
+### Which pages are the family
+
+Counts are taken over the pages of the same kind as the reference — its family.
+Take the candidates, then remove what is not a member **before** counting:
+
+- **Neither end of an import edge inside the candidates is a peer of the other.**
+  What a page imports — its panels, its dialog, its hooks — is part of that page,
+  not a sibling of it. And **a file that imports members of the family is not a
+  member either**: a dispatcher choosing which page renders, a route table, a
+  barrel, a wrapper.
+- **A candidate that renders no holder and no region of the kind is not of the
+  kind.** Report it as not of the kind; never count it as a member that lacks
+  them.
+- **State both numbers** in the pattern file: how many candidates were
+  considered, how many were counted, and what was left out and why.
+
+On one real run nine files sat in one folder, and every role came out 8 of 9,
+always missing the same file — which reads as one page drifting from its
+siblings. The ninth imported the other eight and chose between them. The family
+was eight, and **8 of 8 on every role**: a unanimous convention the dispatcher
+had hidden.
+
 ### Counting honestly
 
 - **A role is a component plus where it stands.** In one real app, 10 of 18
@@ -187,6 +209,7 @@ kind: <kind of page>
 reference: <path to the reference page>
 theme: <where the theme is defined>
 read: <how many pages, components and shared files were read; sampled or not>
+family: <n counted of m considered; what was left out and why>
 observed: <date>
 ---
 
