@@ -8,9 +8,8 @@ Three parts of the gate cannot run here and are stated rather than pretended:
 
 - **`claude plugin validate`** is skipped when the CLI is absent, which it is
   on a runner. The manifest is still validated by `tests/packaging.test.ts`.
-- **The agent-run half** — simplify, code review, security review — is in
-  `.claude/rules/uic-gate.md` and is run by whoever opens the PR. A workflow
-  cannot dispatch it, and pretending otherwise would be worse than the gap.
-- **The real-repository run.** Every check in this repository has been wrong
-  in a way its own fixtures could not see; the rules require validating against
-  a real project before a PR, and that is a human step.
+- **The three reviews** — simplification, correctness, security — are in
+  `.claude/rules/uic-pr.md` and are done by whoever opens the PR. A workflow
+  cannot do them, and pretending otherwise would be worse than the gap.
+- **The run on real projects.** The skills are validated on real projects, not
+  fixtures, and a workflow cannot do that either.
