@@ -22,23 +22,35 @@ what each page task does inside it.
 
 ## For each page
 
+Everything `ui-consistency:verifying-against-patterns` will check is listed here,
+so nothing is reported against a page that was never asked to get it right.
+
 1. **Re-read the pattern file.** Every time. Not remembered.
 2. **Write the page region by region**, in the order of the tree: holders, then
-   the components in each, then how each is written.
+   the components in each, then how each is written, as the counts say.
 3. **Use what the project reuses.** The shared component, helper or class named in
    the pattern — never a new one beside it.
-4. **Values through the theme**, or a named constant where the theme has none.
-   No literal copied from the reference.
-5. **Do not copy what is particular to the reference.**
-6. **Where the pattern is silent, or the region is under `Open questions`**, do
-   not invent and do not pick a side. If the page can be written
-   without the answer, write the rest and note the gap in the plan; if it
-   cannot, park it. The gaps go to the user together, once, not page by page.
-7. **Hand the page to verification** —
-   `ui-consistency:verifying-against-patterns`, run by an agent that did not
-   write it.
-8. **Fix what it reports**, then verify again.
-9. **Mark it** `done`, or `parked — <why>`.
+4. **What the user sees happen, as the pattern says**: validation, field errors,
+   when the submit is enabled, how a failure is caught and shown, loading and
+   empty.
+5. **Values through the theme that applies**, and only entries that exist in it —
+   for a file in a shared layer, in every theme that renders it. A named constant
+   where the theme has none. No literal copied from the reference.
+6. **Spacing on the scale** in `## Spacing`: the gaps between roles as the family
+   spaces them, owned by the side the pattern names.
+7. **Contrast as a pair**: every foreground on the surface actually behind it
+   meets the threshold in `## Contrast`, in every scheme the project has. Prefer
+   the pairings the family already uses.
+8. **Do not copy what is particular to the reference.**
+9. **Where the pattern is silent, or the region is under `Open questions`**, do
+   not invent and do not pick a side. If the page can be written without the
+   answer, write the rest and note the gap in the plan; if it cannot, park it.
+   The gaps go to the user together, once, not page by page.
+10. **Hand the page to verification** —
+    `ui-consistency:verifying-against-patterns`, run by an agent that did not
+    write it.
+11. **Fix what it reports**, then verify again.
+12. **Mark it** `done`, or `parked — <why>`.
 
 ## A small change without a plan
 

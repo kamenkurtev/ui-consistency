@@ -46,22 +46,22 @@ pattern file:
 - the component in each role;
 - how each is written, against the counts in the pattern;
 - the reused pieces: shared component, helper or class used, not rewritten;
-- values through the theme, not literals;
+- what the user sees happen: validation, field errors, submit state, how a
+  failure is caught and shown, loading and empty;
+- values through the theme, not literals — and **every value that names a theme
+  entry exists in the theme that applies to this page**; for a file in a shared
+  layer, in every theme that renders it. Report one that is missing, naming the
+  theme. It type-checks and fails silently, so nothing else will;
 - **spacing**: every gap on the scale in the pattern file, and the gaps between
   roles as the family spaces them. Report a value off the scale or a different
   gap with what the neighbouring pages use instead. Where the pattern says the
   project has no consistent rhythm, report nothing about it and say so;
-- **every value that names a theme entry exists in the theme that applies to this
-  page** — for a file in a shared layer, in every theme that renders it. Report
-  one that is missing, naming the theme. It type-checks and fails silently, so
-  nothing else will;
 - **contrast, as pairs** — each foreground against the surface actually behind
   it, text and the things that carry meaning without text, in every scheme the
   project has. Report a pairing the family does not use, and any pairing below the
   threshold in the pattern file, with its ratio. A pair whose surface cannot be
   resolved is named as unevaluated;
-- what the user sees happen: validation, field errors, submit state, how a
-  failure is caught and shown, loading and empty.
+- nothing listed under *Particular to the reference* was copied.
 
 Report **only what differs**, where, and what the reference and the rest of the
 project do instead. Say nothing about regions that match.
