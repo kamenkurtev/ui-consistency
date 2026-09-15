@@ -30,7 +30,8 @@ If none exists, write `.ui-consistency/plans/<topic>.md`.
 
 ## What every page task carries
 
-- the path of the pattern file;
+- the path of the pattern file — format in
+  [pattern-file.md](../establishing-patterns/pattern-file.md);
 - the path of the reference;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;

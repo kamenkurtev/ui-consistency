@@ -133,11 +133,11 @@ describe('the pattern file', () => {
    * the project has not decided.
    */
   it('has a place for questions asked and not yet answered, before Decided', async () => {
-    const skill = await readFile(
-      fileURLToPath(new URL('../skills/establishing-patterns/SKILL.md', import.meta.url)),
+    const format = await readFile(
+      fileURLToPath(new URL('../skills/establishing-patterns/pattern-file.md', import.meta.url)),
       'utf8',
     );
-    const shape = /````markdown\n([\s\S]*?)\n````/.exec(skill)?.[1] ?? '';
+    const shape = /````markdown\n([\s\S]*?)\n````/.exec(format)?.[1] ?? '';
 
     expect(shape).toContain('## Open questions');
     expect(shape).toContain('## Decided');
@@ -293,10 +293,16 @@ describe('what the program is allowed to know', () => {
 
     const { readdirSync, readFileSync } = await import('node:fs');
     const skills = fileURLToPath(new URL('../skills', import.meta.url));
+    // Every Markdown file of every skill: a supporting file is read by the same
+    // agent as the SKILL.md that links it.
     const files = [
       ...readdirSync(skills)
         .filter((name) => !name.startsWith('.'))
-        .map((name) => `${skills}/${name}/SKILL.md`),
+        .flatMap((name) =>
+          readdirSync(`${skills}/${name}`)
+            .filter((file) => file.endsWith('.md'))
+            .map((file) => `${skills}/${name}/${file}`),
+        ),
       fileURLToPath(new URL('../AGENTS.md', import.meta.url)),
     ];
     expect(files.length).toBeGreaterThanOrEqual(5);

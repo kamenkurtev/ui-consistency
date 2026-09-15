@@ -25,7 +25,8 @@ what each page task does inside it.
 Everything `ui-consistency:verifying-against-patterns` will check is listed here,
 so nothing is reported against a page that was never asked to get it right.
 
-1. **Re-read the pattern file.** Every time. Not remembered.
+1. **Re-read the pattern file.** Every time. Not remembered. Its sections are
+   described in [pattern-file.md](../establishing-patterns/pattern-file.md).
 2. **Write the page region by region**, in the order of the tree: holders, then
    the components in each, then how each is written, as the counts say.
 3. **Use what the project reuses.** The shared component, helper or class named in
