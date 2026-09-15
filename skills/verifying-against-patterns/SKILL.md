@@ -1,6 +1,6 @@
 ---
 name: verifying-against-patterns
-description: Use when UI work is written and before it is called done — after each page of a plan, at the end of a refactor, before a pull request with UI changes, or when the user asks whether pages match the rest ("does this match", "did I miss a page", "check these screens"). A separate agent compares each page with the reference region by region and reports only differences, after first proving it catches a planted one.
+description: Use when UI work is written and before calling it done or opening a PR, or when asked whether pages match the rest — "does this match", "did I miss a page", a page that looks or behaves unlike its neighbours.
 ---
 
 # Verifying against the pattern

@@ -1,6 +1,6 @@
 ---
 name: building-with-patterns
-description: Use when writing or changing pages from a pattern file or a plan that names one — executing a UI plan, a refactor page by page, or a single small change after the pattern is established. One page per task in a fresh context, re-reading the pattern file every time, taking reused pieces and theme values instead of writing new ones, and handing each page to verifying-against-patterns before marking it done.
+description: Use when writing or changing pages for which a pattern file or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
 ---
 
 # Building from the pattern
