@@ -41,8 +41,9 @@ so nothing is reported against a page that was never asked to get it right.
 6. **Spacing on the scale** in `## Spacing`: the gaps between roles as the family
    spaces them, owned by the side the pattern names.
 7. **Contrast as a pair**: every foreground on the surface actually behind it
-   meets the threshold in `## Contrast`, in every scheme the project has. Prefer
-   the pairings the family already uses.
+   meets the threshold in `## Contrast`, in every scheme the project has
+   ([contrast.md](../establishing-patterns/contrast.md)). Prefer the pairings the
+   family already uses.
 8. **Do not copy what is particular to the reference.**
 9. **Where the pattern is silent, or the region is under `Open questions`**, do
    not invent and do not pick a side. If the page can be written without the

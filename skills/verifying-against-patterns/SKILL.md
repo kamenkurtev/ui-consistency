@@ -57,11 +57,10 @@ pattern file:
   roles as the family spaces them. Report a value off the scale or a different
   gap with what the neighbouring pages use instead. Where the pattern says the
   project has no consistent rhythm, report nothing about it and say so;
-- **contrast, as pairs** — each foreground against the surface actually behind
-  it, text and the things that carry meaning without text, in every scheme the
-  project has. Report a pairing the family does not use, and any pairing below the
-  threshold in the pattern file, with its ratio. A pair whose surface cannot be
-  resolved is named as unevaluated;
+- **contrast, as pairs** in every scheme the project has
+  ([contrast.md](../establishing-patterns/contrast.md)). Report a pairing the
+  family does not use, and any pairing below the threshold, with its ratio; name
+  a pair whose surface cannot be resolved as unevaluated;
 - nothing listed under *Particular to the reference* was copied.
 
 Report **only what differs**, where, and what the reference and the rest of the
