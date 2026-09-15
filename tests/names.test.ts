@@ -39,8 +39,12 @@ describe('what the skills offer to run', () => {
     // all.
     const prose: { where: string; text: string }[] = [];
     for (const name of skills) {
-      const text = await readFile(join(ROOT, 'skills', name, 'SKILL.md'), 'utf8').catch(() => null);
-      if (text !== null) prose.push({ where: `skills/${name}`, text });
+      // A supporting file is read by the same agent as the SKILL.md that links it.
+      const files = await readdir(join(ROOT, 'skills', name)).catch(() => [] as string[]);
+      for (const file of files.filter((f) => f.endsWith('.md'))) {
+        const text = await readFile(join(ROOT, 'skills', name, file), 'utf8').catch(() => null);
+        if (text !== null) prose.push({ where: `skills/${name}/${file}`, text });
+      }
     }
     expect(prose.length).toBeGreaterThanOrEqual(4);
 

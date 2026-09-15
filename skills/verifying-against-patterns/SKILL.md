@@ -15,7 +15,8 @@ The agent that wrote a page does not verify it. Use a separate agent — a
 subagent where the harness has them, otherwise a fresh turn that reads only the
 pattern file and the page. It gets:
 
-- the pattern file, `.ui-consistency/patterns/<kind>.md`;
+- the pattern file, `.ui-consistency/patterns/<kind>.md` — its format is
+  [pattern-file.md](../establishing-patterns/pattern-file.md);
 - the page, or the list of pages that changed.
 
 No pattern file for this kind: run `ui-consistency:establishing-patterns` first,
