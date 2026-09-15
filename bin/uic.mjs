@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.15.14";
+var VERSION = "0.15.15";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
