@@ -82,8 +82,13 @@ as a page that deviates.
 
 A region the checker could not evaluate — a rule it cannot judge from the code, a
 technology it could not read with confidence, a child it could not open, a theme
-it could not resolve — is **named**, never passed. A green result over work nothing looked at is worse
-than no result.
+it could not resolve — is **named**, never passed. A green result over work nothing
+looked at is worse than no result.
+
+Before writing that nothing was left unevaluated, find **every stylesheet the page
+loads**, including any from outside the project, and look up every class it uses.
+A class with no rule in the project is not unstyled — its rule may live where you
+cannot read it, so its colours and spacing are unevaluated.
 
 ## The whole set, at the end
 
@@ -100,3 +105,13 @@ and why.
 - **Against a count alone** — say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge. A page can differ on purpose; say why rather than
   changing working code to quiet a report.
+
+## Red flags
+
+Words agents used in runs, just before getting it wrong:
+
+| They said | What it means |
+|---|---|
+| "Consistency check, done by diffing against the reference" — from the agent that wrote the page | The author checked its own work. Hand it to a separate agent. |
+| "Not evaluated: nothing — every pair resolved" | Only true after every loaded stylesheet was found. A class with no rule in the project is unevaluated, not unstyled. |
+| `mkdir -p /tmp/<name>-$$` for the planted copy | A name anyone can predict, reused if it already exists. Let the system create the directory new — `mktemp -d`, or your harness's own temporary directory. |
