@@ -51,6 +51,11 @@ pattern file:
   page** — for a file in a shared layer, in every theme that renders it. Report
   one that is missing, naming the theme. It type-checks and fails silently, so
   nothing else will;
+- **contrast, as pairs** — each foreground against the surface actually behind
+  it, text and the things that carry meaning without text, in every scheme the
+  project has. Report a pairing the family does not use, and any pairing below the
+  threshold in the pattern file, with its ratio. A pair whose surface cannot be
+  resolved is named as unevaluated;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty.
 
