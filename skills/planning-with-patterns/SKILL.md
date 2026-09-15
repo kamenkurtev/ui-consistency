@@ -41,6 +41,12 @@ If none exists, write `.ui-consistency/plans/<topic>.md`.
 
 A task that leaves any of these out is how page fifteen drifts.
 
+**In each task itself, not once in a preamble** — even when the user asks for one
+line per page. A subagent executing a task is given that task alone; a preamble
+does not travel with it. Keep the line short by pointing: the pattern file's path
+and the check are a few words each. A page judged to match already is still a task that
+carries them: its check is how "already matches" becomes known.
+
 ## Status
 
 Each page is `todo`, `done`, or `parked — <why>`. A page that genuinely should
@@ -59,3 +65,11 @@ A small change to one page has no plan and does not stop.
 ## Then
 
 `ui-consistency:building-with-patterns`.
+
+## Red flags
+
+Words agents used in runs, just before getting it wrong:
+
+| They said | What it means |
+|---|---|
+| "stated once in the preamble rather than repeated" — the pattern path, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. |
