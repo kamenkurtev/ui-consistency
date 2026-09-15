@@ -109,6 +109,25 @@ one does. Declined, the snippet is written the same way as the others.
 - **Search for the exact name.** A plain text search once found 25 uses where
   there were 18, because a container's name started with the component's.
 
+### Prove the search can see before trusting a count
+
+The reference is one of the pages you count, so every search has a known answer:
+it must find what the reference writes. **Run each search on the reference first.**
+A search that does not find the reference is broken, and nothing it counts is a
+result.
+
+- **A count of zero for a role the reference writes is a broken search** — a wrong
+  glob, a list that was never split, a pattern that does not match this dialect,
+  a bound that resolved to nothing. Fix it and count again. Never record it.
+- **A zero across the whole family is unverified**, not a convention. Record
+  *none of them write this* only when the same search, over the same files, found
+  something else — so it is known to have read them.
+
+On one real run a loop went once over the whole file list instead of once per
+file, and reported *0 of 9* twelve times with no error — including for the
+holder the reference had just been read with. *0 of 9* reads as a strong
+convention; written into the pattern it is the opposite of the truth.
+
 ### Bounds
 
 - Search the application the page belongs to and the libraries it uses — in a
