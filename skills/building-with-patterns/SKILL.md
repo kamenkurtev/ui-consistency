@@ -35,8 +35,9 @@ so nothing is reported against a page that was never asked to get it right.
    when the submit is enabled, how a failure is caught and shown, loading and
    empty.
 5. **Values through the theme that applies**, and only entries that exist in it —
-   for a file in a shared layer, in every theme that renders it. A named constant
-   where the theme has none. No literal copied from the reference.
+   for a file in a shared layer, every theme that renders it
+   ([theme.md](../establishing-patterns/theme.md)). A named constant where the
+   theme has none. No literal copied from the reference.
 6. **Spacing on the scale** in `## Spacing`: the gaps between roles as the family
    spaces them, owned by the side the pattern names.
 7. **Contrast as a pair**: every foreground on the surface actually behind it

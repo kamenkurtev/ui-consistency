@@ -50,9 +50,9 @@ pattern file:
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;
 - values through the theme, not literals — and **every value that names a theme
-  entry exists in the theme that applies to this page**; for a file in a shared
-  layer, in every theme that renders it. Report one that is missing, naming the
-  theme. It type-checks and fails silently, so nothing else will;
+  entry exists in the theme that applies**, or for a shared layer in every theme
+  that renders it ([theme.md](../establishing-patterns/theme.md)). Report one
+  that is missing, naming the theme;
 - **spacing**: every gap on the scale in the pattern file, and the gaps between
   roles as the family spaces them. Report a value off the scale or a different
   gap with what the neighbouring pages use instead. Where the pattern says the
