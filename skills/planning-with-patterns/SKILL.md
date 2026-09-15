@@ -49,8 +49,9 @@ skipped.
 ## Stop for a yes
 
 For a new page or a refactor, show the pattern file and the plan and **wait for
-the user's yes** before any code. Ask nothing else here — the questions were
-asked while establishing.
+the user's yes** before any code. Ask nothing new here — the questions were asked
+while establishing. Anything still under `Open questions` is shown with the plan,
+and the pages it touches say so.
 
 A small change to one page has no plan and does not stop.
 
