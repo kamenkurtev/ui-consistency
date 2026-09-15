@@ -173,3 +173,11 @@ no counterparts to compare with.
 
 For a new page or a refactor: `ui-consistency:planning-with-patterns`.
 For a small change to one page: `ui-consistency:building-with-patterns`.
+
+## Red flags
+
+Words agents used in runs, just before getting it wrong:
+
+| They said | What it means |
+|---|---|
+| "recorded as excluded from the pattern" — about a page that disagrees with the rest | A contradiction settled without the user. It goes under `Open questions`. |
