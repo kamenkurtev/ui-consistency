@@ -27,10 +27,25 @@ so and passes. The list carries every spelling of a name, one per line; a guess
 at another casing is how a real occurrence slips through. `esbuild` runs
 without `--minify`, so comments ship in `bin/uic.mjs` and are covered too.
 
+## Public text says nothing about where or how the owner works
+
+The repository, its issues, PR bodies, comments and commit messages are public,
+and GitHub's edit history keeps what was replaced. None of them says anything
+about the owner rather than the plugin: their machines, their workplace, their
+projects and how those are built, local apps and paths, where and how testing
+happens.
+
+- What to test goes into an issue as acceptance criteria — *what* is checked,
+  never where or on which projects.
+- Evidence from a real run keeps its numbers, described by role.
+- `tests/private-names.test.ts` covers names in tracked files only. An issue, a
+  PR body or a comment has no test: reread the exact text before sending it.
+
 ## The documents this applies to
 
-`CLAUDE.md`, `docs/concept.md`, `README.md`, `AGENTS.md` and
-`skills/*/SKILL.md`.
+`CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `docs/concept.md`,
+`docs/index.html`, `.claude/rules/*.md`, and every skill with its supporting
+files.
 
 Before opening a PR, read them against the change and say in the body which
 were read and what was found. "Read, nothing false" is a result.

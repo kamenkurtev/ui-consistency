@@ -18,11 +18,10 @@
 - **No issue needed** for a change made *inside* an issue already in progress and
   covered by its scope — a typo in the code you just wrote does not need its own
   number.
-- If the work turns out bigger than the issue it started under, **open a new one**
-  rather than widening the old one silently.
-- Work that starts as "while I'm here" is exactly what this rule is for. The
-  version bump that decided whether a day of fixes reached anyone shipped with no
-  issue behind it.
+- If the work turns out bigger than the issue it started under, **widen the issue
+  visibly** — edit its description and criteria — or open a new one. Never widen
+  it silently.
+- Work that starts as "while I'm here" is exactly what this rule is for.
 
 ## Branches
 - **Never commit directly to `main`.** Always branch first.
@@ -34,7 +33,8 @@
 ## Commits
 - Write clear, imperative messages: `Extract prop conventions from reference`, not `fixed stuff`.
 - Reference the issue when relevant — `#12`, and the number is this repository's.
-- Commit or push only when the user asks.
+- Commit and push on the issue branch as the work goes. Nothing reaches `main`
+  except through a merged PR.
 
 ## Versions
 - **A change that ships bumps the version, in the same PR.** An installed plugin
@@ -49,13 +49,18 @@
 - The gate enforces this: a branch touching `src/`, `bin/`, `hooks/`, `skills/`
   or `.claude-plugin/` while leaving the version where `main` has it fails. Docs,
   tests and rules alone need no bump.
-- Writing it here was not enough on its own — it was missed twice in one day
-  before the gate existed.
 
 ## Pull requests
-- Open a PR against `main`; don't merge without review.
-- Before opening a PR, the full gate must pass: `npm run gate`. What else has to
-  happen first, and in what order, is in `uic-pr.md`.
+- What happens before a PR is opened, and in what order, is `uic-pr.md`.
+- Open the PR against `main` with the template filled in.
+- **Merge it once `npm run gate` and the GitHub `gate` check pass** and the body
+  names the three reviews. The owner reads that as the review; do not stop to ask
+  for permission to merge. Squash, with the PR number in the subject.
+- `gh pr create` and `gh pr merge` go through GitHub's GraphQL API, whose limit is
+  shared by every tool on the account. When it is exhausted, the REST API
+  (`gh api repos/<owner>/<repo>/pulls`, `…/pulls/<n>/merge`) still works.
+- If a session runs `superpowers:finishing-a-development-branch`, its choice is
+  *push and create a PR*, merged as above.
 
 ## Cleanup
 - After a branch is merged, delete it **only on the remote** (`origin`).
@@ -67,4 +72,8 @@ Work is tracked on GitHub Project #3 (`Todo` / `In Progress` / `Test` / `Done`).
 - **When you start working on an issue, move it to `In Progress`.** Do this before the first commit, not after.
 - **When its PR is merged, close the issue and move it to `Done`.** Both — a closed issue left in `Todo` is as misleading as an open one sitting in `Done`.
 - Every issue you open goes on the board, in `Todo`.
+- **Look an item up by repository as well as number.** The board also holds the
+  archive repository's issues, and their numbers overlap with this one's.
+- The board is GraphQL only. When the limit is exhausted, note the moves owed and
+  make them when it resets.
 - If only part of an issue shipped — an acceptance criterion is not met — don't move it to `Done`. Either leave it where it is, or split the remainder into a new issue and close the original — whichever the user prefers.

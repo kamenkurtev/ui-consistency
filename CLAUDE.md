@@ -65,7 +65,13 @@ to this repository only — both trackers start at 1.
   not exist. `tests/packaging.test.ts` fails on a library component name in the
   skills or `AGENTS.md`. `tests/private-names.test.ts` fails on private names
   (see `uic-docs.md`).
-- `npm run gate` before any PR.
+- Commands:
+  - `npm run gate` — everything a PR needs: typecheck, build, stale bundle,
+    version check, tests, plugin validate.
+  - `npm test`, or `npx vitest run tests/<file>.test.ts` for one file.
+  - `npm run bump` — patch; `npm run bump minor` or `major` when it is more than
+    a fix. Moves the version in all seven files.
+  - `UIC_OFF=1` silences the session hook for a session.
 
 ## Rules
 
