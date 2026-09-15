@@ -50,6 +50,12 @@ so nothing is reported against a page that was never asked to get it right.
    not invent and do not pick a side. If the page can be written without the
    answer, write the rest and note the gap in the plan; if it cannot, park it.
    The gaps go to the user together, once, not page by page.
+   **The same when the request asks for what the pattern counts as a
+   deviation** — "make it look like" the page that differs. Write that region
+   the way the family does, and put the conflict to the user in one sentence
+   with the count: *"the family writes the submit button full-width in 3 of 4
+   pages; the page you pointed at is the one that differs — which do you want?"*
+   Neither copy the deviation nor quietly override the request.
 10. **Hand the page to verification** —
     `ui-consistency:verifying-against-patterns`, run by an agent that did not
     write it.
@@ -65,3 +71,12 @@ the change, and verify the page before calling it done.
 
 When every page is `done` or `parked`: `ui-consistency:verifying-against-patterns`
 over the whole set.
+
+## Red flags
+
+Words agents used in runs, just before getting it wrong:
+
+| They said | What it means |
+|---|---|
+| "Verified by diffing each new file against" a sibling — from the agent that wrote them | The author checked its own pages. Hand them to a separate agent, or say plainly that none was available. |
+| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | The request asked for the deviation. Build the region like the family and ask. |
