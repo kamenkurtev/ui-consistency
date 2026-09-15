@@ -117,6 +117,26 @@ describe('the skills', () => {
   });
 });
 
+describe('the pattern file', () => {
+  /**
+   * The questions establishing asks are answered after the file is written, or
+   * never on a run nobody watches. With nowhere to keep them they are invented
+   * into `Decided` or dropped, and the file then looks complete exactly where
+   * the project has not decided.
+   */
+  it('has a place for questions asked and not yet answered, before Decided', async () => {
+    const skill = await readFile(
+      fileURLToPath(new URL('../skills/establishing-patterns/SKILL.md', import.meta.url)),
+      'utf8',
+    );
+    const shape = /````markdown\n([\s\S]*?)\n````/.exec(skill)?.[1] ?? '';
+
+    expect(shape).toContain('## Open questions');
+    expect(shape).toContain('## Decided');
+    expect(shape.indexOf('## Open questions')).toBeLessThan(shape.indexOf('## Decided'));
+  });
+});
+
 describe('what the shipped bundle does not carry', () => {
   it('has no model client in it at all', async () => {
     // The plugin is free and asks for no credentials: the judging happens in
