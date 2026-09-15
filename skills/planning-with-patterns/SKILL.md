@@ -1,6 +1,6 @@
 ---
 name: planning-with-patterns
-description: Use when UI work has an established pattern and more than one step — a new page or feature, or a refactor across pages — and a plan is about to be written, by this plugin or by another planning process such as writing-plans. Adds one task per page carrying the pattern file, what not to copy from the reference and a separate-agent check, puts a checker calibration and accepted extractions first, and stops for the user's yes before any code.
+description: Use when UI work spans several steps or pages and needs a plan — a new feature, a refactor of many pages, one change applied to every page — including when another planning skill is about to write that plan.
 ---
 
 # Planning from the pattern
