@@ -82,73 +82,8 @@ written:
 
 ## 3. Search what the other pages reuse, and how
 
-For everything in the tree, find its other uses in the project.
-
-**Reused by import** — a shared component, helper or piece of logic. It is used,
-never rewritten: the project's loading indicator rather than the library's, the
-project's shared error helper rather than a new message box. A page that
-bypasses a shared helper is exactly the drift this phase exists to catch.
-
-**Reused by copy** — no shared piece, the same snippet pasted into many files. A
-field written the same way in eight files is a pattern, and **a candidate to
-extract**: propose making it reusable in whatever form this project can reuse —
-a component, a custom element, a partial, a shared class — and where it belongs:
-the shared or core layer if other modules paste it too, the module if only this
-one does. Declined, the snippet is written the same way as the others.
-
-### Which pages are the family
-
-Counts are taken over the pages of the same kind as the reference — its family.
-Take the candidates, then remove what is not a member **before** counting:
-
-- **Neither end of an import edge inside the candidates is a peer of the other.**
-  What a page imports — its panels, its dialog, its hooks — is part of that page,
-  not a sibling of it. And **a file that imports members of the family is not a
-  member either**: a dispatcher choosing which page renders, a route table, a
-  barrel, a wrapper.
-- **A candidate that renders no holder and no region of the kind is not of the
-  kind.** Report it as not of the kind; never count it as a member that lacks
-  them.
-- **State both numbers** in the pattern file: how many candidates were
-  considered, how many were counted, and what was left out and why.
-
-On one real run nine files sat in one folder, and every role came out 8 of 9,
-always missing the same file — which reads as one page drifting from its
-siblings. The ninth imported the other eight and chose between them. The family
-was eight, and **8 of 8 on every role**: a unanimous convention the dispatcher
-had hidden.
-
-### Counting honestly
-
-- **A role is a component plus where it stands.** In one real app, 10 of 18
-  buttons were full-width — which reads as "no rule". By position it was 10 of
-  10 in the content area and 0 of 4 in toolbars. Count per position, never per
-  component alone.
-- **A count carries its spread.** Four identical buttons, all in one file, are
-  one page's habit; 10 of 10 across 8 files is a convention. Write both numbers.
-- **A missing prop is not yet a deviation.** Check the theme and the project's
-  wrappers first: either may set it already.
-- **Search for the exact name.** A plain text search once found 25 uses where
-  there were 18, because a container's name started with the component's.
-
-### Prove the search can see before trusting a count
-
-The reference is one of the pages you count, so every search has a known answer:
-it must find what the reference writes. **Run each search on the reference first.**
-A search that does not find the reference is broken, and nothing it counts is a
-result.
-
-- **A count of zero for a role the reference writes is a broken search** — a wrong
-  glob, a list that was never split, a pattern that does not match this dialect,
-  a bound that resolved to nothing. Fix it and count again. Never record it.
-- **A zero across the whole family is unverified**, not a convention. Record
-  *none of them write this* only when the same search, over the same files, found
-  something else — so it is known to have read them.
-
-On one real run a loop went once over the whole file list instead of once per
-file, and reported *0 of 9* twelve times with no error — including for the
-holder the reference had just been read with. *0 of 9* reads as a strong
-convention; written into the pattern it is the opposite of the truth.
+For everything in the tree, find its other uses in the project — in this order,
+because each step depends on the one before it.
 
 ### Bounds: the project and the theme are two boundaries
 
@@ -175,6 +110,74 @@ convention; written into the pattern it is the opposite of the truth.
 - On a large project, split the search across subagents — one per app, library
   or area. Where only a sample was read, **say so and how large**.
 
+### Which pages are the family
+
+Counts are taken over the pages of the same kind as the reference — its family.
+Take the candidates, then remove what is not a member **before** counting:
+
+- **Neither end of an import edge inside the candidates is a peer of the other.**
+  What a page imports — its panels, its dialog, its hooks — is part of that page,
+  not a sibling of it. And **a file that imports members of the family is not a
+  member either**: a dispatcher choosing which page renders, a route table, a
+  barrel, a wrapper.
+- **A candidate that renders no holder and no region of the kind is not of the
+  kind.** Report it as not of the kind; never count it as a member that lacks
+  them.
+- **State both numbers** in the pattern file: how many candidates were
+  considered, how many were counted, and what was left out and why.
+
+On one real run nine files sat in one folder, and every role came out 8 of 9,
+always missing the same file — which reads as one page drifting from its
+siblings. The ninth imported the other eight and chose between them. The family
+was eight, and **8 of 8 on every role**: a unanimous convention the dispatcher
+had hidden.
+
+### Prove the search can see before trusting a count
+
+The reference is one of the pages you count, so every search has a known answer:
+it must find what the reference writes. **Run each search on the reference first.**
+A search that does not find the reference is broken, and nothing it counts is a
+result.
+
+- **A count of zero for a role the reference writes is a broken search** — a wrong
+  glob, a list that was never split, a pattern that does not match this dialect,
+  a bound that resolved to nothing. Fix it and count again. Never record it.
+- **A zero across the whole family is unverified**, not a convention. Record
+  *none of them write this* only when the same search, over the same files, found
+  something else — so it is known to have read them.
+
+On one real run a loop went once over the whole file list instead of once per
+file, and reported *0 of 9* twelve times with no error — including for the
+holder the reference had just been read with. *0 of 9* reads as a strong
+convention; written into the pattern it is the opposite of the truth.
+
+### Counting honestly
+
+- **A role is a component plus where it stands.** In one real app, 10 of 18
+  buttons were full-width — which reads as "no rule". By position it was 10 of
+  10 in the content area and 0 of 4 in toolbars. Count per position, never per
+  component alone.
+- **A count carries its spread.** Four identical buttons, all in one file, are
+  one page's habit; 10 of 10 across 8 files is a convention. Write both numbers.
+- **A missing prop is not yet a deviation.** Check the theme and the project's
+  wrappers first: either may set it already.
+- **Search for the exact name.** A plain text search once found 25 uses where
+  there were 18, because a container's name started with the component's.
+
+### What the other pages reuse
+
+**Reused by import** — a shared component, helper or piece of logic. It is used,
+never rewritten: the project's loading indicator rather than the library's, the
+project's shared error helper rather than a new message box. A page that
+bypasses a shared helper is exactly the drift this phase exists to catch.
+
+**Reused by copy** — no shared piece, the same snippet pasted into many files. A
+field written the same way in eight files is a pattern, and **a candidate to
+extract**: propose making it reusable in whatever form this project can reuse —
+a component, a custom element, a partial, a shared class — and where it belongs:
+the shared or core layer if other modules paste it too, the module if only this
+one does. Declined, the snippet is written the same way as the others.
+
 ## 4. Values come from the theme, or become constants
 
 Find how the theme expresses colour, spacing, size, typography, radius and
@@ -183,8 +186,9 @@ breakpoints.
 - **A value that names a theme entry must exist in the theme that applies** — for
   a file in a shared layer, in every theme that renders it. The type system
   usually accepts it anyway, nothing fails at runtime, and it renders as
-  nothing: on one real workspace about 100 call sites wrote a colour their theme did
-  not define, beside 31 correct ones under another theme. Counted across the workspace it read as a unanimous 131 of 131.
+  nothing: on one real workspace about 100 call sites wrote a colour their
+  theme did not define, beside 31 correct ones under another theme. Counted
+  across the workspace it read as a unanimous 131 of 131.
   **A value a theme does not define is never written as a convention.** It goes
   under `Open questions` — add the entry to that theme, or change the usages —
   naming the theme it is missing from and the files that write it.

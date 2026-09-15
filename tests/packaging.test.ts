@@ -137,6 +137,35 @@ describe('the pattern file', () => {
   });
 });
 
+describe('building and verifying', () => {
+  /**
+   * The verifier reports against the page the builder wrote. A concern the
+   * verifier checks and the builder was never told about is a finding manufactured
+   * by the plugin itself — which is what happened when spacing, contrast and theme
+   * entries reached verifying and not building.
+   */
+  it('name the same concerns, so nothing is checked that was never asked for', async () => {
+    const read = (skill: string) =>
+      readFile(fileURLToPath(new URL(`../skills/${skill}/SKILL.md`, import.meta.url)), 'utf8');
+    const building = await read('building-with-patterns');
+    const verifying = await read('verifying-against-patterns');
+
+    const concerns = [
+      /reuse/i,
+      /validation/i,
+      /theme that applies/i,
+      /shared layer/i,
+      /spacing/i,
+      /contrast/i,
+      /every scheme/i,
+      /particular to the reference/i,
+    ];
+    const missing = concerns.filter((c) => c.test(verifying) && !c.test(building)).map(String);
+
+    expect(missing).toEqual([]);
+  });
+});
+
 describe('what the shipped bundle does not carry', () => {
   it('has no model client in it at all', async () => {
     // The plugin is free and asks for no credentials: the judging happens in
