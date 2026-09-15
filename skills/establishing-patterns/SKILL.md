@@ -95,59 +95,17 @@ because each step depends on the one before it.
 - On a large project, split the search across subagents — one per app, library
   or area. Where only a sample was read, **say so and how large**.
 
-### Which pages are the family
+### The family, the proof, the counts
 
-Counts are taken over the pages of the same kind as the reference — its family.
-Take the candidates, then remove what is not a member **before** counting:
+In this order, each explained in [counting.md](counting.md):
 
-- **Neither end of an import edge inside the candidates is a peer of the other.**
-  What a page imports — its panels, its dialog, its hooks — is part of that page,
-  not a sibling of it. And **a file that imports members of the family is not a
-  member either**: a dispatcher choosing which page renders, a route table, a
-  barrel, a wrapper.
-- **A candidate that renders no holder and no region of the kind is not of the
-  kind.** Report it as not of the kind; never count it as a member that lacks
-  them.
-- **State both numbers** in the pattern file: how many candidates were
-  considered, how many were counted, and what was left out and why.
-
-On one real run nine files sat in one folder, and every role came out 8 of 9,
-always missing the same file — which reads as one page drifting from its
-siblings. The ninth imported the other eight and chose between them. The family
-was eight, and **8 of 8 on every role**: a unanimous convention the dispatcher
-had hidden.
-
-### Prove the search can see before trusting a count
-
-The reference is one of the pages you count, so every search has a known answer:
-it must find what the reference writes. **Run each search on the reference first.**
-A search that does not find the reference is broken, and nothing it counts is a
-result.
-
-- **A count of zero for a role the reference writes is a broken search** — a wrong
-  glob, a list that was never split, a pattern that does not match this dialect,
-  a bound that resolved to nothing. Fix it and count again. Never record it.
-- **A zero across the whole family is unverified**, not a convention. Record
-  *none of them write this* only when the same search, over the same files, found
-  something else — so it is known to have read them.
-
-On one real run a loop went once over the whole file list instead of once per
-file, and reported *0 of 9* twelve times with no error — including for the
-holder the reference had just been read with. *0 of 9* reads as a strong
-convention; written into the pattern it is the opposite of the truth.
-
-### Counting honestly
-
-- **A role is a component plus where it stands.** In one real app, 10 of 18
-  buttons were full-width — which reads as "no rule". By position it was 10 of
-  10 in the content area and 0 of 4 in toolbars. Count per position, never per
-  component alone.
-- **A count carries its spread.** Four identical buttons, all in one file, are
-  one page's habit; 10 of 10 across 8 files is a convention. Write both numbers.
-- **A missing prop is not yet a deviation.** Check the theme and the project's
-  wrappers first: either may set it already.
-- **Search for the exact name.** A plain text search once found 25 uses where
-  there were 18, because a container's name started with the component's.
+1. **The family.** Remove non-members before counting: neither end of an import
+   edge inside the candidates is a peer of the other, and a file rendering no
+   holder of the kind is not of it. Write down counted of considered.
+2. **Prove the search can see.** Run every search on the reference first. A zero
+   for something the reference writes is a broken search, never a result.
+3. **Count honestly.** Per position, with the number of files, after checking
+   the theme and wrappers for a prop that is missing, by exact name.
 
 ### What the other pages reuse
 
