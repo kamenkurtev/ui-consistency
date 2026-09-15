@@ -53,8 +53,9 @@ pattern file:
   entry exists in the theme that applies**, or for a shared layer in every theme
   that renders it ([theme.md](../establishing-patterns/theme.md)). Report one
   that is missing, naming the theme;
-- **spacing**: every gap on the scale in the pattern file, and the gaps between
-  roles as the family spaces them. Report a value off the scale or a different
+- **spacing** ([spacing.md](../establishing-patterns/spacing.md)): every gap on
+  the scale in the pattern file, and the gaps between roles as the family spaces
+  them. Report a value off the scale or a different
   gap with what the neighbouring pages use instead. Where the pattern says the
   project has no consistent rhythm, report nothing about it and say so;
 - **contrast, as pairs** in every scheme the project has

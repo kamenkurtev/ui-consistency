@@ -38,7 +38,8 @@ so nothing is reported against a page that was never asked to get it right.
    for a file in a shared layer, every theme that renders it
    ([theme.md](../establishing-patterns/theme.md)). A named constant where the
    theme has none. No literal copied from the reference.
-6. **Spacing on the scale** in `## Spacing`: the gaps between roles as the family
+6. **Spacing on the scale** in `## Spacing`
+   ([spacing.md](../establishing-patterns/spacing.md)): the gaps between roles as the family
    spaces them, owned by the side the pattern names.
 7. **Contrast as a pair**: every foreground on the surface actually behind it
    meets the threshold in `## Contrast`, in every scheme the project has
