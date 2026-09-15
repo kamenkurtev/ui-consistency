@@ -47,6 +47,10 @@ pattern file:
 - how each is written, against the counts in the pattern;
 - the reused pieces: shared component, helper or class used, not rewritten;
 - values through the theme, not literals;
+- **every value that names a theme entry exists in the theme that applies to this
+  page** — for a file in a shared layer, in every theme that renders it. Report
+  one that is missing, naming the theme. It type-checks and fails silently, so
+  nothing else will;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty.
 
@@ -67,8 +71,8 @@ as a page that deviates.
 ## Say what was not checked
 
 A region the checker could not evaluate — a rule it cannot judge from the code, a
-technology it could not read with confidence, a child it could not open — is
-**named**, never passed. A green result over work nothing looked at is worse
+technology it could not read with confidence, a child it could not open, a theme
+it could not resolve — is **named**, never passed. A green result over work nothing looked at is worse
 than no result.
 
 ## The whole set, at the end
