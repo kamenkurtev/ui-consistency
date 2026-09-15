@@ -53,6 +53,10 @@ pattern file:
 Report **only what differs**, where, and what the reference and the rest of the
 project do instead. Say nothing about regions that match.
 
+A file that is not of the kind — a dispatcher, a route table, a barrel, a
+wrapper that imports the pages — is **named as not of the kind**, never measured
+as a page that deviates.
+
 ```
 <path to the page> against <kind of page>
   <submit button>     a larger size and another style — the reference has neither, nor do the other 3 submit buttons
