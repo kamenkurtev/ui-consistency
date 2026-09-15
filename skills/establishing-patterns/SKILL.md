@@ -185,6 +185,23 @@ what you took, and move on.** Collect the rest and ask in **one** message:
 Never a question per region, per prop, per pixel. A tool that interrogates gets
 switched off.
 
+**Every question is written down before it is answered**, under `## Open
+questions` in the pattern file, with its counts:
+
+- a contradiction found and not yet answered goes there — not into `Decided`,
+  and never dropped;
+- a proposal made and not yet accepted or declined goes there — not into
+  `Reused`.
+
+When the user answers, the question **moves** into `Decided` with the answer; a
+declined proposal moves there as declined. Nothing else writes to `Decided`.
+
+**With nobody there to answer** — a run nobody is watching — write every question
+under `Open questions`, pick no side, and end the phase by reporting them as its
+result. An unanswered question is the most valuable thing this phase finds: the
+place the project has not decided. A pattern file that drops it looks complete
+and is silent exactly where the next page will drift.
+
 ## No reference
 
 Walk the same reading order, but **arrive with a proposal for each region**,
@@ -234,9 +251,14 @@ observed: <date>
 
 - <which values come from where in the theme>
 
+## Open questions
+
+- <a contradiction, with its counts and files>
+- <a proposal, and where it would go>
+
 ## Decided
 
-- <what the user answered, and what was asked>
+- <what was asked, and what the user answered>
 
 ## Particular to the reference
 
@@ -244,8 +266,8 @@ observed: <date>
 - <the reference's literal values, not copied>
 ````
 
-`Decided` holds only what the user answered. Inventing an answer into it is worse
-than leaving it empty.
+`Decided` holds only what the user answered, moved there from `Open questions`.
+Inventing an answer into it is worse than leaving it empty.
 
 ## Say what you could not read
 
