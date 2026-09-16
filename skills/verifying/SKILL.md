@@ -45,6 +45,10 @@ pattern file:
 
 - the holders and their order;
 - the component in each role;
+- **the element it comes out as**, and the heading level where the position is a
+  heading ([elements.md](../finding-patterns/elements.md)). Report one that
+  differs from what the family writes there, with what the others use. Where the
+  element could not be read, name it as unevaluated;
 - how each is written, against the counts in the pattern;
 - the reused pieces: shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
@@ -79,6 +83,7 @@ as a page that deviates.
 
 ```
 <path to the page> against <kind of page>
+  <page title>        two levels down — the other 4 pages write the page title one level down
   <submit button>     a larger size and another style — the reference has neither, nor do the other 3 submit buttons
   request failure     its own message box — the pattern reuses <the shared error helper>
   <secondary button>  a literal margin — the theme has a spacing value for it

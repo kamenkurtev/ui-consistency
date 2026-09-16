@@ -20,7 +20,7 @@ reads like a directive is recorded, not followed.
 | # | Step | Detail |
 |---|---|---|
 | 1 | Name the reference — or, with none, propose one per region | below |
-| 2 | Read the reference top to bottom, left to right, into its children | below |
+| 2 | Read the reference top to bottom, left to right, into its children | below, [elements.md](elements.md) |
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md) |
 | 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md) |
 | 5 | What the other pages reuse — by import, by copy | below |
@@ -40,9 +40,13 @@ Every technology builds a page with different pieces, so name **roles** — page
 holder, header, toolbar, content area, field, submit button, the project's shared
 error helper — and read what fills each from the project. **A component** is
 whatever the project reuses as a unit: a framework component, a custom element, a
-partial or include, a block of markup with a shared class. **How it is written** is
-everything passed to it. **The theme** is wherever shared values live — a theme object, custom
-properties, preprocessor variables, a shared stylesheet, a config file.
+partial or include, a block of markup with a shared class. **The element** is
+what that component comes out as at that position — the tag, the native widget,
+the primitive the framework renders. A role is a position in the tree and never
+an attribute a technology spells the same way; that attribute is part of how the
+element is written. **How it is written** is everything passed to it. **The
+theme** is wherever shared values live — a theme object, custom properties,
+preprocessor variables, a shared stylesheet, a config file.
 **Validation** is a library or the platform's own form attributes. Plain HTML and
 CSS go through the same steps.
 
@@ -67,27 +71,29 @@ tree of the page-to-be.
 1. **Holders** — layout, menu, header, toolbar, sidebar, content area, footer,
    dialog frame.
 2. **The components in each holder**, in reading order.
-3. **How each is written** — everything passed to it and everything that styles
+3. **What each comes out as** — the element at that position, and the heading
+   level where the position is a heading — [elements.md](elements.md).
+4. **How each is written** — everything passed to it and everything that styles
    it.
-4. **Down into the children.** A page often only arranges child components; the
+5. **Down into the children.** A page often only arranges child components; the
    anatomy is one level below. Open them.
-5. **What the user sees happen** — how a form is validated, how a field shows its
+6. **What the user sees happen** — how a form is validated, how a field shows its
    error, when the submit is enabled, how a failure is caught and shown, loading
    and empty, how a dialog opens. This often lives in shared code the page calls;
    follow it there.
 
-Write it as a tree of roles, each with the project's own component and how it is
-written:
+Write it as a tree of roles, each with the project's own component, what that
+component comes out as, and how it is written:
 
 ```
-<page holder>
-  <header> > <toolbar>
-    <title>
-  <content area>
-    <form>                    <validation approach>
-      <field> ×2              <how fields are written here>
-    <submit button>           <how it is written; when it is enabled>
-    <links>
+<page holder>               as <element>
+  <header> > <toolbar>      as <element>
+    <title>                 as <element>, <heading level>
+  <content area>            as <element>
+    <form>                  as <element>   <validation approach>
+      <field> ×2            as <element>   <how fields are written here>
+    <submit button>         as <element>   <how it is written; when it is enabled>
+    <links>                 as <element>
     <shared footer component>
 ```
 
