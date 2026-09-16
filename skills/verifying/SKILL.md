@@ -57,11 +57,14 @@ pattern file:
   entry exists in the theme that applies**, or for a shared layer in every theme
   that renders it ([theme.md](../finding-patterns/theme.md)). Report one
   that is missing, naming the theme;
-- **spacing** ([spacing.md](../finding-patterns/spacing.md)): every gap on the
-  scale in the pattern file, and the gaps between roles as the family spaces
-  them. Report a value off the scale, or a different gap, with what the
-  neighbouring pages use instead. Where the pattern says the
-  project has no consistent rhythm, report nothing about it and say so;
+- **spacing** ([spacing.md](../finding-patterns/spacing.md)), against the base
+  in the pattern file and the gaps, line heights and heights it records. Two
+  different findings, worded differently: a value **off the base** is a
+  deviation, reported with the base and the nearest multiples; a value **on the
+  base that no page writes yet** is not wrong — say it is on the base and new
+  here, with what the family does write. A gap that differs is reported with
+  what the neighbouring pages use instead. Where the pattern says the project
+  has no base or no consistent rhythm, report nothing about it and say so;
 - **contrast, as pairs** in every scheme the project has
   ([contrast.md](../accessibility/contrast.md)). Report a pairing the family
   does not use, and any pairing below the threshold, with its ratio; name a pair

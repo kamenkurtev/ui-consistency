@@ -42,9 +42,12 @@ reported against a page that was never asked to get it right.
    for a file in a shared layer, every theme that renders it
    ([theme.md](../finding-patterns/theme.md)). A named constant where the
    theme has none. No literal copied from the reference.
-6. **Spacing on the scale** in `## Spacing`
-   ([spacing.md](../finding-patterns/spacing.md)): the gaps between roles as the
-   family spaces them, owned by the side the pattern names.
+6. **Spacing on the base** in `## Spacing`
+   ([spacing.md](../finding-patterns/spacing.md)): every value a whole multiple
+   of the base the pattern derived, the gaps between roles as the family spaces
+   them, owned by the side the pattern names, the line heights it records, and
+   the heights of controls, rows and bars as the family writes them. A multiple
+   the family has not written yet is allowed — say you used one.
 7. **Contrast as a pair**: every foreground on the surface actually behind it
    meets the threshold in `## Accessibility`, in every scheme the project has
    ([contrast.md](../accessibility/contrast.md)). Prefer the pairings the
