@@ -11,11 +11,12 @@ counted; never overwrite what the user decided.
 
 ````markdown
 ---
-kind: <kind of page>
+kind: <the project's own word for this kind of page>
+kind decided by: <what said so — the user, how the project itself keeps them apart, what the reference renders>
 reference: <path to the reference page>
 theme: <the theme that applies and the projects in its reach; for a shared layer, every theme that renders it>
 read: <how many pages, components and shared files were read; sampled or not>
-family: <n counted of m considered; what was left out and why>
+family: <n counted of m considered; what was left out and why, including what was judged another kind>
 observed: <date>
 ---
 
@@ -73,6 +74,20 @@ observed: <date>
 
 Every count carries its spread — how many files — and the bound that produced it:
 the project, or the theme and the projects in its reach.
+
+## The kind, and a kind with one member
+
+`kind` is the project's own word for it, and `kind decided by` says what settled
+it — the user, a separation the project already makes, or the tree the reference
+renders. It is the first decision the phase makes and it sets every count below
+it, so a file that does not say what decided it cannot be reviewed —
+[counting.md](counting.md).
+
+**Where the family has no other members**, the file says so in as many words:
+this kind has one member, so what is here is that page's way and not the
+project's. Nothing in it is written as `<n> of <m>`, `Particular to the
+reference` says that nothing could be separated out, and what was counted over
+the nearest kinds or over the whole project says which bound produced it.
 
 ## Open questions and Decided
 
