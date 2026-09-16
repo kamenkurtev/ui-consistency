@@ -87,14 +87,15 @@ component comes out as, and how it is written:
 
 ```
 <page holder>               as <element>
-  <header> > <toolbar>      as <element>
-    <title>                 as <element>, <heading level>
+  <header>                  as <element>
+    <toolbar>               as <element>
+      <title>               as <element>, <heading level>
   <content area>            as <element>
     <form>                  as <element>   <validation approach>
       <field> ×2            as <element>   <how fields are written here>
     <submit button>         as <element>   <how it is written; when it is enabled>
     <links>                 as <element>
-    <shared footer component>
+    <shared footer component>  as <element>
 ```
 
 ## 3. Bounds

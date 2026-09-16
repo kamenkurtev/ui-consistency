@@ -25,12 +25,14 @@ observed: <date>
 ## Tree
 
 ```
-<page holder>         as <element>                              — <n of m>, <files>, <bound>
-  <header> > <toolbar> > <title>  as <element>, <heading level> — <n of m>, <files>, <bound>
+<page holder>         as <element>                          — <n of m>, <files>, <bound>
+  <header>            as <element>
+    <toolbar>         as <element>
+      <title>         as <element>, <heading level>         — <n of m>, <files>, <bound>
   <content area>      as <element>
-    <form>            as <element>  <validation approach>       — <n of m>, <files>, <bound>
-      <field>         as <element>  <how it is written>         — <n of m>, <files>, <bound>
-    <submit button>   as <element>  <how it is written>         — <n of m>, <files>, <bound>
+    <form>            as <element>  <validation approach>    — <n of m>, <files>, <bound>
+      <field>         as <element>  <how it is written>      — <n of m>, <files>, <bound>
+    <submit button>   as <element>  <how it is written>      — <n of m>, <files>, <bound>
 ```
 
 Each line is a position: the project's component at that role, what it comes out
