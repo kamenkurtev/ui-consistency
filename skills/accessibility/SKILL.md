@@ -51,8 +51,8 @@ thresholds and the arithmetic are in [contrast.md](contrast.md).
   appears, a row is deleted — focus lands somewhere a person can see, and never
   on an element that has been removed or hidden.
 - **Where the project states no rule**, the default is WCAG 2.2 AA: focus
-  visible (2.4.7), and an indicator that carries meaning at 3:1 against what is
-  behind it.
+  visible (2.4.7), and — as a thing that carries meaning without words — an
+  indicator at 3:1 against what is behind it (1.4.11).
 - **Unevaluated**: an indicator set by a stylesheet you could not read, or by
   the platform's own default where that default is not in the code.
 
@@ -115,8 +115,9 @@ thresholds and the arithmetic are in [contrast.md](contrast.md).
 - **Where the project states none**, the default is WCAG 2.2 AA (2.5.8): a
   target of at least 24 by 24, in the unit the platform measures in. That
   standard exempts a target inline in a sentence, one the platform itself draws,
-  one whose size is essential to what it does, and one with enough space around
-  it that the space makes up the size — record those with their size rather than
+  one whose size is essential to what it does, one that has a big enough
+  equivalent elsewhere on the same page, and one with enough space around it
+  that the space makes up the size — record those with their size rather than
   reporting them as failing.
 - **The size comes from the code**, not from a picture: the component, the
   theme, and the stylesheets that apply to it.
