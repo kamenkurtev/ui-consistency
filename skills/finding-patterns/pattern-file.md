@@ -25,13 +25,19 @@ observed: <date>
 ## Tree
 
 ```
-<page holder>
-  <header> > <toolbar> > <title>
-  <content area>
-    <form>              <validation approach>     — <n of m>, <files>, <bound>
-      <field>           <how it is written>       — <n of m>, <files>, <bound>
-    <submit button>     <how it is written>       — <n of m>, <files>, <bound>
+<page holder>         as <element>                          — <n of m>, <files>, <bound>
+  <header>            as <element>
+    <toolbar>         as <element>
+      <title>         as <element>, <heading level>         — <n of m>, <files>, <bound>
+  <content area>      as <element>
+    <form>            as <element>  <validation approach>    — <n of m>, <files>, <bound>
+      <field>         as <element>  <how it is written>      — <n of m>, <files>, <bound>
+    <submit button>   as <element>  <how it is written>      — <n of m>, <files>, <bound>
 ```
+
+Each line is a position: the project's component at that role, what it comes out
+as, and how it is written. Where the project writes the markup directly the two
+are one thing and one column says it — [elements.md](elements.md).
 
 ## Reused
 

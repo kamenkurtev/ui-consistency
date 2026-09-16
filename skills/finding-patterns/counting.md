@@ -102,6 +102,9 @@ was the opposite of the truth.
 - **A role is a component plus where it stands.** Count per position, never per
   component alone: 10 of 18 buttons full-width reads as no rule, and was 10 of 10
   in the content area and 0 of 4 in toolbars.
+- **What the component comes out as is counted too**, per position and with its
+  file spread, and so is the heading level where the position is a heading —
+  [elements.md](elements.md).
 - **A count carries its spread.** Four identical buttons, all in one file, are
   one page's habit; 10 of 10 across 8 files is a convention. Write both numbers.
 - **A missing prop is not yet a deviation.** Check the theme and the project's
