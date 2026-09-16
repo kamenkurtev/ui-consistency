@@ -183,6 +183,10 @@ what you took, and move on.** Collect the rest into **one** message:
   no clear majority; one concern is done several ways.
 - **Proposals** — a snippet to extract; a place for shared values; a new component
   where nothing fits.
+- **What a pattern file for this kind already has open.** Read `## Open
+  questions` before you ask anything, and put what is there into the same batch,
+  with its counts, its files and the pages parked on it. A question nobody puts
+  again is a question nobody answers — [pattern-file.md](pattern-file.md).
 
 Never a question per region, per prop, per pixel — a tool that interrogates gets
 switched off. Every question is written down

@@ -60,6 +60,11 @@ the user's yes** before any code. Ask nothing new here — the questions were
 asked while the pattern was found. Anything still under `Open questions` is
 shown with the plan, and the pages it touches say so.
 
+**An answer given now moves the question into `Decided`** in the pattern file,
+with the date, and the tasks parked on it are named there and taken off `parked`
+— [pattern-file.md](../finding-patterns/pattern-file.md). An answer that only
+ever reaches the conversation is lost the moment it ends.
+
 A small change to one page has no plan and does not stop.
 
 ## Then
