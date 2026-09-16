@@ -1,8 +1,42 @@
-# Counting: the family, the proof, the rules
+# Counting: the kind, the family, the proof, the rules
 
-Read by `finding-patterns` before any count is recorded. The order is the
-order of work: the family first, then the proof that a search can see, then the
-counts.
+Read by `finding-patterns` before any count is recorded. The order is the order
+of work: the kind first, then the family, then the proof that a search can see,
+then the counts.
+
+## Which kind of page this is
+
+The first decision, and the one that silently sets every count below it: a list
+and a detail view read as one kind or as two, and the same project yields
+different conventions depending on which was assumed. **Decide it deliberately,
+from what the project says**, in this order:
+
+- **What the user said.** A kind somebody named — *a list page like the orders
+  one* — outranks anything you read, the same way a named reference does.
+- **What the project already keeps apart.** Its own directory names, its route
+  definitions, a suffix on a file name, a folder per kind. Where a project has
+  separated them itself, that separation is the answer and you are reading it,
+  not deciding it.
+- **What the reference renders.** Two pages are of one kind when they render the
+  same holders and the same regions in the same order — the tree, not the
+  subject matter. Two pages about different things, built the same way, are one
+  kind; a collection of rows and a single record with a submit are two, however
+  close their subjects.
+- **What they reach for.** Pages importing the same holder, the same layout
+  piece or the same shared frame are being treated as one kind by the project
+  already.
+
+**Name it in the project's own word** where the project has one — the folder, the
+route, what the team writes in the file name — never an invented one.
+
+**Where the project does not answer it**, the kind goes into the one batch of
+questions, with the candidates and what each renders, and with a proposal: *these
+six render the same holders and the same regions; these two do not, and would be
+a second kind.* One question about the kind, never one per candidate.
+
+**Record the decision and what it covered** in the pattern file: the kind, what
+decided it, and what was considered and judged another kind —
+[pattern-file.md](pattern-file.md).
 
 ## Which pages are the family
 
@@ -22,6 +56,28 @@ Take the candidates, then remove what is not a member **before** counting:
 
 *Why:* a dispatcher counted as a page once turned 8 of 8 on every role into 8 of
 9 — a unanimous convention reported as one drifting page.
+
+## A kind whose family has only the reference
+
+It happens on the first page of a new kind, and on a project that has one of
+everything. There is nothing to count, so **the phase does not become a phase
+that found conventions.** It says so, and runs a different branch:
+
+- **Say it in the pattern file**, in as many words: this kind has one member, so
+  what is written here is that page's way and not the project's — a starting
+  point somebody should review, not a counted convention.
+- **Nothing in it is `<n> of <m>`.** A count over one page is not a convention;
+  see *Counting honestly* below.
+- **What is not particular to the kind is still counted**, over the pages nearest
+  in kind and over the project: the theme and its entries, the shared pieces
+  every page reuses, the spacing scale, how failures are caught and shown. Say
+  which bound produced each — those numbers are the real result of such a run.
+- **`Particular to the reference` cannot be separated out**, because nothing
+  repeats: say that, rather than leaving the section empty as if it had been
+  checked.
+- **With no nearest kind either** — nothing to count anywhere — the phase's
+  result is that the project has nothing to compare against yet. Say it, and ask
+  nothing: there is no contradiction, only an empty project.
 
 ## Prove the search can see before trusting a count
 
@@ -52,3 +108,6 @@ was the opposite of the truth.
   wrappers first: either may set it already.
 - **Search for the exact name.** A container whose name starts with the
   component's once turned 18 uses into 25.
+- **A count over a family of one is never a convention.** *1 of 1* says only
+  that the page you read writes it. Write it as what the reference does, and say
+  the family has no other members — never as what the project does.

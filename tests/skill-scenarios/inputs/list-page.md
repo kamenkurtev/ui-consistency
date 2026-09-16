@@ -1,9 +1,10 @@
 ---
 kind: list page
+decided-by: all five render the page holder, a toolbar and a table of rows; `src/pages/` keeps them together
 reference: src/pages/orders.js
 theme: src/theme/theme.css — the only theme, used by every page
 read: 5 page files, 2 shared modules, 2 stylesheets; not sampled
-family: 4 counted of 5 considered; src/pages/index.js imports the pages and is not one
+family: 4 counted of 5 considered — orders, invoices, customers, shipments; src/pages/index.js imports the pages and is not one
 observed: 2026-09-15
 ---
 
