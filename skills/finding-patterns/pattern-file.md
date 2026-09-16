@@ -49,9 +49,14 @@ are one thing and one column says it — [elements.md](elements.md).
 
 ## Spacing
 
-- scale: <unit and multiples in use> — read from <the mechanism>
+- base: <the value derived> — derived from <the values read>, in <the mechanism>
+- multiples in use: <which ones, and where> — <n of m>, <files>
 - <role> to <role> — <gap> — <n of m>, <files>
 - gap owned by: <margin, padding or container gap — or mixed>
+- line height: <position> — <what the family writes> — <n of m>, <files>
+- space around text on the base: <yes, no, or where it is not>
+- height: <role> — <what the family writes> — <n of m>, <files>
+- unevaluated: <heights and gaps that are not set in the code, and why>
 
 ## Accessibility
 

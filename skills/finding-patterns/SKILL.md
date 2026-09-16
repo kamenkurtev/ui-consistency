@@ -153,8 +153,12 @@ breakpoints.
   mechanism.
 - A project with **no theme at all** gets one proposal: a single place for shared
   values, in the form the project can use.
-- **Spacing** is counted like the rest: the scale, the rhythm between roles, and
-  which side owns the gap — [spacing.md](spacing.md).
+- **Spacing** is counted like the rest: the base **derived** from the values the
+  project writes, the multiples in use, the rhythm between roles, which side
+  owns the gap, the rhythm the text sets, and the heights of controls, rows and
+  bars — [spacing.md](spacing.md). A value off the base and a value on the base
+  that nothing writes yet are two different findings, and the second is not
+  wrong.
 - **Contrast is a pair**: each foreground on the surface behind it, in every
   scheme, against the project's threshold or a named default —
   [contrast.md](../accessibility/contrast.md).
