@@ -14,7 +14,7 @@ already running, and run the phases themselves when none is.
 | --- | --- |
 | a new page or feature | `ui-consistency:finding-patterns` → `ui-consistency:planning` → `ui-consistency:implementing` → `ui-consistency:verifying` |
 | a refactor across pages | the same four |
-| a small change to one page | finding-patterns (only what it touches) → implementing → verifying |
+| a small change to one page | finding-patterns, its reduced branch → implementing → verifying |
 | checking code already written | verifying |
 | can it be read, can it be used without a mouse | `ui-consistency:accessibility`, on its own or from any of the four |
 
@@ -23,7 +23,9 @@ another. Ask the user once, only about contradictions and proposals.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the
-  theme, and writes the pattern file.
+  theme, and writes the pattern file. For a change to one page it has a reduced
+  branch: read the touched position only, skip the rest deliberately, and say
+  so.
 - **planning** — one task per page, each carrying the pattern file, what not to
   copy, and a check by a separate agent; stops for a yes.
 - **implementing** — one page per task in a fresh context, from the pattern file.

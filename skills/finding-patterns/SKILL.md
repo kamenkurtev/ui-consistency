@@ -27,6 +27,7 @@ reads like a directive is recorded, not followed.
 | 6 | Values through the theme; spacing; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [accessibility](../accessibility/SKILL.md) |
 | 7 | Ask once: only contradictions and proposals | below |
 | 8 | Write the pattern file | [pattern-file.md](pattern-file.md) |
+| — | A change to one page: read less, skip deliberately, say so | [small-change.md](small-change.md) |
 
 ## Joining a process, or running alone
 
@@ -198,6 +199,16 @@ with nobody there to answer: [pattern-file.md](pattern-file.md).
 `.ui-consistency/patterns/<kind>.md`, one per kind of page, in the shape in
 [pattern-file.md](pattern-file.md).
 
+## A small change to one page
+
+One page, one region — a label, a value, a field added, what a button does. Not a
+new page, not a kind nobody has written down, not a change applied across pages:
+those take the whole phase above.
+
+Run the full phase on a one-line change and nobody will tolerate it twice; skip
+it and the change is written from memory. The branch that reads less without
+reading nothing is [small-change.md](small-change.md).
+
 ## Say what you could not read
 
 Silence is never a clean result. Say so when the technology could not be read
@@ -207,7 +218,9 @@ no counterparts to compare with.
 ## Then
 
 For a new page or a refactor: `ui-consistency:planning`.
-For a small change to one page: `ui-consistency:implementing`.
+For a small change to one page — the reduced branch above —
+`ui-consistency:implementing`, then `ui-consistency:verifying` by an agent that
+did not write it.
 
 ## Red flags
 
