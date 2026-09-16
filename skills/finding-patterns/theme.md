@@ -1,8 +1,7 @@
 # Themes: the boundary and the entries that must exist
 
-Read by `finding-patterns` before anything is counted, and by
-`implementing` and `verifying` for every value that
-names a theme entry.
+Read by `finding-patterns` before anything is counted, and by `implementing`
+and `verifying` for every value that names a theme entry.
 
 ## The project and the theme are two boundaries
 

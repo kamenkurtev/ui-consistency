@@ -1,9 +1,8 @@
 # The pattern file
 
 `.ui-consistency/patterns/<kind>.md` — one per kind of page, not per page.
-Committed and reviewed like code. `finding-patterns` writes it;
-`planning`, `implementing` and
-`verifying` read it.
+Committed and reviewed like code. `finding-patterns` writes it; `planning`,
+`implementing` and `verifying` read it.
 
 If one already exists for this kind, read it first and update only what you
 counted; never overwrite what the user decided.

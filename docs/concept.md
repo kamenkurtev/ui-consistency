@@ -41,11 +41,11 @@ ask — and the agent looks with its own tools.
 The work goes through four phases, the same whether a planning process such as
 superpowers is running or not:
 
-1. **Establish** — read a reference page top to bottom and left to right, search
-   what the other pages reuse and how, take values from the theme, ask once, and
-   write a pattern file.
+1. **Find the pattern** — read a reference page top to bottom and left to right,
+   search what the other pages reuse and how, take values from the theme, ask
+   once, and write a pattern file.
 2. **Plan** — one task per page, each carrying what makes it checkable.
-3. **Build** — one page at a time, in a fresh context, from the pattern file.
+3. **Implement** — one page at a time, in a fresh context, from the pattern file.
 4. **Verify** — a separate agent compares each page with the reference, region by
    region, and then the whole set.
 

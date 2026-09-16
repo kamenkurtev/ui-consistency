@@ -1,8 +1,7 @@
 # Contrast: pairs, schemes, thresholds
 
-Read by `finding-patterns` when it records the pairings a family uses, and
-by `implementing` and `verifying` for every
-foreground on a surface.
+Read by `finding-patterns` when it records the pairings a family uses, and by
+`implementing` and `verifying` for every foreground on a surface.
 
 A foreground and a background can each be a correct theme entry and still be
 unreadable together. Check **pairs**, never single values.

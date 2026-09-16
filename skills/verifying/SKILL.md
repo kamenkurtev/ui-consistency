@@ -53,15 +53,15 @@ pattern file:
   entry exists in the theme that applies**, or for a shared layer in every theme
   that renders it ([theme.md](../finding-patterns/theme.md)). Report one
   that is missing, naming the theme;
-- **spacing** ([spacing.md](../finding-patterns/spacing.md)): every gap on
-  the scale in the pattern file, and the gaps between roles as the family spaces
-  them. Report a value off the scale or a different
-  gap with what the neighbouring pages use instead. Where the pattern says the
+- **spacing** ([spacing.md](../finding-patterns/spacing.md)): every gap on the
+  scale in the pattern file, and the gaps between roles as the family spaces
+  them. Report a value off the scale, or a different gap, with what the
+  neighbouring pages use instead. Where the pattern says the
   project has no consistent rhythm, report nothing about it and say so;
 - **contrast, as pairs** in every scheme the project has
-  ([contrast.md](../finding-patterns/contrast.md)). Report a pairing the
-  family does not use, and any pairing below the threshold, with its ratio; name
-  a pair whose surface cannot be resolved as unevaluated;
+  ([contrast.md](../finding-patterns/contrast.md)). Report a pairing the family
+  does not use, and any pairing below the threshold, with its ratio; name a pair
+  whose surface cannot be resolved as unevaluated;
 - nothing listed under *Particular to the reference* was copied.
 
 Report **only what differs**, where, and what the reference and the rest of the

@@ -127,10 +127,10 @@ describe('the skills', () => {
 
 describe('the pattern file', () => {
   /**
-   * The questions finding-patterns asks are answered after the file is written, or
-   * never on a run nobody watches. With nowhere to keep them they are invented
-   * into `Decided` or dropped, and the file then looks complete exactly where
-   * the project has not decided.
+   * The questions finding-patterns asks are answered after the file is written,
+   * or never on a run nobody watches. With nowhere to keep them they are
+   * invented into `Decided` or dropped, and the file then looks complete exactly
+   * where the project has not decided.
    */
   it('has a place for questions asked and not yet answered, before Decided', async () => {
     const format = await readFile(
@@ -145,17 +145,17 @@ describe('the pattern file', () => {
   });
 });
 
-describe('building and verifying', () => {
+describe('implementing and verifying', () => {
   /**
    * The verifier reports against the page the builder wrote. A concern the
-   * verifier checks and the builder was never told about is a finding manufactured
-   * by the plugin itself — which is what happened when spacing, contrast and theme
-   * entries reached verifying and not building.
+   * verifier checks and the builder was never told about is a finding
+   * manufactured by the plugin itself — which is what happened when spacing,
+   * contrast and theme entries reached verifying and not implementing.
    */
   it('name the same concerns, so nothing is checked that was never asked for', async () => {
     const read = (skill: string) =>
       readFile(fileURLToPath(new URL(`../skills/${skill}/SKILL.md`, import.meta.url)), 'utf8');
-    const building = await read('implementing');
+    const implementing = await read('implementing');
     const verifying = await read('verifying');
 
     const concerns = [
@@ -168,7 +168,7 @@ describe('building and verifying', () => {
       /every scheme/i,
       /particular to the reference/i,
     ];
-    const missing = concerns.filter((c) => c.test(verifying) && !c.test(building)).map(String);
+    const missing = concerns.filter((c) => c.test(verifying) && !c.test(implementing)).map(String);
 
     expect(missing).toEqual([]);
   });

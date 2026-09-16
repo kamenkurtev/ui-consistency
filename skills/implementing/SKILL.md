@@ -3,7 +3,7 @@ name: implementing
 description: Use when writing or changing what the end user sees and a pattern file or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
 ---
 
-# Building from the pattern
+# Implementing from the pattern
 
 The failure this exists for: the pattern is agreed, and the twenty-seventh page
 still does not match the first. Attention thins across a batch and the work
@@ -22,8 +22,8 @@ what each page task does inside it.
 
 ## For each page
 
-Everything `ui-consistency:verifying` will check is listed here,
-so nothing is reported against a page that was never asked to get it right.
+Everything `ui-consistency:verifying` will check is listed here, so nothing is
+reported against a page that was never asked to get it right.
 
 1. **Re-read the pattern file.** Every time. Not remembered. Its sections are
    described in [pattern-file.md](../finding-patterns/pattern-file.md).
@@ -39,8 +39,8 @@ so nothing is reported against a page that was never asked to get it right.
    ([theme.md](../finding-patterns/theme.md)). A named constant where the
    theme has none. No literal copied from the reference.
 6. **Spacing on the scale** in `## Spacing`
-   ([spacing.md](../finding-patterns/spacing.md)): the gaps between roles as the family
-   spaces them, owned by the side the pattern names.
+   ([spacing.md](../finding-patterns/spacing.md)): the gaps between roles as the
+   family spaces them, owned by the side the pattern names.
 7. **Contrast as a pair**: every foreground on the surface actually behind it
    meets the threshold in `## Contrast`, in every scheme the project has
    ([contrast.md](../finding-patterns/contrast.md)). Prefer the pairings the
@@ -56,9 +56,8 @@ so nothing is reported against a page that was never asked to get it right.
    with the count: *"the family writes the submit button full-width in 3 of 4
    pages; the page you pointed at is the one that differs — which do you want?"*
    Neither copy the deviation nor quietly override the request.
-10. **Hand the page to verification** —
-    `ui-consistency:verifying`, run by an agent that did not
-    write it.
+10. **Hand the page to verification** — `ui-consistency:verifying`, run by an
+    agent that did not write it.
 11. **Fix what it reports**, then verify again.
 12. **Mark it** `done`, or `parked — <why>`.
 
@@ -69,8 +68,8 @@ the change, and verify the page before calling it done.
 
 ## Then
 
-When every page is `done` or `parked`: `ui-consistency:verifying`
-over the whole set.
+When every page is `done` or `parked`: `ui-consistency:verifying` over the whole
+set.
 
 ## Red flags
 
