@@ -61,9 +61,10 @@ asked while the pattern was found. Anything still under `Open questions` is
 shown with the plan, and the pages it touches say so.
 
 **An answer given now moves the question into `Decided`** in the pattern file,
-with the date, and the tasks parked on it are named there and taken off `parked`
-— [pattern-file.md](../finding-patterns/pattern-file.md). An answer that only
-ever reaches the conversation is lost the moment it ends.
+with the date and the pages it was holding up
+([pattern-file.md](../finding-patterns/pattern-file.md)); each of those tasks
+goes from `parked` back to `todo` in the plan. An answer that only ever reaches
+the conversation is lost the moment it ends.
 
 A small change to one page has no plan and does not stop.
 
