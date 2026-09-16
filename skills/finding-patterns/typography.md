@@ -15,9 +15,10 @@ text, an error, a caption, a number in a column. **Record the ones this project
 has, and what it calls them** — a project with no caption has no caption, and
 inventing one is how a convention gets imported from somewhere else.
 
-**When to use which is what the counts answer.** The role at a position is what
-the family writes there, with its file spread — *the page title is the theme's
-largest step in 5 of 5 across 5 files*. Never a rule from outside.
+**When to use which is what the counts answer.** Record each type role against
+the position in the tree where the family writes it, with its file spread — *the
+page title is the theme's largest step in 5 of 5 across 5 files*. That is what
+"when to use which" means here: read from the project, never decided for it.
 
 ## The bundle, per role
 

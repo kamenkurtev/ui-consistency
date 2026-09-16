@@ -61,8 +61,8 @@ are one thing and one column says it — [elements.md](elements.md).
 
 - scale: <the steps derived> — derived from <the values read>, in <the mechanism>
 - unit: <the unit, and whether it follows the reader's own text setting>
-- <type role> — size, weight, line height, letter spacing, typeface, case — <n of m>, <files>
-- applied by: <role> — <theme entry, shared class, shared component, or by hand> — <n of m>, <files>
+- <type role> at <position in the tree> — size, weight, line height, letter spacing, typeface, case — <n of m>, <files>
+- applied by: <type role> — <theme entry, shared class, shared component, or by hand> — <n of m>, <files>
 - unevaluated: <parts that could not be resolved, and why>
 
 ## Accessibility
