@@ -28,7 +28,11 @@ reported against a page that was never asked to get it right.
 1. **Re-read the pattern file.** Every time. Not remembered. Its sections are
    described in [pattern-file.md](../finding-patterns/pattern-file.md).
 2. **Write the page region by region**, in the order of the tree: holders, then
-   the components in each, then how each is written, as the counts say.
+   the components in each, then what each comes out as, then how each is
+   written, as the counts say. **The element the pattern records at a position
+   is the element you write** — including the heading level
+   ([elements.md](../finding-patterns/elements.md)). Where the pattern records
+   none for a position, say so rather than choosing one.
 3. **Use what the project reuses.** The shared component, helper or class named in
    the pattern — never a new one beside it.
 4. **What the user sees happen, as the pattern says**: validation, field errors,
