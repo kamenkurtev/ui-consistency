@@ -53,10 +53,17 @@ are one thing and one column says it — [elements.md](elements.md).
 - multiples in use: <which ones, and where> — <n of m>, <files>
 - <role> to <role> — <gap> — <n of m>, <files>
 - gap owned by: <margin, padding or container gap — or mixed>
-- line height: <position> — <what the family writes> — <n of m>, <files>
 - space around text on the base: <yes, no, or where it is not>
 - height: <role> — <what the family writes> — <n of m>, <files>
 - unevaluated: <heights and gaps that are not set in the code, and why>
+
+## Typography
+
+- scale: <the steps derived> — derived from <the values read>, in <the mechanism>
+- unit: <the unit, and whether it follows the reader's own text setting>
+- <type role> at <position in the tree> — size, weight, line height, letter spacing, typeface, case — <n of m>, <files>
+- applied by: <type role> — <theme entry, shared class, shared component, or by hand> — <n of m>, <files>
+- unevaluated: <parts that could not be resolved, and why>
 
 ## Accessibility
 

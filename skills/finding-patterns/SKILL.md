@@ -162,6 +162,11 @@ breakpoints.
 - **Contrast is a pair**: each foreground on the surface behind it, in every
   scheme, against the project's threshold or a named default —
   [contrast.md](../accessibility/contrast.md).
+- **Typography** is counted per position too: which type roles this project
+  has, the whole bundle for each — size, weight, line height, letter spacing,
+  typeface, case — how the style is applied, and the unit
+  ([typography.md](typography.md)). A style written by hand where the others use
+  the shared one is reported even when its value is right.
 - **What else a person has to be able to read and use** — how the family shows
   focus, how a field is tied to its label, how it gives text to what has none,
   the size of its targets — is read the same way, from the family, and recorded
