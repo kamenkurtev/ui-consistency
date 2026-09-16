@@ -27,7 +27,7 @@ reads like a directive is recorded, not followed.
 | 6 | Values through the theme; spacing; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [accessibility](../accessibility/SKILL.md) |
 | 7 | Ask once: only contradictions and proposals | below |
 | 8 | Write the pattern file | [pattern-file.md](pattern-file.md) |
-| — | A change to one page: read less, skip deliberately, say so | below |
+| — | A change to one page: read less, skip deliberately, say so | [small-change.md](small-change.md) |
 
 ## Joining a process, or running alone
 
@@ -203,50 +203,11 @@ with nobody there to answer: [pattern-file.md](pattern-file.md).
 
 One page, one region — a label, a value, a field added, what a button does. Not a
 new page, not a kind nobody has written down, not a change applied across pages:
-those take the whole phase. Run the full phase on a one-line change and nobody
-will tolerate it twice; skip it and the change is written from memory, which is
-what this exists to stop.
+those take the whole phase above.
 
-**What is read**
-
-- The page, and the region the change touches.
-- For **that position only**, what the family writes there: the component, what
-  it comes out as, how it is written, the values it takes — steps 3 to 6, over
-  that one position.
-- The pattern file for this kind, if one exists. Read it first; it may already
-  answer the whole question, and then nothing else needs reading.
-
-**What is deliberately skipped**
-
-- Every position the change does not touch, and its counts.
-- The subjects the change does not touch: no type scale for a change that moves
-  no text, no spacing sweep for a change that moves no gap.
-- The mockup, the plan, and the stop for a yes — a small change does not stop.
-
-**What is never skipped**
-
-- **The proof that the search can see**: whatever you do count, run the search on
-  the reference first — [counting.md](counting.md). A reduced run has fewer
-  counts, not softer ones.
-- **The one batch of questions**, where what you read contradicts itself, and
-  what `## Open questions` already holds for this kind
-  ([pattern-file.md](pattern-file.md)).
-- **The check, by an agent that did not write the change** —
-  `ui-consistency:verifying`. This is the part a small change is most tempted to
-  drop, and the one that makes it safe to read little.
-
-**What the pattern file gets**
-
-- **One exists**: update the positions you actually counted and leave the rest
-  untouched. Say in it that this pass covered one region, and that the rest is
-  as of the earlier date it already carries.
-- **None exists**: write one covering only what was touched, and say so in
-  `read:` — a file that covers one region must not be picked up later as a
-  pattern for the kind.
-
-**Say what you did not read.** A reduced run reports its bounds out loud: which
-position it counted, which it did not, and that the file is partial. A partial
-pattern file that does not say it is partial is worse than none.
+Run the full phase on a one-line change and nobody will tolerate it twice; skip
+it and the change is written from memory. The branch that reads less without
+reading nothing is [small-change.md](small-change.md).
 
 ## Say what you could not read
 

@@ -85,9 +85,9 @@ reported against a page that was never asked to get it right.
 
 ## A small change without a plan
 
-`ui-consistency:finding-patterns` has a reduced branch for it — *A small change
-to one page* — which says what is read and what is deliberately skipped. Take
-what it produced, re-read that part of the pattern, make the change, and hand
+`ui-consistency:finding-patterns` has a reduced branch for it
+([small-change.md](../finding-patterns/small-change.md)), which says what is read
+and what is deliberately skipped. Take what it produced, re-read that part of the pattern, make the change, and hand
 the page to `ui-consistency:verifying`, run by an agent that did not write it,
 before calling it done. The check is not the part that gets dropped because the
 change was small.
