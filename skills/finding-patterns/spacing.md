@@ -62,12 +62,11 @@ The gaps between roles are only half of it. The text sets a rhythm of its own,
 and a page whose lines sit differently reads as another product even when every
 gap between its sections matches.
 
-- **The line height** the family writes, per position where text stands: the
-  page's own title, a section heading, body text, a label, helper text. Record
-  what it is and how it is expressed.
-- **Whether the space around a block of text stands on the base.** A heading
-  with a gap above it that is not a multiple is the common way a page drifts
-  while every named value in it is correct.
+- **The line height belongs to a type role**, and is recorded with the rest of
+  the bundle in [typography.md](typography.md) — not here.
+- **Whether the space around a block of text stands on the base** is this file's
+  question. A heading with a gap above it that is not a multiple is the common
+  way a page drifts while every named value in it is correct.
 
 ## The heights of controls, rows and bars
 

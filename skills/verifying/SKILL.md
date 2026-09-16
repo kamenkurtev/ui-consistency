@@ -65,6 +65,12 @@ pattern file:
   here, with what the family does write. A gap that differs is reported with
   what the neighbouring pages use instead. Where the pattern says the project
   has no base or no consistent rhythm, report nothing about it and say so;
+- **typography** ([typography.md](../finding-patterns/typography.md)), against
+  `## Typography`: the whole bundle at each position, not the size alone, and
+  how the style is applied. Report a style written by hand where the family uses
+  the shared one **even when its value is right**, and a size off the scale with
+  the nearest steps; a size on the scale that no page writes yet is not wrong —
+  say so;
 - **contrast, as pairs** in every scheme the project has
   ([contrast.md](../accessibility/contrast.md)). Report a pairing the family
   does not use, and any pairing below the threshold, with its ratio; name a pair
