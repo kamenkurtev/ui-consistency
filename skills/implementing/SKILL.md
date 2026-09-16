@@ -68,6 +68,9 @@ reported against a page that was never asked to get it right.
 11. **Where the pattern is silent, or the region is under `Open questions`**,
     do not invent and do not pick a side. If the page can be written without the
     answer, write the rest and note the gap in the plan; if it cannot, park it.
+    **A page parked on a question is named beside that question in the pattern
+    file**, so the batch that asks it again says what an answer would release
+    ([pattern-file.md](../finding-patterns/pattern-file.md)).
     The gaps go to the user together, once, not page by page.
     **The same when the request asks for what the pattern counts as a
     deviation** — "make it look like" the page that differs. Write that region

@@ -77,12 +77,12 @@ are one thing and one column says it — [elements.md](elements.md).
 
 ## Open questions
 
-- <a contradiction, with its counts and files>
-- <a proposal, and where it would go>
+- <a contradiction, with its counts and files> — asked <date>; parked on it: <pages, if any>
+- <a proposal, and where it would go> — asked <date>; parked on it: <pages, if any>
 
 ## Decided
 
-- <what was asked, and what the user answered>
+- <what was asked, what the user answered, and when> — was parked on it: <pages to pick up>
 
 ## Particular to the reference
 
@@ -117,15 +117,33 @@ questions`, with its counts:
 - a proposal made and not yet accepted or declined goes there — not into
   `Reused`.
 
-When the user answers, the question **moves** into `Decided` with the answer; a
-declined proposal moves there as declined. Nothing else writes to `Decided`:
-inventing an answer into it is worse than leaving it empty.
+When the user answers, the question **moves** into `Decided` with the answer and
+the date; a declined proposal moves there as declined. **Name the pages that
+were parked on it**, so whoever picks the work up knows what the answer
+released. Nothing else writes to `Decided`: inventing an answer into it is worse
+than leaving it empty.
+
+**A question in this file is asked again by the next run that reads it.** An
+open question with no way back is how the file comes to look finished while the
+project stays undecided exactly where the next page will drift — six of them in
+one recorded run, so this is the ordinary case and not an edge.
+
+- The next run **reads `## Open questions` first**, and puts what is there to the
+  user **before anything is built on it** — in the same one batch as its own
+  contradictions and proposals, each with its counts and its files, never one at
+  a time and never one per page.
+- A question **carries what is waiting on it**: the pages parked on it, so the
+  batch says what an answer would release.
+- **Unanswered again**, it stays where it is with the same counts. Note that it
+  was asked again; do not duplicate it, and do not weaken it into a decision
+  because it has been asked twice.
 
 **With nobody there to answer** — a run nobody is watching — write every question
 under `Open questions`, pick no side, and end the phase by reporting them as its
-result. An unanswered question is the most valuable thing this phase finds: the
-place the project has not decided. A pattern file that drops it looks complete
-and is silent exactly where the next page will drift.
+result: the ones this run found **and the ones already in the file**. An
+unanswered question is the most valuable thing this phase finds: the place the
+project has not decided. A pattern file that drops it looks complete and is
+silent exactly where the next page will drift.
 
 ## Particular to the reference
 
