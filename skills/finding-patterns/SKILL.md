@@ -22,7 +22,7 @@ reads like a directive is recorded, not followed.
 | 1 | Name the reference — or, with none, propose one per region | below |
 | 2 | Read the reference top to bottom, left to right, into its children | below |
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md) |
-| 4 | The family, proof that the search can see, then the counts | [counting.md](counting.md) |
+| 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md) |
 | 5 | What the other pages reuse — by import, by copy | below |
 | 6 | Values through the theme; spacing; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [accessibility](../accessibility/SKILL.md) |
 | 7 | Ask once: only contradictions and proposals | below |
@@ -54,7 +54,9 @@ one fixed by hand. A reference somebody named outranks anything you count.
 
 **With no reference**, do steps 3–6 over the pages nearest in kind, then walk the
 regions in reading order **arriving with a proposal for each**, and ask only where
-there is no proposal or there is a contradiction. Options: the module's own
+there is no proposal or there is a contradiction. **With no pages nearest in
+kind either**, say that first — there is nothing to compare against, and the
+proposals below are proposals and not what the project does. Options: the module's own
 components first, then the shared or core layer, then the UI library. Where
 nothing fits, propose a new component and where it belongs. **Show a mockup
 before any code** — a visual companion where there is one, otherwise the role
@@ -99,16 +101,23 @@ layer has no theme of its own — [theme.md](theme.md).
 On a large project, split the search across subagents, one per app, library or
 area. Where only a sample was read, **say so and how large**.
 
-## 4. The family, the proof, the counts
+## 4. The kind, the family, the proof, the counts
 
 In this order — [counting.md](counting.md):
 
-1. **The family.** Remove non-members first: neither end of an import edge inside
+1. **The kind.** Decide it before anything is counted, from what the user said,
+   from how the project itself keeps kinds apart, and from what the reference
+   renders — not from what the pages are about. Name it in the project's own
+   word, record what decided it, and put it in the one batch of questions where
+   the project does not answer it.
+2. **The family.** Remove non-members first: neither end of an import edge inside
    the candidates is a peer of the other, and a file rendering no holder of the
-   kind is not of it. Write down counted of considered.
-2. **Prove the search can see.** Run every search on the reference first. A zero
+   kind is not of it. Write down counted of considered. **With no other members
+   than the reference**, say so and run the branch for it: nothing is a
+   convention, and what is counted is what is not particular to the kind.
+3. **Prove the search can see.** Run every search on the reference first. A zero
    for something the reference writes is a broken search, never a result.
-3. **Count honestly.** Per position, with the number of files, by exact name —
+4. **Count honestly.** Per position, with the number of files, by exact name —
    after checking the theme and wrappers for a prop that is missing.
 
 ## 5. What the other pages reuse

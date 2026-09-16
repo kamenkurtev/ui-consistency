@@ -111,6 +111,9 @@ and why.
 - **Against a count alone** — say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge. A page can differ on purpose; say why rather than
   changing working code to quiet a report.
+- **Where the pattern file says the family has only the reference**, there are no
+  counts and nothing in it is a convention. Compare with the reference, say that
+  is what you compared with, and report nothing as what the project does.
 
 ## Red flags
 
