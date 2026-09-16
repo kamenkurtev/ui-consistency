@@ -24,7 +24,7 @@ reads like a directive is recorded, not followed.
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md) |
 | 4 | The family, proof that the search can see, then the counts | [counting.md](counting.md) |
 | 5 | What the other pages reuse — by import, by copy | below |
-| 6 | Values through the theme; spacing; contrast | [theme.md](theme.md), [spacing.md](spacing.md), [contrast.md](contrast.md) |
+| 6 | Values through the theme; spacing; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [accessibility](../accessibility/SKILL.md) |
 | 7 | Ask once: only contradictions and proposals | below |
 | 8 | Write the pattern file | [pattern-file.md](pattern-file.md) |
 
@@ -124,7 +124,7 @@ use, and where it belongs — the shared or core layer if other modules paste it
 too, the module if only this one does. Declined, it is written the same way as
 the others.
 
-## 6. Values, spacing, contrast
+## 6. Values, spacing, what can be read and used
 
 Find how the theme expresses colour, spacing, size, typography, radius and
 breakpoints.
@@ -141,7 +141,13 @@ breakpoints.
   which side owns the gap — [spacing.md](spacing.md).
 - **Contrast is a pair**: each foreground on the surface behind it, in every
   scheme, against the project's threshold or a named default —
-  [contrast.md](contrast.md).
+  [contrast.md](../accessibility/contrast.md).
+- **What else a person has to be able to read and use** — how the family shows
+  focus, how a field is tied to its label, how it gives text to what has none,
+  the size of its targets — is read the same way, from the family, and recorded
+  in `## Accessibility`: `ui-consistency:accessibility`
+  ([SKILL.md](../accessibility/SKILL.md)). The rules live there and are not
+  repeated here.
 
 ## 7. Ask once — only contradictions and proposals
 

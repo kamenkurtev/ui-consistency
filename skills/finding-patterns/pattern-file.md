@@ -46,11 +46,15 @@ observed: <date>
 - <role> to <role> — <gap> — <n of m>, <files>
 - gap owned by: <margin, padding or container gap — or mixed>
 
-## Contrast
+## Accessibility
 
 - threshold: <the project's, and where it is stated — or the named default>
 - <foreground> on <surface> — <ratio> light, <ratio> dark — <files>
-- unevaluated: <pairs whose surface could not be resolved, and why>
+- focus: <how the family shows it, and where it sends it> — <n of m>, <files>
+- <field> to its label: <the mechanism the family uses> — <n of m>, <files>
+- text for what has no words: <how the family gives it> — <n of m>, <files>
+- target size: <role> — <size> — <n of m>, <files>
+- unevaluated: <what could not be evaluated, per subject, and why>
 
 ## Open questions
 
