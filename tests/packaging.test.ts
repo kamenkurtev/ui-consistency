@@ -145,30 +145,42 @@ describe('the pattern file', () => {
   });
 
   /**
-   * A phase that names a section the template does not have sends the agent
-   * looking for a heading nobody writes — and by the phases' own rule, a region
-   * nothing could be read for is *unevaluated*, so the failure is silence on
-   * the one subject that was working. Nothing but attention coupled the two
-   * until a renamed section proved it.
+   * A phase that names a section no template has sends the agent looking for a
+   * heading nobody writes — and by the phases' own rule, a region nothing could
+   * be read for is *unevaluated*, so the failure is silence on the one subject
+   * that was working. Nothing but attention coupled the two until a renamed
+   * section proved it.
+   *
+   * The templates are found rather than listed: the pattern file has one, the
+   * plan file has one, and the day a third document arrives it is covered by
+   * having a template at all.
    */
   it('has every section the skills send an agent to read', async () => {
     const { readdirSync, readFileSync } = await import('node:fs');
     const dir = fileURLToPath(new URL('../skills', import.meta.url));
 
-    const format = readFileSync(`${dir}/finding-patterns/pattern-file.md`, 'utf8');
-    const shape = /````markdown\n([\s\S]*?)\n````/.exec(format)?.[1] ?? '';
-    const sections = new Set([...shape.matchAll(/^## (.+)$/gm)].map((m) => m[1]!.trim()));
+    const files = readdirSync(dir)
+      .filter((name) => !name.startsWith('.'))
+      .flatMap((skill) =>
+        readdirSync(`${dir}/${skill}`)
+          .filter((file) => file.endsWith('.md'))
+          .map((file) => ({ where: `${skill}/${file}`, text: readFileSync(`${dir}/${skill}/${file}`, 'utf8') })),
+      );
+
+    const sections = new Set<string>();
+    for (const { text } of files) {
+      for (const block of text.matchAll(/````markdown\n([\s\S]*?)\n````/g)) {
+        for (const heading of block[1]!.matchAll(/^## (.+)$/gm)) sections.add(heading[1]!.trim());
+      }
+    }
     expect(sections.size).toBeGreaterThan(3);
 
     const missing: string[] = [];
-    for (const skill of readdirSync(dir).filter((name) => !name.startsWith('.'))) {
-      for (const file of readdirSync(`${dir}/${skill}`).filter((f) => f.endsWith('.md'))) {
-        const text = readFileSync(`${dir}/${skill}/${file}`, 'utf8');
-        for (const named of text.matchAll(/`## ([^`]+)`/g)) {
-          // A reference can wrap across lines; the heading it names cannot.
-          const section = named[1]!.replace(/\s+/g, ' ').trim();
-          if (!sections.has(section)) missing.push(`${skill}/${file}: ## ${section}`);
-        }
+    for (const { where, text } of files) {
+      for (const named of text.matchAll(/`## ([^`]+)`/g)) {
+        // A reference can wrap across lines; the heading it names cannot.
+        const section = named[1]!.replace(/\s+/g, ' ').trim();
+        if (!sections.has(section)) missing.push(`${where}: ## ${section}`);
       }
     }
 
