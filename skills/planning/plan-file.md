@@ -68,6 +68,9 @@ somebody who was not in the conversation, or by an agent starting cold with no
 reason to open a path in a checkout it may not have. A path alone is enough for a
 subagent working in the repository and for nobody else.
 
+**Whoever moves the task decides that it moves** — this says only what it must
+carry when it does. Nothing here is an instruction to put a task anywhere.
+
 What travels with it:
 
 - **The extract of the pattern it needs**, not only the path: the positions this
