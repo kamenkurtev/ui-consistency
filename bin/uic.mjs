@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.16.0";
+var VERSION = "0.17.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -76,6 +76,9 @@ var STANDING = [
   "- A small change to one page: finding-patterns (only what it touches)",
   "  \u2192 implementing \u2192 verifying.",
   "- Checking code already written: verifying.",
+  "- Can it be read, can it be used without a mouse \u2014 contrast, focus, keyboard,",
+  "  a field and its label, text alternatives, target size:",
+  "  ui-consistency:accessibility, with or without a pattern file.",
   "",
   "If a spec or plan for this work already exists, add to it instead of starting",
   "another. Ask the user once, only about contradictions and proposals."

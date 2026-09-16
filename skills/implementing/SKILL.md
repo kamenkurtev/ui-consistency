@@ -42,24 +42,30 @@ reported against a page that was never asked to get it right.
    ([spacing.md](../finding-patterns/spacing.md)): the gaps between roles as the
    family spaces them, owned by the side the pattern names.
 7. **Contrast as a pair**: every foreground on the surface actually behind it
-   meets the threshold in `## Contrast`, in every scheme the project has
-   ([contrast.md](../finding-patterns/contrast.md)). Prefer the pairings the
+   meets the threshold in `## Accessibility`, in every scheme the project has
+   ([contrast.md](../accessibility/contrast.md)). Prefer the pairings the
    family already uses.
-8. **Do not copy what is particular to the reference.**
-9. **Where the pattern is silent, or the region is under `Open questions`**, do
-   not invent and do not pick a side. If the page can be written without the
-   answer, write the rest and note the gap in the plan; if it cannot, park it.
-   The gaps go to the user together, once, not page by page.
-   **The same when the request asks for what the pattern counts as a
-   deviation** — "make it look like" the page that differs. Write that region
-   the way the family does, and put the conflict to the user in one sentence
-   with the count: *"the family writes the submit button full-width in 3 of 4
-   pages; the page you pointed at is the one that differs — which do you want?"*
-   Neither copy the deviation nor quietly override the request.
-10. **Hand the page to verification** — `ui-consistency:verifying`, run by an
+8. **The rest of what a person has to be able to read and use**, as
+   `## Accessibility` records it: focus shown the way the family shows it and
+   landing where the family puts it, every control reachable without a mouse, a
+   field tied to its label the way the shared field does it, text for what has
+   none, targets the size the family's are — `ui-consistency:accessibility`
+   ([SKILL.md](../accessibility/SKILL.md)).
+9. **Do not copy what is particular to the reference.**
+10. **Where the pattern is silent, or the region is under `Open questions`**,
+    do not invent and do not pick a side. If the page can be written without the
+    answer, write the rest and note the gap in the plan; if it cannot, park it.
+    The gaps go to the user together, once, not page by page.
+    **The same when the request asks for what the pattern counts as a
+    deviation** — "make it look like" the page that differs. Write that region
+    the way the family does, and put the conflict to the user in one sentence
+    with the count: *"the family writes the submit button full-width in 3 of 4
+    pages; the page you pointed at is the one that differs — which do you want?"*
+    Neither copy the deviation nor quietly override the request.
+11. **Hand the page to verification** — `ui-consistency:verifying`, run by an
     agent that did not write it.
-11. **Fix what it reports**, then verify again.
-12. **Mark it** `done`, or `parked — <why>`.
+12. **Fix what it reports**, then verify again.
+13. **Mark it** `done`, or `parked — <why>`.
 
 ## A small change without a plan
 

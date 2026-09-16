@@ -59,9 +59,15 @@ pattern file:
   neighbouring pages use instead. Where the pattern says the
   project has no consistent rhythm, report nothing about it and say so;
 - **contrast, as pairs** in every scheme the project has
-  ([contrast.md](../finding-patterns/contrast.md)). Report a pairing the family
+  ([contrast.md](../accessibility/contrast.md)). Report a pairing the family
   does not use, and any pairing below the threshold, with its ratio; name a pair
   whose surface cannot be resolved as unevaluated;
+- **the rest of what a person has to be able to read and use**, against
+  `## Accessibility` and reported separately, never as one verdict: focus,
+  reach and order without a mouse, a field and its label, text for what has no
+  words, target size — `ui-consistency:accessibility`
+  ([SKILL.md](../accessibility/SKILL.md)). The rules are there; this list does
+  not repeat them;
 - nothing listed under *Particular to the reference* was copied.
 
 Report **only what differs**, where, and what the reference and the rest of the
