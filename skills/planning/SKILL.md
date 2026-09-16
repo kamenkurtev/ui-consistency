@@ -13,9 +13,11 @@ to copy, and a check by somebody who did not write the page.
 ## Joining a process, or running alone
 
 If a plan for this work already exists — another planning process wrote it — add
-the tasks below **into that plan**. Do not write a second one.
+the tasks below **into that plan**, in the shape in [plan-file.md](plan-file.md).
+Do not write a second one.
 
-If none exists, write `.ui-consistency/plans/<topic>.md`.
+If none exists, write `.ui-consistency/plans/<topic>.md` in that shape. The
+pattern file it rests on is [pattern-file.md](../finding-patterns/pattern-file.md).
 
 ## The order of the tasks
 
@@ -30,8 +32,7 @@ If none exists, write `.ui-consistency/plans/<topic>.md`.
 
 ## What every page task carries
 
-- the path of the pattern file — format in
-  [pattern-file.md](../finding-patterns/pattern-file.md);
+- the path of the pattern file;
 - the path of the reference;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;
@@ -39,26 +40,17 @@ If none exists, write `.ui-consistency/plans/<topic>.md`.
   1. *Re-read the pattern file before writing — do not work from memory.*
   2. *Hand the page to a separate agent with `ui-consistency:verifying`; fix what it reports.*
 
-A task that leaves any of these out is how page fifteen drifts.
-
-**In each task itself, not once in a preamble** — even when the user asks for one
-line per page. A subagent executing a task is given that task alone; a preamble
-does not travel with it. Keep the line short by pointing: the pattern file's path
-and the check are a few words each. A page judged to match already is still a task that
-carries them: its check is how "already matches" becomes known.
-
-## Status
-
-Each page is `todo`, `done`, or `parked — <why>`. A page that genuinely should
-not take the pattern is parked with its reason, never forced and never silently
-skipped.
+A task that leaves any of these out is how page fifteen drifts. Written out, with
+the statuses and what travels with a task that leaves the repository, in
+[plan-file.md](plan-file.md).
 
 ## Stop for a yes
 
 For a new page or a refactor, show the pattern file and the plan and **wait for
 the user's yes** before any code. Ask nothing new here — the questions were
-asked while the pattern was found. Anything still under `Open questions` is
-shown with the plan, and the pages it touches say so.
+asked while the pattern was found. Anything still under `Open questions` travels
+into the plan under `## Waiting on an answer`, with its counts and the tasks that
+cannot start until it is answered ([plan-file.md](plan-file.md)).
 
 **An answer given now moves the question into `Decided`** in the pattern file,
 with the date and the pages it was holding up
