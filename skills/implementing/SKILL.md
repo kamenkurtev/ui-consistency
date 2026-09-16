@@ -48,18 +48,24 @@ reported against a page that was never asked to get it right.
    them, owned by the side the pattern names, the line heights it records, and
    the heights of controls, rows and bars as the family writes them. A multiple
    the family has not written yet is allowed — say you used one.
-7. **Contrast as a pair**: every foreground on the surface actually behind it
+7. **Text as `## Typography` records it**
+   ([typography.md](../finding-patterns/typography.md)): the type role the
+   family writes at that position, the whole bundle for it — size, weight, line
+   height, letter spacing, typeface, case — and **applied the way the family
+   applies it**: the shared entry, class or component, never a style written by
+   hand beside one that exists.
+8. **Contrast as a pair**: every foreground on the surface actually behind it
    meets the threshold in `## Accessibility`, in every scheme the project has
    ([contrast.md](../accessibility/contrast.md)). Prefer the pairings the
    family already uses.
-8. **The rest of what a person has to be able to read and use**, as
+9. **The rest of what a person has to be able to read and use**, as
    `## Accessibility` records it: focus shown the way the family shows it and
    landing where the family puts it, every control reachable without a mouse, a
    field tied to its label the way the shared field does it, text for what has
    none, targets the size the family's are — `ui-consistency:accessibility`
    ([SKILL.md](../accessibility/SKILL.md)).
-9. **Do not copy what is particular to the reference.**
-10. **Where the pattern is silent, or the region is under `Open questions`**,
+10. **Do not copy what is particular to the reference.**
+11. **Where the pattern is silent, or the region is under `Open questions`**,
     do not invent and do not pick a side. If the page can be written without the
     answer, write the rest and note the gap in the plan; if it cannot, park it.
     The gaps go to the user together, once, not page by page.
@@ -69,10 +75,10 @@ reported against a page that was never asked to get it right.
     with the count: *"the family writes the submit button full-width in 3 of 4
     pages; the page you pointed at is the one that differs — which do you want?"*
     Neither copy the deviation nor quietly override the request.
-11. **Hand the page to verification** — `ui-consistency:verifying`, run by an
+12. **Hand the page to verification** — `ui-consistency:verifying`, run by an
     agent that did not write it.
-12. **Fix what it reports**, then verify again.
-13. **Mark it** `done`, or `parked — <why>`.
+13. **Fix what it reports**, then verify again.
+14. **Mark it** `done`, or `parked — <why>`.
 
 ## A small change without a plan
 
