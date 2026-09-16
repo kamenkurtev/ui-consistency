@@ -12,11 +12,11 @@ counted; never overwrite what the user decided.
 ````markdown
 ---
 kind: <the project's own word for this kind of page>
-kind decided by: <what said so — the user, how the project itself keeps them apart, what the reference renders>
+decided-by: <what settled the kind — the user, how the project itself keeps them apart, what the reference renders>
 reference: <path to the reference page>
 theme: <the theme that applies and the projects in its reach; for a shared layer, every theme that renders it>
 read: <how many pages, components and shared files were read; sampled or not>
-family: <n counted of m considered; what was left out and why, including what was judged another kind>
+family: <n counted of m considered; the files counted as this kind, what was left out and why, including what was judged another kind>
 observed: <date>
 ---
 
@@ -77,10 +77,10 @@ the project, or the theme and the projects in its reach.
 
 ## The kind, and a kind with one member
 
-`kind` is the project's own word for it, and `kind decided by` says what settled
-it — the user, a separation the project already makes, or the tree the reference
-renders. It is the first decision the phase makes and it sets every count below
-it, so a file that does not say what decided it cannot be reviewed —
+`kind` is the project's own word for it, `decided-by` says what settled it, and
+`family` says which files were counted as it. The kind is the first decision the
+phase makes and it sets every count below it, so a file that does not say what
+decided it cannot be reviewed — how it is decided is in
 [counting.md](counting.md).
 
 **Where the family has no other members**, the file says so in as many words:
