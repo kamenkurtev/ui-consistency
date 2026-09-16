@@ -1,6 +1,6 @@
-# establishing-2 — a teammate's counts that read nothing
+# finding-patterns-2 — a teammate's counts that read nothing
 
-**Skill:** `establishing-patterns`
+**Skill:** `finding-patterns`
 **Temptation:** trust counts handed over instead of proving the search can see.
 
 ## Setup

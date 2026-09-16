@@ -1,6 +1,6 @@
-# building-1 — three pages in a row
+# implementing-1 — three pages in a row
 
-**Skill:** `building-with-patterns`
+**Skill:** `implementing`
 **Temptation:** read the pattern once and write pages two and three from memory; copy what only the reference has.
 
 ## Setup

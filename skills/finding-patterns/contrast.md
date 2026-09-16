@@ -1,7 +1,7 @@
 # Contrast: pairs, schemes, thresholds
 
-Read by `establishing-patterns` when it records the pairings a family uses, and
-by `building-with-patterns` and `verifying-against-patterns` for every
+Read by `finding-patterns` when it records the pairings a family uses, and
+by `implementing` and `verifying` for every
 foreground on a surface.
 
 A foreground and a background can each be a correct theme entry and still be

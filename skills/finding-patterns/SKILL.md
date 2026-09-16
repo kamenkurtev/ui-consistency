@@ -1,9 +1,9 @@
 ---
-name: establishing-patterns
-description: Use when building or changing a page, a feature or a set of pages — above all when the user names a page to follow, or new UI could come out unlike its neighbours in size, colour, styles, validation, error handling, spacing or contrast.
+name: finding-patterns
+description: Use when building or changing what the end user sees — a page, a feature, a set of pages — above all when a page is named to follow, or new UI could come out unlike its neighbours in size, colour, validation, error handling, spacing or contrast.
 ---
 
-# Establishing the pattern
+# Finding the pattern
 
 ## Overview
 
@@ -171,8 +171,8 @@ no counterparts to compare with.
 
 ## Then
 
-For a new page or a refactor: `ui-consistency:planning-with-patterns`.
-For a small change to one page: `ui-consistency:building-with-patterns`.
+For a new page or a refactor: `ui-consistency:planning`.
+For a small change to one page: `ui-consistency:implementing`.
 
 ## Red flags
 

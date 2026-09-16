@@ -72,10 +72,10 @@ harness-specific.
 
 The agent picks them up on its own. You don't need to name them.
 
-- **establishing-patterns** — how pages of this kind are built here
-- **planning-with-patterns** — one checkable task per page
-- **building-with-patterns** — one page at a time, from the pattern
-- **verifying-against-patterns** — a separate agent compares each page with the reference
+- **finding-patterns** — how pages of this kind are built here
+- **planning** — one checkable task per page
+- **implementing** — one page at a time, from the pattern
+- **verifying** — a separate agent compares each page with the reference
 
 ## What it writes in your repository
 

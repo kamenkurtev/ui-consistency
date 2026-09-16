@@ -1,4 +1,4 @@
-# establishing-2 — 2026-09-15
+# finding-patterns-2 — 2026-09-15
 
 model: Sonnet
 runs: 1 per arm (the first run with the skill stopped midway on the account's session limit and was repeated on a fresh copy)

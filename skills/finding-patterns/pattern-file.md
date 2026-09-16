@@ -1,9 +1,9 @@
 # The pattern file
 
 `.ui-consistency/patterns/<kind>.md` — one per kind of page, not per page.
-Committed and reviewed like code. `establishing-patterns` writes it;
-`planning-with-patterns`, `building-with-patterns` and
-`verifying-against-patterns` read it.
+Committed and reviewed like code. `finding-patterns` writes it;
+`planning`, `implementing` and
+`verifying` read it.
 
 If one already exists for this kind, read it first and update only what you
 counted; never overwrite what the user decided.
@@ -94,5 +94,5 @@ and is silent exactly where the next page will drift.
 ## Particular to the reference
 
 What only the reference has, and the reference's literal values. Listed so they
-are not copied: `building-with-patterns` leaves them out and
-`verifying-against-patterns` reports a page that copied one.
+are not copied: `implementing` leaves them out and
+`verifying` reports a page that copied one.

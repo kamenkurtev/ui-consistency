@@ -127,14 +127,14 @@ describe('the skills', () => {
 
 describe('the pattern file', () => {
   /**
-   * The questions establishing asks are answered after the file is written, or
+   * The questions finding-patterns asks are answered after the file is written, or
    * never on a run nobody watches. With nowhere to keep them they are invented
    * into `Decided` or dropped, and the file then looks complete exactly where
    * the project has not decided.
    */
   it('has a place for questions asked and not yet answered, before Decided', async () => {
     const format = await readFile(
-      fileURLToPath(new URL('../skills/establishing-patterns/pattern-file.md', import.meta.url)),
+      fileURLToPath(new URL('../skills/finding-patterns/pattern-file.md', import.meta.url)),
       'utf8',
     );
     const shape = /````markdown\n([\s\S]*?)\n````/.exec(format)?.[1] ?? '';
@@ -155,8 +155,8 @@ describe('building and verifying', () => {
   it('name the same concerns, so nothing is checked that was never asked for', async () => {
     const read = (skill: string) =>
       readFile(fileURLToPath(new URL(`../skills/${skill}/SKILL.md`, import.meta.url)), 'utf8');
-    const building = await read('building-with-patterns');
-    const verifying = await read('verifying-against-patterns');
+    const building = await read('implementing');
+    const verifying = await read('verifying');
 
     const concerns = [
       /reuse/i,
@@ -343,7 +343,7 @@ describe('the other harnesses', () => {
     const agents = readFileSync(fileURLToPath(new URL('../AGENTS.md', import.meta.url)), 'utf8');
     // The file a non-Claude harness loads must carry the surface: the skills and
     // the order they fire in.
-    expect(agents).toContain('ui-consistency:establishing-patterns');
+    expect(agents).toContain('ui-consistency:finding-patterns');
     expect((await read('gemini-extension.json'))['contextFileName']).toBe('AGENTS.md');
   });
 });
