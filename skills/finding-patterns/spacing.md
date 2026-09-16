@@ -9,15 +9,25 @@ fact, read and counted like the rest.
 
 ## The base is derived, never assumed
 
-- **Derive it from the values the project already writes** — the named values in
-  the theme, the multiples carried by utility or shared classes, the literals in
-  the pages. The base is the largest value they are all whole multiples of. Say
-  which values you read and which mechanism carried them.
+- **Derive it from the values the project keeps**, in this order: the named
+  values in the theme, then the multiples carried by utility or shared classes.
+  Only where the project keeps its values nowhere do the literals in the pages
+  become the source. The base is the largest value they are all whole multiples
+  of. Say which values you read and which mechanism carried them.
+- **A literal that sits off what those produce is a candidate deviation, not
+  evidence about the base.** Folding it in collapses the base to something that
+  divides everything, and then nothing is ever off it — which is the same as
+  having no check at all.
+- **A largest common divisor is not automatically a base.** Any set of whole
+  numbers has one. Check that the multiples it produces are the ones the project
+  actually writes; where they are not, the project has no base.
 - **Never assume one.** The numbers that are common elsewhere are not this
   project's answer until its own values say so, and a base taken from habit
   turns every correct value into a deviation.
 - **Where the values share no base**, the finding is that the project has none.
-  Say so; do not promote the most frequent value into a rule.
+  Say so; do not promote the most frequent value into a rule. Make one proposal,
+  in the same batch as the others, for a single place to keep the base in the
+  form the project can use — never a proposal per page.
 - **Record the base as derived**, with the values it came from — a file that
   states a base without saying what produced it cannot be reviewed.
 - **The multiples in use** are counted separately from the base: which ones the
@@ -76,8 +86,3 @@ Nothing here carries a number the project did not produce. A **minimum** size
 somebody has to be able to hit is a different question with a different answer,
 and it lives with the standards: `ui-consistency:accessibility`
 ([SKILL.md](../accessibility/SKILL.md)).
-
-## No scale at all
-
-Make one proposal, in the same batch as the others, for a single place to keep
-the base in the form the project can use — never a proposal per page.
