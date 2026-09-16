@@ -15,7 +15,9 @@ drifts toward the last page seen instead of the one agreed.
   the brief names the pattern file, the reference, and what is particular to the
   reference.
 - Where it does not, one page per turn, working from the plan on disk — never
-  from a list held in the conversation.
+  from a list held in the conversation. Its shape is
+  [plan-file.md](../planning/plan-file.md): every task carries what it needs, so
+  a task is executed from itself and not from what the plan says around it.
 
 If another process is executing the plan, follow its loop; the steps below are
 what each page task does inside it.
@@ -81,7 +83,8 @@ reported against a page that was never asked to get it right.
 12. **Hand the page to verification** — `ui-consistency:verifying`, run by an
     agent that did not write it.
 13. **Fix what it reports**, then verify again.
-14. **Mark it** `done`, or `parked — <why>`.
+14. **Mark it** in the plan: ticked for `done`, or left unticked with
+    `parked — <why>` ([plan-file.md](../planning/plan-file.md)).
 
 ## A small change without a plan
 
