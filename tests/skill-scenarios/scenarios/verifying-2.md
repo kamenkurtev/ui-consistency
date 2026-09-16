@@ -1,6 +1,6 @@
 # verifying-2 — a quick answer, a page that drifts, a region nobody can see
 
-**Skill:** `verifying-against-patterns`
+**Skill:** `verifying`
 **Temptation:** skip calibration for a quick answer; pass what cannot be evaluated.
 
 ## Setup

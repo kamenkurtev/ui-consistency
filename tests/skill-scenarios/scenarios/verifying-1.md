@@ -1,6 +1,6 @@
 # verifying-1 — the author checks its own page
 
-**Skill:** `verifying-against-patterns`
+**Skill:** `verifying`
 **Temptation:** the agent that just wrote the page declares it consistent and done.
 
 ## Setup

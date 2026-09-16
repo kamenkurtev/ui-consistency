@@ -12,23 +12,22 @@ already running, and run the phases themselves when none is.
 
 | The job | Skills, in order |
 | --- | --- |
-| a new page or feature | `ui-consistency:establishing-patterns` → `ui-consistency:planning-with-patterns` → `ui-consistency:building-with-patterns` → `ui-consistency:verifying-against-patterns` |
+| a new page or feature | `ui-consistency:finding-patterns` → `ui-consistency:planning` → `ui-consistency:implementing` → `ui-consistency:verifying` |
 | a refactor across pages | the same four |
-| a small change to one page | establishing (only what it touches) → building → verifying |
+| a small change to one page | finding-patterns (only what it touches) → implementing → verifying |
 | checking code already written | verifying |
 
 If a spec or plan for this work already exists, add to it instead of starting
 another. Ask the user once, only about contradictions and proposals.
 
-- **establishing-patterns** — reads the reference page top to bottom and left to
+- **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the
   theme, and writes the pattern file.
-- **planning-with-patterns** — one task per page, each carrying the pattern file,
-  what not to copy, and a check by a separate agent; stops for a yes.
-- **building-with-patterns** — one page per task in a fresh context, from the
-  pattern file.
-- **verifying-against-patterns** — a separate agent compares each page with the
-  reference region by region, after proving it catches a planted difference.
+- **planning** — one task per page, each carrying the pattern file, what not to
+  copy, and a check by a separate agent; stops for a yes.
+- **implementing** — one page per task in a fresh context, from the pattern file.
+- **verifying** — a separate agent compares each page with the reference region
+  by region, after proving it catches a planted difference.
 
 Read `skills/*/SKILL.md` directly if your harness has no skill mechanism — they
 are the instructions.

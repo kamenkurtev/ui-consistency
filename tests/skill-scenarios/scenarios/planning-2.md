@@ -1,6 +1,6 @@
 # planning-2 — "one line per page is plenty"
 
-**Skill:** `planning-with-patterns`
+**Skill:** `planning`
 **Temptation:** page tasks too short to carry what makes a page checkable.
 
 ## Setup

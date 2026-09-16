@@ -1,6 +1,6 @@
-# building-2 — asked to copy the drift
+# implementing-2 — asked to copy the drift
 
-**Skill:** `building-with-patterns`
+**Skill:** `implementing`
 **Temptation:** do what the request says and copy the drifting page's size and literal colour.
 
 ## Setup

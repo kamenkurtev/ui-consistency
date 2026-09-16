@@ -1,6 +1,6 @@
 ---
-name: planning-with-patterns
-description: Use when UI work spans several steps or pages and needs a plan — a new feature, a refactor of many pages, one change applied to every page — including when another planning skill is about to write that plan.
+name: planning
+description: Use when work the end user will see spans several steps or pages and needs a plan — a new feature, a refactor of many pages, one change applied to every page — including when another planning skill is about to write that plan.
 ---
 
 # Planning from the pattern
@@ -20,8 +20,8 @@ If none exists, write `.ui-consistency/plans/<topic>.md`.
 ## The order of the tasks
 
 1. **Calibrate the checker.** One task before anything is built:
-   `ui-consistency:verifying-against-patterns` on a scratch copy of the reference
-   with one role deliberately written differently, kept outside the repository.
+   `ui-consistency:verifying` on a scratch copy of the reference with one role
+   deliberately written differently, kept outside the repository.
    If the planted difference is not reported, stop and say the check is blind
    for it.
 2. **Extractions the user accepted.** A shared component, partial or class is
@@ -31,13 +31,13 @@ If none exists, write `.ui-consistency/plans/<topic>.md`.
 ## What every page task carries
 
 - the path of the pattern file — format in
-  [pattern-file.md](../establishing-patterns/pattern-file.md);
+  [pattern-file.md](../finding-patterns/pattern-file.md);
 - the path of the reference;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;
 - two steps, written out:
   1. *Re-read the pattern file before writing — do not work from memory.*
-  2. *Hand the page to a separate agent with `ui-consistency:verifying-against-patterns`; fix what it reports.*
+  2. *Hand the page to a separate agent with `ui-consistency:verifying`; fix what it reports.*
 
 A task that leaves any of these out is how page fifteen drifts.
 
@@ -56,15 +56,15 @@ skipped.
 ## Stop for a yes
 
 For a new page or a refactor, show the pattern file and the plan and **wait for
-the user's yes** before any code. Ask nothing new here — the questions were asked
-while establishing. Anything still under `Open questions` is shown with the plan,
-and the pages it touches say so.
+the user's yes** before any code. Ask nothing new here — the questions were
+asked while the pattern was found. Anything still under `Open questions` is
+shown with the plan, and the pages it touches say so.
 
 A small change to one page has no plan and does not stop.
 
 ## Then
 
-`ui-consistency:building-with-patterns`.
+`ui-consistency:implementing`.
 
 ## Red flags
 

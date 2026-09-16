@@ -21,10 +21,10 @@ describe('what a session is told', () => {
     const said = (await sessionContext(root)) ?? '';
 
     for (const skill of [
-      'establishing-patterns',
-      'planning-with-patterns',
-      'building-with-patterns',
-      'verifying-against-patterns',
+      'finding-patterns',
+      'planning',
+      'implementing',
+      'verifying',
     ]) {
       expect(said).toContain(`ui-consistency:${skill}`);
     }
@@ -51,8 +51,8 @@ describe('what a session is told', () => {
     await writeFile(join(root, '.ui-consistency/rules.md'), '# Rules\n\nSomething.\n');
     const withKnowledge = await sessionContext(root);
 
-    expect(bare).toContain('ui-consistency:establishing-patterns');
-    expect(withKnowledge).toContain('ui-consistency:establishing-patterns');
+    expect(bare).toContain('ui-consistency:finding-patterns');
+    expect(withKnowledge).toContain('ui-consistency:finding-patterns');
   });
 
   it('still reports the old knowledge directory, beside the instruction', async () => {
@@ -63,7 +63,7 @@ describe('what a session is told', () => {
 
     const said = (await sessionContext(root)) ?? '';
 
-    expect(said).toContain('ui-consistency:establishing-patterns');
+    expect(said).toContain('ui-consistency:finding-patterns');
     expect(said).toContain('is the old location');
   });
 

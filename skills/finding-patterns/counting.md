@@ -1,6 +1,6 @@
 # Counting: the family, the proof, the rules
 
-Read by `establishing-patterns` before any count is recorded. The order is the
+Read by `finding-patterns` before any count is recorded. The order is the
 order of work: the family first, then the proof that a search can see, then the
 counts.
 

@@ -15,15 +15,15 @@ HTML and CSS.
 When you ask for a new page, a feature or a refactor, the agent goes through four
 phases:
 
-1. **Establish.** It asks which page to follow, reads that page top to bottom
-   and left to right — the holders, the components in each, how each is written,
-   how forms validate and errors are shown — and searches how the other pages
-   reuse those pieces. Values come from your theme. It asks you once, only where
-   your project contradicts itself or where it has something to propose, such as
-   turning a copy-pasted snippet into a component.
+1. **Find the pattern.** It asks which page to follow, reads that page top to
+   bottom and left to right — the holders, the components in each, how each is
+   written, how forms validate and errors are shown — and searches how the other
+   pages reuse those pieces. Values come from your theme. It asks you once, only
+   where your project contradicts itself or where it has something to propose,
+   such as turning a copy-pasted snippet into a component.
 2. **Plan.** One task per page, each carrying the pattern and what not to copy
    from the reference. It shows you the plan and waits for a yes.
-3. **Build.** One page at a time, from the pattern, in a fresh context.
+3. **Implement.** One page at a time, from the pattern, in a fresh context.
 4. **Verify.** A separate agent compares each page with the reference, region by
    region — after first proving it catches a difference planted on purpose — and
    then all the pages together.
@@ -72,10 +72,10 @@ harness-specific.
 
 The agent picks them up on its own. You don't need to name them.
 
-- **establishing-patterns** — how pages of this kind are built here
-- **planning-with-patterns** — one checkable task per page
-- **building-with-patterns** — one page at a time, from the pattern
-- **verifying-against-patterns** — a separate agent compares each page with the reference
+- **finding-patterns** — how pages of this kind are built here
+- **planning** — one checkable task per page
+- **implementing** — one page at a time, from the pattern
+- **verifying** — a separate agent compares each page with the reference
 
 ## What it writes in your repository
 

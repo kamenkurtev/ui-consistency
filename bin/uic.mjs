@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.15.17";
+var VERSION = "0.16.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -71,11 +71,11 @@ var STANDING = [
   "Use them without being asked.",
   "",
   "- A new page or feature, or a refactor across pages:",
-  "  ui-consistency:establishing-patterns \u2192 ui-consistency:planning-with-patterns",
-  "  \u2192 ui-consistency:building-with-patterns \u2192 ui-consistency:verifying-against-patterns",
-  "- A small change to one page: establishing-patterns (only what it touches)",
-  "  \u2192 building-with-patterns \u2192 verifying-against-patterns.",
-  "- Checking code already written: verifying-against-patterns.",
+  "  ui-consistency:finding-patterns \u2192 ui-consistency:planning",
+  "  \u2192 ui-consistency:implementing \u2192 ui-consistency:verifying",
+  "- A small change to one page: finding-patterns (only what it touches)",
+  "  \u2192 implementing \u2192 verifying.",
+  "- Checking code already written: verifying.",
   "",
   "If a spec or plan for this work already exists, add to it instead of starting",
   "another. Ask the user once, only about contradictions and proposals."
