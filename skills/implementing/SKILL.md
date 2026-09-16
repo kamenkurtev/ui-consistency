@@ -1,9 +1,9 @@
 ---
-name: building-with-patterns
-description: Use when writing or changing pages for which a pattern file or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
+name: implementing
+description: Use when writing or changing what the end user sees and a pattern file or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
 ---
 
-# Building from the pattern
+# Implementing from the pattern
 
 The failure this exists for: the pattern is agreed, and the twenty-seventh page
 still does not match the first. Attention thins across a batch and the work
@@ -22,11 +22,11 @@ what each page task does inside it.
 
 ## For each page
 
-Everything `ui-consistency:verifying-against-patterns` will check is listed here,
-so nothing is reported against a page that was never asked to get it right.
+Everything `ui-consistency:verifying` will check is listed here, so nothing is
+reported against a page that was never asked to get it right.
 
 1. **Re-read the pattern file.** Every time. Not remembered. Its sections are
-   described in [pattern-file.md](../establishing-patterns/pattern-file.md).
+   described in [pattern-file.md](../finding-patterns/pattern-file.md).
 2. **Write the page region by region**, in the order of the tree: holders, then
    the components in each, then how each is written, as the counts say.
 3. **Use what the project reuses.** The shared component, helper or class named in
@@ -36,14 +36,14 @@ so nothing is reported against a page that was never asked to get it right.
    empty.
 5. **Values through the theme that applies**, and only entries that exist in it —
    for a file in a shared layer, every theme that renders it
-   ([theme.md](../establishing-patterns/theme.md)). A named constant where the
+   ([theme.md](../finding-patterns/theme.md)). A named constant where the
    theme has none. No literal copied from the reference.
 6. **Spacing on the scale** in `## Spacing`
-   ([spacing.md](../establishing-patterns/spacing.md)): the gaps between roles as the family
-   spaces them, owned by the side the pattern names.
+   ([spacing.md](../finding-patterns/spacing.md)): the gaps between roles as the
+   family spaces them, owned by the side the pattern names.
 7. **Contrast as a pair**: every foreground on the surface actually behind it
    meets the threshold in `## Contrast`, in every scheme the project has
-   ([contrast.md](../establishing-patterns/contrast.md)). Prefer the pairings the
+   ([contrast.md](../finding-patterns/contrast.md)). Prefer the pairings the
    family already uses.
 8. **Do not copy what is particular to the reference.**
 9. **Where the pattern is silent, or the region is under `Open questions`**, do
@@ -56,9 +56,8 @@ so nothing is reported against a page that was never asked to get it right.
    with the count: *"the family writes the submit button full-width in 3 of 4
    pages; the page you pointed at is the one that differs — which do you want?"*
    Neither copy the deviation nor quietly override the request.
-10. **Hand the page to verification** —
-    `ui-consistency:verifying-against-patterns`, run by an agent that did not
-    write it.
+10. **Hand the page to verification** — `ui-consistency:verifying`, run by an
+    agent that did not write it.
 11. **Fix what it reports**, then verify again.
 12. **Mark it** `done`, or `parked — <why>`.
 
@@ -69,8 +68,8 @@ the change, and verify the page before calling it done.
 
 ## Then
 
-When every page is `done` or `parked`: `ui-consistency:verifying-against-patterns`
-over the whole set.
+When every page is `done` or `parked`: `ui-consistency:verifying` over the whole
+set.
 
 ## Red flags
 

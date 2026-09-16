@@ -48,7 +48,7 @@ is `.claude/rules/uic-docs.md`.
 ## Filing an issue
 
 Say what you asked the agent, what it did, and what you expected — and which
-phase it was in, if you know: establishing, planning, building or verifying. The
+phase it was in, if you know: finding, planning, implementing or verifying. The
 pattern file it wrote (`.ui-consistency/patterns/`) is the most useful thing to
 paste, with names made neutral. If the complaint is that nothing happened, say
 so, and say what the agent reported it could not read.

@@ -1,4 +1,4 @@
-# building-2 — 2026-09-15
+# implementing-2 — 2026-09-15
 
 model: Sonnet
 runs: 1 per arm, and a re-run with the skill after it changed
@@ -19,7 +19,7 @@ runs: 1 per arm, and a re-run with the skill after it changed
 
 ## The skill changed
 
-`building-with-patterns` said not to pick a side where the pattern is silent, and nothing about a request that asks for what the pattern counts as a deviation. It now says: build that region the way the family does and put the conflict to the user in one sentence, with the count — with the sentence above as a red flag.
+`implementing` said not to pick a side where the pattern is silent, and nothing about a request that asks for what the pattern counts as a deviation. It now says: build that region the way the family does and put the conflict to the user in one sentence, with the count — with the sentence above as a red flag.
 
 ## With the skill — re-run on a fresh copy
 - The warning's colour comes from the theme: yes

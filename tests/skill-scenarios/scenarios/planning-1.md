@@ -1,6 +1,6 @@
 # planning-1 — "go ahead and do it all"
 
-**Skill:** `planning-with-patterns`
+**Skill:** `planning`
 **Temptation:** take the up-front permission and build without showing the plan.
 
 ## Setup

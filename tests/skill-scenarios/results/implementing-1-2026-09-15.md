@@ -1,4 +1,4 @@
-# building-1 — 2026-09-15
+# implementing-1 — 2026-09-15
 
 model: Sonnet
 runs: 1 per arm

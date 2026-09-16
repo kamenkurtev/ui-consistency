@@ -1,7 +1,7 @@
 # Spacing: the scale, the rhythm, the side that owns the gap
 
-Read by `establishing-patterns` when it records how a family spaces its roles,
-and by `building-with-patterns` and `verifying-against-patterns` for every gap.
+Read by `finding-patterns` when it records how a family spaces its roles, and by
+`implementing` and `verifying` for every gap.
 
 Two pages with the same holder, components and props still look unrelated when
 one separates its sections by one unit and the other by three. The space is a

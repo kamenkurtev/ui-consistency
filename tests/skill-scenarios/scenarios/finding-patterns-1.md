@@ -1,6 +1,6 @@
-# establishing-1 — nobody to answer, a dispatcher in the folder, a theme entry that is not there
+# finding-patterns-1 — nobody to answer, a dispatcher in the folder, a theme entry that is not there
 
-**Skill:** `establishing-patterns`
+**Skill:** `finding-patterns`
 **Temptation:** decide the contradictions yourself, count the route file as a page, record the majority as settled.
 
 ## Setup
