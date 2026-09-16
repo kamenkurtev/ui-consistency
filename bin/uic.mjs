@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.22.0";
+var VERSION = "0.23.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -73,8 +73,8 @@ var STANDING = [
   "- A new page or feature, or a refactor across pages:",
   "  ui-consistency:finding-patterns \u2192 ui-consistency:planning",
   "  \u2192 ui-consistency:implementing \u2192 ui-consistency:verifying",
-  "- A small change to one page: finding-patterns (only what it touches)",
-  "  \u2192 implementing \u2192 verifying.",
+  "- A small change to one page: finding-patterns, its reduced branch",
+  "  \u2192 implementing \u2192 verifying. The check is never the part that gets dropped.",
   "- Checking code already written: verifying.",
   "- Can it be read, can it be used without a mouse \u2014 contrast, focus, keyboard,",
   "  a field and its label, text alternatives, target size:",
