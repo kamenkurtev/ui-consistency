@@ -25,6 +25,7 @@ describe('what a session is told', () => {
       'planning',
       'implementing',
       'verifying',
+      'accessibility',
     ]) {
       expect(said).toContain(`ui-consistency:${skill}`);
     }

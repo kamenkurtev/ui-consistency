@@ -37,7 +37,7 @@ main.page.stack-3                                     — 4 of 4, 4 files, proje
 - page padding `--space-4`; section to section `--space-3`; field to field `--space-2` — 4 of 4 files
 - gap owned by: the container, through `stack-*`
 
-## Contrast
+## Accessibility
 
 - threshold: none stated in the project; default WCAG 2.2 AA — 4.5:1 text, 3:1 non-text
 - body text on surface 14.76:1; primary button text 6.27:1; field error 5.62:1

@@ -76,6 +76,7 @@ The agent picks them up on its own. You don't need to name them.
 - **planning** — one checkable task per page
 - **implementing** — one page at a time, from the pattern
 - **verifying** — a separate agent compares each page with the reference
+- **accessibility** — can it be read, can it be used without a mouse
 
 ## What it writes in your repository
 

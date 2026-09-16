@@ -16,6 +16,7 @@ already running, and run the phases themselves when none is.
 | a refactor across pages | the same four |
 | a small change to one page | finding-patterns (only what it touches) → implementing → verifying |
 | checking code already written | verifying |
+| can it be read, can it be used without a mouse | `ui-consistency:accessibility`, on its own or from any of the four |
 
 If a spec or plan for this work already exists, add to it instead of starting
 another. Ask the user once, only about contradictions and proposals.
@@ -28,6 +29,9 @@ another. Ask the user once, only about contradictions and proposals.
 - **implementing** — one page per task in a fresh context, from the pattern file.
 - **verifying** — a separate agent compares each page with the reference region
   by region, after proving it catches a planted difference.
+- **accessibility** — contrast, focus, reach without a mouse, a field and its
+  label, text alternatives and target size, each reported separately, against
+  what the family already does.
 
 Read `skills/*/SKILL.md` directly if your harness has no skill mechanism — they
 are the instructions.
