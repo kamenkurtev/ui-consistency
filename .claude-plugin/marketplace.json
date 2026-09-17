@@ -10,7 +10,7 @@
       "name": "ui-consistency",
       "source": "./",
       "description": "Makes the pages your agent writes look and behave like the ones your project already has, for any UI technology",
-      "version": "0.24.0",
+      "version": "0.25.0",
       "author": {
         "name": "Kamen Kurtev"
       },

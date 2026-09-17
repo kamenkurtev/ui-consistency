@@ -67,19 +67,17 @@ reported against a page that was never asked to get it right.
    none, targets the size the family's are — `ui-consistency:accessibility`
    ([SKILL.md](../accessibility/SKILL.md)).
 10. **Do not copy what is particular to the reference.**
-11. **Where the pattern is silent, or the region is under `Open questions`**,
-    do not invent and do not pick a side. If the page can be written without the
-    answer, write the rest and note the gap in the plan; if it cannot, park it.
-    **A page parked on a question is named beside that question in the pattern
-    file**, so the batch that asks it again says what an answer would release
-    ([pattern-file.md](../finding-patterns/pattern-file.md)).
-    The gaps go to the user together, once, not page by page.
-    **The same when the request asks for what the pattern counts as a
-    deviation** — "make it look like" the page that differs. Write that region
-    the way the family does, and put the conflict to the user in one sentence
-    with the count: *"the family writes the submit button full-width in 3 of 4
-    pages; the page you pointed at is the one that differs — which do you want?"*
-    Neither copy the deviation nor quietly override the request.
+11. **Where the pattern is silent, the order settles it** —
+    [deciding.md](../finding-patterns/deciding.md) — and you say which level
+    settled it. Do not invent, and do not stop: a decision reported is
+    reversible, a question is not free. Park a page only where the order ties
+    **and** the decision reaches outside what this task touches; those go to the
+    user together, once, not page by page.
+    **When the request asks for what the counts call a deviation** — "make it
+    look like" the page that differs — **do what was asked**: an explicit
+    request is the top of the order. Report in one line what it goes against:
+    *"as asked, like <page>; the other 3 of 4 write the submit button
+    full-width."* Do not quietly build it the other way.
 12. **Hand the page to verification** — `ui-consistency:verifying`, run by an
     agent that did not write it.
 13. **Fix what it reports**, then verify again.
@@ -107,4 +105,4 @@ Words agents used in runs, just before getting it wrong:
 | They said | What it means |
 |---|---|
 | "Verified by diffing each new file against" a sibling — from the agent that wrote them | The author checked its own pages. Hand them to a separate agent, or say plainly that none was available. |
-| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | The request asked for the deviation. Build the region like the family and ask. |
+| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | Right outcome, silent reasoning. The request is the top of the order: do it, and report in one line what it goes against. |
