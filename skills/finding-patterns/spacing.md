@@ -54,7 +54,7 @@ across 6 files* is a convention.
   other, or a gap on the container holding both. Record it where the project is
   consistent; mixing them is how a gap doubles or collapses.
 - **No consistent rhythm** is also a finding: say the project has none. Do not
-  invent one from a plurality.
+  invent one from a plurality — [counting.md](counting.md) says how to tell.
 
 ## The rhythm the text sets
 

@@ -124,6 +124,10 @@ and why.
 
 - **Against something the user named or answered** — the reference, a decision —
   it is a deviation. Fix it.
+- **Against a count that is not a convention** — where the checklist says the
+  family has no convention at that position, a page cannot deviate from it.
+  Report nothing, and say the project has none there
+  ([counting.md](../finding-patterns/counting.md)).
 - **Against a count alone** — say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge by the same order the page was built from
   ([deciding.md](../finding-patterns/deciding.md)), naming the level. A page can
