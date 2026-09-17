@@ -113,4 +113,34 @@ was the opposite of the truth.
   component's once turned 18 uses into 25.
 - **A count over a family of one is never a convention.** *1 of 1* says only
   that the page you read writes it. Write it as what the reference does, and say
-  the family has no other members — never as what the project does.
+  the family has no other members — never as what the project does. It is the
+  narrowest case of the rule below.
+
+## When a count is not a convention at all
+
+*2 of 8* is a number, and written the way every other count is written it reads
+as a rule. It is not one, and recording it as one is how a project with no
+convention acquires a wrong one — from this tool, in writing.
+
+Read it off the numbers themselves. **Never a threshold from outside**: no
+percentage, no "most", nothing this file could be wrong about on the next
+project.
+
+- **Count the ways, not only the commonest.** A position is *4 of 4*, or *3 of 4
+  and one other way*, or *3, 3 and 2 across three ways*. The last is a plurality,
+  and a plurality is not a majority.
+- **The test is whether the rest can be named.** If you can write *all of them
+  except `<page>`*, there is a convention and that page is the exception. If you
+  have to write *some do this, some do that, some do the third*, there is none.
+- **The commonest way must outnumber the others put together.** Where it does
+  not, say the family has no convention here and give every way with its
+  numbers. That is arithmetic on what you counted, not a rule brought in.
+- **A convention with several different exceptions is a family drifting**, not a
+  rule with deviations. Say which it is: *the commonest way, 5 of 8, against
+  three others* is a different finding from *7 of 8 except `<page>`*.
+
+**The order still decides.** Nothing stalls and nothing extra is asked: the
+newest members, then the reference, settle what to write — [deciding.md](deciding.md).
+What changes is the reporting. The line says *no convention here; the two newest
+write it this way*, so nobody reads a number as a rule the project does not
+have.

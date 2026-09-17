@@ -56,6 +56,10 @@ the numbers under it — *the majority, 3 of 4 across 4 files*, *the shared piec
 against the copy in <page>*, *as asked* — so walking the list is also reading
 every decision that was made ([deciding.md](deciding.md)).
 
+**Where the family has no convention at a position**, the line says that instead
+of carrying a number that reads as one: *no convention — three ways across 8
+files; the two newest write it this way* ([counting.md](counting.md)).
+
 **Where a design gave the tree**, the line says which half came from where — *the
 design puts a filter row above the table; the family writes one as 4 of 4* — so
 a reader can tell what was drawn from what was counted
