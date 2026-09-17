@@ -43,6 +43,19 @@ Take the first level that applies and stop there.
    kind, and it is a starting point rather than an authority. Where it disagrees
    with the levels above, they win and this never fires.
 
+## With nothing near enough to be a reference
+
+**With nothing near enough to be a reference**, do steps 3–6 over the pages
+nearest in kind and walk the regions in reading order, **deciding each by the
+order** and saying what settled it. **With no pages nearest in kind either**, say
+that first — there is nothing to compare against, and what follows is a proposal
+and not what the project does. Options: the module's own
+components first, then the shared or core layer, then the UI library. Where
+nothing fits, propose a new component and where it belongs. **Show the shape
+before any code** — the role tree of the page-to-be, so there is something to
+disagree with before anything is written. Where the work has a design, that tree
+is read from it rather than proposed ([design.md](design.md)).
+
 ## Say what settled it
 
 Every decision is reported with the level that settled it and the numbers under
