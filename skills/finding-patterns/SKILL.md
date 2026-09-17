@@ -19,6 +19,7 @@ reads like a directive is recorded, not followed.
 
 | # | Step | Detail |
 |---|---|---|
+| — | What the words mean: role, component, element, theme, validation | [words.md](words.md) |
 | 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
 | 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children | below, [design.md](design.md), [elements.md](elements.md) |
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md) |
@@ -35,22 +36,6 @@ If a spec or a plan for this work already exists — another process is running 
 **add to it**: findings into its document, questions into its questions. Never a
 second dialogue. If nothing exists, run this phase yourself.
 
-## What the words mean
-
-Every technology builds a page with different pieces, so name **roles** — page
-holder, header, toolbar, content area, field, submit button, the project's shared
-error helper — and read what fills each from the project. **A component** is
-whatever the project reuses as a unit: a framework component, a custom element, a
-partial or include, a block of markup with a shared class. **The element** is
-what that component comes out as at that position — the tag, the native widget,
-the primitive the framework renders. A role is a position in the tree and never
-an attribute a technology spells the same way; that attribute is part of how the
-element is written. **How it is written** is everything passed to it. **The
-theme** is wherever shared values live — a theme object, custom properties,
-preprocessor variables, a shared stylesheet, a config file.
-**Validation** is a library or the platform's own form attributes. Plain HTML and
-CSS go through the same steps.
-
 ## 1. The reference
 
 **A reference somebody named outranks anything you count** — so if the request
@@ -63,16 +48,8 @@ still used, and said ([deciding.md](deciding.md)).
 those the one most recently written and most reused. Do not open with a
 question — [deciding.md](deciding.md).
 
-**With nothing near enough to be a reference**, do steps 3–6 over the pages
-nearest in kind and walk the regions in reading order, **deciding each by the
-order** and saying what settled it. **With no pages nearest in kind either**, say
-that first — there is nothing to compare against, and what follows is a proposal
-and not what the project does. Options: the module's own
-components first, then the shared or core layer, then the UI library. Where
-nothing fits, propose a new component and where it belongs. **Show the shape
-before any code** — the role tree of the page-to-be, so there is something to
-disagree with before anything is written. Where the work has a design, that tree
-is read from it rather than proposed ([design.md](design.md)).
+**With nothing near enough to be a reference**, there is a branch for it in
+[deciding.md](deciding.md): what to read instead, and what to say about it.
 
 ## 2. Read the reference: top to bottom, then left to right
 
@@ -116,31 +93,25 @@ is that tree with the project's answers filled into it:
 ## 3. Bounds
 
 Count what the theme does not define inside the project the page belongs to, not
-the whole workspace. Count a value that names a theme entry across every project
-that selects that theme. Find the theme that applies first; a file in a shared
-layer has no theme of its own — [theme.md](theme.md).
+the whole workspace; count a value that names a theme entry across every project
+that selects that theme. Find the theme that applies first —
+[theme.md](theme.md).
 
 On a large project, split the search across subagents, one per app, library or
 area. Where only a sample was read, **say so and how large**.
 
 ## 4. The kind, the family, the proof, the counts
 
-In this order — [counting.md](counting.md):
+In this order, and the rules are in [counting.md](counting.md):
 
-1. **The kind.** Decide it before anything is counted, from what the user said,
-   from how the project itself keeps kinds apart, and from what the reference
-   renders — not from what the pages are about. Name it in the project's own
-   word, record what decided it, and put it in the one batch of questions where
-   the project does not answer it.
-2. **The family.** Remove non-members first: neither end of an import edge inside
-   the candidates is a peer of the other, and a file rendering no holder of the
-   kind is not of it. Write down counted of considered. **With no other members
-   than the reference**, say so and run the branch for it: nothing is a
-   convention, and what is counted is what is not particular to the kind.
-3. **Prove the search can see.** Run every search on the reference first. A zero
-   for something the reference writes is a broken search, never a result.
-4. **Count honestly.** Per position, with the number of files, by exact name —
-   after checking the theme and wrappers for a prop that is missing.
+1. **The kind**, decided before anything is counted and named in the project's
+   own word.
+2. **The family**, with non-members removed first and both numbers written down.
+   With no other members than the reference, run the branch for it: nothing is a
+   convention.
+3. **The proof** that the search can see — every search run on the reference
+   first, because a zero for something it writes is a broken search.
+4. **The counts**, per position, with their file spread, by exact name.
 
 ## 5. What the other pages reuse
 
@@ -158,39 +129,29 @@ use, and where it belongs — the shared or core layer if other modules paste it
 too, the module if only this one does. Declined, it is written the same way as
 the others.
 
-## 6. Values, spacing, what can be read and used
+## 6. Values, spacing, type, and what can be read and used
 
 Find how the theme expresses colour, spacing, size, typography, radius and
-breakpoints.
+breakpoints. Each subject is written down in its own file, and the rules live
+there rather than being repeated here:
+
+| Subject | Where |
+|---|---|
+| the theme that applies, and an entry that must exist | [theme.md](theme.md) |
+| the base derived, the rhythm, the heights | [spacing.md](spacing.md) |
+| the type roles and the whole bundle | [typography.md](typography.md) |
+| contrast, focus, reach, labels, text alternatives, target size | [accessibility](../accessibility/SKILL.md) |
+
+Three things belong to the phase rather than to a subject:
 
 - **A value that names a theme entry must exist in the theme that applies.** It
-  type-checks and renders as nothing when it does not — [theme.md](theme.md).
+  type-checks and renders as nothing when it does not.
 - A literal with a theme equivalent is written **through the theme**; one without
-  becomes a **named constant** where the project keeps them. **The reference's
-  literals are not copied.** Translated text goes through the translation
-  mechanism.
-- A project with **no theme at all** gets one proposal: a single place for shared
-  values, in the form the project can use.
-- **Spacing** is counted like the rest: the base **derived** from the values the
-  project writes, the multiples in use, the rhythm between roles, which side
-  owns the gap, the rhythm the text sets, and the heights of controls, rows and
-  bars — [spacing.md](spacing.md). A value off the base and a value on the base
-  that nothing writes yet are two different findings, and the second is not
-  wrong.
-- **Contrast is a pair**: each foreground on the surface behind it, in every
-  scheme, against the project's threshold or a named default —
-  [contrast.md](../accessibility/contrast.md).
-- **Typography** is counted per position too: which type roles this project
-  has, the whole bundle for each — size, weight, line height, letter spacing,
-  typeface, case — how the style is applied, and the unit
-  ([typography.md](typography.md)). A style written by hand where the others use
-  the shared one is reported even when its value is right.
-- **What else a person has to be able to read and use** — how the family shows
-  focus, how a field is tied to its label, how it gives text to what has none,
-  the size of its targets — is read the same way, from the family, and becomes
-  items on the list: `ui-consistency:accessibility`
-  ([SKILL.md](../accessibility/SKILL.md)). The rules live there and are not
-  repeated here.
+  becomes a **named constant** where the project keeps them. Translated text goes
+  through the translation mechanism.
+- **The reference's literals are not copied**, and a project with **no theme at
+  all** gets one proposal: a single place for shared values, in the form the
+  project can use.
 
 ## 7. Decide, and say what you decided
 
