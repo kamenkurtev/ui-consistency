@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "Makes the pages your agent writes look and behave like the ones your project already has, for any UI technology",
   "author": {
     "name": "Kamen Kurtev"

@@ -54,10 +54,13 @@ asked while the pattern was found — and by then almost nothing is left to ask
 travels into the plan under `## Waiting on an answer`, with its counts and the
 tasks that cannot start until it is answered ([plan-file.md](plan-file.md)).
 
-**An answer given now is an override**: it is recorded where the running process
-keeps its decisions, and each task it was holding up goes from `parked` back to
-`todo`. An answer that only ever reaches the conversation is lost the moment it
-ends.
+**An answer given now is an override** — the one thing a task cannot work out
+again for itself ([deciding.md](../finding-patterns/deciding.md)). Record it in
+the document the running process keeps, or under `## Decided` in this plan where
+this is the process, in the person's own words and with what it overrules; each
+task it was holding up goes from `parked` back to `todo`. An answer that only
+ever reaches the conversation is lost the moment it ends — and one nobody gave is
+never written at all.
 
 A small change to one page has no plan and does not stop.
 

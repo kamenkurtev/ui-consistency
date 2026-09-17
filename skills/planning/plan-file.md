@@ -6,7 +6,8 @@ plan for this work. Committed with the work. `planning` writes it,
 every page task.
 
 **Where a plan already exists**, this is the shape of what is *added into it* —
-the tasks, with everything each one carries. Never a second document.
+the tasks, with everything each one carries, and a decision a person made against
+the order. Never a second document.
 
 ## The shape
 
@@ -25,8 +26,18 @@ the pattern is parked with its reason, never forced and never silently skipped.
 
 ## Waiting on an answer
 
-- <the question, copied from the pattern file with its counts and files> —
-  waiting: <the tasks below that cannot start>
+The order settled everything it could, so what is here is only what it could not:
+the order tied **and** the answer changes code outside this work.
+
+- <what tied, with its counts and files> — waiting: <the tasks that cannot start>
+
+## Decided
+
+What a person decided against what the order produced — their words, what it
+overrules, and when. Nothing else is written here, and nothing here is invented.
+
+- <the decision, in the person's words> — overrules <what the order produced> —
+  <date>; released: <the tasks that were waiting>
 
 ## Tasks
 
