@@ -5,8 +5,9 @@
 
 ## Setup
 
-Copy `fixture/` into a new temporary directory, and `inputs/list-page.md` to
-`.ui-consistency/patterns/list-page.md`.
+Copy `fixture/` into a new temporary directory. Give the agent
+`inputs/list-page-checklist.md` as the checklist for the work — in the task, not
+as a file in the project.
 
 ## Task, word for word
 
