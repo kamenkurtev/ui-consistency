@@ -19,7 +19,8 @@ already running, and run the phases themselves when none is.
 | can it be read, can it be used without a mouse | `ui-consistency:accessibility`, on its own or from any of the four |
 
 If a spec or plan for this work already exists, add to it instead of starting
-another. Ask the user once, only about contradictions and proposals.
+another. Decide by the order the skills carry and report what settled each
+decision; ask only where it ties and the change reaches outside the task.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the

@@ -123,8 +123,11 @@ and why.
 - **Against something the user named or answered** — the reference, a decision —
   it is a deviation. Fix it.
 - **Against a count alone** — say the numbers (*"the other 9 of 10 in the content
-  area do not"*) and judge. A page can differ on purpose; say why rather than
-  changing working code to quiet a report.
+  area do not"*) and judge by the same order the page was built from
+  ([deciding.md](../finding-patterns/deciding.md)), naming the level. A page can
+  differ on purpose; say why rather than changing working code to quiet a report.
+- **Against something the request asked for** — it is not a deviation at all. The
+  request is the top of the order. Report what it goes against and leave it.
 - **Where the pattern file says the family has only the reference**, there are no
   counts and nothing in it is a convention. Compare with the reference, say that
   is what you compared with, and report nothing as what the project does.

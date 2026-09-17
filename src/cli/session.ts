@@ -88,7 +88,8 @@ const STANDING = [
   '  ui-consistency:accessibility, with or without a pattern file.',
   '',
   'If a spec or plan for this work already exists, add to it instead of starting',
-  'another. Ask the user once, only about contradictions and proposals.',
+  'another. Decide by the order the skills carry and report what settled each',
+  'decision; ask only where it ties and the change reaches outside the task.',
 ].join('\n');
 
 /**

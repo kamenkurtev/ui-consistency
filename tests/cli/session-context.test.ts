@@ -39,7 +39,17 @@ describe('what a session is told', () => {
 
     expect(said).not.toContain('until somebody asks');
     expect(said).toContain('already exists');
-    expect(said).toContain('only about contradictions and proposals');
+  });
+
+  it('says a decision is reported, and asking is the exception', async () => {
+    // A session told only which skills exist will still stop and ask, which is
+    // the hand-work the plugin exists to remove. The standing text carries the
+    // shape of the answer: decide, say what settled it, ask only where the
+    // order ties and the change reaches outside the task.
+    const said = (await sessionContext(root)) ?? '';
+
+    expect(said).toContain('Decide by the order');
+    expect(said).toContain('ask only where it ties');
   });
 
   it('says it whether or not the project has written anything down', async () => {

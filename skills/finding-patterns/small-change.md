@@ -30,9 +30,9 @@ which is what this exists to stop.
 - **The proof that the search can see**: whatever you do count, run the search on
   the reference first — [counting.md](counting.md). A reduced run has fewer
   counts, not softer ones.
-- **The one batch of questions**, where what you read contradicts itself, and
-  what `## Open questions` already holds for this kind
-  ([pattern-file.md](pattern-file.md)).
+- **The order** — what you read contradicting itself is settled by it and
+  reported with the level, never carried to the user
+  ([deciding.md](deciding.md)).
 - **The check, by an agent that did not write the change** —
   `ui-consistency:verifying`. This is the part a small change is most tempted to
   drop, and the one that makes it safe to read little.
