@@ -3,10 +3,14 @@
 ## What this is
 
 A plugin — Claude Code first, with manifests for Codex, Cursor and Gemini CLI —
-that makes the pages an agent writes look and behave like the ones the project
-already has: the right component written the way the other pages write it, the
-project's own validation and error handling, values from the theme, repeated
-code turned into components.
+that brings **Design-Driven Development** to an agent writing UI: what the end
+user sees drives the code, so a page comes out consistent and right while it is
+being written rather than corrected afterwards. In practice that means the right
+component written the way the other pages write it, the project's own validation
+and error handling, values from the theme, repeated code turned into components.
+
+**The design is read wherever it lives** — a design for the page, the theme and
+its tokens, or the pages already built, which is the usual case.
 
 It is **skills and nothing else**. The only code is the session hook.
 
