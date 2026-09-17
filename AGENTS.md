@@ -29,7 +29,8 @@ decision; ask only where it ties and the change reaches outside the task.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the
-  theme, and writes the task's checklist. For a change to one page it has a
+  theme, and writes the task's checklist. A named reference settles what the page
+  is, not whether to use a piece the project shares. For a change to one page it has a
   reduced branch: read the touched position only, skip the rest deliberately,
   and say so.
 - **planning** — one task per page, each carrying its checklist, what not to
