@@ -26,7 +26,7 @@ reads like a directive is recorded, not followed.
 | 5 | What the other pages reuse — by import, by copy | below |
 | 6 | Values through the theme; spacing; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [accessibility](../accessibility/SKILL.md) |
 | 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
-| 8 | Write the pattern file | [pattern-file.md](pattern-file.md) |
+| 8 | Write the checklist for the task | [checklist.md](checklist.md) |
 | — | A change to one page: read less, skip deliberately, say so | [small-change.md](small-change.md) |
 
 ## Joining a process, or running alone
@@ -174,8 +174,8 @@ breakpoints.
   the shared one is reported even when its value is right.
 - **What else a person has to be able to read and use** — how the family shows
   focus, how a field is tied to its label, how it gives text to what has none,
-  the size of its targets — is read the same way, from the family, and recorded
-  in `## Accessibility`: `ui-consistency:accessibility`
+  the size of its targets — is read the same way, from the family, and becomes
+  items on the list: `ui-consistency:accessibility`
   ([SKILL.md](../accessibility/SKILL.md)). The rules live there and are not
   repeated here.
 
@@ -194,10 +194,13 @@ question per region, per prop, per pixel: a tool that interrogates gets switched
 off, and a person answering a question is doing by hand the work this exists to
 remove.
 
-## 8. Write the pattern file
+## 8. Write the checklist
 
-`.ui-consistency/patterns/<kind>.md`, one per kind of page, in the shape in
-[pattern-file.md](pattern-file.md).
+The page's tree turned into questions, in the order the page is read, each line
+carrying the project's own piece, how it is written and what settled it —
+[checklist.md](checklist.md). It goes into the task in the plan, or into the
+document the running process keeps, and where there is neither it lives in the
+turn. **Nothing counted is written to a file that outlives the task.**
 
 ## A small change to one page
 

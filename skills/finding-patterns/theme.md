@@ -23,8 +23,8 @@ and `verifying` for every value that names a theme entry.
 - **A file in a shared layer has no theme of its own.** It renders under every
   theme whose projects use it; its theme-defined values are checked against
   each of them.
-- **The pattern file says which bound produced each count** — the project, or the
-  theme and the projects in its reach.
+- **Each count says which bound produced it** — the project, or the theme and
+  the projects in its reach.
 
 ## A theme entry must exist
 

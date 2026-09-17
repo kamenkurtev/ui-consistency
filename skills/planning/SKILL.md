@@ -7,8 +7,8 @@ description: Use when work the end user will see spans several steps or pages an
 
 A plan that only names the components was tried on a thirty-page refactor and
 the pages still came out different: nothing checked page fifteen against it. A
-plan here carries **what makes each page checkable** — the pattern file, what not
-to copy, and a check by somebody who did not write the page.
+plan here carries **what makes each page checkable** — the checklist itself, what
+not to copy, and a check by somebody who did not write the page.
 
 ## Joining a process, or running alone
 
@@ -17,7 +17,7 @@ the tasks below **into that plan**, in the shape in [plan-file.md](plan-file.md)
 Do not write a second one.
 
 If none exists, write `.ui-consistency/plans/<topic>.md` in that shape. The
-pattern file it rests on is [pattern-file.md](../finding-patterns/pattern-file.md).
+checklist each task carries is [checklist.md](../finding-patterns/checklist.md).
 
 ## The order of the tasks
 
@@ -32,12 +32,13 @@ pattern file it rests on is [pattern-file.md](../finding-patterns/pattern-file.m
 
 ## What every page task carries
 
-- the path of the pattern file;
+- the checklist for that page, in the task itself — it is short on purpose, and
+  a path is no use to somebody who does not have the checkout;
 - the path of the reference;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;
 - two steps, written out:
-  1. *Re-read the pattern file before writing — do not work from memory.*
+  1. *Re-read the checklist before writing — do not work from memory.*
   2. *Hand the page to a separate agent with `ui-consistency:verifying`; fix what it reports.*
 
 A task that leaves any of these out is how page fifteen drifts. Written out, with
@@ -46,17 +47,17 @@ the statuses and what travels with a task that leaves the repository, in
 
 ## Stop for a yes
 
-For a new page or a refactor, show the pattern file and the plan and **wait for
-the user's yes** before any code. Ask nothing new here — the questions were
-asked while the pattern was found. Anything still under `Open questions` travels
-into the plan under `## Waiting on an answer`, with its counts and the tasks that
-cannot start until it is answered ([plan-file.md](plan-file.md)).
+For a new page or a refactor, show the plan, with the checklists its tasks carry,
+and **wait for the user's yes** before any code. Ask nothing new here — the questions were
+asked while the pattern was found — and by then almost nothing is left to ask
+([deciding.md](../finding-patterns/deciding.md)). What did have to be asked
+travels into the plan under `## Waiting on an answer`, with its counts and the
+tasks that cannot start until it is answered ([plan-file.md](plan-file.md)).
 
-**An answer given now moves the question into `Decided`** in the pattern file,
-with the date and the pages it was holding up
-([pattern-file.md](../finding-patterns/pattern-file.md)); each of those tasks
-goes from `parked` back to `todo` in the plan. An answer that only ever reaches
-the conversation is lost the moment it ends.
+**An answer given now is an override**: it is recorded where the running process
+keeps its decisions, and each task it was holding up goes from `parked` back to
+`todo`. An answer that only ever reaches the conversation is lost the moment it
+ends.
 
 A small change to one page has no plan and does not stop.
 
