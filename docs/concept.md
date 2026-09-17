@@ -91,6 +91,20 @@ only with two more facts:
   of 4 in toolbars;
 - **how many files** — four identical buttons in one file are one page's habit.
 
+### A named reference outranks a count, and you can overrule either
+
+Two things a person says outrank everything read. **A page somebody names** is
+the reference — eight pages sharing a convention and eight pages sharing a
+mistake look identical to a counter, so a person pointing at one settles it.
+**An override** is a person's decision against what the order produced: *where
+the shared layer and a page disagree, follow the shared layer*. It sits directly
+under the request, above a named page, because it is about one concern while a
+reference is a pointer at a whole page, and it stands until somebody changes it.
+
+An override is the one thing a task cannot work out again for itself, so it is
+the one thing kept — in whatever document the running process already uses for
+decisions, never in a file of this plugin's own. Nothing writes one nobody gave.
+
 ### It decides, and says what settled it
 
 Where the reference and the rest of the project agree, the agent takes the answer
