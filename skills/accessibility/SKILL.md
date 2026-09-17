@@ -1,6 +1,6 @@
 ---
 name: accessibility
-description: Use when what the end user sees has to be readable and usable — contrast, focus, keyboard reach, a field and its label, text alternatives, target size — asked on its own with no pattern file and no phase running, or reached from one.
+description: Use when what the end user sees has to be readable and usable — contrast, focus, keyboard reach, a field and its label, text alternatives, target size — asked on its own with nothing written down and no phase running, or reached from one.
 ---
 
 # Accessibility: can it be read, can it be used without a mouse
@@ -140,7 +140,7 @@ resolved, the stylesheets you could not read, the behaviour you could not judge
 from the code, the technology you could not read with confidence. A green result
 over what nothing looked at is worse than no result.
 
-Where a pattern file exists, what the family does goes into its `## Accessibility`
-section — [pattern-file.md](../finding-patterns/pattern-file.md) — and a
-contradiction nobody has decided goes under `## Open questions`, never into
-`## Decided`.
+Inside a task, what the family does becomes items on the checklist —
+[checklist.md](../finding-patterns/checklist.md) — each carrying what settled it.
+Where the order ties and the fix would reach outside the task, that is the one
+thing put to a person ([deciding.md](../finding-patterns/deciding.md)).

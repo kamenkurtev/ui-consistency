@@ -24,12 +24,12 @@ decision; ask only where it ties and the change reaches outside the task.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the
-  theme, and writes the pattern file. For a change to one page it has a reduced
-  branch: read the touched position only, skip the rest deliberately, and say
-  so.
-- **planning** — one task per page, each carrying the pattern file, what not to
+  theme, and writes the task's checklist. For a change to one page it has a
+  reduced branch: read the touched position only, skip the rest deliberately,
+  and say so.
+- **planning** — one task per page, each carrying its checklist, what not to
   copy, and a check by a separate agent; stops for a yes.
-- **implementing** — one page per task in a fresh context, from the pattern file.
+- **implementing** — one page per task in a fresh context, from the checklist.
 - **verifying** — a separate agent compares each page with the reference region
   by region, after proving it catches a planted difference.
 - **accessibility** — contrast, focus, reach without a mouse, a field and its
@@ -43,10 +43,13 @@ are the instructions.
 
 `.ui-consistency/` in the repository root:
 
-- `patterns/<kind>.md` — how pages of one kind are built here: the role tree,
-  what is reused, where values come from, what the user decided, what belongs to
-  the reference alone. Committed.
 - `plans/<topic>.md` — the page-by-page plan, when no other process wrote one.
+  Each task carries its own checklist: the page's tree turned into questions, in
+  the order the page is read, with what settled each.
+
+Nothing else. What was counted is evidence for the decisions in a task, reported
+with them, and not kept: code moves on, and a count nobody notices has gone
+stale is worse than no count.
 
 Nothing has to be configured. Everything is read from the project, and no
 component name is assumed — every technology and every team names its own.

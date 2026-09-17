@@ -34,9 +34,9 @@ questions, with the candidates and what each renders, and with a proposal: *thes
 six render the same holders and the same regions; these two do not, and would be
 a second kind.* One question about the kind, never one per candidate.
 
-**Record the decision and what it covered** in the pattern file: the kind, what
-decided it, and what was considered and judged another kind —
-[pattern-file.md](pattern-file.md).
+**Say the decision and what it covered** in the checklist's first line: the
+kind, what decided it, and how many members were counted —
+[checklist.md](checklist.md).
 
 ## Which pages are the family
 
@@ -51,8 +51,8 @@ Take the candidates, then remove what is not a member **before** counting:
 - **A candidate that renders no holder and no region of the kind is not of the
   kind.** Report it as not of the kind; never count it as a member that lacks
   them.
-- **State both numbers** in the pattern file: how many candidates were
-  considered, how many were counted, and what was left out and why.
+- **State both numbers**: how many candidates were considered, how many were
+  counted, and what was left out and why.
 
 *Why:* a dispatcher counted as a page once turned 8 of 8 on every role into 8 of
 9 — a unanimous convention reported as one drifting page.
@@ -63,9 +63,9 @@ It happens on the first page of a new kind, and on a project that has one of
 everything. There is nothing to count, so **the phase does not become a phase
 that found conventions.** It says so, and runs a different branch:
 
-- **Say it in the pattern file**, in as many words: this kind has one member, so
-  what is written here is that page's way and not the project's — a starting
-  point somebody should review, not a counted convention.
+- **Say it**, in as many words: this kind has one member, so what the list
+  carries is that page's way and not the project's — a starting point somebody
+  should look at, not a counted convention.
 - **Nothing in it is `<n> of <m>`.** A count over one page is not a convention;
   see *Counting honestly* below.
 - **What is not particular to the kind is still counted**, over the pages nearest

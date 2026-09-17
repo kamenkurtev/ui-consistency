@@ -125,36 +125,33 @@ describe('the skills', () => {
   });
 });
 
-describe('the pattern file', () => {
+describe('what a task leaves behind', () => {
   /**
-   * The questions finding-patterns asks are answered after the file is written,
-   * or never on a run nobody watches. With nowhere to keep them they are
-   * invented into `Decided` or dropped, and the file then looks complete exactly
-   * where the project has not decided.
+   * The counts are true of the code as it was read. Written to a document per
+   * kind of page they become a thing to review, keep in step between branches
+   * and find stale — and a file nobody notices has gone stale is worse than no
+   * file. A task carries a checklist and leaves nothing.
+   *
+   * This is the guard on that decision: a path under the knowledge directory is
+   * how the document would come back.
    */
-  it('has a place for questions asked and not yet answered, before Decided', async () => {
-    const format = await readFile(
-      fileURLToPath(new URL('../skills/finding-patterns/pattern-file.md', import.meta.url)),
-      'utf8',
-    );
-    const shape = /````markdown\n([\s\S]*?)\n````/.exec(format)?.[1] ?? '';
+  it('writes no document per kind of page', async () => {
+    const { readdirSync, readFileSync, existsSync } = await import('node:fs');
+    const dir = fileURLToPath(new URL('../skills', import.meta.url));
 
-    expect(shape).toContain('## Open questions');
-    expect(shape).toContain('## Decided');
-    expect(shape.indexOf('## Open questions')).toBeLessThan(shape.indexOf('## Decided'));
+    expect(existsSync(`${dir}/finding-patterns/checklist.md`)).toBe(true);
+
+    const carries: string[] = [];
+    for (const skill of readdirSync(dir).filter((name) => !name.startsWith('.'))) {
+      for (const file of readdirSync(`${dir}/${skill}`).filter((f) => f.endsWith('.md'))) {
+        const text = readFileSync(`${dir}/${skill}/${file}`, 'utf8');
+        if (text.includes('.ui-consistency/patterns')) carries.push(`${skill}/${file}`);
+      }
+    }
+
+    expect(carries).toEqual([]);
   });
 
-  /**
-   * A phase that names a section no template has sends the agent looking for a
-   * heading nobody writes — and by the phases' own rule, a region nothing could
-   * be read for is *unevaluated*, so the failure is silence on the one subject
-   * that was working. Nothing but attention coupled the two until a renamed
-   * section proved it.
-   *
-   * The templates are found rather than listed: the pattern file has one, the
-   * plan file has one, and the day a third document arrives it is covered by
-   * having a template at all.
-   */
   it('has every section the skills send an agent to read', async () => {
     const { readdirSync, readFileSync } = await import('node:fs');
     const dir = fileURLToPath(new URL('../skills', import.meta.url));
@@ -173,7 +170,7 @@ describe('the pattern file', () => {
         for (const heading of block[1]!.matchAll(/^## (.+)$/gm)) sections.add(heading[1]!.trim());
       }
     }
-    expect(sections.size).toBeGreaterThan(3);
+    expect(sections.size).toBeGreaterThan(1);
 
     const missing: string[] = [];
     for (const { where, text } of files) {

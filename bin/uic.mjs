@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.25.0";
+var VERSION = "0.26.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -78,7 +78,7 @@ var STANDING = [
   "- Checking code already written: verifying.",
   "- Can it be read, can it be used without a mouse \u2014 contrast, focus, keyboard,",
   "  a field and its label, text alternatives, target size:",
-  "  ui-consistency:accessibility, with or without a pattern file.",
+  "  ui-consistency:accessibility, with or without a phase around it.",
   "",
   "If a spec or plan for this work already exists, add to it instead of starting",
   "another. Decide by the order the skills carry and report what settled each",
