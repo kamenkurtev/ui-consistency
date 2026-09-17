@@ -23,7 +23,8 @@ which is what this exists to stop.
 - Every position the change does not touch, and its counts.
 - The subjects the change does not touch: no type scale for a change that moves
   no text, no spacing sweep for a change that moves no gap.
-- The mockup, the plan, and the stop for a yes — a small change does not stop.
+- Showing the shape, the plan, and the stop for a yes — a small change does not
+  stop.
 
 **What is never skipped**
 

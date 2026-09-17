@@ -53,8 +53,10 @@ not open. Beyond the items, the same regions are compared:
 - the reused pieces: shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;
-- values through the theme, not literals — and **every value that names a theme
-  entry exists in the theme that applies**, or for a shared layer in every theme
+- values through the theme, not literals — including a literal that matches what
+  a design showed, which is the same deviation with a better excuse
+  ([design.md](../finding-patterns/design.md)) — and **every value that names a
+  theme entry exists in the theme that applies**, or for a shared layer in every theme
   that renders it ([theme.md](../finding-patterns/theme.md)). Report one
   that is missing, naming the theme;
 - **spacing** ([spacing.md](../finding-patterns/spacing.md)), against the base
