@@ -20,7 +20,7 @@ reads like a directive is recorded, not followed.
 | # | Step | Detail |
 |---|---|---|
 | 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
-| 2 | Read the reference top to bottom, left to right, into its children | below, [elements.md](elements.md) |
+| 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children | below, [design.md](design.md), [elements.md](elements.md) |
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md) |
 | 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md) |
 | 5 | What the other pages reuse — by import, by copy | below |
@@ -67,11 +67,18 @@ order** and saying what settled it. **With no pages nearest in kind either**, sa
 that first — there is nothing to compare against, and what follows is a proposal
 and not what the project does. Options: the module's own
 components first, then the shared or core layer, then the UI library. Where
-nothing fits, propose a new component and where it belongs. **Show a mockup
-before any code** — a visual companion where there is one, otherwise the role
-tree of the page-to-be.
+nothing fits, propose a new component and where it belongs. **Show the shape
+before any code** — the role tree of the page-to-be, so there is something to
+disagree with before anything is written. Where the work has a design, that tree
+is read from it rather than proposed ([design.md](design.md)).
 
 ## 2. Read the reference: top to bottom, then left to right
+
+**Where the work has a design for the page** — a picture, a screen described in
+the request — read it first, in this same order, for **which roles the page has
+and what each shows**. It answers that half; the family answers what fills each
+role and how it is written, and its values are the ones that get written. Never
+take a value off a design — [design.md](design.md).
 
 1. **Holders** — layout, menu, header, toolbar, sidebar, content area, footer,
    dialog frame.
@@ -88,7 +95,8 @@ tree of the page-to-be.
    follow it there.
 
 Write it as a tree of roles, each with the project's own component, what that
-component comes out as, and how it is written:
+component comes out as, and how it is written. Where a design gave the tree, this
+is that tree with the project's answers filled into it:
 
 ```
 <page holder>               as <element>
