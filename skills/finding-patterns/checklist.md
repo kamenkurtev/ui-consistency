@@ -19,7 +19,8 @@ members, read <date>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
-- [ ] not copied from <reference>: <what is particular to it>
+- [ ] not copied from <reference>: <what is particular to it; and anything it
+      hand-writes that the project has a shared piece for>
 ````
 
 One line per position, in the order the page is read: the outermost holder
@@ -42,7 +43,8 @@ src/pages keeps them together) — from orders, 4 of 5 members, read 2026-09-17
       3 of 4 across 4 files
 - [ ] request failure — the shared error helper, not a new message box — 3 of 4
 - [ ] colour and spacing through the theme; no literal, nothing off the base
-- [ ] not copied from orders: its title text, and the margin only it has
+- [ ] not copied from orders: its title text, the margin only it has, and its
+      own error box — the project has a shared error helper
 ````
 
 ## Every item carries how, not whether
