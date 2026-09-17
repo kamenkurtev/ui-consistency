@@ -1,25 +1,35 @@
 # ui-consistency
 
-Your agent ships a button. It works. It is also the wrong variant, one size up,
-and styled in a way nothing else in the app is styled. Two lines below a theme
-with `--color-danger` in it, there is a hardcoded `#c62828`. The form validates
-itself instead of importing the helper every other page imports. The failure
-toast is a fourth way of showing a failure.
+Anyone who has built UI knows the feeling: the code is correct and the page is
+still wrong. Anyone who has handed that work to an AI agent knows the faster
+version of it. The button ships. It works. It is also the wrong variant, one size
+up, and styled in a way nothing else in the app is styled. Two lines under a
+theme that has `--color-danger` in it, there is a hardcoded `#c62828`. The form
+validates itself instead of importing the helper every other page imports. The
+failure toast is the fourth way this app shows a failure.
 
-Nothing errors. Nothing lints. You find it in review, and you fix it by hand —
+Nothing errors. Nothing lints. You catch it in review, and you fix it by hand —
 again.
+
+It is not carelessness, and the agent does not have bad taste. **It has
+everybody's taste.** It has read millions of projects and writes the average of
+them, fluently and with complete confidence — and the average of everything is
+exactly what does not look like yours. It never sees the page it produced. And
+the one thing that would have told it what *right* means here is spread across
+the other pages in your repository, which it did not open.
 
 **ui-consistency is Design-Driven Development for your coding agent.** What the
 user sees drives the code, the way tests drive it in test-driven development, so
-the page comes out right the first time instead of getting corrected afterwards.
+the page comes out right the first time instead of being corrected afterwards.
 
 Design first — and the design is read **wherever it actually lives**: the design
 for the page if there is one, your theme and its tokens if there is one, and
 otherwise the pages you have already shipped. That last one is the usual case,
-and the one every other tool in this space skips. **Your design system exists
-whether or not anybody drew it.** It is in `Button.tsx`, in the four pages that
-all space their sections the same way, in the helper everyone imports. The
-agent's job is to read it before writing, not to invent a fifth way.
+and the one most of this space skips. **Your design system exists whether or not
+anybody drew it.** It is in the component everyone imports, in the four pages
+that space their sections the same way, in the error helper nobody
+re-implements. The agent's job is to read it before writing, not to invent a
+fifth way.
 
 No component name is baked in — every team names its own — so React, Vue,
 Angular, Svelte and plain HTML and CSS all go through the same steps. Nothing to
@@ -126,13 +136,43 @@ branches, and find stale. The list belongs to the task and goes with it.
 Each task carries its own checklist, which is what makes it executable by
 somebody who was not in the conversation.
 
+## Two things you can say to it
+
+Most of the time you say nothing: where your project agrees with itself, the
+agent takes the answer and moves on, and where it disagrees the agent decides by
+a written order and tells you what settled it. Two sentences are worth knowing
+anyway, because they outrank everything it counted.
+
+**Point at a page.** A page you name beats any number of pages that disagree with
+it — which is what you want on a codebase that has been through three eras.
+
+> *Add a returns page like the orders one.*
+
+Everything is then read from that page, and the counts only separate what repeats
+across the rest from what belongs to it alone. Without it the agent picks the
+nearest page itself, and says which one it picked and why.
+
+**Overrule a decision.** Where the agent reports something you disagree with, say
+so once:
+
+> *Submit buttons are full-width here from now on, even though most pages still
+> write them auto — we are half way through changing it.*
+
+That is an **override**, and it is worth having precisely because it contradicts
+the count: the agent would otherwise follow the majority and keep writing the old
+way, correctly and unhelpfully. It outranks everything below your request,
+including every count, and it stands until somebody changes it. It is written down where your
+process already records decisions — the spec, the plan, the design document — not
+into a file of this plugin's own. Nothing invents one: if you did not say it, it
+is not there.
+
 ## Philosophy
 
 - **Your conventions, not ours.** No component name is built in. Every technology
   and every team names its own.
-- **A page you name outranks a count.** Counts come with where they were found
-  and in how many files, because four identical buttons in one file are one
-  page's habit.
+- **A page you name outranks a count**, and an override outranks that — above.
+  Counts come with where they were found and in how many files, because four
+  identical buttons in one file are one page's habit.
 - **Before, not after.** An agent that reads the pattern first writes the right
   page once.
 - **It decides, you are not interrogated.** A written order settles what a count
