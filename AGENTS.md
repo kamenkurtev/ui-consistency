@@ -1,9 +1,14 @@
 # ui-consistency
 
-Skills that make the pages you write look and behave like the ones this project
-already has — the right component written the way the other pages write it, the
-project's own validation and error handling, values from the theme. For any UI
-technology, including plain HTML and CSS.
+**Design-Driven Development** for an agent writing UI: what the end user sees
+drives the code, so a page comes out consistent and right while it is being
+written rather than corrected afterwards. The right component written the way the
+other pages write it, the project's own validation and error handling, values
+from the theme. For any UI technology, including plain HTML and CSS.
+
+Design first, and the design is read wherever it lives: a design for the page
+where there is one, the theme and its tokens where there is one, otherwise the
+pages already built.
 
 ## Which skills a job takes
 
