@@ -129,9 +129,11 @@ export async function sessionContext(rootDir: string): Promise<string | null> {
       [
         `ui-consistency: the generated part of ${DIR}/ was written by`,
         `plugin ${[...versions].sort().join(', ')}; this is ${VERSION}.`,
-        'Nothing generates those files any more. They are a stored copy of what the',
-        `code says, which is the thing that goes stale — keep whatever in them was`,
-        `intent, in ${DIR}/patterns/, and delete the rest.`,
+        'Nothing generates those files any more, and nothing replaces them: what a',
+        'task counts is evidence for the decisions it reports, and goes with the task.',
+        'Those files are obsolete and can be deleted. The one thing worth carrying out',
+        'of one is a decision somebody made — and that goes wherever the process you',
+        'are running already records decisions, not into a directory of this plugin.',
       ].join(' '),
     );
   }
