@@ -79,10 +79,10 @@ a block of markup with a shared class. So the skills name roles and read what
 fills them from the project. A project of plain HTML and CSS goes through the
 same phases.
 
-### A named reference outranks a count
+### A named reference outranks a count, and you can overrule either
 
 Eight pages sharing a convention and eight pages sharing a mistake look
-identical to a counter. So the user names the page to follow, and counting only
+identical to a counter. So a person names the page to follow, and counting only
 separates what repeats from what belongs to that page alone. Counts are honest
 only with two more facts:
 
@@ -91,16 +91,19 @@ only with two more facts:
   of 4 in toolbars;
 - **how many files** — four identical buttons in one file are one page's habit.
 
-### A named reference outranks a count, and you can overrule either
+**What naming a page settles, and what it does not.** It settles what the page
+*is*: which roles it has, in what order, how it behaves. It does not settle
+whether to reach for the project's own shared piece. A page named as the
+reference because it is the right shape may have been written before that piece
+existed, and copying what it hand-writes would produce the drift this exists to
+prevent, with a blessing nobody gave. So the shared piece wins over the copy
+inside the reference, and both sides are said in one line.
 
-Two things a person says outrank everything read. **A page somebody names** is
-the reference — eight pages sharing a convention and eight pages sharing a
-mistake look identical to a counter, so a person pointing at one settles it.
-**An override** is a person's decision against what the order produced — *submit
-buttons are full-width from now on, even though most pages still write them
-auto* — which is the case counting can never reach, because the project is
-half way through changing and the majority is the old way. It sits directly
-under the request, above a named page, because it is about one concern while a
+**An override** is a person's decision against what everything above produced —
+*submit buttons are full-width from now on, even though most pages still write
+them auto* — the case counting can never reach, because the project is half way
+through changing and the majority is the old way. It sits directly under the
+request and above a named page, because it is about one concern while a
 reference is a pointer at a whole page, and it stands until somebody changes it.
 
 An override is the one thing a task cannot work out again for itself, so it is
