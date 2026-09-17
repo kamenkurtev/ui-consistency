@@ -83,7 +83,9 @@ not open. Beyond the items, the same regions are compared:
   words, target size — `ui-consistency:accessibility`
   ([SKILL.md](../accessibility/SKILL.md)). The rules are there; this list does
   not repeat them;
-- nothing listed under *Particular to the reference* was copied.
+- nothing the list says is not copied from the reference was copied — including
+  a shared piece the reference itself bypasses, which is the one an author takes
+  in good faith ([deciding.md](../finding-patterns/deciding.md)).
 
 Report **only what differs**, where, and what the reference and the rest of the
 project do instead. Say nothing about regions that match.

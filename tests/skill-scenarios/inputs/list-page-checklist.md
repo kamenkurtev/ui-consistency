@@ -18,4 +18,5 @@ read 2026-09-17
       of 4, from `--space-1…4` and the `stack-*` classes
 - [ ] contrast against WCAG 2.2 AA as the default, nothing stated in the project:
       body on surface 14.76:1, primary button text 6.27:1, field error 5.62:1
-- [ ] not copied from `orders.js`: nothing — it carries nothing of its own
+- [ ] not copied from `orders.js`: nothing of its own, and nothing it
+      hand-writes that the project shares

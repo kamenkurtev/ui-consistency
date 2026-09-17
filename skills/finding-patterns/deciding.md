@@ -20,10 +20,16 @@ Take the first level that applies and stop there.
    this concern before, it stands until a person changes it — *An override*,
    below, says what one is and where it is kept. It is about this concern
    exactly, which is why it sits above a reference named for the page as a whole.
-3. **A page somebody named.** A reference a person named outranks anything read.
+3. **A page somebody named** — and only for what it is authoritative about.
+   A reference a person named outranks anything read about **what the page is**:
+   which roles it has, in what order, how it behaves. It is **not** authoritative
+   about whether to use the project's own shared pieces. A page that bypasses a
+   shared helper is drift whoever pointed at it, and pointing at it does not make
+   the drift part of the pattern — *A named reference does not carry its own
+   drift*, below.
 4. **The shared piece over a private copy.** Where the project has its own piece
    for the concern — a component, a helper, a class — it wins over a copy living
-   inside one page.
+   inside one page, **including a copy inside the named reference**.
 5. **What the newest members write.** Where a count is split with no majority,
    the most recently written pages show where the project is going rather than
    where it has been. Tell from the project's own history — when each member was
@@ -32,7 +38,10 @@ Take the first level that applies and stop there.
 6. **The majority, with its file spread.** More files outrank more occurrences:
    four in one file are one page's habit, not a convention —
    [counting.md](counting.md).
-7. **The reference**, when nothing above settled it.
+7. **The reference the phase chose itself**, when nothing above settled it. This
+   is not level 3: nobody named this page, the phase picked it as the nearest in
+   kind, and it is a starting point rather than an authority. Where it disagrees
+   with the levels above, they win and this never fires.
 
 ## Say what settled it
 
@@ -64,6 +73,32 @@ was, and it is now the only thing that reaches a person unasked.
 **A tie inside the task's own reach is not a question.** Take the lowest level
 that applies, say so, and move on. Never a question per region, per prop, per
 pixel.
+
+## A named reference does not carry its own drift
+
+*"Make it like the orders page."* The orders page is the right shape, and it also
+writes its own error box because it was built before the shared helper existed.
+Copy it and the tool has just produced the thing it exists to prevent, with a
+person's blessing it never asked for.
+
+So a named reference is split the same way a design is
+([design.md](design.md)):
+
+- **What it settles**: which roles the page has, in what order, what it shows,
+  how it behaves. That is what somebody means by *like that one*.
+- **What it does not settle**: whether to reach for the project's own shared
+  piece. Where the reference hand-writes something the project has a piece for,
+  the piece wins, and what the reference does there joins the things not copied
+  from it.
+- **Say both sides in one line**: *the page you named writes its own error box;
+  the shared helper is used by 3 of 4 — I used the shared helper.* Reported, so
+  it is reversible in one sentence.
+- **The way back is open and short.** Asking for the reference's way is level 1,
+  and deciding it for good is level 2. Nothing here is unreachable; it is just
+  not the default.
+- **Where the named reference disagrees with the newest members**, say so too —
+  *the page you named is the oldest of the five; the three most recent write it
+  the other way.* A statement, not a question.
 
 ## An override, the one thing that outlives a task
 
