@@ -41,8 +41,9 @@ page title is one level in 5 of 5 files; a section heading is the next in 9 of
 
 - A level is a convention like any other. Report a page that writes a different
   one at the same position, with what the others write there.
-- **Where the family disagrees with itself**, that is the finding: it goes under
-  `Open questions` with its counts, and no level is picked for the project.
+- **Where the family disagrees with itself**, the order settles it and you say
+  which level did — the newest members, then the majority with its spread
+  ([deciding.md](deciding.md)). What is never done is picking a level silently.
 - **Where the level comes from a shared component**, record it against that
   component. A page that writes its own heading beside the shared one is the
   drift this counts.

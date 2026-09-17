@@ -34,9 +34,11 @@ and `verifying` for every value that names a theme entry.
   nothing: on one real workspace about 100 call sites wrote a colour their
   theme did not define, beside 31 correct ones under another theme. Counted
   across the workspace it read as a unanimous 131 of 131.
-  **A value a theme does not define is never written as a convention.** It goes
-  under `Open questions` — add the entry to that theme, or change the usages —
-  naming the theme it is missing from and the files that write it.
+  **A value a theme does not define is never written as a convention.** Adding
+  an entry to a theme changes code outside the task, so this is one of the few
+  things that reaches a person ([deciding.md](deciding.md)): report it with the
+  theme it is missing from and the files that write it, and the choice between
+  adding the entry and changing the usages.
 - **Nothing in the file shows this; only the theme does.** Where the theme that
   applies could not be resolved, say the values are unchecked. Silence about
   them is not a pass.

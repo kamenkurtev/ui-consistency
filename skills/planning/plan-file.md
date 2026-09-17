@@ -6,7 +6,8 @@ plan for this work. Committed with the work. `planning` writes it,
 every page task.
 
 **Where a plan already exists**, this is the shape of what is *added into it* —
-the tasks, with everything each one carries. Never a second document.
+the tasks, with everything each one carries, and a decision a person made against
+the order. Never a second document.
 
 ## The shape
 
@@ -22,11 +23,18 @@ written: <date>
 Status of a task: unticked is `todo`, ticked is `done`, and `parked — <why>`
 stays unticked with its reason on the line. A page that genuinely should not take
 the pattern is parked with its reason, never forced and never silently skipped.
+A task waiting on the one kind of thing that reaches a person — the order tied
+**and** the answer changes code outside this work — is
+`parked — waiting on <what>`; there is no list of open questions beside the
+tasks, because a question with nothing waiting on it is not worth writing down.
 
-## Waiting on an answer
+## Decided
 
-- <the question, copied from the pattern file with its counts and files> —
-  waiting: <the tasks below that cannot start>
+What a person decided against what the order produced — their words, what it
+overrules, and when. Nothing else is written here, and nothing here is invented.
+
+- <the decision, in the person's words> — overrules <what the order produced> —
+  <date>; released: <the tasks that were waiting>
 
 ## Tasks
 
