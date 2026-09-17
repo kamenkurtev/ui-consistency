@@ -55,7 +55,9 @@ CSS go through the same steps.
 
 **A reference somebody named outranks anything you count** — so if the request
 names one, that is the reference. For a refactor, it is the page already right,
-or the first one fixed by hand.
+or the first one fixed by hand. It settles **what the page is**, not whether to
+use the project's own shared pieces: a shared piece the reference bypasses is
+still used, and said ([deciding.md](deciding.md)).
 
 **Where nobody named one, choose it and say so**: the nearest in kind, and among
 those the one most recently written and most reused. Do not open with a
@@ -144,8 +146,11 @@ In this order — [counting.md](counting.md):
 
 **By import** — a shared component, helper or piece of logic is used, never
 rewritten: the project's loading indicator rather than the library's, its shared
-error helper rather than a new message box. A page that bypasses a shared helper is the drift this phase exists to
-catch.
+error helper rather than a new message box. A page that bypasses a shared helper
+is the drift this phase exists to catch — **including the reference, and
+including a reference somebody named.** Pointing at a page says what the page is,
+not that its drift is part of the pattern
+([deciding.md](deciding.md)).
 
 **By copy** — the same snippet pasted into many files is a pattern and **a
 candidate to extract**: propose making it reusable in the form this project can
