@@ -23,13 +23,10 @@ written: <date>
 Status of a task: unticked is `todo`, ticked is `done`, and `parked — <why>`
 stays unticked with its reason on the line. A page that genuinely should not take
 the pattern is parked with its reason, never forced and never silently skipped.
-
-## Waiting on an answer
-
-The order settled everything it could, so what is here is only what it could not:
-the order tied **and** the answer changes code outside this work.
-
-- <what tied, with its counts and files> — waiting: <the tasks that cannot start>
+A task waiting on the one kind of thing that reaches a person — the order tied
+**and** the answer changes code outside this work — is
+`parked — waiting on <what>`; there is no list of open questions beside the
+tasks, because a question with nothing waiting on it is not worth writing down.
 
 ## Decided
 

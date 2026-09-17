@@ -50,9 +50,9 @@ the statuses and what travels with a task that leaves the repository, in
 For a new page or a refactor, show the plan, with the checklists its tasks carry,
 and **wait for the user's yes** before any code. Ask nothing new here — the questions were
 asked while the pattern was found — and by then almost nothing is left to ask
-([deciding.md](../finding-patterns/deciding.md)). What did have to be asked
-travels into the plan under `## Waiting on an answer`, with its counts and the
-tasks that cannot start until it is answered ([plan-file.md](plan-file.md)).
+([deciding.md](../finding-patterns/deciding.md)). A task waiting on the little
+that did reach a person is `parked — waiting on <what>` in the plan, with its
+counts ([plan-file.md](plan-file.md)).
 
 **An answer given now is an override** — the one thing a task cannot work out
 again for itself ([deciding.md](../finding-patterns/deciding.md)). Record it in
