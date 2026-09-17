@@ -42,6 +42,8 @@ reported against a page that was never asked to get it right.
    when the submit is enabled, how a failure is caught and shown, loading and
    empty.
 5. **Values through the theme that applies**, and only entries that exist in it —
+   never a value read off a design, however plainly it shows one
+   ([design.md](../finding-patterns/design.md)) —
    for a file in a shared layer, every theme that renders it
    ([theme.md](../finding-patterns/theme.md)). A named constant where the
    theme has none. No literal copied from the reference.
