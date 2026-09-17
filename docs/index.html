@@ -299,9 +299,9 @@
 
   <section>
     <h2>What it actually does</h2>
-    <p>Before your agent builds or changes a page, it reads the page you name as the reference — top to bottom, then left to right: the holders, the components in each, how each is written, how forms validate and errors are shown — and searches how the other pages reuse those pieces. It writes that down in <code>.ui-consistency/patterns/</code>.</p>
-    <p>Then each page is written from that file, one at a time, and a separate agent compares it with the reference, region by region — after first proving it catches a difference planted on purpose.</p>
-    <p>It asks you once, only where your project contradicts itself or where it has something to propose. No script, no API key, nothing to configure.</p>
+    <p>Before your agent builds or changes a page, it reads the page you name as the reference — top to bottom, then left to right: the holders, the components in each, how each is written, how forms validate and errors are shown — and searches how the other pages reuse those pieces. It turns that into a short checklist for the task: your page's own structure as questions, in the order the page is read.</p>
+    <p>Then each page is written from that list, one at a time, and a separate agent walks it — after first proving it catches a difference planted on purpose.</p>
+    <p>Where your project disagrees with itself, it decides by a written order and tells you what settled it, with the numbers. It does not interrogate you, it leaves no files behind to keep in step, and it writes no tests: your planning process, your tests and your logic stay yours. No script, no API key, nothing to configure.</p>
   </section>
 
   <section>
@@ -323,15 +323,15 @@
         <div class="step-n">02</div>
         <div class="step-body">
           <h3>Ask for a page, a feature or a refactor</h3>
-          <p>That is the whole setup. The agent picks up the skills on its own: it finds the pattern, plans one page per task, implements from the pattern and verifies each page. With superpowers installed, the same phases add to its brainstorming and its plan instead of running a second one.</p>
+          <p>That is the whole setup. The agent picks up the skills on its own: it finds the pattern, plans one page per task, implements from the checklist and verifies each page. With superpowers installed, the same phases add to its brainstorming and its plan instead of running a second one.</p>
         </div>
       </li>
 
       <li class="step">
         <div class="step-n">03</div>
         <div class="step-body">
-          <h3>Read what it wrote</h3>
-          <p>The pattern file names the reference, what is reused, where values come from, what you decided, and what belongs to the reference alone. Where it could only sample, or could not read something, it says so.</p>
+          <h3>Read what it decided</h3>
+          <p>Every line of the checklist carries how, not whether — the piece your project shares, how it is written, and what settled it. Where it could only sample, or could not read something, it says so.</p>
         </div>
       </li>
 
@@ -361,7 +361,7 @@
     <h2>Reporting something</h2>
     <ul class="plain">
       <li>Say what you asked the agent, what it did, and what you expected.</li>
-      <li>Paste the pattern file it wrote, with names made neutral, and what it said it could not read.</li>
+      <li>Paste the checklist it produced, with names made neutral, and what it said it could not read.</li>
       <li>Issues go to <a class="link" href="https://github.com/kamenkurtev/ui-consistency/issues">the tracker</a>.</li>
     </ul>
   </section>

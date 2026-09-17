@@ -10,6 +10,11 @@ code turned into components.
 
 It is **skills and nothing else**. The only code is the session hook.
 
+It does one thing and joins whatever else is running. Another process keeps the
+plan, the tests and the logic; this one makes what the end user sees come out
+like the rest, so nobody opens the page afterwards and fixes it by hand. **It
+writes no tests and never starts a test suite.**
+
 Read before proposing anything: `docs/concept.md`, then `skills/`.
 
 ## Layout
@@ -50,13 +55,19 @@ to this repository only — both trackers start at 1.
    or a monorepo. Structure is read from the project, never required as config.
 4. **A named reference outranks a count, and a count carries its spread** — where
    the component stands, and in how many files.
-5. **Ask once, only about contradictions and proposals.**
+5. **It decides and reports; it does not interrogate.** A written order settles
+   what a count alone cannot, and every decision carries the level that settled
+   it and the numbers. One thing reaches a person: the order ties **and** the
+   answer changes code outside the task.
 6. **Join the process that is running.** A spec or plan that already exists is
    added to, not duplicated. Without one, the skills run the four phases
    themselves.
-7. **A plan carries its check.** Every page task names the pattern file and is
+7. **A plan carries its check.** Every page task carries its checklist and is
    verified by an agent that did not write it, after that agent proves it catches
    a planted difference.
+   **Nothing is kept that can be worked out again**: counts belong to the task
+   and go with it. Only a person's override of the order outlives one, and it
+   goes where the running process already records decisions.
 8. **Silence is never success.** Every phase says what it read and what it could
    not.
 9. **Free.** No licence checks, telemetry or paywalls.

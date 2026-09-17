@@ -85,6 +85,12 @@ reported against a page that was never asked to get it right.
 14. **Mark it** in the plan: ticked for `done`, or left unticked with
     `parked — <why>` ([plan-file.md](../planning/plan-file.md)).
 
+## What this does not write
+
+No tests. Whatever process is running the work owns its tests and its logic; this
+one owns what the end user sees. A page that comes out right and a suite nobody
+asked for is a worse result than a page that comes out right.
+
 ## A small change without a plan
 
 `ui-consistency:finding-patterns` has a reduced branch for it
