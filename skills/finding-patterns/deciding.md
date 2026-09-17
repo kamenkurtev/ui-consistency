@@ -19,8 +19,7 @@ Take the first level that applies and stop there.
 2. **A page somebody named.** A reference a person named outranks anything read.
 3. **An override already recorded.** Where a person has overruled this order for
    this concern before, it stands until a person changes it. Look where the
-   running process keeps its decisions, and in `## Decided` where a pattern file
-   exists — [pattern-file.md](pattern-file.md).
+   running process keeps its decisions — that is the only place one is kept.
 4. **The shared piece over a private copy.** Where the project has its own piece
    for the concern — a component, a helper, a class — it wins over a copy living
    inside one page.

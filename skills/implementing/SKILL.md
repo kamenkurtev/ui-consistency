@@ -1,6 +1,6 @@
 ---
 name: implementing
-description: Use when writing or changing what the end user sees and a pattern file or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
+description: Use when writing or changing what the end user sees and a checklist or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
 ---
 
 # Implementing from the pattern
@@ -12,8 +12,8 @@ drifts toward the last page seen instead of the one agreed.
 ## One page per task, in a fresh context
 
 - Where the harness has subagents, **one subagent per page**. It starts cold, so
-  the brief names the pattern file, the reference, and what is particular to the
-  reference.
+  the brief carries the checklist itself, the reference, and what is particular
+  to the reference.
 - Where it does not, one page per turn, working from the plan on disk — never
   from a list held in the conversation. Its shape is
   [plan-file.md](../planning/plan-file.md): every task carries what it needs, so
@@ -27,8 +27,9 @@ what each page task does inside it.
 Everything `ui-consistency:verifying` will check is listed here, so nothing is
 reported against a page that was never asked to get it right.
 
-1. **Re-read the pattern file.** Every time. Not remembered. Its sections are
-   described in [pattern-file.md](../finding-patterns/pattern-file.md).
+1. **Re-read the checklist.** Every time. Not remembered. Its shape is
+   [checklist.md](../finding-patterns/checklist.md), and its order is the order
+   you write the page in.
 2. **Write the page region by region**, in the order of the tree: holders, then
    the components in each, then what each comes out as, then how each is
    written, as the counts say. **The element the pattern records at a position
@@ -44,24 +45,24 @@ reported against a page that was never asked to get it right.
    for a file in a shared layer, every theme that renders it
    ([theme.md](../finding-patterns/theme.md)). A named constant where the
    theme has none. No literal copied from the reference.
-6. **Spacing on the base** in `## Spacing`
+6. **Spacing on the base the list names**
    ([spacing.md](../finding-patterns/spacing.md)): every value a whole multiple
    of the base the pattern derived, the gaps between roles as the family spaces
    them, owned by the side the pattern names, the line heights it records, and
    the heights of controls, rows and bars as the family writes them. A multiple
    the family has not written yet is allowed — say you used one.
-7. **Text as `## Typography` records it**
+7. **Text as the list records it**
    ([typography.md](../finding-patterns/typography.md)): the type role the
    family writes at that position, the whole bundle for it — size, weight, line
    height, letter spacing, typeface, case — and **applied the way the family
    applies it**: the shared entry, class or component, never a style written by
    hand beside one that exists.
 8. **Contrast as a pair**: every foreground on the surface actually behind it
-   meets the threshold in `## Accessibility`, in every scheme the project has
+   meets the threshold the list names, in every scheme the project has
    ([contrast.md](../accessibility/contrast.md)). Prefer the pairings the
    family already uses.
-9. **The rest of what a person has to be able to read and use**, as
-   `## Accessibility` records it: focus shown the way the family shows it and
+9. **The rest of what a person has to be able to read and use**, as the list
+   records it: focus shown the way the family shows it and
    landing where the family puts it, every control reachable without a mouse, a
    field tied to its label the way the shared field does it, text for what has
    none, targets the size the family's are — `ui-consistency:accessibility`

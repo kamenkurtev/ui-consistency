@@ -13,7 +13,6 @@ the tasks, with everything each one carries. Never a second document.
 ````markdown
 ---
 topic: <what this plan is for>
-pattern: <path to the pattern file — one line per kind where the work spans several>
 reference: <path to the reference page>
 written: <date>
 ---
@@ -37,11 +36,11 @@ the pattern is parked with its reason, never forced and never silently skipped.
       difference is not reported, stop and say the check is blind for it.
 - [ ] **<the extraction the user accepted>** — build `<the shared piece>` in
       `<where it belongs>`, before any page that uses it.
-- [ ] **<page>** — write `<path>` from `<path to the pattern file>`, following
-      `<path to the reference>`.
+- [ ] **<page>** — write `<path>`, following `<path to the reference>`, against
+      the checklist below.
+      <the checklist's lines, one per position — checklist.md>
       Must not be copied from the reference: <what is particular to it>.
-      Must be used: <the reused pieces and theme values this page takes>.
-      1. Re-read the pattern file before writing — do not work from memory.
+      1. Re-read the checklist before writing — do not work from memory.
       2. Hand the page to a separate agent with `ui-consistency:verifying`; fix
          what it reports.
 - [ ] **<page>** — `parked — <why>`
@@ -50,10 +49,11 @@ the pattern is parked with its reason, never forced and never silently skipped.
 ## Every task stands alone
 
 A subagent executing a task is given **that task and nothing else**; a preamble
-does not travel with it. So the pattern file's path, the reference, what must not
-be copied, and the check are **in each task**, even when the user asks for one
-line per page. Keep the line short by pointing: a path and a skill name are a few
-words each.
+does not travel with it. So the checklist, the reference, what must not be copied,
+and the check are **in each task**, even when the user asks for one line per page.
+The checklist is short on purpose — eight to twelve lines
+([checklist.md](../finding-patterns/checklist.md)) — which is what makes carrying
+it in every task affordable.
 
 A page judged to match already is still a task that carries them — its check is
 how "already matches" becomes known.
@@ -73,14 +73,14 @@ carry when it does. Nothing here is an instruction to put a task anywhere.
 
 What travels with it:
 
-- **The extract of the pattern it needs**, not only the path: the positions this
-  page touches with their counts, the reused pieces, the values, and what must
-  not be copied.
-- **A line saying it is a snapshot** — *taken from `<path>` on `<date>`*.
+- **The checklist**, which is the extract: the positions this page touches with
+  what settled each, and what must not be copied.
+- **Its first line, which says it is a snapshot** of the code as it was read, and
+  when.
 - **The check, written so an agent that never saw the plan can run it**: which
   skill to invoke, what to compare against, and that whoever wrote the page does
   not run it.
 
-**The file in the repository stays authoritative.** A copy is a snapshot and
-drifts from what it was taken from; where the two disagree the file wins and the
-task is taken again from it, never argued with the copy in hand.
+**The code stays authoritative.** A checklist is a snapshot and drifts from what
+it was taken from; where the two disagree the code wins and the list is taken
+again, never argued with the copy in hand.
