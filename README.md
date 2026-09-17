@@ -20,15 +20,15 @@ page afterwards and fix it by hand. It writes no tests of its own.
 When you ask for a new page, a feature or a refactor, the agent goes through four
 phases:
 
-1. **Find the pattern.** It asks which page to follow, reads that page top to
-   bottom and left to right — the holders, the components in each, how each is
-   written, how forms validate and errors are shown — and searches how the other
-   pages reuse those pieces. Values come from your theme. It asks you once, only
-   where your project contradicts itself or where it has something to propose,
-   such as turning a copy-pasted snippet into a component.
-2. **Plan.** One task per page, each carrying the pattern and what not to copy
+1. **Find the pattern.** It takes the page you name as the reference — or picks
+   the nearest one and says so — and reads it top to bottom and left to right:
+   the holders, the components in each, how each is written, how forms validate
+   and errors are shown. Then it searches how the other pages reuse those pieces.
+   Values come from your theme. Where your project disagrees with itself it
+   decides by a written order and tells you what settled it, with the numbers.
+2. **Plan.** One task per page, each carrying its checklist and what not to copy
    from the reference. It shows you the plan and waits for a yes.
-3. **Implement.** One page at a time, from the pattern, in a fresh context.
+3. **Implement.** One page at a time, from the checklist, in a fresh context.
 4. **Verify.** A separate agent compares each page with the reference, region by
    region — after first proving it catches a difference planted on purpose — and
    then all the pages together.
