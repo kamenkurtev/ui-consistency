@@ -1,19 +1,32 @@
 # ui-consistency
 
-Your agent adds a button. It works — and it is the wrong size, the wrong colour,
-styled differently from every other button in that place. It builds a form and
-writes its own validation, where the project validates with a library on every
-other page. It catches an error and shows it a new way. It writes a margin in
-pixels where the project has a theme.
+Your agent ships a button. It works. It is also the wrong variant, one size up,
+and styled in a way nothing else in the app is styled. Two lines below a theme
+with `--color-danger` in it, there is a hardcoded `#c62828`. The form validates
+itself instead of importing the helper every other page imports. The failure
+toast is a fourth way of showing a failure.
 
-**ui-consistency is a set of skills that make your coding agent build pages the
-way your project already builds them** — for any UI technology, including plain
-HTML and CSS.
+Nothing errors. Nothing lints. You find it in review, and you fix it by hand —
+again.
+
+**ui-consistency is Design-Driven Development for your coding agent.** What the
+user sees drives the code, the way tests drive it in test-driven development, so
+the page comes out right the first time instead of getting corrected afterwards.
+
+Design first — and the design is read **wherever it actually lives**: the design
+for the page if there is one, your theme and its tokens if there is one, and
+otherwise the pages you have already shipped. That last one is the usual case,
+and the one every other tool in this space skips. **Your design system exists
+whether or not anybody drew it.** It is in `Button.tsx`, in the four pages that
+all space their sections the same way, in the helper everyone imports. The
+agent's job is to read it before writing, not to invent a fifth way.
+
+No component name is baked in — every team names its own — so React, Vue,
+Angular, Svelte and plain HTML and CSS all go through the same steps. Nothing to
+configure, no schema, no build step.
 
 It does one thing and joins whatever else you run. Your planning process keeps
-the plan; your tests and your logic stay yours; this makes sure that what the end
-user sees comes out looking and behaving like the rest, so you do not open the
-page afterwards and fix it by hand. It writes no tests of its own.
+the plan; your tests and your logic stay yours. It writes no tests of its own.
 
 ## How it works
 

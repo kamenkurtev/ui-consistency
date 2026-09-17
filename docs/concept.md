@@ -2,6 +2,19 @@
 
 *What this is, why it is shaped this way, and what it refuses to do.*
 
+## What it is
+
+**Design-Driven Development.** What the end user sees drives the code, the way
+tests drive it in test-driven development: the page is read before it is written,
+and comes out consistent and right the first time rather than being corrected
+afterwards in review.
+
+Design first — and the part that is this plugin's own: **the design is read
+wherever it actually lives.** A design for the page where there is one; the theme
+and its tokens where there is one; and otherwise the pages already built, which
+is the usual case and the one most of this space skips. A design system exists
+whether or not anybody drew it.
+
 ## The problem
 
 An agent writing UI knows frameworks and component libraries in general. It does
@@ -35,8 +48,10 @@ were meant to support.
 ## The shape
 
 **Skills the developer's own agent follows, and nothing else.** The agent already
-reads code. The skills say how to look — in what order, what to count, what to
-ask — and the agent looks with its own tools.
+reads code. The skills say how to look — in what order, what to count, how to
+decide — and the agent looks with its own tools. That is what makes
+Design-Driven Development possible here without a drawing: the design is
+recovered from what exists.
 
 The work goes through four phases, the same whether a planning process such as
 superpowers is running or not:
