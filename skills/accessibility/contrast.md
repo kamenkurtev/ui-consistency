@@ -18,7 +18,10 @@ unreadable together. Check **pairs**, never single values.
   check each pair in both. A value chosen against one surface and inherited by
   the other scheme is a normal way to get an unreadable pair; report it.
 - **The threshold is the project's where it states one** — a contrast setting in
-  the theme, a linter rule, a written rule. Record it in the pattern file.
+  the theme, a linter rule, a written rule. Report it with the decision it
+  settles, and carry it on the task's checklist
+  ([checklist.md](../finding-patterns/checklist.md)), which goes when the task
+  does.
 - **Where the project states none**, use an external standard and name it as the
   default, not as the project's rule: WCAG 2.2 AA — 4.5:1 for text, 3:1 for large
   text and for non-text elements that carry meaning. That standard exempts

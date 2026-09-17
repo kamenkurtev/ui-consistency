@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.34.0";
+var VERSION = "0.35.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -102,9 +102,11 @@ async function sessionContext(rootDir) {
       [
         `ui-consistency: the generated part of ${KNOWLEDGE_DIR}/ was written by`,
         `plugin ${[...versions].sort().join(", ")}; this is ${VERSION}.`,
-        "Nothing generates those files any more. They are a stored copy of what the",
-        `code says, which is the thing that goes stale \u2014 keep whatever in them was`,
-        `intent, in ${KNOWLEDGE_DIR}/patterns/, and delete the rest.`
+        "Nothing generates those files any more, and nothing replaces them: what a",
+        "task counts is evidence for the decisions it reports, and goes with the task.",
+        "Those files are obsolete and can be deleted. The one thing worth carrying out",
+        "of one is a decision somebody made \u2014 and that goes wherever the process you",
+        "are running already records decisions, not into a directory of this plugin."
       ].join(" ")
     );
   }
