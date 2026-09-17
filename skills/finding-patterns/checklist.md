@@ -14,7 +14,8 @@ makes it a lie nobody notices.
 ## The shape
 
 ````markdown
-<page> against <kind> — from <reference>, <n> members, read <date>
+<page> against <kind> (<what decided the kind>) — from <reference>, <n> of <m>
+members, read <date>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
@@ -28,7 +29,8 @@ first, then inward and left to right, then what the user sees happen —
 An example, filled in:
 
 ````markdown
-returns against list page — from orders, 4 members, read 2026-09-17
+returns against list page (all five render a toolbar and a table of rows, and
+src/pages keeps them together) — from orders, 4 of 5 members, read 2026-09-17
 
 - [ ] page holder — the shared page holder, as its own landmark — 4 of 4, 4 files
 - [ ] toolbar in the header, title one level down — 4 of 4, 4 files
@@ -80,13 +82,11 @@ cannot judge it names rather than ticking.
 - **Not a record.** What was counted is evidence for the decisions in this task,
   reported with them, and it is not kept.
 
-## What travels with a task
+## A snapshot, and the code wins
 
-A task leaves the repository — into a tracker, a ticket, a message — and is
-picked up by somebody who was not in the conversation. **The checklist is the
-extract**: it is short on purpose, it names the reference and the kind, and each
-line carries what settled it, so it is executable by somebody with none of the
-context — [plan-file.md](../planning/plan-file.md).
+The first line says when it was read. Where the list and the code disagree, the
+code is right and the list is taken again — never argued with the copy in hand.
 
-It is a snapshot of the code as it was read, and says so in its first line. Where
-it and the code disagree, the code is right and the list is taken again.
+That first line and the short body are also what make it **the extract a task
+carries out of the repository**: what a task takes with it, and who decides that
+it goes, is [plan-file.md](../planning/plan-file.md).
