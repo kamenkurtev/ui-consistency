@@ -36,8 +36,9 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
   hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
   what order. `UIC_OFF` silences it.
-- `.ui-consistency/` — where a project's `patterns/` and `plans/` live;
-  `.claude/ui-consistency/` is still read as a fallback and reported when used.
+- `.ui-consistency/` — where a project's `plans/` live, and nothing else: what a
+  task counted goes with the task. `.claude/ui-consistency/` is still read as a
+  fallback and reported when used.
 
 **Nothing may assume a hook is running.** Claude Code runs the session hook;
 Cursor has a session-hook manifest that has not been run end to end; Codex and
