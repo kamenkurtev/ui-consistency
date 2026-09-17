@@ -155,11 +155,13 @@ nearest page itself, and says which one it picked and why.
 **Overrule a decision.** Where the agent reports something you disagree with, say
 so once:
 
-> *Where the shared layer and a page disagree, follow the shared layer — even
-> here, where more pages have their own copy.*
+> *Submit buttons are full-width here from now on, even though most pages still
+> write them auto — we are half way through changing it.*
 
-That is an **override**: it outranks everything below your request, including the
-counts, and it stands until somebody changes it. It is written down where your
+That is an **override**, and it is worth having precisely because it contradicts
+the count: the agent would otherwise follow the majority and keep writing the old
+way, correctly and unhelpfully. It outranks everything below your request,
+including every count, and it stands until somebody changes it. It is written down where your
 process already records decisions — the spec, the plan, the design document — not
 into a file of this plugin's own. Nothing invents one: if you did not say it, it
 is not there.
@@ -168,9 +170,9 @@ is not there.
 
 - **Your conventions, not ours.** No component name is built in. Every technology
   and every team names its own.
-- **A page you name outranks a count.** Counts come with where they were found
-  and in how many files, because four identical buttons in one file are one
-  page's habit.
+- **A page you name outranks a count**, and an override outranks that — above.
+  Counts come with where they were found and in how many files, because four
+  identical buttons in one file are one page's habit.
 - **Before, not after.** An agent that reads the pattern first writes the right
   page once.
 - **It decides, you are not interrogated.** A written order settles what a count

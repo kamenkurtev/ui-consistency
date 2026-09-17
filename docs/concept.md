@@ -96,8 +96,10 @@ only with two more facts:
 Two things a person says outrank everything read. **A page somebody names** is
 the reference — eight pages sharing a convention and eight pages sharing a
 mistake look identical to a counter, so a person pointing at one settles it.
-**An override** is a person's decision against what the order produced: *where
-the shared layer and a page disagree, follow the shared layer*. It sits directly
+**An override** is a person's decision against what the order produced — *submit
+buttons are full-width from now on, even though most pages still write them
+auto* — which is the case counting can never reach, because the project is
+half way through changing and the majority is the old way. It sits directly
 under the request, above a named page, because it is about one concern while a
 reference is a pointer at a whole page, and it stands until somebody changes it.
 
