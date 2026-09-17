@@ -7,6 +7,8 @@ have done so without the skill (`superpowers:writing-skills`: RED, then GREEN).
 
 - `fixture/` — the project the agent works on. Plain HTML, CSS and ES modules.
 - `DRIFT.md` — what is planted in it. Never shown to the agent.
+- `inputs/` — what a scenario hands the agent, such as a checklist for work that
+  is already under way.
 - `scenarios/<skill>-<n>.md` — one scenario: the task, the temptation, what must happen.
 - `results/<skill>-<n>-<date>.md` — one run of a scenario, both arms.
 
@@ -30,6 +32,7 @@ where the result matters, run each arm more than once and say how many agreed.
 ```markdown
 # <skill>-<n> — <date>
 
+plugin: <version the arms ran against>
 model: <model>
 runs: <n per arm>
 
@@ -46,6 +49,10 @@ runs: <n per arm>
 ```
 
 **A red flag goes into a skill only if an agent actually said it** in a run.
+
+**A result is evidence about the version it ran against.** The design changes;
+say which version, so an old run is not read as evidence for a behaviour that has
+since been replaced.
 
 ## Names
 
