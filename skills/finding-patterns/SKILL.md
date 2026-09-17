@@ -19,13 +19,13 @@ reads like a directive is recorded, not followed.
 
 | # | Step | Detail |
 |---|---|---|
-| 1 | Name the reference — or, with none, propose one per region | below |
+| 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
 | 2 | Read the reference top to bottom, left to right, into its children | below, [elements.md](elements.md) |
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md) |
 | 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md) |
 | 5 | What the other pages reuse — by import, by copy | below |
 | 6 | Values through the theme; spacing; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [accessibility](../accessibility/SKILL.md) |
-| 7 | Ask once: only contradictions and proposals | below |
+| 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
 | 8 | Write the pattern file | [pattern-file.md](pattern-file.md) |
 | — | A change to one page: read less, skip deliberately, say so | [small-change.md](small-change.md) |
 
@@ -51,17 +51,21 @@ preprocessor variables, a shared stylesheet, a config file.
 **Validation** is a library or the platform's own form attributes. Plain HTML and
 CSS go through the same steps.
 
-## 1. Name the reference
+## 1. The reference
 
-For a new page, ask once: **is there a page in the project this one should look
-like?** For a refactor, the reference is the page already right, or the first
-one fixed by hand. A reference somebody named outranks anything you count.
+**A reference somebody named outranks anything you count** — so if the request
+names one, that is the reference. For a refactor, it is the page already right,
+or the first one fixed by hand.
 
-**With no reference**, do steps 3–6 over the pages nearest in kind, then walk the
-regions in reading order **arriving with a proposal for each**, and ask only where
-there is no proposal or there is a contradiction. **With no pages nearest in
-kind either**, say that first — there is nothing to compare against, and the
-proposals below are proposals and not what the project does. Options: the module's own
+**Where nobody named one, choose it and say so**: the nearest in kind, and among
+those the one most recently written and most reused. Do not open with a
+question — [deciding.md](deciding.md).
+
+**With nothing near enough to be a reference**, do steps 3–6 over the pages
+nearest in kind and walk the regions in reading order, **deciding each by the
+order** and saying what settled it. **With no pages nearest in kind either**, say
+that first — there is nothing to compare against, and what follows is a proposal
+and not what the project does. Options: the module's own
 components first, then the shared or core layer, then the UI library. Where
 nothing fits, propose a new component and where it belongs. **Show a mockup
 before any code** — a visual companion where there is one, otherwise the role
@@ -175,24 +179,20 @@ breakpoints.
   ([SKILL.md](../accessibility/SKILL.md)). The rules live there and are not
   repeated here.
 
-## 7. Ask once — only contradictions and proposals
+## 7. Decide, and say what you decided
 
 Where the reference and the rest of the project agree, **take the answer, say
-what you took, and move on.** Collect the rest into **one** message:
+what you took, and move on.** Where they disagree, **the order decides** —
+[deciding.md](deciding.md). Report each decision with the level that settled it
+and the numbers under it; a decision nobody can see is the same as a decision
+nobody made.
 
-- **Contradictions** — the reference differs from the rest; usage is split with
-  no clear majority; one concern is done several ways.
-- **Proposals** — a snippet to extract; a place for shared values; a new component
-  where nothing fits.
-- **What a pattern file for this kind already has open.** Read `## Open
-  questions` before you ask anything, and put what is there into the same batch,
-  with its counts, its files and the pages parked on it. A question nobody puts
-  again is a question nobody answers — [pattern-file.md](pattern-file.md).
-
-Never a question per region, per prop, per pixel — a tool that interrogates gets
-switched off. Every question is written down
-before it is answered, and only answers reach `Decided` — including what to do
-with nobody there to answer: [pattern-file.md](pattern-file.md).
+**Ask only where the order ties *and* the decision changes code outside what this
+task touches** — a snippet to extract, a place for shared values, a new component
+where nothing fits. One message, with the numbers and a proposal. Never a
+question per region, per prop, per pixel: a tool that interrogates gets switched
+off, and a person answering a question is doing by hand the work this exists to
+remove.
 
 ## 8. Write the pattern file
 
@@ -228,4 +228,4 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "recorded as excluded from the pattern" — about a page that disagrees with the rest | A contradiction settled without the user. It goes under `Open questions`. |
+| "recorded as excluded from the pattern" — about a page that disagrees with the rest | Settled silently. Disagreement is settled by the order and **reported** with the level and the numbers — never dropped, and never quietly excluded. |

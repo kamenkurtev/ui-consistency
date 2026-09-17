@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.24.0";
+var VERSION = "0.25.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -81,7 +81,8 @@ var STANDING = [
   "  ui-consistency:accessibility, with or without a pattern file.",
   "",
   "If a spec or plan for this work already exists, add to it instead of starting",
-  "another. Ask the user once, only about contradictions and proposals."
+  "another. Decide by the order the skills carry and report what settled each",
+  "decision; ask only where it ties and the change reaches outside the task."
 ].join("\n");
 async function sessionContext(rootDir) {
   const { dir, legacy } = await knowledgeDir(rootDir);
