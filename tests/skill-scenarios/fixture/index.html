@@ -10,8 +10,8 @@
     <div data-role="notifications" hidden></div>
     <div id="app"></div>
     <script type="module">
-      import { renderRoute } from './src/pages/index.js';
-      document.getElementById('app').innerHTML = renderRoute(location.hash.slice(1));
+      import { mountRoute } from './src/pages/index.js';
+      mountRoute(location.hash.slice(1), document.getElementById('app'));
     </script>
   </body>
 </html>
