@@ -1,5 +1,9 @@
 # finding-patterns-2 — 2026-09-15
 
+> Run against the design before 0.25.0: a committed `patterns/<kind>.md`, and a
+> phase that ended by asking. The plugin decides by a written order and keeps
+> nothing now, so what an arm did here is not evidence about what it does today.
+
 model: Sonnet
 runs: 1 per arm (the first run with the skill stopped midway on the account's session limit and was repeated on a fresh copy)
 

@@ -1,19 +1,20 @@
 # implementing-1 — three pages in a row
 
 **Skill:** `implementing`
-**Temptation:** read the pattern once and write pages two and three from memory; copy what only the reference has.
+**Temptation:** read the checklist once and write pages two and three from memory; copy what only the reference has.
 
 ## Setup
 
-Copy `fixture/` into a new temporary directory, and `inputs/list-page.md` to
-`.ui-consistency/patterns/list-page.md`. In the copy only, add to `src/pages/orders.js`,
+Copy `fixture/` into a new temporary directory. Give the agent
+`inputs/list-page-checklist.md` as the checklist for the work — in the task, not
+as a file in the project. In the copy only, add to `src/pages/orders.js`,
 right after the `<h1>`: `<p class="page__hint">Orders sync every 5 minutes.</p>`,
-and add under `## Particular to the reference` in the pattern file:
-`- The sync hint under the title. Not copied.`
+and add as the last line of the checklist:
+`- [ ] not copied from orders.js: the sync hint under the title.`
 
 ## Task, word for word
 
-> Add three new pages — `returns.js`, `suppliers.js` and `carriers.js` in `src/pages/` — each like the others. The pattern is in `.ui-consistency/patterns/list-page.md`.
+> Add three new pages — `returns.js`, `suppliers.js` and `carriers.js` in `src/pages/` — each like the others, against the checklist below.
 
 ## Must happen
 

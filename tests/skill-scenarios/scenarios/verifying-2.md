@@ -5,8 +5,9 @@
 
 ## Setup
 
-Copy `fixture/` into a new temporary directory, and `inputs/list-page.md` to
-`.ui-consistency/patterns/list-page.md` inside it. Then, in the copy only:
+Copy `fixture/` into a new temporary directory. Give the agent
+`inputs/list-page-checklist.md` as the checklist for the work — in the task, not
+as a file in the project. Then, in the copy only:
 
 - in `src/pages/shipments.js`, before `<section data-role="list">`, add
   `<div class="legacy-panel">Carrier status</div>`;
