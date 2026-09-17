@@ -152,6 +152,14 @@ Everything is then read from that page, and the counts only separate what repeat
 across the rest from what belongs to it alone. Without it the agent picks the
 nearest page itself, and says which one it picked and why.
 
+It settles what the page **is** — which parts it has, in what order, how it
+behaves — not whether to reach for something your project already shares. A page
+worth pointing at is often an old one, written before the shared helper existed;
+copying what it hand-writes would produce exactly the drift you installed this to
+stop. So the shared piece wins there, and you are told: *the page you named
+writes its own error box; the shared helper is used by 3 of 4 — I used the shared
+helper.*
+
 **Overrule a decision.** Where the agent reports something you disagree with, say
 so once:
 
