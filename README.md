@@ -10,6 +10,11 @@ pixels where the project has a theme.
 way your project already builds them** — for any UI technology, including plain
 HTML and CSS.
 
+It does one thing and joins whatever else you run. Your planning process keeps
+the plan; your tests and your logic stay yours; this makes sure that what the end
+user sees comes out looking and behaving like the rest, so you do not open the
+page afterwards and fix it by hand. It writes no tests of its own.
+
 ## How it works
 
 When you ask for a new page, a feature or a refactor, the agent goes through four
@@ -74,51 +79,39 @@ The agent picks them up on its own. You don't need to name them.
 
 - **finding-patterns** — how pages of this kind are built here
 - **planning** — one checkable task per page
-- **implementing** — one page at a time, from the pattern
+- **implementing** — one page at a time, from the checklist
 - **verifying** — a separate agent compares each page with the reference
 - **accessibility** — can it be read, can it be used without a mouse
 
-## What it writes in your repository
+## What a task gets
 
-**Patterns** — `.ui-consistency/patterns/<kind>.md`, committed and reviewed like
-code. Shown here with roles; yours carries your own component names:
+A **checklist**: your page's own structure turned into questions, in the order
+the page is read. Shown here with roles; yours carries your own component names.
 
 ~~~~markdown
----
-kind: form page
-reference: <path to the page you named>
-theme: <where your theme lives>
-read: 7 pages, 6 components, 3 shared files
-observed: 2026-09-14
----
+new form page against form page (all four render the same holder and a form)
+— from <the page you named>, 4 of 5 members, read 2026-08-30
 
-# Form page
-
-## Tree
-
-```
-<page holder>
-  <header> > <toolbar> > <title>
-  <content area>
-    <form>              <your validation approach>   — 4 of 4 forms, 4 files
-      <field>           <how fields are written>     — 8 of 8, 4 files
-    <submit button>     <how it is written>          — 4 of 4, 4 files
-```
-
-## Reused
-
-- Request failure: <your shared error helper>
-
-## Decided
-
-- Fields show their error text. (Asked: the reference did not; 6 of 8 did.)
-
-## Particular to the reference
-
-- <what only that page has, and is not copied>
+- [ ] page holder — <your holder>, as its own landmark — 4 of 4, 4 files
+- [ ] title one level down, in the toolbar — 4 of 4, 4 files
+- [ ] form — <your validation approach>, not its own — 4 of 4, 4 files
+- [ ] field — label tied to it, error under it, through <your field> — 8 of 8
+- [ ] submit — <your button>, full-width, in the content area — 3 of 4, 4 files
+- [ ] request failure — <your shared error helper>, not a new message box
+- [ ] colour and spacing through the theme; no literal, nothing off the base
+- [ ] not copied from <the page you named>: <what only that page has>
 ~~~~
 
+Every line carries **how**, not whether, and what settled it — so ticking one
+means opening the page. An agent that did not write the page walks the list.
+
+**Nothing is left behind.** The counts are true of the code as it was read, and
+code moves on: a file of them would be a thing to review, keep in step between
+branches, and find stale. The list belongs to the task and goes with it.
+
 **Plans** — `.ui-consistency/plans/<topic>.md`, when no other process wrote one.
+Each task carries its own checklist, which is what makes it executable by
+somebody who was not in the conversation.
 
 ## Philosophy
 
@@ -129,7 +122,9 @@ observed: 2026-09-14
   page's habit.
 - **Before, not after.** An agent that reads the pattern first writes the right
   page once.
-- **Ask only what the project does not answer.**
+- **It decides, you are not interrogated.** A written order settles what a count
+  alone cannot, and every decision is reported with what settled it. One thing
+  reaches you: the order ties *and* the answer changes code outside the task.
 - **Silence is never success.** Where it could not read something, it says so.
 
 Read [docs/concept.md](docs/concept.md) for the reasoning.
