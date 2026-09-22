@@ -20,7 +20,7 @@ already running, and run the phases themselves when none is.
 | a new page or feature | `ui-consistency:finding-patterns` → `ui-consistency:planning` → `ui-consistency:implementing` → `ui-consistency:verifying` |
 | a refactor across pages | the same four |
 | a small change to one page | finding-patterns, its reduced branch → implementing → verifying |
-| checking code already written | verifying |
+| checking code already written | verifying — after finding-patterns where no checklist exists yet |
 | measuring against an accessibility standard — only when asked for, or when the project states a requirement | `ui-consistency:accessibility`, on its own or from any of the four |
 
 If a spec or plan for this work already exists, add to it instead of starting

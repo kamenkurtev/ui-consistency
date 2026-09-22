@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.39.0";
+var VERSION = "0.39.1";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -75,7 +75,8 @@ var STANDING = [
   "  \u2192 ui-consistency:implementing \u2192 ui-consistency:verifying",
   "- A small change to one page: finding-patterns, its reduced branch",
   "  \u2192 implementing \u2192 verifying. The check is never the part that gets dropped.",
-  "- Checking code already written: verifying.",
+  "- Checking code already written: verifying \u2014 after finding-patterns where no",
+  "  checklist exists yet.",
   "- Only when asked, or when the project states a requirement \u2014 measuring against",
   "  an accessibility standard (contrast, focus, keyboard, labels, text",
   "  alternatives, target size): ui-consistency:accessibility. Not by default.",
@@ -132,7 +133,7 @@ import { pathToFileURL } from "node:url";
 async function main(argv) {
   if (argv[0] !== "session") {
     console.error("Usage: uic session   (read from a SessionStart hook; see hooks/hooks.json)");
-    console.error("Everything else this tool did is a skill or a rule now \u2014 see README.md.");
+    console.error("Everything else this tool did is a skill now \u2014 see README.md.");
     return 1;
   }
   const response = await sessionResponse(await readStdin()).catch(() => null);

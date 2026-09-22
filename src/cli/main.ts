@@ -15,7 +15,7 @@ import { pathToFileURL } from 'node:url';
 export async function main(argv: string[]): Promise<number> {
   if (argv[0] !== 'session') {
     console.error('Usage: uic session   (read from a SessionStart hook; see hooks/hooks.json)');
-    console.error('Everything else this tool did is a skill or a rule now — see README.md.');
+    console.error('Everything else this tool did is a skill now — see README.md.');
     return 1;
   }
 
