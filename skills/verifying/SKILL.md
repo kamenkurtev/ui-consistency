@@ -9,6 +9,10 @@ This replaces a person opening every page and comparing it by eye. It answers on
 question: **which of these pages do not look and behave like the reference and
 the rest of the project.**
 
+**Open a linked file when you reach the part that names it, never before** —
+whatever the request that handed you this skill says about its links. A part you
+reach without having opened its file is not done.
+
 ## Never the author
 
 The agent that wrote a page does not verify it. Use a separate agent — a
@@ -113,6 +117,10 @@ Before writing that nothing was left unevaluated, find **every stylesheet the pa
 loads**, including any from outside the project, and look up every class it uses.
 A class with no rule in the project is not unstyled — its rule may live where you
 cannot read it, so its colours and spacing are unevaluated.
+
+End with the cost, so one run can be compared with another: **how many pages
+were compared, how many project files were opened and how many searches were
+run.** A number you did not keep is said to be an estimate.
 
 ## The whole set, at the end
 

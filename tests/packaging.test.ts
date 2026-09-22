@@ -126,6 +126,13 @@ describe('the skills', () => {
       expect(description.length).toBeLessThanOrEqual(250);
     });
 
+    it(`${skill} says to open a linked file at the step that needs it, not before`, async () => {
+      // An invocation that says "and the files it links" loads the whole library
+      // before one project file is open. The skill itself has to say otherwise,
+      // or the wording of whoever handed it over decides.
+      const text = await readFile(`${dir}/${skill}/SKILL.md`, 'utf8');
+      expect(text).toMatch(/\*\*Open a linked file when you reach the (step|part) that names it, never before\.?\*\*/);
+    });
   }
 
   /**

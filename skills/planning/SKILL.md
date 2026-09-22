@@ -10,6 +10,10 @@ the pages still came out different: nothing checked page fifteen against it. A
 plan here carries **what makes each page checkable** — the checklist itself, what
 not to copy, and a check by somebody who did not write the page.
 
+**Open a linked file when you reach the part that names it, never before** —
+whatever the request that handed you this skill says about its links. A part you
+reach without having opened its file is not done.
+
 ## Joining a process, or running alone
 
 If a plan for this work already exists — another planning process wrote it — add

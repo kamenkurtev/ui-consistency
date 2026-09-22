@@ -98,7 +98,7 @@ pointed at this repository.
 ### Anything else
 
 Point your harness at `skills/` and `USING.md`. Nothing in them is
-harness-specific.
+harness-specific. `USING.md` gives the words to hand a phase to an agent with.
 
 ## The skills
 

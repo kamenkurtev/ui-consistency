@@ -42,8 +42,14 @@ decision; ask only where it ties and the change reaches outside the task.
   label, text alternatives and target size, each reported separately, against
   what the family already does.
 
-Read `skills/*/SKILL.md` directly if your harness has no skill mechanism — they
-are the instructions.
+If your harness has no skill mechanism, hand a phase to the agent in these
+words, with the path filled in:
+
+> Read and follow `<path to the plugin>/skills/<skill>/SKILL.md`. Open a file it
+> links only when a step you have reached names it.
+
+Not *"and the files it links"*: that loads every linked file before the first
+file of the project is opened.
 
 ## What the project keeps
 
