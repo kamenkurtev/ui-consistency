@@ -21,7 +21,7 @@ already running, and run the phases themselves when none is.
 | a refactor across pages | the same four |
 | a small change to one page | finding-patterns, its reduced branch → implementing → verifying |
 | checking code already written | verifying |
-| can it be read, can it be used without a mouse | `ui-consistency:accessibility`, on its own or from any of the four |
+| measuring against an accessibility standard — only when asked for, or when the project states a requirement | `ui-consistency:accessibility`, on its own or from any of the four |
 
 If a spec or plan for this work already exists, add to it instead of starting
 another. Decide by the order the skills carry and report what settled each
@@ -38,9 +38,11 @@ decision; ask only where it ties and the change reaches outside the task.
 - **implementing** — one page per task in a fresh context, from the checklist.
 - **verifying** — a separate agent compares each page with the reference region
   by region, after proving it catches a planted difference.
-- **accessibility** — contrast, focus, reach without a mouse, a field and its
-  label, text alternatives and target size, each reported separately, against
-  what the family already does.
+- **accessibility** — optional: contrast, focus, reach without a mouse, a field
+  and its label, text alternatives and target size, each reported separately,
+  measured against a standard only when somebody asks for it or the project
+  states a requirement. Without either, the phases follow what the family
+  already does, and nothing is reported as failing a standard.
 
 If your harness has no skill mechanism, hand a phase to the agent in these
 words, with the path filled in:

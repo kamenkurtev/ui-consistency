@@ -22,10 +22,12 @@ unreadable together. Check **pairs**, never single values.
   settles, and carry it on the task's checklist
   ([checklist.md](../finding-patterns/checklist.md)), which goes when the task
   does.
-- **Where the project states none**, use an external standard and name it as the
-  default, not as the project's rule: WCAG 2.2 AA — 4.5:1 for text, 3:1 for large
-  text and for non-text elements that carry meaning. That standard exempts
-  disabled controls, so under the default their pairs are recorded with a ratio,
+- **Where the project states none**, a threshold is measured only when
+  accessibility was asked for — otherwise record the pairings with their ratios
+  and report none as failing. When asked, use an external standard and name it
+  as the one used, not as the project's rule: WCAG 2.2 AA — 4.5:1 for text, 3:1
+  for large text and for non-text elements that carry meaning. That standard
+  exempts disabled controls, so under it their pairs are recorded with a ratio,
   not reported as failing. Report each ratio so a person can decide.
 - **The ratio is arithmetic**, not a tool: for each colour, take each channel
   `c = value / 255`, linearise it (`c / 12.92` if `c ≤ 0.04045`, else

@@ -70,6 +70,6 @@ it into one.
   text stands on the base is spacing's question.
 - **The standards** are `ui-consistency:accessibility`
   ([SKILL.md](../accessibility/SKILL.md)): whether text can be read at all — its
-  contrast against what is behind it — is judged there, against a named default
-  where the project states nothing. Nothing in this file carries a number the
-  project did not produce.
+  contrast against what is behind it — is judged there, and only when
+  accessibility is asked for or the project states a requirement. Nothing in
+  this file carries a number the project did not produce.

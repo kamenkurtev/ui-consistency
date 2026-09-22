@@ -79,12 +79,14 @@ not open. Beyond the items, the same regions are compared:
   say so;
 - **contrast, as pairs** in every scheme the project has
   ([contrast.md](../accessibility/contrast.md)). Report a pairing the family
-  does not use, and any pairing below the threshold, with its ratio; name a pair
-  whose surface cannot be resolved as unevaluated;
+  does not use, with its ratio; a pairing below a threshold only where the list
+  names one — the project states it, or the task asked for accessibility; name
+  a pair whose surface cannot be resolved as unevaluated;
 - **the rest of what a person has to be able to read and use**, reported
   separately and never as one verdict: focus,
   reach and order without a mouse, a field and its label, text for what has no
-  words, target size — `ui-consistency:accessibility`
+  words, target size — against what the family does, and against a standard
+  only where the list says one applies — `ui-consistency:accessibility`
   ([SKILL.md](../accessibility/SKILL.md)). The rules are there; this list does
   not repeat them;
 - nothing the list says is not copied from the reference was copied — including

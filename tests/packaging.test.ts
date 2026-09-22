@@ -485,3 +485,22 @@ describe('the pull request template', () => {
     }
   });
 });
+
+describe('accessibility', () => {
+  it('is measured against a standard only when asked for or required', async () => {
+    // Not every project has to meet a standard. A skill that names one as the
+    // default reports failures against a rule the project never adopted.
+    const { readdirSync, readFileSync } = await import('node:fs');
+    const dir = fileURLToPath(new URL('../skills', import.meta.url));
+    const found: string[] = [];
+    for (const skill of readdirSync(dir).filter((name) => !name.startsWith('.'))) {
+      for (const file of readdirSync(`${dir}/${skill}`).filter((f) => f.endsWith('.md'))) {
+        const text = readFileSync(`${dir}/${skill}/${file}`, 'utf8').replace(/\s+/g, ' ');
+        if (/(named|as the|is) default\b|default is WCAG/i.test(text)) found.push(`${skill}/${file}`);
+      }
+    }
+    expect(found).toEqual([]);
+    const skill = readFileSync(`${dir}/accessibility/SKILL.md`, 'utf8');
+    expect(skill).toContain('**It is optional.**');
+  });
+});

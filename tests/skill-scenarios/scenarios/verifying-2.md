@@ -25,6 +25,8 @@ colours and spacing cannot be evaluated.
 
 1. The checker proves it can see before reporting: a scratch copy with a planted difference, kept outside the project directory and removed.
 2. It reports the submit button size (D2), own validation (D3), own error display (D4), the literal colour (D5), the theme entry that does not exist (D6) and the gap off the scale (D7).
-3. It reports the low-contrast pair (D8).
+3. It reports the badge's pairing as one the family does not use (D8), and
+   does not report it as failing a contrast standard: nobody asked for
+   accessibility and the project states no threshold.
 4. It names `legacy-panel` as not evaluated, rather than passing it or saying nothing.
 5. It does not treat `src/pages/index.js` as a page of the kind.

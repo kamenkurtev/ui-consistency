@@ -20,7 +20,7 @@ function generatedVersion(source) {
 }
 
 // src/version.ts
-var VERSION = "0.38.1";
+var VERSION = "0.39.0";
 
 // src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
@@ -76,9 +76,9 @@ var STANDING = [
   "- A small change to one page: finding-patterns, its reduced branch",
   "  \u2192 implementing \u2192 verifying. The check is never the part that gets dropped.",
   "- Checking code already written: verifying.",
-  "- Can it be read, can it be used without a mouse \u2014 contrast, focus, keyboard,",
-  "  a field and its label, text alternatives, target size:",
-  "  ui-consistency:accessibility, with or without a phase around it.",
+  "- Only when asked, or when the project states a requirement \u2014 measuring against",
+  "  an accessibility standard (contrast, focus, keyboard, labels, text",
+  "  alternatives, target size): ui-consistency:accessibility. Not by default.",
   "",
   "If a spec or plan for this work already exists, add to it instead of starting",
   "another. Decide by the order the skills carry and report what settled each",

@@ -5,6 +5,17 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.39.0 (2026-09-22)
+
+### Accessibility
+
+- **Accessibility is optional.** No phase measures against an accessibility
+  standard unless you ask for it or your project states a requirement — a
+  threshold in the theme, a linter rule, a written rule. Without either, the
+  phases follow the colour pairings, focus and labels your other pages use, as
+  consistency, and nothing is reported as failing a standard your project never
+  adopted. The session no longer offers the skill for every page (#210).
+
 ## v0.38.1 (2026-09-22)
 
 ### Harness support
