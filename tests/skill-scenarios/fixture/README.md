@@ -1,8 +1,6 @@
-# Fixture: a small order-management app
+# Orders
 
-Plain HTML, CSS and ES modules, no framework and no build. It exists to be **read**
-by an agent running a skill scenario, not to be run.
+The back office for orders, invoices, customers and shipments.
 
-Every page in `src/pages/` renders one screen of the same kind — a list with a
-toolbar and a form. The drift planted in it is listed in `../DRIFT.md`, which a
-scenario's agent must never be shown.
+Plain HTML, CSS and ES modules — no framework and no build step. `index.html`
+mounts the page named by the URL hash.
