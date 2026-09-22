@@ -137,11 +137,22 @@ means opening the page. An agent that did not write the page walks the list.
 code moves on: a file of them would be a thing to review, keep in step between
 branches, and find stale. The list belongs to the task and goes with it.
 
-**Plans** — `.ui-consistency/plans/<topic>.md`, when no other process wrote one.
+**Plans** — when no other process wrote one, and **never in your repository**.
 Each task carries its own checklist, which is what makes it executable by
-somebody who was not in the conversation. When the work is done the tasks go and
-only what you decided against the order stays; with nothing decided, the file is
-deleted.
+somebody who was not in the conversation. Planning ends in one of three ways,
+and says which:
+
+1. **The work stays in one session.** The plan lives there — or, if the work
+   outlives the session, in a scratch file outside your working copy, deleted
+   when the work is done.
+2. **The work becomes a story for somebody else.** The plan is attached to the
+   story, complete enough that a developer without the conversation or the
+   checkout could implement it from the attachment alone.
+3. **Another process is running.** The tasks go into its plan; no second
+   document.
+
+When the work is done, what you decided against the order is reported with the
+result; the plan itself goes.
 
 ## Two things you can say to it
 

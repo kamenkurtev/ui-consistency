@@ -7,63 +7,14 @@ var SILENCED = () => {
 };
 
 // src/cli/session.ts
-import { readdir as readdir2, open } from "node:fs/promises";
-import { join } from "node:path";
-
-// src/knowledge/generated.ts
-var MARKER = /<!--\s*uic:generated\b[^>]*-->/i;
-var MARKER_WINDOW = 512;
-function generatedVersion(source) {
-  const marker = MARKER.exec(source.slice(0, MARKER_WINDOW));
-  if (marker === null) return null;
-  return /\bv=([\w.-]+)/.exec(marker[0])?.[1] ?? null;
-}
-
-// src/version.ts
-var VERSION = "0.47.0";
-
-// src/knowledge/paths.ts
 import { readdir } from "node:fs/promises";
-import { resolve } from "node:path";
-var KNOWLEDGE_DIR = ".ui-consistency";
-var LEGACY_KNOWLEDGE_DIR = ".claude/ui-consistency";
-async function knowledgeDir(rootDir, sub = "") {
-  const inside = async (base) => {
-    const entries = await readdir(resolve(rootDir, base, sub)).catch(() => null);
-    return entries !== null && entries.length > 0;
-  };
-  if (await inside(KNOWLEDGE_DIR)) {
-    return { dir: resolve(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
-  }
-  if (await inside(LEGACY_KNOWLEDGE_DIR)) {
-    return { dir: resolve(rootDir, LEGACY_KNOWLEDGE_DIR, sub), legacy: true };
-  }
-  return { dir: resolve(rootDir, KNOWLEDGE_DIR, sub), legacy: false };
-}
-var MOVED = `${LEGACY_KNOWLEDGE_DIR}/ is the old location and is still read. Move it to ${KNOWLEDGE_DIR}/ \u2014 it is your project's intent, not one agent's configuration.`;
-
-// src/cli/session.ts
+import { join } from "node:path";
 function shapeFor(env, context) {
   if (env["CURSOR_PLUGIN_ROOT"] !== void 0) return { additional_context: context };
   if (env["CLAUDE_PLUGIN_ROOT"] !== void 0 && env["COPILOT_CLI"] === void 0) {
     return { hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: context } };
   }
   return { additionalContext: context };
-}
-var HEAD = 512;
-var MAX_FILES = 12;
-async function firstBytes(path) {
-  const handle = await open(path, "r").catch(() => null);
-  if (handle === null) return null;
-  try {
-    const buffer = Buffer.alloc(HEAD);
-    const { bytesRead } = await handle.read(buffer, 0, HEAD, 0);
-    return buffer.subarray(0, bytesRead).toString("utf8");
-  } catch {
-    return null;
-  } finally {
-    await handle.close().catch(() => void 0);
-  }
 }
 var STANDING = [
   "ui-consistency \u2014 for anything the end user will see, these join the phases of",
@@ -85,29 +36,21 @@ var STANDING = [
   "another. Decide by the order the skills carry and report what settled each",
   "decision; ask only where it ties and the change reaches outside the task."
 ].join("\n");
+var LEFT_BEHIND = [".ui-consistency", ".claude/ui-consistency"];
 async function sessionContext(rootDir) {
-  const { dir, legacy } = await knowledgeDir(rootDir);
-  const entries = await readdir2(dir).catch(() => null);
-  const files = (entries ?? []).filter((name) => /\.md$/i.test(name)).sort();
   const said = [STANDING];
-  const versions = /* @__PURE__ */ new Set();
-  for (const name of files.slice(0, MAX_FILES)) {
-    const head = await firstBytes(join(dir, name));
-    if (head === null) continue;
-    const version = generatedVersion(head);
-    if (version !== null && version !== VERSION) versions.add(version);
+  const found = [];
+  for (const dir of LEFT_BEHIND) {
+    const entries = await readdir(join(rootDir, dir)).catch(() => null);
+    if (entries !== null && entries.length > 0) found.push(`${dir}/`);
   }
-  if (legacy) said.push(`ui-consistency: ${MOVED}`);
-  if (versions.size > 0) {
+  if (found.length > 0) {
     said.push(
       [
-        `ui-consistency: the generated part of ${KNOWLEDGE_DIR}/ was written by`,
-        `plugin ${[...versions].sort().join(", ")}; this is ${VERSION}.`,
-        "Nothing generates those files any more, and nothing replaces them: what a",
-        "task counts is evidence for the decisions it reports, and goes with the task.",
-        "Those files are obsolete and can be deleted. The one thing worth carrying out",
-        "of one is a decision somebody made \u2014 and that goes wherever the process you",
-        "are running already records decisions, not into a directory of this plugin."
+        `ui-consistency: ${found.join(" and ")} ${found.length > 1 ? "were" : "was"} written by an older version`,
+        "of this plugin, which no longer writes into the repository and reads nothing",
+        "there. It can be deleted. A decision a person recorded in it belongs wherever",
+        "the process you are running records decisions."
       ].join(" ")
     );
   }

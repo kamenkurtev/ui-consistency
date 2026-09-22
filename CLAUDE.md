@@ -40,9 +40,11 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
   hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
   what order. `UIC_OFF` silences it.
-- `.ui-consistency/` — where a project's `plans/` live, and nothing else: what a
-  task counted goes with the task. `.claude/ui-consistency/` is still read as a
-  fallback and reported when used.
+- **Nothing is written into a project's repository.** A plan lives in the
+  session, in a scratch file outside the working copy, attached to a story, or
+  inside another process's plan — the three endings of `planning` — and goes
+  with the work. `.ui-consistency/` and `.claude/ui-consistency/` are what older
+  versions wrote; the session hook says so when it finds either.
 
 **Nothing may assume a hook is running.** Claude Code runs the session hook, and
 is the only harness run end to end. Cursor has a session-hook manifest that has

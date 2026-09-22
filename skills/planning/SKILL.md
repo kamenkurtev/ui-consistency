@@ -20,8 +20,9 @@ If a plan for this work already exists — another planning process wrote it —
 the tasks below **into that plan**, in the shape in [plan-file.md](plan-file.md).
 Do not write a second one.
 
-If none exists, write `.ui-consistency/plans/<topic>.md` in that shape. The
-checklist each task carries is [checklist.md](../finding-patterns/checklist.md).
+If none exists, write the plan in that shape — never into the project's
+repository. Where it goes is how the phase ends, below. The checklist each task
+carries is [checklist.md](../finding-patterns/checklist.md).
 
 ## The order of the tasks
 
@@ -61,16 +62,31 @@ counts ([plan-file.md](plan-file.md)).
 **An answer given now is an override** — the one thing a task cannot work out
 again for itself ([deciding.md](../finding-patterns/deciding.md)). Record it in
 the document the running process keeps, or under `## Decided` in this plan where
-this is the process, in the person's own words and with what it overrules; each
+this is the process — reported with the result when the plan closes — in the
+person's own words and with what it overrules; each
 task it was holding up goes from `parked` back to `todo`. An answer that only
 ever reaches the conversation is lost the moment it ends — and one nobody gave is
 never written at all.
 
 A small change to one page has no plan and does not stop.
 
-## Then
+## How the phase ends
 
-`ui-consistency:implementing`.
+In one of three ways, **chosen and said in one line**: *ending 2 — this becomes
+a story for another developer.*
+
+1. **The work stays with us, in one context.** The tasks live in the session.
+   Where the work outlives the context and the list must survive on disk, a file
+   outside the working copy, in the scratch location the harness gives, deleted
+   with the work. Then `ui-consistency:implementing`.
+2. **The work becomes a story for somebody else.** The plan and what the
+   implementation needs are attached to the story, and finished when a developer
+   who was not in the conversation, without the checkout open, could implement
+   it from the attachment alone ([plan-file.md](plan-file.md), *The story*).
+3. **Another process is already running.** The tasks went into its plan, in its
+   shape; no second document. Its loop executes them.
+
+**None of the three writes into the project's repository.**
 
 ## Red flags
 

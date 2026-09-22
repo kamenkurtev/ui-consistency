@@ -188,6 +188,28 @@ describe('what a task leaves behind', () => {
     expect(carries).toEqual([]);
   });
 
+  it('writes nothing into the project\'s repository, and no document says it does', async () => {
+    // A plan belongs to one person and lasts days; the repository belongs to
+    // everyone and lasts years. A path under a directory of this plugin's own, in
+    // a skill or a document a user reads, is how the plan would move back in.
+    const { readdirSync, readFileSync } = await import('node:fs');
+    const root = fileURLToPath(new URL('..', import.meta.url));
+    const skills = readdirSync(`${root}skills`)
+      .filter((name) => !name.startsWith('.'))
+      .flatMap((skill) =>
+        readdirSync(`${root}skills/${skill}`)
+          .filter((file) => file.endsWith('.md'))
+          .map((file) => `skills/${skill}/${file}`),
+      );
+    const found: string[] = [];
+    for (const file of [...skills, 'USING.md', 'README.md', 'docs/concept.md', 'docs/index.html']) {
+      if (/\.ui-consistency\/(plans|patterns)|in the repository root/.test(readFileSync(`${root}${file}`, 'utf8'))) {
+        found.push(file);
+      }
+    }
+    expect(found).toEqual([]);
+  });
+
   it('has every section the skills send an agent to read', async () => {
     const { readdirSync, readFileSync } = await import('node:fs');
     const dir = fileURLToPath(new URL('../skills', import.meta.url));

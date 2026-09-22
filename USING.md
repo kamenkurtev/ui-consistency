@@ -53,18 +53,24 @@ words, with the path filled in:
 Not *"and the files it links"*: that loads every linked file before the first
 file of the project is opened.
 
-## What the project keeps
+## What it leaves in the repository
 
-`.ui-consistency/` in the repository root:
+Nothing. A plan, when no other process wrote one, lives as long as the work and
+never in the repository. Planning ends in one of three ways, and says which:
 
-- `plans/<topic>.md` — the page-by-page plan, when no other process wrote one,
-  for as long as the work runs. Each task carries its own checklist: the page's
-  tree turned into questions, in the order the page is read, with what settled
-  each. When the work is done the tasks go, and only a person's decisions stay.
+1. **The work stays in one context.** The plan lives in the session — or, if the
+   work outlives it, in a scratch file outside the working copy, deleted when the
+   work is done.
+2. **The work becomes a story for somebody else.** The plan is attached to the
+   story, complete enough that a developer who was not in the conversation, and
+   does not have the checkout, implements it from the attachment alone.
+3. **Another process is running.** The tasks go into its plan; no second
+   document.
 
-Nothing else. What was counted is evidence for the decisions in a task, reported
-with them, and not kept: code moves on, and a count nobody notices has gone
-stale is worse than no count.
+Each task carries its own checklist: the page's tree turned into questions, in
+the order the page is read, with what settled each. What was counted is evidence
+for the decisions in a task, reported with them, and not kept: code moves on,
+and a count nobody notices has gone stale is worse than no count.
 
 Nothing has to be configured. Everything is read from the project, and no
 component name is assumed — every technology and every team names its own.

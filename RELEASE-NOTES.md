@@ -5,6 +5,25 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.48.0 (2026-09-22)
+
+### planning
+
+- **Nothing is written into your repository any more** — not committed, not left
+  in the working copy, not a directory to ignore. A plan lives as long as the
+  work, in one of three places, and planning ends by saying which: in the
+  session (or a scratch file outside the working copy, deleted with the work);
+  attached to a story, complete enough for a developer without the conversation
+  or the checkout; or inside another process's plan (#235).
+- What a person decided against the order is reported with the result when the
+  plan closes, or kept wherever the running process keeps decisions.
+
+### Session
+
+- A `.ui-consistency/` or `.claude/ui-consistency/` directory in your repository
+  was written by an older version. The session now says so once, and that it
+  can be deleted; nothing reads it.
+
 ## v0.47.0 (2026-09-22)
 
 ### finding-patterns

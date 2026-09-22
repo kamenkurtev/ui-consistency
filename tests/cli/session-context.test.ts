@@ -66,16 +66,27 @@ describe('what a session is told', () => {
     expect(withKnowledge).toContain('ui-consistency:finding-patterns');
   });
 
-  it('still reports the old knowledge directory, beside the instruction', async () => {
-    // A rename whose fallback works silently leaves people on the old path
-    // forever, and this is where they already look.
-    await mkdir(join(root, '.claude/ui-consistency'), { recursive: true });
-    await writeFile(join(root, '.claude/ui-consistency/rules.md'), '# Rules\n');
+  it('says a directory an older version wrote is left behind and can go', async () => {
+    // Nothing writes into a project's repository any more. A directory an older
+    // version wrote is said once, beside the instruction, so it does not sit in
+    // every branch looking like something the plugin still reads.
+    for (const dir of ['.ui-consistency', '.claude/ui-consistency']) {
+      await rm(join(root, '.ui-consistency'), { recursive: true, force: true });
+      await rm(join(root, '.claude'), { recursive: true, force: true });
+      await mkdir(join(root, dir), { recursive: true });
+      await writeFile(join(root, dir, 'rules.md'), '# Rules\n');
 
+      const said = (await sessionContext(root)) ?? '';
+
+      expect(said).toContain('ui-consistency:finding-patterns');
+      expect(said).toContain(`${dir}/ was written by an older version`);
+      expect(said).toContain('can be deleted');
+    }
+  });
+
+  it('says nothing more where nothing was left behind', async () => {
     const said = (await sessionContext(root)) ?? '';
-
-    expect(said).toContain('ui-consistency:finding-patterns');
-    expect(said).toContain('is the old location');
+    expect(said).not.toContain('older version');
   });
 
   it('is short, because it is paid for on every session', async () => {
