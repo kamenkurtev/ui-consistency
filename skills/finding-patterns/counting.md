@@ -26,8 +26,18 @@ from what the project says**, in this order:
   piece or the same shared frame are being treated as one kind by the project
   already.
 
+**The first signal above that answers decides it.** Where a later one disagrees —
+the project's word groups two pages whose trees differ — the word still decides
+the kind, since it is the project keeping them apart, and the disagreement is
+said in the checklist's first line. Where the trees differ below a shared outer
+holder, that is a family that differs by region: *A family that differs by
+region*, below.
+
 **Name it in the project's own word** where the project has one — the folder, the
-route, what the team writes in the file name — never an invented one.
+route, what the team writes in the file name — never an invented one. **Where the
+project has no word for it** — no folder, no route, no suffix, no label — name it
+by what it renders, *a list with a form above it*, and say the name is yours and
+not the project's.
 
 **Where the project does not answer it**, the kind goes into the one batch of
 questions, with the candidates and what each renders, and with a proposal: *these
@@ -56,6 +66,22 @@ Take the candidates, then remove what is not a member **before** counting:
 
 *Why:* a dispatcher counted as a page once turned 8 of 8 on every role into 8 of
 9 — a unanimous convention reported as one drifting page.
+
+## A family that differs by region
+
+The family is not always one fact about the whole page. Members can share the
+outer holder and differ below it: eight pages with the same frame, and a form
+region only the reference has.
+
+- **Decide the family per region** where the members differ by region: for each
+  region, the members that render it. The outer holder is counted over all of
+  them; a region only some render is counted over those.
+- **A region only the reference renders** takes the branch below for that
+  region alone — nothing in it is a convention — while the regions around it
+  keep their counts.
+- **Each checklist line carries the count that applies to it**, not the page's:
+  *8 of 8* on the holder, *only the reference* on the form
+  ([checklist.md](checklist.md)).
 
 ## A kind whose family has only the reference
 
