@@ -103,7 +103,7 @@ results, and a result that does not say which is read as the stronger one.
 
 plugin: <version the arms ran against>
 commit: <the commit of this repository the arms read — skills and fixture both>
-cost: <per arm: project files opened, searches run, and tokens where the harness reports them>
+cost: <per arm, subagents included: project files opened, searches run, and tokens where the harness reports them — the total, never the parent alone>
 model: <model>
 runs: <n per arm>
 without the skill: <how the plugin was kept out of that arm — not installed, or disabled — and how that was checked>

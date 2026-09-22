@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
-  "version": "0.49.1",
+  "version": "0.50.0",
   "description": "Design-Driven Development for your coding agent: what the user sees drives the code, so pages come out consistent with your project the first time",
   "author": {
     "name": "Kamen Kurtev"
