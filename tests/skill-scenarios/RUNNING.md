@@ -5,8 +5,19 @@ have done so without the skill (`superpowers:writing-skills`: RED, then GREEN).
 
 ## Files
 
-- `fixture/` — the project the agent works on. Plain HTML, CSS and ES modules.
-- `DRIFT.md` — what is planted in it. Never shown to the agent.
+- `fixture/` — the project the agent works on: a small order-management app in
+  plain HTML, CSS and ES modules, written to be read, not run. The four pages in
+  `src/pages/` beside the route file are one family of one kind, and one of them
+  carries the drift.
+- `DRIFT.md` — every difference in the fixture, planted or not. Never shown to
+  the agent.
+
+**Nothing inside `fixture/` may say it is a fixture.** It is copied whole into
+every run, so a word there about drift, the answer key or scenarios reaches
+every agent in both arms, and an agent told that faults were planted hunts for
+them as no agent on a real project would. What a reader of this repository
+needs to know about the fixture is written here and in `DRIFT.md`, never in it.
+`tests/skill-scenarios.test.ts` fails on such a word.
 - `inputs/` — what a scenario hands the agent, such as a checklist for work that
   is already under way.
 - `scenarios/<skill>-<n>.md` — one scenario: the task, the temptation, what must happen.
@@ -46,6 +57,7 @@ results, and a result that does not say which is read as the stronger one.
 # <skill>-<n> — <date>
 
 plugin: <version the arms ran against>
+commit: <the commit of this repository the arms read — skills and fixture both>
 model: <model>
 runs: <n per arm>
 
@@ -71,7 +83,8 @@ make.
 
 **A result is evidence about the version it ran against.** The design changes;
 say which version, so an old run is not read as evidence for a behaviour that has
-since been replaced.
+since been replaced. The fixture changes too, and a version does not move when
+only the fixture does — the commit is what ties a result to the fixture it read.
 
 ## Names
 
