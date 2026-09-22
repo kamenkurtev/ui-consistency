@@ -16,7 +16,7 @@ read 2026-09-17
       message box — 3 of 4, 4 files
 - [ ] colour through `--color-*` in `theme.css`; no literal; every gap a multiple
       of 4, from `--space-1…4` and the `stack-*` classes
-- [ ] contrast against WCAG 2.2 AA as the default, nothing stated in the project:
-      body on surface 14.76:1, primary button text 6.27:1, field error 5.62:1
+- [ ] colour pairings the family uses: body on surface, primary button text,
+      field error on surface — no standard measured, none asked for or stated
 - [ ] not copied from `orders.js`: nothing of its own, and nothing it
       hand-writes that the project shares

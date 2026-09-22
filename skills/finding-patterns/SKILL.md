@@ -33,7 +33,7 @@ project file is open.
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md); [large-project.md](large-project.md) only on a large project |
 | 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md) |
 | 5 | What the other pages reuse — by import, by copy | below |
-| 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md), [accessibility](../accessibility/SKILL.md) |
+| 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
 | 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
 | 8 | Write the checklist for the task | [checklist.md](checklist.md) |
 | — | A change to one page: read less, skip deliberately, say so | [small-change.md](small-change.md) |
@@ -146,11 +146,13 @@ the others.
 Find how the theme expresses colour, spacing, size, typography, radius and
 breakpoints. Each subject's rules are in its own file — the theme and its
 entries in [theme.md](theme.md), the base and rhythm in [spacing.md](spacing.md),
-the type roles in [typography.md](typography.md), what can be read and used in
-[accessibility](../accessibility/SKILL.md). **Open each before writing its line
-of the checklist**: a line written from the stylesheets alone, without the
-subject's file, is a guess about rules that file states. Three things belong to
-the phase rather than to a subject:
+the type roles in [typography.md](typography.md). **Open each before writing
+its line of the checklist**: a line written from the stylesheets alone, without the
+subject's file, is a guess about rules that file states. The colour pairings,
+focus and labels the family uses are recorded as conventions like the rest;
+measuring them against a standard is [accessibility](../accessibility/SKILL.md),
+**only when the task asks for it or the project states a requirement**. Three
+things belong to the phase rather than to a subject:
 
 - **A value that names a theme entry must exist in the theme that applies.** It
   type-checks and renders as nothing when it does not.

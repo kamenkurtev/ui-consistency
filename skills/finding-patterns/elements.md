@@ -54,5 +54,5 @@ Everything here is counted from the family — it is a convention, the way a
 component or a prop is one. Whether markup is right against an external standard
 is not this file's question and never becomes it: what a person can read, reach
 and use is `ui-consistency:accessibility`
-([SKILL.md](../accessibility/SKILL.md)), which says which standard it uses as a
-default and where.
+([SKILL.md](../accessibility/SKILL.md)), when it is asked for or the project
+requires it, and it says which standard it uses.

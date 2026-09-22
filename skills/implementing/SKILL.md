@@ -63,15 +63,17 @@ reported against a page that was never asked to get it right.
    height, letter spacing, typeface, case — and **applied the way the family
    applies it**: the shared entry, class or component, never a style written by
    hand beside one that exists.
-8. **Contrast as a pair**: every foreground on the surface actually behind it
-   meets the threshold the list names, in every scheme the project has
-   ([contrast.md](../accessibility/contrast.md)). Prefer the pairings the
-   family already uses.
+8. **Colour as a pair**: every foreground on the surface actually behind it is a
+   pairing the family already uses, in every scheme the project has. Where the
+   list names a contrast threshold — the project states one, or the task asked
+   for accessibility — it meets it
+   ([contrast.md](../accessibility/contrast.md)).
 9. **The rest of what a person has to be able to read and use**, as the list
    records it: focus shown the way the family shows it and
    landing where the family puts it, every control reachable without a mouse, a
    field tied to its label the way the shared field does it, text for what has
-   none, targets the size the family's are — `ui-consistency:accessibility`
+   none, targets the size the family's are. Against a standard only where the
+   list says one applies — `ui-consistency:accessibility`
    ([SKILL.md](../accessibility/SKILL.md)).
 10. **Do not copy what is particular to the reference.**
 11. **Where the pattern is silent, the order settles it** —
