@@ -18,6 +18,12 @@ which is what this exists to stop.
 - Any checklist this task already carries — one may have been written for an
   earlier page of the work, and it may answer the whole question.
 
+**The budget.** A change to one region reads the page, what the family writes
+at that one position — grouped into a search or two, with the proof on the
+reference — and the theme entries it uses: **about ten project files and ten
+searches.** Past twice that, it is no longer a small change: say so in one line,
+and run the phase for it.
+
 **What is deliberately skipped**
 
 - Every position the change does not touch, and its counts.

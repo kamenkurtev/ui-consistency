@@ -11,8 +11,9 @@ one context and issuing searches one at a time.
 ## Split by area, across subagents
 
 **Split when the search crosses areas** — more than one app, library or package
-holds members of the family or copies of a shared piece. One subagent per area,
-where the harness has them.
+holds members of the family or copies of a shared piece. The counting already
+goes to a subagent ([SKILL.md](SKILL.md), step 4); on a large project there is
+one per area, where the harness has them.
 
 - **Each is handed what it needs and nothing else**: the kind, the reference's
   tree of roles, and the exact searches to run — by exact name, per position.
@@ -41,6 +42,9 @@ signature of each position instead of opening them.
   order's to say ([deciding.md](deciding.md)).
 
 ## Group the searches
+
+A call is a turn, and each turn re-sends everything read so far — so the number
+of calls, not the size of the project, is what a run pays for.
 
 - **One search per position, over every member at once** — an alternation of
   the exact names, across all the files — rather than one search per file.
