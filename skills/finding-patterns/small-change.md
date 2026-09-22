@@ -1,7 +1,7 @@
 # A change to one page: the reduced branch
 
-Read by `finding-patterns` when the change touches one page, in place of its
-steps 1 to 8. `implementing` takes what this produced.
+Read by `finding-patterns` when step 0 sized the work as one region of one page,
+in place of its steps 1 to 8. `implementing` takes what this produced.
 
 One page, one region — a label, a value, a field added, what a button does. Not
 a new page, not a kind nobody has written down, not a change applied across

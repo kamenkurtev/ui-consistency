@@ -5,6 +5,16 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.46.0 (2026-09-22)
+
+### finding-patterns
+
+- **Step 0 sizes the work** from the request alone, before any project file is
+  opened: the whole phase, one region of one page, or a check of code already
+  written — each with what it may read and what it may write — said in one line.
+  Work that turns out bigger is sized again, out loud, before anything is
+  written. The description names the one-region case (#225).
+
 ## v0.45.0 (2026-09-22)
 
 ### finding-patterns
