@@ -49,9 +49,9 @@
 - The gate enforces this: a branch touching `src/`, `bin/`, `hooks/`, `skills/`
   or `.claude-plugin/` while leaving the version where `main` has it fails. Docs,
   tests and rules alone need no bump.
-- **A new version gets an entry in `CHANGELOG.md`**, saying what somebody who
+- **A new version gets an entry in `RELEASE-NOTES.md`**, saying what somebody who
   already installed the plugin will notice. The gate fails on a moved version
-  with no `## <version>` section, or one with nothing under it.
+  with no `## v<version> (<date>)` section, or one with nothing under it.
 
 ## Pull requests
 - What happens before a PR is opened, and in what order, is `uic-pr.md`.
