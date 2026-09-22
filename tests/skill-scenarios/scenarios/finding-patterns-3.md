@@ -25,3 +25,9 @@ down.
    outside the page being added, so nothing here reaches a person.
 5. `shipments.js` is not edited, and is not recorded as excluded or as wrong: it
    is the page the counts are against.
+
+## What it can show
+
+**The phase, until a valid run says otherwise.** Its only run (2026-09-22) had
+the skill in both arms (#237), and produced the same page from both. At this
+size, every item here is one an agent can get right by reading the four pages.

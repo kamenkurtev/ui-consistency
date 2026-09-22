@@ -37,3 +37,10 @@ and in the class names the fixture already has — `btn`, `btn--block`,
 agent without the skill rejected them on its own — so it never showed the failure
 the rule exists for. Here nobody hands over a number: the agent has to produce
 one, and the ways of producing a wrong one are its own.
+
+## What it can show
+
+**The difference on item 3 only** — the search run on the reference first, 0 of
+3 without the skill and 3 of 3 with it (2026-09-22). Items 1, 2, 4, 5 and 6 were
+right in every arm: at 8 buttons in 4 files nobody takes the shortcut, so they
+measure the phase.

@@ -132,5 +132,5 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "Verified by diffing each new file against" a sibling — from the agent that wrote them | The author checked its own pages. Hand them to a separate agent, or say plainly that none was available. |
-| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | Right outcome, silent reasoning. The request is the top of the order: do it, and report in one line what it goes against. |
+| "Verified by diffing each new file against" a sibling — from the agent that wrote them | The author checked its own pages. Hand them to a separate agent, or say plainly that none was available. Seen once. |
+| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | Right outcome, silent reasoning. The request is the top of the order: do it, and report in one line what it goes against. Seen once. |

@@ -5,6 +5,14 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.49.1 (2026-09-22)
+
+### Skills
+
+- Every red flag says how often it was seen, so a single observation is not read
+  as something agents do. The one about a predictable temporary directory is
+  kept, annotated: seen once, and not in two later runs (#201).
+
 ## v0.49.0 (2026-09-22)
 
 ### Session

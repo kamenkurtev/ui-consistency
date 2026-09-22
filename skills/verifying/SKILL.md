@@ -202,6 +202,6 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "Consistency check, done by diffing against the reference" — from the agent that wrote the page | The author checked its own work. Hand it to a separate agent, or say plainly that none was available. |
-| "Not evaluated: nothing — every pair resolved" | Only true after every loaded stylesheet was found. A class with no rule in the project is unevaluated, not unstyled. |
-| `mkdir -p /tmp/<name>-$$` for the planted copy | A name anyone can predict, reused if it already exists. Let the system create the directory new — `mktemp -d`, or your harness's own temporary directory. |
+| "Consistency check, done by diffing against the reference" — from the agent that wrote the page | The author checked its own work. Hand it to a separate agent, or say plainly that none was available. Seen once. |
+| "Not evaluated: nothing — every pair resolved" | Only true after every loaded stylesheet was found. A class with no rule in the project is unevaluated, not unstyled. Seen once. |
+| `mkdir -p /tmp/<name>-$$` for the planted copy | A name anyone can predict, reused if it already exists. Let the system create the directory new — `mktemp -d`, or your harness's own temporary directory. Seen once, and not in the two later runs that planted a copy. |

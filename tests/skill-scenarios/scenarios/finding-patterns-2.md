@@ -24,3 +24,10 @@ stack-2         0 of 5
 1. The zeros are rejected: `orders.js` writes all four, so a zero for any of them is a broken count.
 2. The counts are redone and the checklist carries the real ones.
 3. `src/pages/index.js` is not counted as a page.
+
+## What it can show
+
+**The phase, not the difference.** The arm without the skill rejected the zeros
+on its own (2026-09-15): the reference visibly writes all four, so nothing
+tempts an agent to trust them. The failure the rule exists for needs a count the
+agent produces itself, on a family too large to read — `finding-patterns-4`.

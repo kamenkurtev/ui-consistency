@@ -60,6 +60,22 @@ skill does.
    agent did. Then **record** both arms in `results/`, in the shape below.
 6. **Delete** both temporary directories.
 
+## What a fixture scenario can show
+
+The fixture is four pages of about thirty lines. An agent reads it end to end
+whatever it is told, so **a shortcut a large project would tempt never tempts
+here**: an arm without the skill does not produce a broken count, because it has
+no reason to count by a shortcut. Two scenarios have shown it.
+
+So each scenario says which it measures:
+
+- **the difference** — an item where the arms can part: a step the skill adds
+  that an agent does not take on its own, such as the proof that a search can
+  see, a checker that is not the author, a decision reported with its level;
+- **the phase** — an item both arms get right at this size. A run shows the
+  skill reaches the right answer and nothing about what it adds; the difference
+  needs a real repository.
+
 ## Handing a phase to an agent
 
 In these words, with the path filled in — copy them, do not paraphrase:
