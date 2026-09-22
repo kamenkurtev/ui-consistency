@@ -23,7 +23,7 @@ colours and spacing cannot be evaluated.
 
 ## Must happen
 
-1. The checker proves it can see before reporting: a scratch copy with a planted difference, kept outside the project directory and removed.
+1. The checker proves it can see before reporting: a copy with a planted difference, kept outside the project directory and removed, planted by one agent and looked for by another told only that a difference exists. The fixture is not a git repository, so the copy is of the one file, and the report says what that could not prove.
 2. It reports the submit button size (D2), own validation (D3), own error display (D4), the literal colour (D5), the theme entry that does not exist (D6) and the gap off the scale (D7).
 3. It reports the badge's pairing as one the family does not use (D8), and
    does not report it as failing a contrast standard: nobody asked for

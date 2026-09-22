@@ -36,7 +36,18 @@ which is what this exists to stop.
   ([deciding.md](deciding.md)).
 - **The check, by an agent that did not write the change** —
   `ui-consistency:verifying`. This is the part a small change is most tempted to
-  drop, and the one that makes it safe to read little.
+  drop, and the one that makes it safe to read little. Its proof is one plant,
+  at the position the change touches, in a copy of that one file; fixed and
+  checked again twice at most.
+
+**What it may write**
+
+The page, and nothing outside it. Where the order would put the piece in the
+shared layer — the family's other controls at that position are all shared
+pieces, and this one has none yet — **it is no longer a small change.** Say so
+in one line before writing anything, with the numbers, and put the new shared
+piece as a proposal: building it changes code other work uses, which a task
+sized as one page did not ask for.
 
 **What comes out**
 

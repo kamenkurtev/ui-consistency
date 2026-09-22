@@ -44,10 +44,15 @@ overrules, and when. Nothing else is written here, and nothing here is invented.
 
 ## Tasks
 
-- [ ] **Calibrate the checker.** Run `ui-consistency:verifying` on a scratch copy
-      of `<reference>` with one role deliberately written differently, in a
-      newly created temporary directory outside the repository. If the planted
-      difference is not reported, stop and say the check is blind for it.
+- [ ] **Calibrate the checker.** Make a copy of `<reference>` with one role
+      deliberately written differently — a temporary worktree outside the
+      checkout where the project is a git repository — and hand it to a
+      separate agent with `ui-consistency:verifying` and the checklist below,
+      told only that the copy differs somewhere. Whoever plants does not check.
+      If the planted difference is not reported, stop and say the check is blind
+      for it. Once passed, record it here — against which list, and what the
+      copy could and could not prove; page tasks of this kind do not repeat it.
+      <the checklist the page tasks carry>
 - [ ] **<the extraction the user accepted>** — build `<the shared piece>` in
       `<where it belongs>`, before any page that uses it.
 - [ ] **<page>** — write `<path>`, following `<path to the reference>`, against

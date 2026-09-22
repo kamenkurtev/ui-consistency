@@ -89,7 +89,10 @@ reported against a page that was never asked to get it right.
     full-width."* Do not quietly build it the other way.
 12. **Hand the page to verification** — `ui-consistency:verifying`, run by an
     agent that did not write it.
-13. **Fix what it reports**, then verify again.
+13. **Fix what it reports**, then verify again — **twice at most.** What the
+    second check still reports is listed as open, with the checker's words, not
+    fixed a third time; a report that keeps changing is a problem with the
+    checklist or the checker, and is said as that.
 14. **Mark it** in the plan: ticked for `done`, or left unticked with
     `parked — <why>` ([plan-file.md](../planning/plan-file.md)).
 
@@ -103,10 +106,12 @@ asked for is a worse result than a page that comes out right.
 
 `ui-consistency:finding-patterns` has a reduced branch for it
 ([small-change.md](../finding-patterns/small-change.md)), which says what is read
-and what is deliberately skipped. Take what it produced, re-read that part of the pattern, make the change, and hand
-the page to `ui-consistency:verifying`, run by an agent that did not write it,
-before calling it done. The check is not the part that gets dropped because the
-change was small.
+and what is deliberately skipped. Take what it produced, re-read that part of
+the pattern, make the change, and hand the page to `ui-consistency:verifying`,
+run by an agent that did not write it, before calling it done. The check is not
+the part that gets dropped because the change was small; its proof is one plant
+at the changed position ([SKILL.md](../verifying/SKILL.md), *First, prove it can
+see*), and it is fixed and checked again twice at most, as in step 13.
 
 ## Then
 
