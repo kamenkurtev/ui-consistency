@@ -74,8 +74,8 @@ to this repository only — both trackers start at 1.
    added to, not duplicated. Without one, the skills run the four phases
    themselves.
 7. **A plan carries its check.** Every page task carries its checklist and is
-   verified by an agent that did not write it, after that agent proves it catches
-   a planted difference.
+   verified by an agent that did not write it, with a check proved first to
+   catch a difference planted by somebody else.
    **Nothing is kept that can be worked out again**: counts belong to the task
    and go with it. Only a person's override of the order outlives one, and it
    goes where the running process already records decisions.

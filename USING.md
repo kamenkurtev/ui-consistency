@@ -37,7 +37,7 @@ decision; ask only where it ties and the change reaches outside the task.
   copy, and a check by a separate agent; stops for a yes.
 - **implementing** — one page per task in a fresh context, from the checklist.
 - **verifying** — a separate agent compares each page with the reference region
-  by region, after proving it catches a planted difference.
+  by region, with a check first proved to catch a planted difference.
 - **accessibility** — optional: contrast, focus, reach without a mouse, a field
   and its label, text alternatives and target size, each reported separately,
   measured against a standard only when somebody asks for it or the project

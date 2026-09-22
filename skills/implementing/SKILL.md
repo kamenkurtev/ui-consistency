@@ -82,6 +82,9 @@ reported against a page that was never asked to get it right.
     reversible, a question is not free. Park a page only where the order ties
     **and** the decision reaches outside what this task touches; those go to the
     user together, once, not page by page.
+    **A task's prose does not narrow its list**: where it says *change nothing
+    else* and a line of its own list names a deviation, the line stands unless
+    the task names it under *Not in this task*.
     **When the request asks for what the counts call a deviation** — "make it
     look like" the page that differs — **do what was asked**: an explicit
     request is the top of the order. Report in one line what it goes against:
@@ -94,7 +97,8 @@ reported against a page that was never asked to get it right.
     fixed a third time; a report that keeps changing is a problem with the
     checklist or the checker, and is said as that.
 14. **Mark it** in the plan: ticked for `done`, or left unticked with
-    `parked — <why>` ([plan-file.md](../planning/plan-file.md)).
+    `parked — <why>` ([plan-file.md](../planning/plan-file.md)). Handed the task
+    without the plan, report the same status to whoever handed it over.
 
 ## What this does not write
 
