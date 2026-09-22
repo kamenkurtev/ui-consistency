@@ -5,6 +5,15 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.40.0 (2026-09-22)
+
+### planning
+
+- A plan this plugin writes lives as long as the work. When every task is done
+  or parked, a last task closes it: the tasks and their counts go, `## Decided`
+  stays, and with nothing decided the file is deleted. `finding-patterns`, the
+  concept, the README and `USING.md` now state one rule (#219).
+
 ## v0.39.1 (2026-09-22)
 
 ### Documentation

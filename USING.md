@@ -57,9 +57,10 @@ file of the project is opened.
 
 `.ui-consistency/` in the repository root:
 
-- `plans/<topic>.md` — the page-by-page plan, when no other process wrote one.
-  Each task carries its own checklist: the page's tree turned into questions, in
-  the order the page is read, with what settled each.
+- `plans/<topic>.md` — the page-by-page plan, when no other process wrote one,
+  for as long as the work runs. Each task carries its own checklist: the page's
+  tree turned into questions, in the order the page is read, with what settled
+  each. When the work is done the tasks go, and only a person's decisions stay.
 
 Nothing else. What was counted is evidence for the decisions in a task, reported
 with them, and not kept: code moves on, and a count nobody notices has gone

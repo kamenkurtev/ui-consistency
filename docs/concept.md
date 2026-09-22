@@ -152,7 +152,8 @@ this plugin's own.
   order, each line carrying the project's own piece, how it is written and what
   settled it. It goes when the task does.
 - **A plan** — `.ui-consistency/plans/<topic>.md`, only when no other process
-  wrote one.
+  wrote one, and only while the work runs. When the work is done its tasks and
+  their counts go, and only what a person decided stays.
 
 ## What this is not
 

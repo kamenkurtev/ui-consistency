@@ -1,9 +1,15 @@
 # The plan file
 
 `.ui-consistency/plans/<topic>.md`, written only when no other process wrote a
-plan for this work. Committed with the work. `planning` writes it,
-`implementing` executes it one task at a time, and `verifying` is named inside
-every page task.
+plan for this work. `planning` writes it, `implementing` executes it one task at
+a time, and `verifying` is named inside every page task.
+
+**It lives as long as the work, and no longer.** While the work runs it is the
+work's container, and its tasks carry counts. When the work is done it is cut
+down to what a person decided — *When the work is done*, below — because counts
+kept after the work are true of code that has since moved on. Committed with the
+work where the project commits it; where the project ignores `.ui-consistency/`,
+nothing depends on it being committed.
 
 **Where a plan already exists**, this is the shape of what is *added into it* —
 the tasks, with everything each one carries, and a decision a person made against
@@ -52,6 +58,9 @@ overrules, and when. Nothing else is written here, and nothing here is invented.
       2. Hand the page to a separate agent with `ui-consistency:verifying`; fix
          what it reports.
 - [ ] **<page>** — `parked — <why>`
+- [ ] **Close the plan** — once every task above is done or parked: remove the
+      tasks and their checklists, keep `## Decided`; delete the file if
+      `## Decided` is empty.
 ````
 
 ## Every task stands alone
@@ -68,6 +77,21 @@ how "already matches" becomes known.
 
 **The calibration is the first task**, before anything is built. A checker nobody
 proved can see is not a check.
+
+## When the work is done
+
+Every task done or parked, and the last check passed: **the plan is closed**, in
+the same change that finishes the work.
+
+- **The tasks and their checklists go.** They were true of the code as it was
+  read; the pages now are the record of what was built.
+- **`## Decided` stays**, with the frontmatter, because an override is the one
+  thing that outlives the work ([deciding.md](../finding-patterns/deciding.md))
+  and this plugin wrote the plan only because no other process was keeping
+  decisions. A later run reads it before applying the order.
+- **With nothing under `## Decided`, the file is deleted.**
+- **A parked task is not done.** While one is parked the plan stays open, and
+  says so in its status line.
 
 ## When a task leaves the repository
 
