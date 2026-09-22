@@ -94,4 +94,4 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "stated once in the preamble rather than repeated" — the pattern path, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. |
+| "stated once in the preamble rather than repeated" — the pattern path, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. Seen twice — in a scenario run and in a real twelve-task plan. |

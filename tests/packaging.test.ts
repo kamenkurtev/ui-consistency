@@ -504,3 +504,27 @@ describe('accessibility', () => {
     expect(skill).toContain('**It is optional.**');
   });
 });
+
+describe('red flags', () => {
+  it('each says how often it was seen', async () => {
+    // A flag is something an agent said in a run. Seen once, it is a sample, not
+    // a pattern, and a flag with no count reads as something agents do.
+    const { readdirSync, readFileSync } = await import('node:fs');
+    const dir = fileURLToPath(new URL('../skills', import.meta.url));
+    const bare: string[] = [];
+    for (const skill of readdirSync(dir).filter((name) => !name.startsWith('.'))) {
+      for (const file of readdirSync(`${dir}/${skill}`).filter((f) => f.endsWith('.md'))) {
+        const text = readFileSync(`${dir}/${skill}/${file}`, 'utf8');
+        const at = text.indexOf('## Red flags');
+        if (at < 0) continue;
+        const rows = text
+          .slice(at)
+          .split('\n')
+          .filter((line) => line.startsWith('| ') && !line.startsWith('| They said') && !/^\|[-| ]+\|$/.test(line));
+        for (const row of rows) if (!/Seen (once|twice|\d+ times)/.test(row)) bare.push(`${skill}/${file}: ${row.slice(0, 60)}`);
+      }
+    }
+    expect(bare).toEqual([]);
+  });
+});
+

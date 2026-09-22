@@ -280,4 +280,4 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "recorded as excluded from the pattern" — about a page that disagrees with the rest | Settled silently. Disagreement is settled by the order and **reported** with the level and the numbers — never dropped, and never quietly excluded. |
+| "recorded as excluded from the pattern" — about a page that disagrees with the rest | Settled silently. Disagreement is settled by the order and **reported** with the level and the numbers — never dropped, and never quietly excluded. Seen once. |
