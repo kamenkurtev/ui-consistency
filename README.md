@@ -198,12 +198,15 @@ behave like the rest of this project.*
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[code of conduct](CODE_OF_CONDUCT.md). A vulnerability is reported privately —
+see [SECURITY.md](SECURITY.md).
 
 ## Updating
 
-In Claude Code: `/plugin marketplace update kkurtev-plugins`.
+In Claude Code: `/plugin marketplace update kkurtev-plugins`. What each version
+changed is in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).

@@ -36,4 +36,20 @@ if [ "$HERE" = "$THERE" ]; then
   exit 1
 fi
 
+# The version is how an installed copy learns there is something new, and the
+# changelog is how its user learns what. A version with no entry is a release
+# nobody can read.
+VERSION=${HERE#\"version\": \"}
+VERSION=${VERSION%\"}
+if ! awk -v v="$VERSION" '
+  index($0, "## " v) == 1 && (length($0) == length(v) + 3 || substr($0, length(v) + 4, 1) == " ") { found = 1; next }
+  found && /^## / { exit }
+  found && /[^[:space:]]/ { said = 1; exit }
+  END { exit !(found && said) }
+' CHANGELOG.md 2>/dev/null; then
+  echo "version $VERSION has no entry in CHANGELOG.md." >&2
+  echo "Add a '## $VERSION' section saying what an installed user will notice." >&2
+  exit 1
+fi
+
 echo "version moved: $THERE -> $HERE"
