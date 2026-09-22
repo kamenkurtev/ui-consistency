@@ -440,3 +440,28 @@ describe('the other harnesses', () => {
     expect(agents).not.toContain('ui-consistency:finding-patterns');
   });
 });
+
+describe('the pull request template', () => {
+  it('keeps the items that ask for evidence, in their own words', async () => {
+    // Asking who made a change was added beside these, never instead of them:
+    // they are what makes a green check mean something here.
+    const { readFileSync } = await import('node:fs');
+    const template = readFileSync(
+      fileURLToPath(new URL('../.github/pull_request_template.md', import.meta.url)),
+      'utf8',
+    );
+    for (const item of [
+      '**The test fails against the unfixed code** — run both ways, and say so',
+      'Anything user-facing was run from the **shipped artifact**: `bin/uic.mjs`\n      copied alone into an empty directory',
+      'There is no "not applicable".',
+      '**"Read, nothing false" is a result.**',
+      'A person read the complete diff',
+      'open **and closed** pull requests',
+      '*What this is not*',
+      'split, not reviewed',
+      '**transcript**',
+    ]) {
+      expect([item, template.includes(item)]).toEqual([item, true]);
+    }
+  });
+});

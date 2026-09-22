@@ -44,9 +44,18 @@ A finding is a hypothesis.
 
 ## The PR body
 
+The template is `.github/pull_request_template.md`; every section is filled.
+
+- who produced the change — model, harness, plugins — and who read the whole
+  diff: a person, for a contribution from outside; for the owner's own
+  agent-made change, that it merges on the gate and the three reviews;
+- that open and closed pull requests were searched, and how the change stays
+  inside what `docs/concept.md` says this is not;
 - the issue's acceptance criteria, ticked where met;
 - each of the three reviews and what it found — "found nothing" is a result;
 - which documents were read against the change, and what was found;
+- where it was exercised, with a transcript when it changes how a harness
+  loads the plugin;
 - what was **not** validated.
 
 A review nobody ran has no wording that fits here, and a stale bundle is not
