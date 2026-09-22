@@ -15,7 +15,7 @@ makes it a lie nobody notices.
 
 ````markdown
 <page> against <kind> (<what decided the kind>) — from <reference>, <n> of <m>
-members, read <date>
+members in <the bound: the application, and its libraries>, read <date>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
@@ -33,7 +33,8 @@ An example, filled in:
 
 ````markdown
 returns against list page (all five render a toolbar and a table of rows, and
-src/pages keeps them together) — from orders, 4 of 5 members, read 2026-09-17
+src/pages keeps them together) — from orders, 4 of 5 members in the app,
+read 2026-09-17
 
 - [ ] page holder — the shared page holder, as its own landmark — 4 of 4, 4 files
 - [ ] toolbar in the header, title one level down — 4 of 4, 4 files

@@ -8,7 +8,9 @@ and `verifying` for every value that names a theme entry.
 - **The project boundary** is the application the page belongs to and the
   libraries it uses — in a monorepo, not the whole workspace. Anything the theme
   does not define is counted inside it: which component fills a role, what it is
-  passed, what the page reuses.
+  passed, what the page reuses. **It is the application, never the library the
+  reference happens to live in** — how the family is bounded inside it is
+  [counting.md](counting.md), *The bound the family is counted in*.
 - **The theme boundary** is every project that selects the same theme. A value
   that names a theme entry — a palette colour, a variant, a size or spacing
   token — is counted across the theme's reach: all the projects that select it,

@@ -5,6 +5,16 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.41.0 (2026-09-22)
+
+### finding-patterns
+
+- The family is counted in a fixed bound: the application that mounts the page
+  and the libraries it uses — never the library the reference happens to live
+  in. Where that library alone gives a different answer, both numbers go on the
+  line and the order decides on the application's. The checklist's first line
+  names the bound, and `verifying` counts in it or says why not (#213).
+
 ## v0.40.0 (2026-09-22)
 
 ### planning

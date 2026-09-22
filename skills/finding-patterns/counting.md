@@ -48,6 +48,24 @@ a second kind.* One question about the kind, never one per candidate.
 kind, what decided it, and how many members were counted —
 [checklist.md](checklist.md).
 
+## The bound the family is counted in
+
+Two agents reading the same reference must count the same pages, or they report
+different conventions from the same code. So the bound is fixed, not chosen:
+
+- **The application that mounts the page** — whatever routes to it or renders it
+  from its entry — **and every library that application uses.** Not the library
+  the reference sits in, and not the whole workspace. Where the page's library
+  is mounted by several applications, the bound is each of them together, and
+  the checklist says which.
+- **Where the page's own library, counted alone, gives a different answer** —
+  *10 of 10* inside it, *6 of 8* across the application — **both numbers go on
+  the line**, and the order decides on the application's. A library unanimous
+  inside itself is reported as that library's own way, never as the project's.
+- **Name the bound in the checklist's first line**
+  ([checklist.md](checklist.md)). A later phase handed the list counts in that
+  bound, or says that it counted in another and why.
+
 ## Which pages are the family
 
 Counts are taken over the pages of the same kind as the reference — its family.
