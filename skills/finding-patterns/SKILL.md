@@ -1,6 +1,6 @@
 ---
 name: finding-patterns
-description: Use when building or changing what the end user sees — a new page, a set of pages, or one region of one page, sized first — above all when a page is named to follow, or new UI could come out unlike its neighbours.
+description: Use when building or changing what the end user sees — a new page or set of pages takes the whole phase, one region of one page a short branch chosen before anything is read — above all when a page is named to follow.
 ---
 
 # Finding the pattern
@@ -48,7 +48,7 @@ choosing it after the family is open means paying for the whole phase first.
 | The work | Branch | May read | May write |
 |---|---|---|---|
 | a new page, a set of pages, a refactor across pages | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
-| one region of one page — a label, a value, a field, a button | [small-change.md](small-change.md) | the page, and that one position across the family — its budget | the page only |
+| one region of one page — a label, a value, a field, a button | [small-change.md](small-change.md) | the page, and that one position across the family — its budget | the page only — with the files only it uses |
 | checking code already written | `ui-consistency:verifying`, after this phase where no checklist exists | the checklist and the page | a report |
 
 **Say it in one line** before anything else: *sized as one region of one page —

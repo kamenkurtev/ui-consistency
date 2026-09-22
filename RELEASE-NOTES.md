@@ -5,6 +5,15 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.50.1 (2026-09-22)
+
+### finding-patterns
+
+- A small change may write the page with the files only it uses — its own
+  strings, styles and panels — and nothing anything else imports (#225).
+- The description says outright which work takes the whole phase and which the
+  short branch, chosen before anything is read.
+
 ## v0.50.0 (2026-09-22)
 
 ### finding-patterns and verifying
