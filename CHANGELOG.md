@@ -5,6 +5,20 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## 0.37.0
+
+- Every skill says to open a linked file at the step that needs it, never
+  before — whatever wording handed the skill over. `finding-patterns` alone
+  came to about 15,000 tokens loaded before the first project file.
+- `finding-patterns` has guidance for a large project: when to split the work
+  across subagents by area, when to sample and how to say so, and grouping
+  searches instead of issuing them one at a time (`large-project.md`).
+- `finding-patterns`, `verifying` and `accessibility` end with what the run
+  cost — project files opened, searches run — so one run can be compared with
+  another.
+- `USING.md` gives the words to hand a phase to an agent with, for a harness
+  with no skill mechanism (#196).
+
 ## 0.36.3
 
 - Gemini CLI loads the plugin's instructions from `USING.md`, not `AGENTS.md`.
