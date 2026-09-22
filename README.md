@@ -139,7 +139,9 @@ branches, and find stale. The list belongs to the task and goes with it.
 
 **Plans** — `.ui-consistency/plans/<topic>.md`, when no other process wrote one.
 Each task carries its own checklist, which is what makes it executable by
-somebody who was not in the conversation.
+somebody who was not in the conversation. When the work is done the tasks go and
+only what you decided against the order stays; with nothing decided, the file is
+deleted.
 
 ## Two things you can say to it
 

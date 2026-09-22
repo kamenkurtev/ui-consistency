@@ -184,7 +184,9 @@ The page's tree turned into questions, in the order the page is read, each line
 carrying the project's own piece, how it is written and what settled it —
 [checklist.md](checklist.md). It goes into the task in the plan, or into the
 document the running process keeps, and where there is neither it lives in the
-turn. **Nothing counted is written to a file that outlives the task.**
+turn. **Nothing counted outlives the work**: a plan this plugin wrote carries the
+checklists while the work runs and is cut down to its decisions when the work is
+done ([plan-file.md](../planning/plan-file.md)).
 
 ## A small change to one page
 
