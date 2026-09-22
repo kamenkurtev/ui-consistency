@@ -1,5 +1,15 @@
 # Contributing
 
+## The terms a contribution arrives under
+
+The project is MIT-licensed (`LICENSE`). **Anything you submit — a pull request,
+a patch, text in an issue meant to be used — is offered under the same licence**,
+and you are saying you have the right to offer it on those terms. No separate
+agreement is signed.
+
+Conduct is `CODE_OF_CONDUCT.md`. A vulnerability is reported privately, as
+`SECURITY.md` says — never in a public issue.
+
 ## Setup
 
 ```sh
@@ -24,6 +34,10 @@ branch touching `src/`, `bin/`, `hooks/`, `skills/` or `.claude-plugin/` without
 a version bump fails the gate, because an installed plugin only updates when the
 manifest names a new version. Run `npm run bump` (`minor` / `major` when it is
 more than a fix); it moves all seven files that carry the version.
+
+**The new version gets an entry in `CHANGELOG.md`**, saying what somebody who
+already installed the plugin will notice. The gate fails on a version with no
+entry.
 
 **The build artifact is committed.** `bin/uic.mjs` ships from the repository,
 since installing the plugin is a clone with no build step. The gate rebuilds it;
