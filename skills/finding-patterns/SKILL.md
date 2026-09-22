@@ -163,6 +163,19 @@ the numbers, keeps the phase's context to conclusions.
 - **Without subagents**, count in the phase itself, with the searches grouped,
   and write each count down once instead of re-opening the files behind it.
 
+**Read less, not only elsewhere.** A subagent moves the reading; these reduce it:
+
+- **Count only the positions the checklist will carry** — the eight to twelve
+  that hold a shared piece, a convention or what must not be copied — and the
+  position the task changes. Not every position in the tree.
+- **A shared piece's reach is a number, not a reading.** One grouped search says
+  it exists and how many files use it; those files are not opened.
+- **A family too large to read in full is sampled** — the reference and the
+  members that decide the order read in full, the rest searched by signature —
+  and said to be ([large-project.md](large-project.md)).
+- **What a list already carries is not counted again** by a later phase, unless
+  a line is in doubt.
+
 **Group the searches** either way: one search per position, over every member at
 once, and independent searches in the same turn. **A call is a turn, and a turn
 re-sends the whole context**: twenty single searches cost twenty times what one
@@ -265,7 +278,10 @@ silence.
 
 End with the cost, so one run can be compared with another: **how many project
 files were opened, how many searches were run, and which of this skill's files
-were read.** A number you did not keep is said to be an estimate.
+were read — the subagents' included, as one total.** Delegating moves reading
+into other contexts; it does not remove it, and a cost line that counts only
+the parent reads a move as a saving. A number you did not keep is said to be an
+estimate.
 
 ## Then
 

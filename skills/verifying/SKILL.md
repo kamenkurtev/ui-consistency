@@ -164,7 +164,7 @@ cannot read it, so its colours and spacing are unevaluated.
 
 End with the cost, so one run can be compared with another: **how many pages
 were compared, how many project files were opened and how many searches were
-run.** A number you did not keep is said to be an estimate.
+run — every checker's included, as one total.** A number you did not keep is said to be an estimate.
 
 ## The whole set, at the end
 

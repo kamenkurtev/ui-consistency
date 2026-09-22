@@ -5,6 +5,17 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.50.0 (2026-09-22)
+
+### finding-patterns and verifying
+
+- A run's cost line counts every subagent, as one total: delegating moves the
+  reading, it does not remove it (#224).
+- **Read less, not only elsewhere**: count only the positions the checklist
+  will carry and the one the task changes; a shared piece's reach is one
+  grouped search's number, its files not opened; a family too large to read is
+  sampled and said to be; a later phase does not recount what a list carries.
+
 ## v0.49.1 (2026-09-22)
 
 ### Skills
