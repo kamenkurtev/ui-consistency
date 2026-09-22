@@ -1,15 +1,25 @@
-# The plan file
+# The plan
 
-`.ui-consistency/plans/<topic>.md`, written only when no other process wrote a
-plan for this work. `planning` writes it, `implementing` executes it one task at
-a time, and `verifying` is named inside every page task.
+The shape of the plan `planning` writes when no other process wrote one.
+`implementing` executes it one task at a time, and `verifying` is named inside
+every page task.
 
-**It lives as long as the work, and no longer.** While the work runs it is the
-work's container, and its tasks carry counts. When the work is done it is cut
-down to what a person decided — *When the work is done*, below — because counts
-kept after the work are true of code that has since moved on. Committed with the
-work where the project commits it; where the project ignores `.ui-consistency/`,
-nothing depends on it being committed.
+**Nothing of it is written into the project's repository** — not committed, not
+left in the working copy, not a directory the project is asked to ignore. A plan
+belongs to one person and lasts days; the repository belongs to everyone and
+lasts years. Ten people each with an agent writing plans into it would fill it
+with documents nobody reads twice, stale the moment the code moves and
+conflicting wherever two of them touch the same area.
+
+**It lives as long as the work, and no longer**, in one of three places — the
+three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
+
+1. **In the session**, while the work stays in one context. Where the work
+   outlives the context and the list must survive on disk, a file **outside the
+   working copy** — the scratch location the harness gives — deleted with the
+   work.
+2. **Attached to a story** somebody else will implement — *The story*, below.
+3. **Inside another process's plan**, in its shape.
 
 **Where a plan already exists**, this is the shape of what is *added into it* —
 the tasks, with everything each one carries, and a decision a person made against
@@ -38,6 +48,8 @@ tasks, because a question with nothing waiting on it is not worth writing down.
 
 What a person decided against what the order produced — their words, what it
 overrules, and when. Nothing else is written here, and nothing here is invented.
+Where the plan is deleted with the work, what is here is reported to the person
+with the result, since nothing else keeps it.
 
 - <the decision, in the person's words> — overrules <what the order produced> —
   <date>; released: <the tasks that were waiting>
@@ -67,9 +79,9 @@ overrules, and when. Nothing else is written here, and nothing here is invented.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done`, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
-- [ ] **Close the plan** — once every task above is done or parked: remove the
-      tasks and their checklists, keep `## Decided`; delete the file if
-      `## Decided` is empty.
+- [ ] **Close the plan** — once every task above is done or parked: report what
+      is under `## Decided` with the result, and delete the plan where it was a
+      file.
 ````
 
 ## Every task stands alone
@@ -105,38 +117,42 @@ proved can see is not a check.
 
 ## When the work is done
 
-Every task done or parked, and the last check passed: **the plan is closed**, in
-the same change that finishes the work.
+Every task done or parked, and the last check passed: **the plan is closed.**
 
 - **The tasks and their checklists go.** They were true of the code as it was
   read; the pages now are the record of what was built.
-- **`## Decided` stays**, with the frontmatter, because an override is the one
-  thing that outlives the work ([deciding.md](../finding-patterns/deciding.md))
-  and this plugin wrote the plan only because no other process was keeping
-  decisions. A later run reads it before applying the order.
-- **With nothing under `## Decided`, the file is deleted.**
+- **What a person decided is reported** with the result. An override outlives
+  the work only where a process keeps decisions
+  ([deciding.md](../finding-patterns/deciding.md)); this plugin keeps none of its
+  own.
+- **A file is deleted** where the plan was one.
 - **A parked task is not done.** While one is parked the plan stays open, and
   says so in its status line.
 
-## When a task leaves the repository
+## The story
 
-A task routinely leaves: into a tracker, a ticket, a message. It is picked up by
-somebody who was not in the conversation, or by an agent starting cold with no
-reason to open a path in a checkout it may not have. A path alone is enough for a
-subagent working in the repository and for nobody else.
+Where the work becomes a story for somebody else, the plan and what the
+implementation needs are **attached to the story**. One test decides whether the
+attachment is finished, and it is the only specification it gets:
 
-**Whoever moves the task decides that it moves** — this says only what it must
-carry when it does. Nothing here is an instruction to put a task anywhere.
+> A developer who was not in the conversation, and does not have the checkout
+> open, implements the story from the attachment alone.
 
-What travels with it:
+What that test forces:
 
-- **The checklist**, which is the extract: the positions this page touches with
-  what settled each, and what must not be copied.
-- **Its first line, which says it is a snapshot** of the code as it was read, and
-  when.
+- **Every task carries its checklist in full** — the positions with what settled
+  each, and what must not be copied. A path into a repository is not an
+  attachment.
+- **Each list's first line says it is a snapshot** of the code as it was read,
+  and when.
+- **What was decided is stated**, so nobody argues it again, and **what was not
+  evaluated is named**, so silence is not read as a pass.
 - **The check, written so an agent that never saw the plan can run it**: which
   skill to invoke, what to compare against, and that whoever wrote the page does
   not run it.
+
+**Whoever sends the story decides that it goes** — this says only what it must
+carry when it does.
 
 **The code stays authoritative.** A checklist is a snapshot and drifts from what
 it was taken from; where the two disagree the code wins and the list is taken

@@ -151,9 +151,14 @@ this plugin's own.
 - **A checklist**, inside the task: the page's structure as questions, in reading
   order, each line carrying the project's own piece, how it is written and what
   settled it. It goes when the task does.
-- **A plan** — `.ui-consistency/plans/<topic>.md`, only when no other process
-  wrote one, and only while the work runs. When the work is done its tasks and
-  their counts go, and only what a person decided stays.
+- **A plan** — only when no other process wrote one, only while the work runs,
+  and **never in the project's repository**. Planning ends in one of three ways:
+  the work stays in one session, where the plan lives (a scratch file outside the
+  working copy if it must outlive the session, deleted with the work); the work
+  becomes a story, and the plan is attached to it, complete enough for a
+  developer without the conversation or the checkout; or another process is
+  running, and the tasks go into its plan. When the work is done, what a person
+  decided is reported and the plan goes.
 
 ## What this is not
 

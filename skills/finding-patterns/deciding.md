@@ -164,9 +164,10 @@ recovers it, and without it the same thing is settled the same wrong way forever
   preference the agent formed. Only a person's decision against what the order
   produced, in their own words, with what it overrules.
 - **It goes where the process already keeps its decisions** — the spec, the plan,
-  the design document that process is writing. Where this plugin writes the plan
-  itself, that is `## Decided` in it
-  ([plan-file.md](../planning/plan-file.md)). **No document of this plugin's own
+  the design document that process is writing, the story it is attached to.
+  Where this plugin writes the plan itself, that is `## Decided` in it
+  ([plan-file.md](../planning/plan-file.md)) — which is not in the repository and
+  goes with the work, so there the override is reported with the result. **No document of this plugin's own
   is introduced for it**, because a document nobody else's work touches is a
   document nobody reads.
 - **With no process running and nothing to write to**, report the override as
