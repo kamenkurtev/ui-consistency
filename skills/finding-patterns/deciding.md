@@ -89,7 +89,8 @@ components first, then the shared or core layer, then the UI library. Where
 nothing fits, propose a new component and where it belongs. **Show the shape
 before any code** — the role tree of the page-to-be, so there is something to
 disagree with before anything is written. Where the work has a design, that tree
-is read from it rather than proposed ([design.md](design.md)).
+is read from it rather than proposed ([design.md](design.md)). It can also be
+drawn, with the values the phase measured — [mockup.md](mockup.md).
 
 ## Say what settled it
 

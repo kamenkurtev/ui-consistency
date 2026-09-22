@@ -54,6 +54,9 @@ to a number nobody can find again.
 Where the design's own value is clearly not what the theme has, that is not a
 value to copy — it is the disagreement below.
 
+**The same holds for a mockup this plugin drew** ([mockup.md](mockup.md)):
+values go into it from the theme, and nothing is ever read back out of it.
+
 ## When the design and the project disagree
 
 They answer different halves, so they rarely collide. Where they do — the design

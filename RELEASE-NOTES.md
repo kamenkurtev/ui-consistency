@@ -5,6 +5,17 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.47.0 (2026-09-22)
+
+### finding-patterns
+
+- **A mockup of the page-to-be**, where the shape is shown before code or you
+  ask for it: one self-contained HTML document drawn with the values the phase
+  measured — the roles in their order, at the family's sizes, each labelled with
+  the project's own piece and never an imitation of it. No behaviour, unresolved
+  values marked as such, nothing ever read back out of it, and nothing written
+  inside the working copy (#230).
+
 ## v0.46.0 (2026-09-22)
 
 ### finding-patterns

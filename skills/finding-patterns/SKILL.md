@@ -36,7 +36,7 @@ project file is open.
 | 5 | What the other pages reuse — by import, by copy | below |
 | 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
 | 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
-| 8 | Write the checklist for the task | [checklist.md](checklist.md) |
+| 8 | Write the checklist for the task; a mockup of it, where the shape is shown or asked for | [checklist.md](checklist.md); [mockup.md](mockup.md) only then |
 | — | One region of one page, as sized at step 0: read less, skip deliberately, say so | [small-change.md](small-change.md) |
 
 ## 0. Size the work first
@@ -237,7 +237,9 @@ The page's tree turned into questions, in the order the page is read, each line
 carrying the project's own piece, how it is written and what settled it —
 [checklist.md](checklist.md). It goes into the task in the plan, or into the
 document the running process keeps, and where there is neither it lives in the
-turn. **Nothing counted outlives the work**: a plan this plugin wrote carries the
+turn. Where the shape is shown before any code, or a person asks to see the
+page-to-be, the checklist can also be drawn — [mockup.md](mockup.md).
+**Nothing counted outlives the work**: a plan this plugin wrote carries the
 checklists while the work runs and is cut down to its decisions when the work is
 done ([plan-file.md](../planning/plan-file.md)).
 
