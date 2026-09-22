@@ -43,9 +43,14 @@ skill does.
    nothing disagrees, and nothing says so. Write down the commit.
 2. **Copy the fixture alone** into a newly created temporary directory, so the
    agent can see neither `DRIFT.md` nor the skills.
-3. **Without the skill (RED).** Start a fresh agent — a subagent with no prior
-   context — in that directory. Give it the scenario's task, word for word, and
-   nothing about this plugin. If the plugin is installed, set `UIC_OFF=1`.
+3. **Without the skill (RED).** Start a fresh agent in that directory, in a
+   session where **the plugin is not loaded at all**: not installed, or disabled
+   for that session in the harness's own settings. Give it the scenario's task,
+   word for word, and nothing about this plugin. **Check it held** before
+   trusting the arm: the session's list of skills has none of this plugin's,
+   and the transcript shows none of them invoked. A variable or instruction that
+   silences only the session hook leaves the skills reachable, and an arm run
+   that way is a second arm with the skill.
 4. **With the skill (GREEN).** A new copy of the fixture and a new fresh agent.
    Give it the same task, preceded by the words in *Handing a phase to an agent*
    below, and nothing else about the plugin.
@@ -85,6 +90,7 @@ commit: <the commit of this repository the arms read — skills and fixture both
 cost: <per arm: project files opened, searches run, and tokens where the harness reports them>
 model: <model>
 runs: <n per arm>
+without the skill: <how the plugin was kept out of that arm — not installed, or disabled — and how that was checked>
 
 ## Without the skill
 - <each "must happen" item from the scenario>: yes / no — what it did, read

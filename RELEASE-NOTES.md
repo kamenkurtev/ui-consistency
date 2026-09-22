@@ -5,6 +5,16 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.49.0 (2026-09-22)
+
+### Session
+
+- **`UIC_OFF` is gone.** It silenced the session hook and never the skills, so
+  the one thing it claimed — a session without this plugin — it could not do.
+  To run without the plugin, disable it the way your harness disables plugins
+  (#237).
+- The usage line no longer addresses somebody who used an earlier design.
+
 ## v0.48.0 (2026-09-22)
 
 ### planning
