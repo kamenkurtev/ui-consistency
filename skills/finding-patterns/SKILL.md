@@ -53,8 +53,9 @@ use the project's own shared pieces: a shared piece the reference bypasses is
 still used, and said ([deciding.md](deciding.md)).
 
 **Where nobody named one, choose it and say so**: the nearest in kind, and among
-those the one most recently written and most reused. Do not open with a
-question — [deciding.md](deciding.md).
+those the one most recently written and most reused. *Most reused* says nothing
+where pages are imported only by the route table; then the most recently written
+decides. Do not open with a question — [deciding.md](deciding.md).
 
 **With nothing near enough to be a reference**, there is a branch for it in
 [deciding.md](deciding.md): what to read instead, and what to say about it.
@@ -141,6 +142,11 @@ use, and where it belongs — the shared or core layer if other modules paste it
 too, the module if only this one does. Declined, it is written the same way as
 the others.
 
+**A piece with no instance yet** takes the same branch. Where the task needs a
+control the project has none of, and every other control at that position is a
+shared piece, the new one belongs in the shared layer too — and it is proposed,
+not built by the page: building it changes code other work uses.
+
 ## 6. Values, spacing, type, and what can be read and used
 
 Find how the theme expresses colour, spacing, size, typography, radius and
@@ -159,6 +165,10 @@ things belong to the phase rather than to a subject:
 - A literal with a theme equivalent is written **through the theme**; one without
   becomes a **named constant** where the project keeps them. Translated text goes
   through the translation mechanism.
+- **New words the user reads.** Reuse the project's existing string where one
+  already says the same thing. A new one is phrased the way the family phrases
+  that kind of string — its length, case and tone — and reported as new copy
+  for a person to read, since a list can carry a key but not the words.
 - **The reference's literals are not copied**, and a project with **no theme at
   all** gets one proposal: a single place for shared values, in the form the
   project can use.

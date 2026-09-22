@@ -40,14 +40,22 @@ Take the first level that applies and stop there.
    the most recently written pages show where the project is going rather than
    where it has been. Tell from the project's own history — when each member was
    added, and when the region in question was last changed, which is not the same
-   thing. Say which pages they are and which of the two you read.
+   thing. **Where the two disagree, the region's own history decides**: it is
+   where the project last chose for this concern; the page's date decides only
+   where the region's history cannot be read. Say which pages they are and which
+   of the two you read. **Only where there is no majority** — a count with a
+   majority is level 6, and this level never overrides it.
 6. **The majority, with its file spread.** More files outrank more occurrences:
    four in one file are one page's habit, not a convention —
    [counting.md](counting.md).
 7. **The reference the phase chose itself**, when nothing above settled it. This
    is not level 3: nobody named this page, the phase picked it as the nearest in
    kind, and it is a starting point rather than an authority. Where it disagrees
-   with the levels above, they win and this never fires.
+   with the levels above, they win and this never fires. **Where the chosen
+   reference turns out to be the page that differs**, every line it differs on
+   is settled above it, what it does there joins *not copied*, and the report
+   says the reference was itself the drifting page — so a refactor changes it
+   too.
 
 ## A written rule the code does not follow
 
@@ -179,3 +187,12 @@ The order settles what the project's own code can answer. It never invents a
 rule the project does not have: where nothing at all is written — no shared
 piece, no majority, no reference — say that, and build the thing the plainest
 way the technology allows.
+
+## Red flags
+
+Words agents used in runs, just before getting it wrong:
+
+| They said | What it means |
+|---|---|
+| "at level 5 — what the newest members write" — at a position where 3 of 5 did one thing | 3 of 5 is a majority: level 6, and level 5 does not fire. The newest members decide only a count with no majority. Seen once. |
+| "agrees with WCAG … named as a default" — to settle a line | No standard applies unless somebody asked or the project states one ([accessibility](../accessibility/SKILL.md)). A page that does what the rest do is not a finding. Seen once. |

@@ -79,6 +79,8 @@ shares, a convention with a count behind it, and what must not be copied.
 **What to leave out when it will not fit**: anything the technology gives for
 free, anything identical in every page of every kind, and any position where the
 family has no convention — say that last one out loud instead of listing it.
+**Except the positions the task changes**: a position the work exists to settle
+stays on the list, as *no convention*, whatever else is left out.
 
 ## Walked by somebody else
 

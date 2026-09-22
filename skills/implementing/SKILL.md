@@ -41,7 +41,11 @@ reported against a page that was never asked to get it right.
    ([elements.md](../finding-patterns/elements.md)). Where the pattern records
    none for a position, say so rather than choosing one.
 3. **Use what the project reuses.** The shared component, helper or class named in
-   the pattern — never a new one beside it.
+   the pattern — never a new one beside it. Where the list says the project has
+   no piece for the role and every other control at that position is shared,
+   the new piece is the proposal the list carries
+   ([SKILL.md](../finding-patterns/SKILL.md), step 5) — built only once accepted,
+   never written privately into the page in the meantime.
 4. **What the user sees happen, as the pattern says**: validation, field errors,
    when the submit is enabled, how a failure is caught and shown, loading and
    empty.
