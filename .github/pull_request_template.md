@@ -11,7 +11,7 @@ means the issue does not go to `Done`.
 ## Verification
 
 - [ ] `npm run gate` passes
-- [ ] Version bumped with `npm run bump`, or nothing that ships changed
+- [ ] Version bumped with `npm run bump` and a `CHANGELOG.md` entry written, or nothing that ships changed
 - [ ] `bin/uic.mjs` rebuilt and committed, or `src/` untouched
 - [ ] **The test fails against the unfixed code** — run both ways, and say so
 - [ ] Anything user-facing was run from the **shipped artifact**: `bin/uic.mjs`

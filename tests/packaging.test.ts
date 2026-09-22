@@ -389,6 +389,17 @@ describe('the other harnesses', () => {
     }
   });
 
+  it('all declare the licence LICENSE grants', async () => {
+    // Each installer reads only its own manifest, so a manifest without the
+    // field is a copy of the plugin whose terms depend on which file was opened.
+    const { readFileSync } = await import('node:fs');
+    const licence = readFileSync(fileURLToPath(new URL('../LICENSE', import.meta.url)), 'utf8');
+    expect(licence.startsWith('MIT License')).toBe(true);
+    for (const path of ['package.json', '.claude-plugin/plugin.json', ...manifests]) {
+      expect([path, (await read(path))['license']]).toEqual([path, 'MIT']);
+    }
+  });
+
   it('point every harness at the same skills', async () => {
     for (const path of ['.codex-plugin/plugin.json', '.cursor-plugin/plugin.json']) {
       expect((await read(path))['skills']).toBe('./skills/');
