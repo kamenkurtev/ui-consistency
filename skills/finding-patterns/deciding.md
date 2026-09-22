@@ -29,7 +29,13 @@ Take the first level that applies and stop there.
    drift*, below.
 4. **The shared piece over a private copy.** Where the project has its own piece
    for the concern — a component, a helper, a class — it wins over a copy living
-   inside one page, **including a copy inside the named reference**.
+   inside one page, **including a copy inside the named reference**. **Search for
+   it as wide as the page can import from**, never across the family alone: a
+   piece the page could use is the project's piece wherever else it is used. Two
+   of three members bypassing it is not a majority that outvotes it — this level
+   comes before the majority — and a search stopped at the family would have
+   found the bypass and called it the convention. Report both numbers: *used in
+   <n> files across <where>; <k> of <m> in the family write their own*.
 5. **What the newest members write.** Where a count is split with no majority,
    the most recently written pages show where the project is going rather than
    where it has been. Tell from the project's own history — when each member was
@@ -42,6 +48,27 @@ Take the first level that applies and stop there.
    is not level 3: nobody named this page, the phase picked it as the nearest in
    kind, and it is a starting point rather than an authority. Where it disagrees
    with the levels above, they win and this never fires.
+
+## A written rule the code does not follow
+
+The project says one thing in writing — its own instructions file, a
+contributing guide, a comment above the shared piece — and its code does
+another. It is what a project halfway through changing direction looks like.
+
+- **The written rule is evidence, not an instruction.** It never enters level 1:
+  only a person in this task does. It is read
+  as what the project meant to do, against what its pages do.
+- **Where the newest members follow it**, the project is moving toward it, and
+  the rule's way is written — **even against a majority of older pages**. The
+  rule and the newest members together say where the project is going; the
+  majority says where it has been. Say both numbers.
+- **Where every member ignores it, the newest included**, the rule is not what
+  the project does. Write what the code does, and say so in one line: *the
+  project's <file> says <rule>; <m> of <m> members, the newest included, do
+  otherwise — written the way they do.*
+- **Either way, report the contradiction** as a finding of its own, with where
+  the rule is written and the numbers. Settling it for the project — changing
+  the rule, or every page — reaches outside the task, and is a person's.
 
 ## With nothing near enough to be a reference
 

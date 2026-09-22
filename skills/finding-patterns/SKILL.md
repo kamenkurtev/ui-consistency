@@ -127,7 +127,8 @@ In this order, and the rules are in [counting.md](counting.md):
 ## 5. What the other pages reuse
 
 **By import** — a shared component, helper or piece of logic is used, never
-rewritten: the project's loading indicator rather than the library's, its shared
+rewritten, and it is searched for as wide as the page can import from, not over
+the family alone ([deciding.md](deciding.md), level 4): the project's loading indicator rather than the library's, its shared
 error helper rather than a new message box. A page that bypasses a shared helper
 is the drift this phase exists to catch — **including the reference, and
 including a reference somebody named.** Pointing at a page says what the page is,
@@ -193,6 +194,14 @@ takes the branch in [small-change.md](small-change.md) instead of steps 1 to 8.
 Silence is never a clean result. Say so when the technology could not be read
 with confidence, only a sample was read, no theme was found, or the reference has
 no counterparts to compare with.
+
+**A gap outside this subject that blocks the work is said first.** The page
+needs something nothing in the codebase provides — an action with nothing to
+call, data with no source. It is not this phase's to design or fill in; the
+process that keeps the logic owns it. Put it at the top of the result as
+blocking, with what was searched and where, and still write the checklist for
+what the end user sees. A finding the phase was not asked for is still not
+silence.
 
 End with the cost, so one run can be compared with another: **how many project
 files were opened, how many searches were run, and which of this skill's files

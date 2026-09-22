@@ -5,6 +5,28 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## 0.38.0
+
+Eight places where `finding-patterns` was silent and an agent had to choose,
+each now answered (#200):
+
+- The search for the project's own shared piece goes as wide as the page can
+  import from, not over the family alone — a piece most of the family bypasses
+  still wins over their copies.
+- A written project rule that the code, newest pages included, does not follow:
+  the code is written, and the contradiction is reported with where the rule is
+  written. Where the newest pages follow the rule, the rule is written.
+- A gap outside the phase's subject that blocks the work — an action with
+  nothing to call — is reported first, as blocking.
+- The kind: the first signal that answers decides, the project's word over what
+  the reference renders; with no word in the project, a descriptive name that
+  says it is not the project's.
+- A family that differs by region is counted per region, and each checklist line
+  carries the count that applies to it.
+- Too few spacing values to derive a base: widen the source, and where there
+  are still too few, the base is not derivable and nothing is called off it.
+- A piece that is both the component and the element is recorded once.
+
 ## 0.37.0
 
 - Every skill says to open a linked file at the step that needs it, never

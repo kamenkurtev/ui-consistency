@@ -25,7 +25,9 @@ members, read <date>
 
 One line per position, in the order the page is read: the outermost holder
 first, then inward and left to right, then what the user sees happen —
-[SKILL.md](SKILL.md) step 2.
+[SKILL.md](SKILL.md) step 2. The first line's *n of m* is the family of the page;
+**a line whose region has a family of its own carries that count instead** —
+[counting.md](counting.md).
 
 An example, filled in:
 

@@ -24,6 +24,13 @@ fact, read and counted like the rest.
 - **Never assume one.** The numbers that are common elsewhere are not this
   project's answer until its own values say so, and a base taken from habit
   turns every correct value into a deviation.
+- **Too few values show no base.** Two values share a divisor whatever they
+  are, and it says nothing about the project. Before deriving one from a
+  handful, widen the source in the same order: the theme, then shared classes,
+  then the pages nearest in kind. Where there are still too few for their
+  multiples to be tested against what the project writes, **the base is not
+  derivable**: say so, with the values. Nothing is reported off a base there is
+  not; each gap is checked against what the family writes at that position.
 - **Where the values share no base**, the finding is that the project has none.
   Say so; do not promote the most frequent value into a rule. Make one proposal,
   in the same batch as the others, for a single place to keep the base in the
