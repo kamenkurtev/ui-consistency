@@ -140,6 +140,10 @@ and why.
   family has no convention at that position, a page cannot deviate from it.
   Report nothing, and say the project has none there
   ([counting.md](../finding-patterns/counting.md)).
+- **In the bound the list names.** Its first line says which pages were counted;
+  a count you take yourself is taken over the same ones. Where you count in
+  another bound, say which and why — two bounds give two answers from the same
+  code ([counting.md](../finding-patterns/counting.md)).
 - **Against a count alone** — say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge by the same order the page was built from
   ([deciding.md](../finding-patterns/deciding.md)), naming the level. A page can
