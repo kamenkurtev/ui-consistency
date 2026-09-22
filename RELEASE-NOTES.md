@@ -5,6 +5,18 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.43.0 (2026-09-22)
+
+### planning and implementing
+
+- Every task carries its checklist however many tasks there are; a list written
+  once and "copied in when picked up" is the preamble again. The tasks' first
+  lines are the summary for a person.
+- A task's prose never narrows its own list: a line left out on purpose is
+  named under *Not in this task*, with why.
+- A task handed on without the plan reports its status to whoever handed it
+  over (#217).
+
 ## v0.42.0 (2026-09-22)
 
 ### verifying

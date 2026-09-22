@@ -53,7 +53,7 @@ phases:
    from the reference. It shows you the plan and waits for a yes.
 3. **Implement.** One page at a time, from the checklist, in a fresh context.
 4. **Verify.** A separate agent compares each page with the reference, region by
-   region — after first proving it catches a difference planted on purpose — and
+   region — with a check first proved to catch a difference planted on purpose — and
    then all the pages together.
 
 A small change to one page skips the plan. Checking code that is already written

@@ -59,9 +59,13 @@ overrules, and when. Nothing else is written here, and nothing here is invented.
       the checklist below.
       <the checklist's lines, one per position — checklist.md>
       Must not be copied from the reference: <what is particular to it>.
+      Not in this task: <a line of the list left out on purpose, and why> — or
+      nothing.
       1. Re-read the checklist before writing — do not work from memory.
       2. Hand the page to a separate agent with `ui-consistency:verifying`; fix
          what it reports.
+      3. Report the status here — or, handed on without this plan, to whoever
+         handed it over: `done`, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
 - [ ] **Close the plan** — once every task above is done or parked: remove the
       tasks and their checklists, keep `## Decided`; delete the file if
@@ -76,6 +80,22 @@ and the check are **in each task**, even when the user asks for one line per pag
 The checklist is short on purpose — eight to twelve lines
 ([checklist.md](../finding-patterns/checklist.md)) — which is what makes carrying
 it in every task affordable.
+
+**However many tasks there are.** Twelve pages carrying thirteen lines each is
+long for a person to read top to bottom; a plan is not read that way. Each task
+is read alone, by whoever executes it. Writing the list once and telling the
+other tasks to *copy it in when picked up* is the preamble again, and it fails
+the same way: the subagent handed one task does not have it. For a person,
+the tasks' first lines are the summary: the page and its status.
+
+**A task's prose never narrows its own list.** *"Change nothing else"* does not
+take a line off the checklist. Where a line is left out of this task on purpose —
+another task owns it, a person said so — the task names it under *Not in this
+task*, with why, and the page is checked against the list less exactly that.
+A line the prose contradicts without naming it is a line the task still carries.
+
+**A task handed on alone says where its status goes** — this plan, or whoever
+handed it over — so step 3 has somewhere to report.
 
 A page judged to match already is still a task that carries them — its check is
 how "already matches" becomes known.
