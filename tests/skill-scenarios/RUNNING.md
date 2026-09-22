@@ -49,7 +49,10 @@ skill does.
 4. **With the skill (GREEN).** A new copy of the fixture and a new fresh agent.
    Give it the same task, preceded by the words in *Handing a phase to an agent*
    below, and nothing else about the plugin.
-5. **Record** both arms in `results/`, in the shape below.
+5. **Capture the full transcript** of each arm — every message and tool call,
+   in the harness's streamed output — not only its final message. A final
+   message can be refused or cut short; the tool trail still shows what the
+   agent did. Then **record** both arms in `results/`, in the shape below.
 6. **Delete** both temporary directories.
 
 ## Handing a phase to an agent
@@ -84,18 +87,28 @@ model: <model>
 runs: <n per arm>
 
 ## Without the skill
-- <each "must happen" item from the scenario>: yes / no
-- in its own words: "<the sentence where it chose, verbatim>"
+- <each "must happen" item from the scenario>: yes / no — what it did, read
+  from the transcript
+- what it did at the point that decided the item, and — with the skill — the
+  sentence of the skill it followed there
 
 ## With the skill
-- <each "must happen" item>: yes / no
-- in its own words: "<verbatim>"
+- <each "must happen" item>: yes / no — what it did
+- what it did at that point, and the sentence of the skill it followed
 
 ## Red flags to add
 - "<an excuse the agent gave for skipping a rule>" — or "none observed"
 ```
 
-**A red flag goes into a skill only if an agent actually said it** in a run.
+**Read the result from what the agent did, never ask it for its reasoning.**
+Neither the task nor any follow-up asks an agent to quote or explain its own
+reasoning: a classifier can refuse a message that does, intermittently, and the
+run's report is lost with it. What it did — the files it opened, the searches it
+ran, what it wrote and what it said to the user — is in the transcript, and the
+sentence of the skill it followed is in the skill.
+
+**A red flag goes into a skill only if an agent actually said it** in a run —
+in what it wrote to the user, taken from the transcript.
 
 **And only once a repeated run reproduces it.** A flag seen in one run of three
 is a sample, not a pattern: keep it if you like, with a note saying how often it
