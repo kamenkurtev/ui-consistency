@@ -48,7 +48,10 @@ and run the phase for it.
 
 **What it may write**
 
-The page, and nothing outside it. Where the order would put the piece in the
+The page, and nothing outside it. **The page is the page with the files only it
+uses** — its own strings, its own styles, its own panels — the same unit
+[counting.md](counting.md) counts as one member. A file anything else imports is
+outside it, however close it sits. Where the order would put the piece in the
 shared layer — the family's other controls at that position are all shared
 pieces, and this one has none yet — **it is no longer a small change.** Say so
 in one line before writing anything, with the numbers, and put the new shared
