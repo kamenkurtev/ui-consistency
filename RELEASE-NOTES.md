@@ -5,6 +5,14 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.39.1 (2026-09-22)
+
+### Documentation
+
+- The session says that checking code already written runs `verifying` after
+  `finding-patterns` where no checklist exists yet, as `verifying` itself does.
+  Four places that still described the plugin as it was are corrected (#220).
+
 ## v0.39.0 (2026-09-22)
 
 ### Accessibility

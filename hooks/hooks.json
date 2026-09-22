@@ -1,5 +1,5 @@
 {
-  "description": "ui-consistency — skills and rules that keep the screens an agent writes consistent with the ones a project already has",
+  "description": "Design-Driven Development for your coding agent: what the user sees drives the code, so pages come out consistent with your project the first time",
   "hooks": {
     "SessionStart": [
       {

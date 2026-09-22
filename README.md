@@ -57,7 +57,7 @@ phases:
    then all the pages together.
 
 A small change to one page skips the plan. Checking code that is already written
-is the last phase alone.
+is the last phase, after the first one where no checklist exists yet.
 
 It works on its own, and it works inside another process: with
 [superpowers](https://github.com/obra/superpowers) installed, the phases add to

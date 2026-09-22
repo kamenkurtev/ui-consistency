@@ -42,7 +42,7 @@ describe('the shipped version', () => {
   });
 
   it('describes the plugin the same way everywhere it is listed', async () => {
-    // Five places say what this is, and each is read by a different harness's
+    // Six places say what this is, and each is read by a different harness's
     // installer. They drifted once already; nothing complains, because nothing
     // reads more than one of them at a time.
     const plugin = await read('.claude-plugin/plugin.json');
@@ -53,8 +53,8 @@ describe('the shipped version', () => {
     const described = String(plugin['description']);
     expect(described).toContain('Design-Driven Development');
     expect(marketplace.plugins.find((p) => p.name === plugin['name'])?.description).toBe(described);
-    for (const path of ['.codex-plugin/plugin.json', '.cursor-plugin/plugin.json', 'gemini-extension.json']) {
-      expect((await read(path))['description']).toBe(described);
+    for (const path of ['.codex-plugin/plugin.json', '.cursor-plugin/plugin.json', 'gemini-extension.json', 'hooks/hooks.json']) {
+      expect([path, (await read(path))['description']]).toEqual([path, described]);
     }
   });
 
