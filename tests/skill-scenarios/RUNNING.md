@@ -36,15 +36,36 @@ the agent quoted `uic-pr.md`, which is not in the fixture. The arm without the
 skill is then less naive than reality, and the comparison understates what the
 skill does.
 
-1. **Copy the fixture alone** into a newly created temporary directory, so the
+1. **Confirm the tree is the one you think it is.** `git fetch`, then check the
+   working tree matches its remote and is clean, before the first arm. The arms
+   read `skills/` from disk, so a tree behind its remote runs old skills while
+   `plugin.json`, behind by the same step, records a current-looking version —
+   nothing disagrees, and nothing says so. Write down the commit.
+2. **Copy the fixture alone** into a newly created temporary directory, so the
    agent can see neither `DRIFT.md` nor the skills.
-2. **Without the skill (RED).** Start a fresh agent — a subagent with no prior
+3. **Without the skill (RED).** Start a fresh agent — a subagent with no prior
    context — in that directory. Give it the scenario's task, word for word, and
    nothing about this plugin. If the plugin is installed, set `UIC_OFF=1`.
-3. **With the skill (GREEN).** A new copy of the fixture and a new fresh agent.
-   Give it the same task, preceded by: *"Read and follow `<path to the plugin>/skills/<skill>/SKILL.md` and the files it links."*
-4. **Record** both arms in `results/`, in the shape below.
-5. **Delete** both temporary directories.
+4. **With the skill (GREEN).** A new copy of the fixture and a new fresh agent.
+   Give it the same task, preceded by the words in *Handing a phase to an agent*
+   below, and nothing else about the plugin.
+5. **Record** both arms in `results/`, in the shape below.
+6. **Delete** both temporary directories.
+
+## Handing a phase to an agent
+
+In these words, with the path filled in — copy them, do not paraphrase:
+
+> Read and follow `<path to the plugin>/skills/<skill>/SKILL.md`. Open a file it
+> links only when a step you have reached names it.
+
+*"… and the files it links"* makes every linked file load before the first
+project file is opened — about 15,000 tokens for `finding-patterns`, nearly half
+of it for steps the run may never reach. The
+skill says the same thing itself, so a looser wording is caught there; this one
+is the one that does not need catching.
+
+## How many runs
 
 Use the same model for both arms, and say which. **A single run proves little:
 run each arm at least three times** and say how many agreed on each *must
@@ -58,6 +79,7 @@ results, and a result that does not say which is read as the stronger one.
 
 plugin: <version the arms ran against>
 commit: <the commit of this repository the arms read — skills and fixture both>
+cost: <per arm: project files opened, searches run, and tokens where the harness reports them>
 model: <model>
 runs: <n per arm>
 

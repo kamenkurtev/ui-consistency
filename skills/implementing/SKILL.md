@@ -9,6 +9,10 @@ The failure this exists for: the pattern is agreed, and the twenty-seventh page
 still does not match the first. Attention thins across a batch and the work
 drifts toward the last page seen instead of the one agreed.
 
+**Open a linked file when you reach the part that names it, never before** —
+whatever the request that handed you this skill says about its links. A part you
+reach without having opened its file is not done.
+
 ## One page per task, in a fresh context
 
 - Where the harness has subagents, **one subagent per page**. It starts cold, so
