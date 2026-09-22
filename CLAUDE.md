@@ -31,8 +31,12 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   so no skill name repeats it; where a harness shows no namespace the
   description carries the whole weight, so it says in its first words that the
   work is what an end user sees.
-- `AGENTS.md` — the same instructions for harnesses that read that file instead
-  of hooks.
+- `USING.md` — what the plugin tells a user's agent: which skills a job takes,
+  in what order. The session hook says the same, and a harness with no hook
+  loads this file instead (Gemini CLI's manifest names it).
+- `AGENTS.md` — the instructions for an agent working **in this repository**,
+  for harnesses that read it instead of this file: the rules that do damage
+  when missed, and a pointer here.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
   hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
   what order. `UIC_OFF` silences it.
@@ -40,9 +44,11 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   task counted goes with the task. `.claude/ui-consistency/` is still read as a
   fallback and reported when used.
 
-**Nothing may assume a hook is running.** Claude Code runs the session hook;
-Cursor has a session-hook manifest that has not been run end to end; Codex and
-Gemini CLI read `AGENTS.md` instead.
+**Nothing may assume a hook is running.** Claude Code runs the session hook, and
+is the only harness run end to end. Cursor has a session-hook manifest that has
+not been. Gemini CLI loads `USING.md` through its manifest, not run end to end.
+Codex gets the skills from its manifest, and nothing puts `USING.md` where it
+reads instructions — the README tells a user to copy it; not run end to end.
 
 The private `kamenkurtev/ui-consistency-archive` holds the history before this
 repository's single root commit, and the old tracker. Issue numbers here point
@@ -84,7 +90,7 @@ to this repository only — both trackers start at 1.
 - Designs and plans go on the issue, not into `docs/`.
 - `tests/names.test.ts` fails on a skill or command named in `skills/` that does
   not exist. `tests/packaging.test.ts` fails on a library component name in the
-  skills or `AGENTS.md`. `tests/private-names.test.ts` fails on private names
+  skills or `USING.md`. `tests/private-names.test.ts` fails on private names
   (see `uic-docs.md`).
 - Commands:
   - `npm run gate` — everything a PR needs: typecheck, build, stale bundle,

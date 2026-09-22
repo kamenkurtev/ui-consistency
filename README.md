@@ -83,8 +83,12 @@ gemini extensions install https://github.com/kamenkurtev/ui-consistency
 
 ### Codex
 
-Reads `.codex-plugin/plugin.json` and `AGENTS.md`. Install per Codex's plugin
-instructions, pointed at this repository.
+Reads `.codex-plugin/plugin.json`, which gives it the skills. Install per Codex's
+plugin instructions, pointed at this repository.
+
+Codex has no session hook here, and nothing places `USING.md` where Codex reads
+instructions — `AGENTS.md` in your own project. Copy its contents there to give
+a session the order the skills run in. This path has not been run end to end.
 
 ### Cursor
 
@@ -93,7 +97,7 @@ pointed at this repository.
 
 ### Anything else
 
-Point your harness at `skills/` and `AGENTS.md`. Nothing in them is
+Point your harness at `skills/` and `USING.md`. Nothing in them is
 harness-specific.
 
 ## The skills

@@ -69,7 +69,7 @@ async function firstBytes(path: string): Promise<string | null> {
  * session costs what it always cost: a directory listing and at most twelve
  * short reads.
  *
- * The same words are in `AGENTS.md`, because the harnesses without a session
+ * The same words are in `USING.md`, because the harnesses without a session
  * hook read that file instead.
  */
 const STANDING = [
