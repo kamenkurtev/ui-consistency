@@ -16,6 +16,18 @@ const read = async (path: string): Promise<Record<string, unknown>> =>
  * The other two drift because nothing reads them at install time, so nothing
  * complains.
  */
+/**
+ * The files Gemini CLI loads: the one its manifest names, and every file that
+ * one includes with a line of the form `@./<path>`.
+ */
+async function contextFiles(): Promise<string[]> {
+  const { readFileSync } = await import('node:fs');
+  const first = String((await read('gemini-extension.json'))['contextFileName']);
+  const text = readFileSync(fileURLToPath(new URL(`../${first}`, import.meta.url)), 'utf8');
+  const included = [...text.matchAll(/^@\.\/(\S+)$/gm)].map((m) => m[1]!);
+  return [first, ...included];
+}
+
 describe('the shipped version', () => {
   it('is the same in the manifest, the marketplace entry and package.json', async () => {
     const plugin = await read('.claude-plugin/plugin.json');
@@ -367,9 +379,10 @@ describe('what the program is allowed to know', () => {
             .filter((file) => file.endsWith('.md'))
             .map((file) => `${skills}/${name}/${file}`),
         ),
-      // Whichever file the non-Claude harnesses load, read from the manifest
-      // that names it rather than by a name that can move out from under it.
-      fileURLToPath(new URL(`../${String((await read('gemini-extension.json'))['contextFileName'])}`, import.meta.url)),
+      // Whatever the non-Claude harnesses load, read from the manifest that
+      // names it and through its includes, rather than by a name that can move
+      // out from under it.
+      ...(await contextFiles()).map((file) => fileURLToPath(new URL(`../${file}`, import.meta.url))),
     ];
     expect(files.length).toBeGreaterThanOrEqual(5);
 
@@ -417,15 +430,15 @@ describe('the other harnesses', () => {
 
   it('ships the context file the non-Claude harnesses read', async () => {
     const { readFileSync } = await import('node:fs');
-    const context = String((await read('gemini-extension.json'))['contextFileName']);
+    const files = await contextFiles();
     // Not AGENTS.md: that is where an agent working in this repository looks for
     // the repository's own rules, and the bootstrap there told it to run the UI
     // phases on a repository with no UI.
-    expect(context).not.toBe('AGENTS.md');
-    const using = readFileSync(fileURLToPath(new URL(`../${context}`, import.meta.url)), 'utf8');
-    // The file a non-Claude harness loads must carry the surface: the skills and
-    // the order they fire in.
-    expect(using).toContain('ui-consistency:finding-patterns');
+    expect(files).not.toContain('AGENTS.md');
+    const loaded = files.map((file) => readFileSync(fileURLToPath(new URL(`../${file}`, import.meta.url)), 'utf8'));
+    // What a non-Claude harness loads must carry the surface: the skills and the
+    // order they fire in.
+    expect(loaded.join('\n')).toContain('ui-consistency:finding-patterns');
   });
 
   it('gives an agent working in this repository its rules, where it looks for them', async () => {

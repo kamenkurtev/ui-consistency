@@ -72,4 +72,4 @@ for (const file of FILES) {
   console.log('  src/version.ts');
 }
 
-console.log(`\n${current} → ${next}. Add a "## ${next}" entry to CHANGELOG.md, and commit both with the change they ship.`);
+console.log(`\n${current} → ${next}. Add a "## v${next} (<date>)" entry to RELEASE-NOTES.md, and commit both with the change they ship.`);

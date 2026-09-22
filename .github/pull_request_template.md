@@ -1,66 +1,101 @@
 <!--
-What changed, and why. If it fixes something, what the failure was.
+BEFORE SUBMITTING: Read every word of this template, and AGENTS.md. Pull
+requests that leave sections blank, carry several unrelated changes, or show no
+evidence of a real run are closed without review.
+
 Link the issue: `Closes #<number>`, and one `Closes` per issue — `Closes #6 and #19` only parses the first.
 -->
 
-## Who produced this
+## Who is submitting this pull request? (required)
+<!-- We assume an agent wrote it — say which one and where it ran. A change
+     reasoned out of documentation and a change grounded in a real run are
+     different evidence, and without this they look identical. -->
 
-Asked of every pull request, the owner's included. A change reasoned out of
-documentation and a change grounded in a real session are different evidence,
-and without this they look identical.
+| Field | Value |
+|-------|-------|
+| Your model + version | |
+| Harness + version | |
+| All plugins installed | |
+| Human partner who read the complete diff | |
 
-| | |
-|---|---|
-| Model and version | |
-| Harness and version | |
-| Plugins loaded | |
-| The person who read the complete diff | |
+## What problem are you trying to solve?
+<!-- The run that went wrong: what was asked, what the agent did, what it
+     should have done. "Improving" something is not a problem statement. -->
 
-- [ ] **A person read the complete diff** before this was opened — not a
-      summary of it. Required of every contribution from outside. The owner's
-      own agent-made changes merge on the gate and the three reviews instead
-      (`.claude/rules/uic-git.md`), and say so here.
+## What does this pull request change?
+<!-- 1–3 sentences. What, not why — the why is above. -->
 
-## Does it belong here
+## Does it belong here?
+<!-- Answer the change against `docs/concept.md`, *What this is not* — not the
+     whole job, not a test suite, not a linter, not a design-system opinion,
+     not a gate, not a program, not for sale — and against *What We Will Not
+     Accept* in AGENTS.md. Which of these could a reader say this change makes
+     it, and why it does not? -->
 
-- [ ] Searched open **and closed** pull requests for the same problem or prior
-      art. Related: <!-- #n, or "none found" -->
-- Where a related one was closed: what is different this time.
+## What alternatives did you consider?
+<!-- What else did you try, and why was it worse? None considered is a red
+     flag; say so if it is true. -->
 
-Answer the change against `docs/concept.md`, *What this is not* — not the
-whole job, not a test suite, not a linter, not a design-system opinion, not a
-gate, not a program, not for sale. Which of these could a reader say this
-change makes it, and why it does not:
+## Does this pull request contain multiple unrelated changes?
+<!-- If yes: stop and split it. **One logical change.** A pull request carrying
+     unrelated changes is split, not reviewed (`.claude/rules/uic-git.md`). -->
 
-- [ ] **One logical change.** A pull request carrying unrelated changes is
-      split, not reviewed (`.claude/rules/uic-git.md`).
+## Existing pull requests
+- [ ] I searched open **and closed** pull requests and issues for the same
+      problem or prior art
+- Related: <!-- #n, or "none found" -->
+
+<!-- Where a related one was closed: what is different this time. -->
 
 ## Acceptance criteria
 
-Copy the issue's criteria and tick the ones this PR meets. One left unticked
-means the issue does not go to `Done`.
+Copy the issue's criteria and tick the ones this pull request meets. One left
+unticked means the issue does not go to `Done`.
+
+## Environment tested
+
+| Harness | Harness version | Model | Model version/ID | What was run |
+|---------|-----------------|-------|------------------|--------------|
+|         |                 |       |                  |              |
+
+## Harness support (required if this changes how a harness loads the plugin)
+<!-- A manifest, the hook, `USING.md`, `GEMINI.md`, `AGENTS.md`: attach a
+     **transcript** of a clean session in that harness, in a project with pages
+     already built, sending exactly
+
+         Add a returns page like the orders page
+
+     A working integration starts `finding-patterns` before any page code is
+     written. `CLAUDE.md` says which harnesses have never been run end to end; a
+     change to one of them is the first evidence it works, or it is not. -->
+
+<details>
+<summary>Clean-session transcript</summary>
+
+```
+paste the complete transcript here
+```
+
+</details>
+
+## Evaluation
+- For a skill change: the scenario run without and with it
+  (`tests/skill-scenarios/RUNNING.md`), and the real repository it was tried on
+  — described by role, never by name.
+- How many runs after the change, and how the outcome differed from before.
+
+<!-- "It works" is not evaluation. -->
 
 ## Verification
 
 - [ ] `npm run gate` passes
-- [ ] Version bumped with `npm run bump` and a `CHANGELOG.md` entry written, or nothing that ships changed
+- [ ] Version bumped with `npm run bump` and a `RELEASE-NOTES.md` entry written, or nothing that ships changed
 - [ ] `bin/uic.mjs` rebuilt and committed, or `src/` untouched
 - [ ] **The test fails against the unfixed code** — run both ways, and say so
 - [ ] Anything user-facing was run from the **shipped artifact**: `bin/uic.mjs`
       copied alone into an empty directory
 - [ ] No name from a private repository in the diff — numbers survive, names do
       not (`.claude/rules/uic-docs.md`)
-
-## Where it was exercised
-
-| Harness and version | Model and version | What was run |
-|---|---|---|
-| | | |
-
-A change to how a harness loads the plugin — a manifest, the hook, `USING.md`,
-`AGENTS.md` — attaches a **transcript** of a session in that harness showing it
-loaded. `CLAUDE.md` says which harnesses have never been run end to end; a
-change to one of them is the first evidence it works, or it is not.
 
 ## Reviews — all three, every time
 
@@ -76,3 +111,21 @@ result** and belongs here.
 Which of `CLAUDE.md`, `docs/concept.md`, `README.md`,
 `AGENTS.md`, `USING.md` and `skills/*/SKILL.md` you read against this change, and what you
 found. **"Read, nothing false" is a result.**
+
+## Human review
+- [ ] A person read the complete diff before submission — not a summary of it.
+      Required of every contribution from outside. The owner's own agent-made
+      changes merge on the gate and the three reviews instead
+      (`.claude/rules/uic-git.md`), and say so here.
+
+<!--
+STOP. A contribution from outside with the box above unticked is not submitted.
+
+Closed without review:
+- no evidence of a person or of a real run
+- several unrelated changes
+- a script or parser for analysis, or a technology's names in the skills
+- a name from a private repository
+- required sections blank or placeholder text
+- a skill's behaviour changed without a scenario run
+-->

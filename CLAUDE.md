@@ -33,10 +33,10 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   work is what an end user sees.
 - `USING.md` — what the plugin tells a user's agent: which skills a job takes,
   in what order. The session hook says the same, and a harness with no hook
-  loads this file instead (Gemini CLI's manifest names it).
-- `AGENTS.md` — the instructions for an agent working **in this repository**,
-  for harnesses that read it instead of this file: the rules that do damage
-  when missed, and a pointer here.
+  loads this file instead — Gemini CLI through `GEMINI.md`, which includes it.
+- `AGENTS.md` — the contributor guidelines for an agent working **in this
+  repository**, in `superpowers`' shape; included below, and read on its own by
+  harnesses that do not read this file.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
   hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
   what order. `UIC_OFF` silences it.
@@ -46,7 +46,7 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 
 **Nothing may assume a hook is running.** Claude Code runs the session hook, and
 is the only harness run end to end. Cursor has a session-hook manifest that has
-not been. Gemini CLI loads `USING.md` through its manifest, not run end to end.
+not been. Gemini CLI loads `USING.md` through `GEMINI.md`, not run end to end.
 Codex gets the skills from its manifest, and nothing puts `USING.md` where it
 reads instructions — the README tells a user to copy it; not run end to end.
 
@@ -101,6 +101,12 @@ to this repository only — both trackers start at 1.
   - `UIC_OFF=1` silences the session hook for a session.
 
 ## Rules
+
+The contributor guidelines — what every agent working here does before a pull
+request, and what is not accepted — are `AGENTS.md`, the file harnesses other
+than Claude Code read. One copy, included here:
+
+@AGENTS.md
 
 Detailed rules live in `.claude/rules/`, each prefixed `uic-`:
 

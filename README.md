@@ -209,7 +209,7 @@ see [SECURITY.md](SECURITY.md).
 ## Updating
 
 In Claude Code: `/plugin marketplace update kkurtev-plugins`. What each version
-changed is in [CHANGELOG.md](CHANGELOG.md).
+changed is in [RELEASE-NOTES.md](RELEASE-NOTES.md).
 
 ## License
 

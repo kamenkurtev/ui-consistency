@@ -69,7 +69,7 @@ describe('the version check', () => {
     // check read HEAD on one side and sent people round a loop over exactly it.
     await writeFile(join(repo, 'src/index.ts'), 'export const a = 2;\n');
     await writeFile(join(repo, '.claude-plugin/plugin.json'), manifest('1.0.1'));
-    await writeFile(join(repo, 'CHANGELOG.md'), '# Changelog\n\n## 1.0.1\n\n- a fix\n\n## 1.0.0\n\n- first\n');
+    await writeFile(join(repo, 'RELEASE-NOTES.md'), '# Release Notes\n\n## v1.0.1 (2026-01-02)\n\n### Fixes\n\n- a fix\n\n## v1.0.0 (2026-01-01)\n\n- first\n');
 
     const { code, out } = await run(['bash', script]);
 
@@ -77,22 +77,22 @@ describe('the version check', () => {
     expect(out).toContain('version moved');
   });
 
-  it('fails on a moved version the changelog says nothing about', async () => {
+  it('fails on a moved version the release notes say nothing about', async () => {
     // A version is how an installed copy learns there is something new; the
-    // changelog is how its user learns what. Missing, a heading for another
+    // release notes are how its user learns what. Missing, a heading for another
     // version that merely starts the same, and a heading with nothing under it
     // are all a release nobody can read.
     await writeFile(join(repo, 'src/index.ts'), 'export const a = 2;\n');
     await writeFile(join(repo, '.claude-plugin/plugin.json'), manifest('1.0.1'));
 
-    for (const changelog of [null, '## 1.0.10\n\n- another\n', '## 1.0.1\n\n## 1.0.0\n\n- first\n']) {
-      if (changelog === null) await rm(join(repo, 'CHANGELOG.md'), { force: true });
-      else await writeFile(join(repo, 'CHANGELOG.md'), changelog);
+    for (const changelog of [null, '## v1.0.10 (2026-01-02)\n\n- another\n', '## v1.0.1 (2026-01-02)\n\n## v1.0.0 (2026-01-01)\n\n- first\n', '## v1.0.1 (2026-01-02)\n\n### Fixes\n\n## v1.0.0 (2026-01-01)\n\n- first\n']) {
+      if (changelog === null) await rm(join(repo, 'RELEASE-NOTES.md'), { force: true });
+      else await writeFile(join(repo, 'RELEASE-NOTES.md'), changelog);
 
       const { code, out } = await run(['bash', script]);
 
       expect([changelog, code]).toEqual([changelog, 1]);
-      expect(out).toContain('no entry in CHANGELOG.md');
+      expect(out).toContain('no entry in RELEASE-NOTES.md');
     }
   });
 
