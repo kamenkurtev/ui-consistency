@@ -35,7 +35,7 @@ a version bump fails the gate, because an installed plugin only updates when the
 manifest names a new version. Run `npm run bump` (`minor` / `major` when it is
 more than a fix); it moves all seven files that carry the version.
 
-**The new version gets an entry in `CHANGELOG.md`**, saying what somebody who
+**The new version gets an entry in `RELEASE-NOTES.md`**, saying what somebody who
 already installed the plugin will notice. The gate fails on a version with no
 entry.
 
