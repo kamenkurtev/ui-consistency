@@ -1,4 +1,3 @@
-import { SILENCED } from '../core/off.js';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -103,10 +102,11 @@ interface Payload {
 }
 
 /**
- * The `SessionStart` adapter. Never throws, and says nothing by default.
+ * The `SessionStart` adapter. Never throws. A harness disables the plugin its
+ * own way; this has no switch of its own, because a switch here could only ever
+ * silence the hook, never the skills, and would be believed to do more.
  */
 export async function sessionResponse(stdin: string): Promise<SessionResponse | null> {
-  if (SILENCED()) return null;
   let cwd = process.cwd();
   try {
     const parsed: unknown = JSON.parse(stdin);

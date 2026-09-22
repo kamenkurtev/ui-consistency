@@ -39,7 +39,9 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   harnesses that do not read this file.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
   hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
-  what order. `UIC_OFF` silences it.
+  what order. It has no off switch of its own: a harness disables a plugin its
+  own way, and a switch in the hook could silence only the hook, never the
+  skills.
 - **Nothing is written into a project's repository.** A plan lives in the
   session, in a scratch file outside the working copy, attached to a story, or
   inside another process's plan — the three endings of `planning` — and goes
@@ -100,7 +102,6 @@ to this repository only — both trackers start at 1.
   - `npm test`, or `npx vitest run tests/<file>.test.ts` for one file.
   - `npm run bump` — patch; `npm run bump minor` or `major` when it is more than
     a fix. Moves the version in all seven files.
-  - `UIC_OFF=1` silences the session hook for a session.
 
 ## Rules
 

@@ -162,35 +162,10 @@ describe('the skills', () => {
 });
 
 describe('what a task leaves behind', () => {
-  /**
-   * The counts are true of the code as it was read. Written to a document per
-   * kind of page they become a thing to review, keep in step between branches
-   * and find stale — and a file nobody notices has gone stale is worse than no
-   * file. A task carries a checklist and leaves nothing.
-   *
-   * This is the guard on that decision: a path under the knowledge directory is
-   * how the document would come back.
-   */
-  it('writes no document per kind of page', async () => {
-    const { readdirSync, readFileSync, existsSync } = await import('node:fs');
-    const dir = fileURLToPath(new URL('../skills', import.meta.url));
-
-    expect(existsSync(`${dir}/finding-patterns/checklist.md`)).toBe(true);
-
-    const carries: string[] = [];
-    for (const skill of readdirSync(dir).filter((name) => !name.startsWith('.'))) {
-      for (const file of readdirSync(`${dir}/${skill}`).filter((f) => f.endsWith('.md'))) {
-        const text = readFileSync(`${dir}/${skill}/${file}`, 'utf8');
-        if (text.includes('.ui-consistency/patterns')) carries.push(`${skill}/${file}`);
-      }
-    }
-
-    expect(carries).toEqual([]);
-  });
-
   it('writes nothing into the project\'s repository, and no document says it does', async () => {
-    // A plan belongs to one person and lasts days; the repository belongs to
-    // everyone and lasts years. A path under a directory of this plugin's own, in
+    // A standing boundary (#235), which also covers the per-kind pattern file
+    // that was removed before it. A plan belongs to one person and lasts days; the
+    // repository belongs to everyone and lasts years. A path under a directory of this plugin's own, in
     // a skill or a document a user reads, is how the plan would move back in.
     const { readdirSync, readFileSync } = await import('node:fs');
     const root = fileURLToPath(new URL('..', import.meta.url));
@@ -274,15 +249,17 @@ describe('implementing and verifying', () => {
 
 describe('what the shipped bundle does not carry', () => {
   it('has no model client in it at all', async () => {
-    // The plugin is free and asks for no credentials: the judging happens in
-    // the agent that is already reading the file. A bundled SDK was half of
-    // `bin/uic.mjs`, loaded by a hook on every edit, for a path nobody runs.
+    // A standing boundary, not a finished cleanup: the plugin is free, asks for
+    // no key and makes no network call (CLAUDE.md, principle 9; docs/concept.md,
+    // *Not a program*). The judging happens in the agent already reading the
+    // file. A bundled SDK was once half of `bin/uic.mjs`; this keeps it out.
     const bundle = await readFile(fileURLToPath(new URL('../bin/uic.mjs', import.meta.url)), 'utf8');
     expect(bundle).not.toContain('anthropic-ai/sdk');
     expect(bundle).not.toContain('api.anthropic.com');
   });
 
   it('declares no model SDK as a dependency', async () => {
+    // The same standing boundary, at the manifest.
     const npm = (await read('package.json')) as {
       dependencies?: Record<string, string>;
       devDependencies?: Record<string, string>;
@@ -294,8 +271,9 @@ describe('what the shipped bundle does not carry', () => {
 
 describe('how the skills are named', () => {
   it('never repeats the plugin name inside a skill name', async () => {
-    // `superpowers` names its skills `brainstorming` and invokes them as
-    // `superpowers:brainstorming` — the plugin is a namespace, not a prefix.
+    // A standing rule (CLAUDE.md, *Layout*): `superpowers` names its skills
+    // `brainstorming` and invokes them as `superpowers:brainstorming` — the
+    // plugin is a namespace, not a prefix.
     const dir = fileURLToPath(new URL('../skills', import.meta.url));
     const { readdir } = await import('node:fs/promises');
 
@@ -323,8 +301,8 @@ describe('what the program is allowed to know', () => {
     // names. Every team names its own components, and every framework has its
     // own pseudo-HTML elements — a project whose input is `Textbox` matched none
     // of it and got silence, which is indistinguishable from a clean result.
-    // It stays because the day somebody adds a list of component names back,
-    // this is what says no.
+    // A standing boundary: it stays because the day somebody adds a list of
+    // component names back, this is what says no.
     const { readFileSync } = await import('node:fs');
     const dir = fileURLToPath(new URL('../src', import.meta.url));
 

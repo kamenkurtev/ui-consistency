@@ -1,11 +1,5 @@
 #!/usr/bin/env node
 
-// src/core/off.ts
-var SILENCED = () => {
-  const value = process.env["UIC_OFF"];
-  return value !== void 0 && value !== "" && value.toLowerCase() !== "0" && value.toLowerCase() !== "false";
-};
-
 // src/cli/session.ts
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
@@ -57,7 +51,6 @@ async function sessionContext(rootDir) {
   return said.join("\n\n");
 }
 async function sessionResponse(stdin) {
-  if (SILENCED()) return null;
   let cwd = process.cwd();
   try {
     const parsed = JSON.parse(stdin);
@@ -75,8 +68,7 @@ import { realpath } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 async function main(argv) {
   if (argv[0] !== "session") {
-    console.error("Usage: uic session   (read from a SessionStart hook; see hooks/hooks.json)");
-    console.error("Everything else this tool did is a skill now \u2014 see README.md.");
+    console.error("Usage: uic session   (run by the plugin's SessionStart hook; see hooks/hooks.json)");
     return 1;
   }
   const response = await sessionResponse(await readStdin()).catch(() => null);
