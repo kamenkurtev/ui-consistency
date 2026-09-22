@@ -1,6 +1,6 @@
 ---
 name: finding-patterns
-description: Use when building or changing what the end user sees — a page, a feature, a set of pages — above all when a page is named to follow, or new UI could come out unlike its neighbours in size, colour, validation, error handling, spacing or contrast.
+description: Use when building or changing what the end user sees — a new page, a set of pages, or one region of one page, sized first — above all when a page is named to follow, or new UI could come out unlike its neighbours.
 ---
 
 # Finding the pattern
@@ -28,6 +28,7 @@ project file is open.
 
 | # | Step | Open, at that step |
 |---|---|---|
+| 0 | Size the work — before any project file is opened | below |
 | 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
 | 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](elements.md), [design.md](design.md) only where there is a design |
 | 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md); [large-project.md](large-project.md) only on a large project |
@@ -36,7 +37,24 @@ project file is open.
 | 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
 | 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
 | 8 | Write the checklist for the task | [checklist.md](checklist.md) |
-| — | A change to one page: read less, skip deliberately, say so | [small-change.md](small-change.md) |
+| — | One region of one page, as sized at step 0: read less, skip deliberately, say so | [small-change.md](small-change.md) |
+
+## 0. Size the work first
+
+**From the request alone, before any project file is opened**, decide which
+branch this is. The branch sets what the run may read and what it may write, and
+choosing it after the family is open means paying for the whole phase first.
+
+| The work | Branch | May read | May write |
+|---|---|---|---|
+| a new page, a set of pages, a refactor across pages | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
+| one region of one page — a label, a value, a field, a button | [small-change.md](small-change.md) | the page, and that one position across the family — its budget | the page only |
+| checking code already written | `ui-consistency:verifying`, after this phase where no checklist exists | the checklist and the page | a report |
+
+**Say it in one line** before anything else: *sized as one region of one page —
+a button beside the existing one.* Where what you read shows the work is bigger
+than it was sized — the budget runs out, or it would write outside the page —
+**say so and size it again**, before writing anything; never widen silently.
 
 ## Joining a process, or running alone
 
