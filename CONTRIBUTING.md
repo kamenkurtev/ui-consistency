@@ -77,6 +77,11 @@ so, and say what the agent reported it could not read.
    and the skills against your change, and say in the pull request body which you read and
    what you found. **"Read, nothing false" is a result.** Fix what is wrong, and
    wherever it was copied.
+5. Fill every section of the pull request template — who produced the change
+   and with what, that you searched open and closed pull requests, and how it
+   stays inside what `docs/concept.md` says this is not. **A person reads the
+   complete diff before it is opened**, and a pull request carrying unrelated
+   changes is split rather than reviewed.
 
 ## Reading order
 
