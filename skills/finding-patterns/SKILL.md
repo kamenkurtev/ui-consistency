@@ -125,6 +125,31 @@ In this order, and the rules are in [counting.md](counting.md):
    first, because a zero for something it writes is a broken search.
 4. **The counts**, per position, with their file spread, by exact name.
 
+**The counting goes to a subagent, by default** — not only on a large project.
+A run's cost is its turns times its context: every turn re-sends everything read
+so far, so a phase that reads the family into its own context pays for each file
+again on every turn after it. A subagent that searches and tallies, then returns
+the numbers, keeps the phase's context to conclusions.
+
+- **It is given** the kind, the reference's tree of roles, the bound, and the
+  exact searches — by name, per position — with the proof step: every search
+  run on the reference first.
+- **It returns** per position: the count and its ways, the members spread, the
+  searches it ran, the files it opened, and what it could not read. Not the
+  files.
+- **The phase keeps the judgment**: the reference, the kind, which pages are
+  members, and every decision by the order. Those are not handed on.
+- **Search and arithmetic are the subagent's half.** Where the harness lets a
+  subagent be given a smaller, faster model, this is the half to give it; the
+  judgment stays with the phase.
+- **Without subagents**, count in the phase itself, with the searches grouped,
+  and write each count down once instead of re-opening the files behind it.
+
+**Group the searches** either way: one search per position, over every member at
+once, and independent searches in the same turn. **A call is a turn, and a turn
+re-sends the whole context**: twenty single searches cost twenty times what one
+grouped search does ([large-project.md](large-project.md)).
+
 ## 5. What the other pages reuse
 
 **By import** — a shared component, helper or piece of logic is used, never

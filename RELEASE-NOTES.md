@@ -5,6 +5,19 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.45.0 (2026-09-22)
+
+### finding-patterns
+
+- The counting goes to a subagent by default, not only on a large project: it is
+  given the kind, the tree, the bound and the exact searches, and returns the
+  counts, not the files, so the phase's context holds conclusions. Search and
+  arithmetic are its half; the judgment stays with the phase (#224).
+- Grouping searches carries its reason: a call is a turn, and a turn re-sends
+  the whole context.
+- A small change has a budget — about ten project files and ten searches; past
+  twice that it is not small any more, and says so.
+
 ## v0.44.0 (2026-09-22)
 
 ### finding-patterns and the order
