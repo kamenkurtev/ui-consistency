@@ -1,7 +1,7 @@
 {
   "name": "ui-consistency",
   "description": "Design-Driven Development for your coding agent: what the user sees drives the code, so pages come out consistent with your project the first time",
-  "version": "0.36.2",
+  "version": "0.36.3",
   "license": "MIT",
-  "contextFileName": "AGENTS.md"
+  "contextFileName": "USING.md"
 }

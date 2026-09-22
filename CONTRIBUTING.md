@@ -73,8 +73,8 @@ so, and say what the agent reported it could not read.
 1. `npm run gate`.
 2. Simplify what you wrote, then run the gate again if it changed anything.
 3. A correctness review and a security review, both of them, every time.
-4. Read `CLAUDE.md`, `README.md`, `AGENTS.md`, `docs/concept.md` and the skills
-   against your change, and say in the pull request body which you read and
+4. Read `CLAUDE.md`, `README.md`, `AGENTS.md`, `USING.md`, `docs/concept.md`
+   and the skills against your change, and say in the pull request body which you read and
    what you found. **"Read, nothing false" is a result.** Fix what is wrong, and
    wherever it was copied.
 

@@ -5,6 +5,13 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## 0.36.3
+
+- Gemini CLI loads the plugin's instructions from `USING.md`, not `AGENTS.md`.
+  The words are the same; `AGENTS.md` now holds the rules for working on this
+  repository. Codex users: nothing puts `USING.md` where Codex reads it — copy
+  it into your project's `AGENTS.md` (#198).
+
 ## 0.36.2
 
 - A scenario in which the agent breaks a count by itself, rather than being

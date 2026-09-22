@@ -320,7 +320,7 @@ describe('what the program is allowed to know', () => {
    * Markdown has no literals to isolate. Its failure mode is a name nobody
    * thought of, which is a missed catch and never a wrong one.
    */
-  it('names no library component in the skills or AGENTS.md', async () => {
+  it('names no library component in the skills or the user-facing instructions', async () => {
     const vendor = [
       'Button',
       'TextField',
@@ -360,7 +360,9 @@ describe('what the program is allowed to know', () => {
             .filter((file) => file.endsWith('.md'))
             .map((file) => `${skills}/${name}/${file}`),
         ),
-      fileURLToPath(new URL('../AGENTS.md', import.meta.url)),
+      // Whichever file the non-Claude harnesses load, read from the manifest
+      // that names it rather than by a name that can move out from under it.
+      fileURLToPath(new URL(`../${String((await read('gemini-extension.json'))['contextFileName'])}`, import.meta.url)),
     ];
     expect(files.length).toBeGreaterThanOrEqual(5);
 
@@ -408,10 +410,33 @@ describe('the other harnesses', () => {
 
   it('ships the context file the non-Claude harnesses read', async () => {
     const { readFileSync } = await import('node:fs');
-    const agents = readFileSync(fileURLToPath(new URL('../AGENTS.md', import.meta.url)), 'utf8');
+    const context = String((await read('gemini-extension.json'))['contextFileName']);
+    // Not AGENTS.md: that is where an agent working in this repository looks for
+    // the repository's own rules, and the bootstrap there told it to run the UI
+    // phases on a repository with no UI.
+    expect(context).not.toBe('AGENTS.md');
+    const using = readFileSync(fileURLToPath(new URL(`../${context}`, import.meta.url)), 'utf8');
     // The file a non-Claude harness loads must carry the surface: the skills and
     // the order they fire in.
-    expect(agents).toContain('ui-consistency:finding-patterns');
-    expect((await read('gemini-extension.json'))['contextFileName']).toBe('AGENTS.md');
+    expect(using).toContain('ui-consistency:finding-patterns');
+  });
+
+  it('gives an agent working in this repository its rules, where it looks for them', async () => {
+    // A harness that reads AGENTS.md and not CLAUDE.md must still be told the
+    // rules that do damage when missed — above all the private-names rule, whose
+    // whole purpose is to stop a leak by the agent that never read it.
+    const { readFileSync } = await import('node:fs');
+    const agents = readFileSync(fileURLToPath(new URL('../AGENTS.md', import.meta.url)), 'utf8');
+    for (const rule of [
+      'Never commit to `main`',
+      'npm run gate',
+      'npm run bump',
+      'uic-pr.md',
+      'the names may not',
+      'uic-docs.md',
+    ]) {
+      expect([rule, agents.includes(rule)]).toEqual([rule, true]);
+    }
+    expect(agents).not.toContain('ui-consistency:finding-patterns');
   });
 });

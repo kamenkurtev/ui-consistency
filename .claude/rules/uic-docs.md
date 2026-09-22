@@ -43,9 +43,9 @@ happens.
 
 ## The documents this applies to
 
-`CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `docs/concept.md`,
-`docs/index.html`, `.claude/rules/*.md`, and every skill with its supporting
-files.
+`CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `USING.md`,
+`docs/concept.md`, `docs/index.html`, `.claude/rules/*.md`, and every skill with
+its supporting files.
 
 Before opening a PR, read them against the change and say in the body which
 were read and what was found. "Read, nothing false" is a result.
