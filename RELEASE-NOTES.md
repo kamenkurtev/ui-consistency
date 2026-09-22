@@ -5,6 +5,27 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.44.0 (2026-09-22)
+
+### finding-patterns and the order
+
+From a real plan, a real page and a real small change (#218):
+
+- A chosen reference that turns out to be the drifting page is said to be, and
+  changed too; *most reused* gives way to *most recently written* where only the
+  route table imports pages.
+- A file spread is counted in members — a page and its own grid are one.
+- A position no member has: widen in steps and report each count apart; two
+  controls at one position are ordered as the family orders them elsewhere.
+- Level 5 reads the region's own history over the page's date, and fires only
+  where there is no majority. Two red flags record the misreadings, each seen
+  once.
+- New words the user reads reuse the project's strings, or follow how the
+  family phrases them, and are reported as new copy.
+- A kind the project does not answer is decided and reported, not asked; a
+  position the task changes stays on the checklist even with no convention; a
+  shared piece with no instance yet is proposed, not written into the page.
+
 ## v0.43.0 (2026-09-22)
 
 ### planning and implementing

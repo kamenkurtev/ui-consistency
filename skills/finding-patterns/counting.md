@@ -39,10 +39,10 @@ project has no word for it** — no folder, no route, no suffix, no label — na
 by what it renders, *a list with a form above it*, and say the name is yours and
 not the project's.
 
-**Where the project does not answer it**, the kind goes into the one batch of
-questions, with the candidates and what each renders, and with a proposal: *these
-six render the same holders and the same regions; these two do not, and would be
-a second kind.* One question about the kind, never one per candidate.
+**Where the project does not answer it**, decide it by what the pages render and
+report it: *these six render the same holders and the same regions; these two do
+not, and are counted as a second kind.* A tie inside the task's own reach is not
+a question ([deciding.md](deciding.md)).
 
 **Say the decision and what it covered** in the checklist's first line: the
 kind, what decided it, and how many members were counted —
@@ -151,6 +151,9 @@ was the opposite of the truth.
   [elements.md](elements.md).
 - **A count carries its spread.** Four identical buttons, all in one file, are
   one page's habit; 10 of 10 across 8 files is a convention. Write both numbers.
+  **The spread is counted in members**: a page and the files only it imports —
+  its grid, its panels — are one member, however many files they span. Say so
+  where a member spans files.
 - **A missing prop is not yet a deviation.** Check the theme and the project's
   wrappers first: either may set it already.
 - **Search for the exact name.** A container whose name starts with the
@@ -159,6 +162,23 @@ was the opposite of the truth.
   that the page you read writes it. Write it as what the reference does, and say
   the family has no other members — never as what the project does. It is the
   narrowest case of the rule below.
+
+## A position no member has
+
+The task adds something the family has never written at this position — a
+second control where every member has one, a control nobody has here.
+
+- **Widen in steps, and keep each count apart**: first the neighbouring position
+  in the family — what fills the positions beside it — then the same control at
+  other positions across the bound. Report each count separately; never blend
+  them into one number that reads as a convention at this position.
+- **Two controls at one position** are ordered as the family orders two
+  controls wherever it has them — the same kind of position elsewhere in the
+  bound. With nowhere to read it from, the existing control keeps its place and
+  the new one follows it in reading order; say that is what decided it.
+- **With nothing anywhere**, the order's last line applies: build it the
+  plainest way the technology allows, and say so
+  ([deciding.md](deciding.md), *What this does not decide*).
 
 ## When a count is not a convention at all
 
