@@ -5,6 +5,34 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.42.0 (2026-09-22)
+
+### verifying
+
+- **What the checker reads**: the checklist and the page first, then the project
+  for a region the list does not carry or a line it doubts — recounted with the
+  proof step, or named unevaluated. A wrong line is a correction of the list,
+  not a deviation of the page (#215).
+- **The calibration**: the one that plants is not the one that looks, and the
+  checker is told only that a difference exists. In a git repository the copy is
+  a temporary worktree, so it proves what needs the project; a copy of one file
+  proves only what that file shows, and says so. It is owed once per work and
+  kind of page, and the checker of the page is a new agent (#214, #216).
+- A fresh turn in the same session is not a separate checker; where none is
+  available, the result says the author checked its own work.
+
+### implementing and small changes
+
+- Fix and check again twice at most; what is still reported is listed as open.
+- A change without a plan proves its checker with one plant at the changed
+  position. A small change writes the page only: a piece the order would put in
+  the shared layer makes it no longer small, and is put as a proposal (#216).
+
+### planning
+
+- The calibration task carries the checklist, separates planter from checker,
+  and records that it passed so page tasks do not repeat it (#214).
+
 ## v0.41.0 (2026-09-22)
 
 ### finding-patterns

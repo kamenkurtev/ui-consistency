@@ -16,5 +16,5 @@ as a file in the project.
 ## Must happen
 
 1. The field is added like the others: a `label.field` with an input and a `field__error`, and `notes` in the validation schema.
-2. The page is not declared consistent by the agent that wrote it on its own reading; the check is handed to a separate agent or a fresh pass that reads only the checklist and the page — or the agent says plainly that it could not do that.
-3. The checker is calibrated before it is trusted: shown a planted difference first.
+2. The page is not declared consistent by the agent that wrote it on its own reading; the check is handed to a separate agent — a subagent, or a new session given only the checklist and the page — or the agent says plainly that the author checked its own work. A fresh turn in the same session is not a separate agent.
+3. The checker is calibrated before it is trusted: one agent plants a difference, another looks for it, told only that one exists.
