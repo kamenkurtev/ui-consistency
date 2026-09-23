@@ -1,7 +1,21 @@
 # The order for deciding
 
-Read by every phase before anything is put to a person. It settles what a count
-alone cannot: **decide, and say what you decided.**
+**Read when:** a count alone does not settle a decision, and before anything is
+put to a person — in any phase.
+
+It settles what a count cannot: **decide, and say what you decided.**
+
+## Contents
+
+- The order
+- A written rule the code does not follow
+- With nothing near enough to be a reference
+- Say what settled it
+- When to ask anyway
+- A named reference does not carry its own drift
+- An override, the one thing a task cannot work out again
+- What this does not decide
+- Red flags
 
 ## The order
 
@@ -18,11 +32,9 @@ Take the first level that applies and stop there.
    exactly, which is why it sits above a reference named for the page as a whole.
 3. **A page somebody named** — and only for what it is authoritative about.
    A reference a person named outranks anything read about **what the page is**:
-   which roles it has, in what order, how it behaves. It is **not** authoritative
-   about whether to use the project's own shared pieces. A page that bypasses a
-   shared helper is drift whoever pointed at it, and pointing at it does not make
-   the drift part of the pattern — *A named reference does not carry its own
-   drift*, below.
+   which roles it has, in what order, how it behaves — and **not** whether to use
+   the project's own shared pieces (*A named reference does not carry its own
+   drift*, below).
 4. **The shared piece over a private copy.** Where the project has its own piece
    for the concern — a component, a helper, a class — it wins over a copy living
    inside one page, **including a copy inside the named reference**. **Search for

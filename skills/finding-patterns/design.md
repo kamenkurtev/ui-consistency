@@ -1,8 +1,8 @@
 # The design: read it for the tree, never for the values
 
-Read by `finding-patterns` when the work has a design for the page — a picture, a
-screen described in the request, a prototype somebody can show you. **Where there
-is none, the pages already built are the design**, and this file does not apply.
+**Read when:** the work has a design for the page — a picture, a screen
+described in the request, a prototype somebody can show you. **Where there is
+none, the pages already built are the design**, and this file does not apply.
 
 **Look before deciding there is none**: what came with the request, what the
 task or ticket carries, what the request points at. Say which it was, or say

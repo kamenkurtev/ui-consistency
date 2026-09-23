@@ -1,7 +1,7 @@
 # Spacing: the base, the rhythm, the side that owns the gap
 
-Read by `finding-patterns` when it records how a family spaces its roles, and by
-`implementing` and `verifying` for every gap.
+**Read when:** recording how the family spaces its roles (`finding-patterns`
+step 6), or writing or checking any gap (`implementing`, `verifying`).
 
 ## The base is derived, never assumed
 

@@ -5,6 +5,17 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.5 (2026-09-23)
+
+### Small changes
+
+- Every skill opens the same way — a title and a one- or two-sentence overview —
+  and every reference file with one line saying when to read it; the three
+  longest open with their contents. `verifying` lists its steps in order.
+- Inside a skill, a rule is said once and linked elsewhere: the named reference
+  and its drift, grouping searches, how a decision is reported, what every task
+  carries, and a few more (#257).
+
 ## v0.51.4 (2026-09-23)
 
 ### Small changes

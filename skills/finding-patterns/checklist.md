@@ -1,8 +1,10 @@
 # The checklist
 
-**The page's own tree turned into questions, in the order the page is read.**
-`finding-patterns` produces it, `implementing` builds against it, and an agent
-that did not write the page walks it.
+**Read when:** writing the checklist (`finding-patterns` step 8), building
+against it (`implementing`) or walking it (`verifying`).
+
+A checklist is **the page's own tree turned into questions, in the order the
+page is read.**
 
 It belongs to the task. It goes into the task in the plan, or into the document
 the process already running keeps, and where there is neither it lives in the

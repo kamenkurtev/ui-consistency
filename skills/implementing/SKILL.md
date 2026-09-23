@@ -5,8 +5,11 @@ description: Use when writing or changing what the end user sees and a checklist
 
 # Implementing from the checklist
 
-Each page is built from its checklist, re-read every time: across a batch, the
-work drifts toward the last page written instead of the one agreed.
+## Overview
+
+Builds each page from its checklist, one page per task. The checklist is re-read
+every time: across a batch, the work drifts toward the last page written instead
+of the one agreed.
 
 **Open a linked file when you reach the part that names it, never before** —
 whatever the request that handed you this skill says about its links. A part you

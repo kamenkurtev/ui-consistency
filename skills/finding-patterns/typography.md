@@ -1,7 +1,7 @@
 # Typography: the roles, the bundle, how the style is applied
 
-Read by `finding-patterns` when it records how a family sets its text, and by
-`implementing` and `verifying` for every piece of text on a page.
+**Read when:** recording how the family sets its text (`finding-patterns` step
+6), or writing or checking any text on a page (`implementing`, `verifying`).
 
 ## The type roles
 

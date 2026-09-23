@@ -5,12 +5,28 @@ description: Use when what the end user sees has been written and before calling
 
 # Verifying against the checklist
 
-The question it answers: **which of these pages do not look and behave like the
-reference and the rest of the project.**
+## Overview
+
+A separate agent answers one question: **which of these pages do not look and
+behave like the reference and the rest of the project.** It reports only what
+differs, and names what it could not check.
 
 **Open a linked file when you reach the part that names it, never before** —
 whatever the request that handed you this skill says about its links. A part you
 reach without having opened its file is not done.
+
+## Steps
+
+1. A separate agent checks, never the author — *Never the author*.
+2. It reads the checklist and the page first, and the project only where they do
+   not answer — *What the checker reads*.
+3. Before its result is trusted, it is proved on a copy with one planted
+   difference — *First, prove it can see*.
+4. It compares region by region and reports only what differs, judged as
+   *Reading a difference* says — *Compare region by region*.
+5. It names what it could not check, and the cost — *Say what was not checked*.
+6. After the last page, it compares all the pages together — *The whole set, at
+   the end*.
 
 ## Never the author
 

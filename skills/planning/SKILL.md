@@ -5,8 +5,11 @@ description: Use when work the end user will see spans several steps or pages an
 
 # Planning from the pattern
 
-Every page task carries **what makes it checkable**: its checklist, what not to
-copy, and a check by an agent that did not write the page.
+## Overview
+
+Turns what `finding-patterns` found into a plan of one task per page. Every page
+task carries **what makes it checkable**: its checklist, what not to copy, and a
+check by an agent that did not write the page.
 
 **Open a linked file when you reach the part that names it, never before** —
 whatever the request that handed you this skill says about its links. A part you
