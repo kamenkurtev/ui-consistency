@@ -5,6 +5,14 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.1 (2026-09-23)
+
+### Small changes
+
+- Nothing an installed copy does changes: the bundle is byte for byte the one
+  0.51.0 shipped. A version constant that reached no bundle is gone, and the
+  lockfile carries the plugin's version again (#246).
+
 ## v0.51.0 (2026-09-23)
 
 ### Small changes

@@ -28,12 +28,12 @@ level.
 
 ## What counts
 
-The plugin reads a stranger's repository and hands what it finds to an agent,
-so the class that matters most here is **content from the project being read
-turning into an instruction the agent follows** — text in a file, a comment, a
-component's prop — and anything that lets that project's contents reach outside
-it. Also in scope: the session hook in `bin/uic.mjs` and what it puts into a
-session.
+The skills send an agent to read a stranger's repository and act on what it
+finds, so the class that matters most here is **content from the project being
+read turning into an instruction the agent follows** — text in a file, a
+comment, a component's prop — and anything that lets that project's contents
+reach outside it. Also in scope: the session hook in `bin/uic.mjs` and what it
+puts into a session.
 
 Only the latest version is supported. A report against an older one is welcome
 if it still reproduces on the latest.

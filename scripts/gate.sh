@@ -4,17 +4,11 @@ set -euo pipefail
 echo "==> typecheck"
 npm run typecheck
 
-# The build comes before the tests, not after: part of the suite runs the
-# built binary as a subprocess, and testing yesterday's bundle would pass
-# while today's is broken.
+# The build comes before the tests, not after: the check below compares the
+# bundle with its source, and part of the suite reads the bundle — reading
+# yesterday's would pass while today's is broken.
 echo "==> build"
-if [ -f src/cli/main.ts ]; then
-  npm run build
-else
-  # The CLI arrives with the core. Until then there is nothing to bundle, and
-  # a gate that cannot pass is a gate nobody runs.
-  echo "no CLI entry yet; skipping build"
-fi
+npm run build
 
 # The bundle ships in git, so a stale one is shipped code that does not match
 # the source it was built from.
@@ -39,11 +33,7 @@ echo "==> tests"
 npm run test
 
 echo "==> plugin validate"
-if [ ! -f .claude-plugin/plugin.json ]; then
-  # Packaging is a later issue. Until the manifest exists there is nothing to
-  # validate, and failing here would block the work that must come first.
-  echo "no plugin manifest yet; skipping plugin validate"
-elif command -v claude >/dev/null 2>&1; then
+if command -v claude >/dev/null 2>&1; then
   claude plugin validate .
 else
   echo "claude CLI not found; skipping plugin validate"
