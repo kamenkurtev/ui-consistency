@@ -123,9 +123,10 @@ the project's answers into it:
 - Count a value that names a theme entry across every project that selects that
   theme.
 - Find the theme that applies first — [theme.md](theme.md).
-- **On a large project** — the family or the search for a shared piece spans more
-  than one app, library or area, or has more members than can be read in full —
-  follow [large-project.md](large-project.md).
+- **On a large project** — the family's members span more than one app, library
+  or area, or are more than can be read in full — follow
+  [large-project.md](large-project.md).
+- A shared piece's reach search crossing areas does not make a project large.
 - If you read only a sample, **say so and how large**.
 
 ## 4. The kind, the family, the proof, the counts
@@ -144,9 +145,11 @@ In this order; the rules are in [counting.md](counting.md):
 
 - **Count in the phase itself.** Write each count down once instead of
   re-opening the files behind it.
-- **If the search crosses areas** — more than one app, library or package —
-  hand the counting to one subagent per area, as
+- **If the family's members sit in more than one area** — app, library or
+  package — hand the counting of the members to one subagent per area, as
   [large-project.md](large-project.md) says.
+- **Run a shared piece's reach search in the phase itself**, whatever it
+  crosses: it is one grouped search that returns a number.
 
 **Read less:**
 

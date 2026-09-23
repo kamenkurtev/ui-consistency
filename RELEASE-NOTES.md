@@ -5,6 +5,22 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.10 (2026-09-23)
+
+### Changes
+
+- `finding-patterns` counts *whether* a page has a role apart from *which way*
+  it writes it, and decides each by the order. *None* is no longer one of the
+  ways. A family where 14 of 21 pages filter, 10 of them through the shared
+  toggle, is counted as filtering, through the shared toggle — not as three ways,
+  one of them *none*.
+- Counting splits across subagents only when the family's members sit in more
+  than one area. A shared piece's reach search runs in the phase itself, and
+  its crossing areas no longer makes a project large.
+- Where the project has two shared pieces for one role, the members decide
+  between them: the majority, or the newest where there is none.
+- The checklist's first line reads *<n> members of <m> candidates* (#273).
+
 ## v0.51.9 (2026-09-23)
 
 ### Changes

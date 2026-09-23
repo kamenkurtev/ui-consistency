@@ -21,6 +21,10 @@ It settles what a count cannot: **decide, and say what you decided.**
 
 Take the first level that applies and stop there.
 
+Decide *whether* the page has a role before *which way* it writes it, each by
+this order: first whether, over the whole family; then which way, over the
+members that have the role ([counting.md](counting.md), *Counting honestly*).
+
 1. **What the request asked for.** An explicit instruction outranks everything
    counted.
    - Carry it out, and report in one line what it goes against.
@@ -49,6 +53,12 @@ Take the first level that applies and stop there.
      bypass and call it the convention.
    - Report both numbers: *used in <n> files across <where>; <k> of <m> in the
      family write their own*.
+   - **If the project has two shared pieces for the role**, this level does not
+     choose between them. Decide between the two by levels 5 and 6, over the
+     members that use either: the majority, or the newest where there is none.
+   - If no member uses either, take the one used in more files across what the
+     page can import from.
+   - Report both pieces, with where each is used and how often.
 5. **What the newest members write** — only where a count is split with no
    majority.
    - The most recently written pages show where the project is going rather than
@@ -121,6 +131,8 @@ Report every decision with the level that settled it and the numbers under it:
 <submit button>   full-width — the majority, 3 of 4 across 4 files
 <field error>     the shared helper — the shared piece, against the copy in <page>
 <page title>      as asked — you asked for <page>'s; the other 3 write it larger
+<filter control>  present — the majority, 14 of 21; through the shared toggle —
+                  the shared piece, against 4 written by hand
 ```
 
 ## When to ask anyway
