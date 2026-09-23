@@ -17,23 +17,23 @@ reach without having opened its file is not done.
 
 ## Joining a process, or running alone
 
-If a plan for this work already exists — another planning process wrote it — add
-the tasks below **into that plan**, in the shape in [plan-file.md](plan-file.md).
-Do not write a second one.
-
-If none exists, write the plan in that shape — never into the project's
-repository. Where it goes is how the phase ends, below. The checklist each task
-carries is [checklist.md](../finding-patterns/checklist.md).
+- If a plan for this work already exists — another planning process wrote it —
+  add the tasks below **into that plan**, in the shape in
+  [plan-file.md](plan-file.md). Do not write a second one.
+- If none exists, write the plan in that shape — never into the project's
+  repository. Where it goes is how the phase ends, below.
+- The checklist each task carries is
+  [checklist.md](../finding-patterns/checklist.md).
 
 ## The order of the tasks
 
 1. **Calibrate the checker.** One task before anything is built:
    `ui-consistency:verifying` on a scratch copy of the reference with one role
    deliberately written differently, kept outside the repository.
-   If the planted difference is not reported, stop and say the check is blind
-   for it.
-2. **Extractions the user accepted.** A shared component, partial or class is
-   built before any page that uses it.
+   - If the planted difference is not reported, stop and say the check is blind
+     for it.
+2. **Extractions the user accepted.** Build a shared component, partial or class
+   before any page that uses it.
 3. **One task per page.**
 
 ## What every page task carries
@@ -52,22 +52,22 @@ repository, in [plan-file.md](plan-file.md).
 
 ## Stop for a yes
 
-For a new page or a refactor, show the plan, with the checklists its tasks carry
-and the proposals `finding-patterns` made, and **wait for the user's yes** before
-any code. Ask nothing new here — the
-questions were asked while `finding-patterns` ran
-([deciding.md](../finding-patterns/deciding.md)). A task waiting on the little
-that did reach a person is `parked — waiting on <what>` in the plan, with its
-counts ([plan-file.md](plan-file.md)).
-
-**An answer given now is an override**
-([deciding.md](../finding-patterns/deciding.md)). Record it in the document the
-running process keeps, or under `## Decided` in this plan where this is the
-process — reported with the result when the plan closes — in the person's own
-words and with what it overrules; each task it was holding up goes from `parked`
-back to `todo`. An override nobody gave is never written.
-
-A small change to one page has no plan and does not stop.
+- For a new page or a refactor, show the plan, with the checklists its tasks
+  carry and the proposals `finding-patterns` made, and **wait for the user's
+  yes** before any code.
+- Ask nothing new here: the questions were asked while `finding-patterns` ran
+  ([deciding.md](../finding-patterns/deciding.md)).
+- Mark a task waiting on the little that did reach a person
+  `parked — waiting on <what>` in the plan, with its counts
+  ([plan-file.md](plan-file.md)).
+- **An answer given now is an override**
+  ([deciding.md](../finding-patterns/deciding.md)). Record it in the person's own
+  words, with what it overrules: in the document the running process keeps, or
+  under `## Decided` in this plan where this is the process, reported with the
+  result when the plan closes.
+- Move each task it was holding up from `parked` back to `todo`.
+- Never write an override nobody gave.
+- A small change to one page has no plan and does not stop.
 
 ## How the phase ends
 
@@ -75,13 +75,15 @@ In one of three ways, **chosen and said in one line**: *ending 2 — this become
 a story for another developer.*
 
 1. **The work stays with us, in one context.** The tasks live in the session.
-   Where the work outlives the context and the plan must survive on disk, a file
-   outside the working copy, in the scratch location the harness gives, deleted
-   with the work. Then `ui-consistency:implementing`.
-2. **The work becomes a story for somebody else.** The plan and what the
-   implementation needs are attached to the story, and finished when a developer
-   who was not in the conversation, without the checkout open, could implement
-   it from the attachment alone ([plan-file.md](plan-file.md), *The story*).
+   - If the work outlives the context and the plan must survive on disk, write it
+     to a file outside the working copy, in the scratch location the harness
+     gives, and delete it with the work.
+   - Then `ui-consistency:implementing`.
+2. **The work becomes a story for somebody else.** Attach the plan and what the
+   implementation needs to the story.
+   - It is finished when a developer who was not in the conversation, without the
+     checkout open, could implement it from the attachment alone
+     ([plan-file.md](plan-file.md), *The story*).
 3. **Another process is already running.** The tasks went into its plan, in its
    shape; no second document. Its loop executes them.
 
