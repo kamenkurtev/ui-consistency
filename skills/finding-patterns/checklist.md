@@ -6,10 +6,10 @@ against it (`implementing`) or walking it (`verifying`).
 A checklist is **the page's own tree turned into questions, in the order the
 page is read.**
 
-It belongs to the task. It goes into the task in the plan, or into the document
-the process already running keeps, and where there is neither it lives in the
-turn and goes with it. **Nothing measured is written to a file that outlives the
-work.**
+- It belongs to the task: put it into the task in the plan, or into the document
+  the process already running keeps.
+- Where there is neither, it lives in the turn and goes with it.
+- **Write nothing measured to a file that outlives the work.**
 
 ## The shape
 
@@ -23,11 +23,11 @@ members in <the bound: the application, and its libraries>, read <date>
       hand-writes that the project has a shared piece for>
 ````
 
-One line per position, in the order the page is read: the outermost holder
-first, then inward and left to right, then what the user sees happen —
-[SKILL.md](SKILL.md) step 2. The first line's *n of m* is the family of the page;
-**a line whose region has a family of its own carries that count instead** —
-[counting.md](counting.md).
+- One line per position, in the order the page is read: the outermost holder
+  first, then inward and left to right, then what the user sees happen —
+  [SKILL.md](SKILL.md) step 2.
+- The first line's *n of m* is the family of the page. **A line whose region has
+  a family of its own carries that count instead** — [counting.md](counting.md).
 
 An example, filled in:
 
@@ -55,42 +55,40 @@ read 2026-09-17
 *Is the button there* gets ticked without looking. **The project's own piece, how
 it is written, and what settled it** cannot be ticked without opening the page.
 
-**The tail of an item is the report.** The level of the order that settled it and
-the numbers under it — *the majority, 3 of 4 across 4 files*, *the shared piece,
-against the copy in <page>*, *as asked* — so walking the checklist is also reading
-every decision that was made ([deciding.md](deciding.md)).
-
-**Where the family has no convention at a position**, the line says that instead
-of carrying a number that reads as one: *no convention — three ways across 8
-files; the two newest write it this way* ([counting.md](counting.md)).
-
-**Where a design gave the tree**, the line says which half came from where — *the
-design puts a filter row above the table; the family writes one as 4 of 4* — so
-a reader can tell what was drawn from what was counted
-([design.md](design.md)).
+- **End each item with the report**: the level of the order that settled it and
+  the numbers under it — *the majority, 3 of 4 across 4 files*, *the shared
+  piece, against the copy in <page>*, *as asked*. Walking the checklist is then
+  also reading every decision that was made ([deciding.md](deciding.md)).
+- **If the family has no convention at a position**, say that on the line instead
+  of a number that reads as one: *no convention — three ways across 8 files; the
+  two newest write it this way* ([counting.md](counting.md)).
+- **If a design gave the tree**, say on the line which half came from where —
+  *the design puts a filter row above the table; the family writes one as 4 of
+  4* — so a reader can tell what was drawn from what was counted
+  ([design.md](design.md)).
 
 ## Eight to twelve items
 
-Keep to the positions that carry something: a piece the project shares, a
-convention with a count behind it, and what must not be copied.
-
-**What to leave out when it will not fit**: anything the technology gives for
-free, anything identical in every page of every kind, and any position where the
-family has no convention — say that last one out loud instead of listing it.
-**Except the positions the task changes**: a position the work exists to settle
-stays on the checklist, as *no convention*, whatever else is left out.
+- Keep to the positions that carry something: a piece the project shares, a
+  convention with a count behind it, and what must not be copied.
+- **If it will not fit, leave out** anything the technology gives for free,
+  anything identical in every page of every kind, and any position where the
+  family has no convention.
+- Say a position with no convention out loud instead of listing it.
+- **Keep every position the task changes**: a position the work exists to settle
+  stays on the checklist, as *no convention*, whatever else is left out.
 
 ## Walked by somebody else
 
-The agent that wrote the page does not tick its own checklist.
-`ui-consistency:verifying` walks it, and what it cannot judge it names rather
-than ticking.
+- The agent that wrote the page does not tick its own checklist.
+- `ui-consistency:verifying` walks it, and names what it cannot judge rather than
+  ticking it.
 
 ## A snapshot, and the code wins
 
-The first line says when it was read. Where the checklist and the code disagree,
-the code is right and the checklist is taken again — never argued with the copy in hand.
-
-That first line and the short body are also what make it **the extract a task
-carries out of the repository**: what a task takes with it, and who decides that
-it goes, is [plan-file.md](../planning/plan-file.md).
+- The first line says when it was read.
+- If the checklist and the code disagree, the code is right: take the checklist
+  again, never argue with the copy in hand.
+- That first line and the short body make it **the extract a task carries out of
+  the repository**. What a task takes with it, and who decides that it goes, is
+  [plan-file.md](../planning/plan-file.md).
