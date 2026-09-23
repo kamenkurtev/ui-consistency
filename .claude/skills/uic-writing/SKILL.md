@@ -24,7 +24,8 @@ The plugin is Markdown an agent acts on, and a change is judged by one thing: wh
 Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices), applied here:
 
 - **Only what the model does not already know**: an instruction, a definition, a template or an example. No story of an earlier run, no history of the plugin, no argument for its design, no maxim. A clause of why stays where it changes a judgment; a concrete failure stays where it shows a rule nobody would guess.
-- **A `SKILL.md`**: frontmatter, title, `## Overview` in one or two sentences, then the steps in order. Under 500 lines.
+- **One instruction to a line**, in the imperative: what to do, not how it was arrived at. An exception is its own line with its condition first — *If …, …* — never a clause inside the rule it limits.
+- **A `SKILL.md`**: frontmatter, title, `## Overview` in one or two sentences, then the steps in order. Under 500 lines and 16,000 characters: after compaction Claude Code re-attaches only the first 5,000 tokens of a skill (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
 - **A reference file**: title, then one line `**Read when:** …`, then `## Contents` when it runs over 100 lines. Linked from the `SKILL.md` that needs it, one level deep.
 - **A description** says what the skill does, then *Use when …* with the words a request uses, and does not summarise the steps. Third person, at most 1,024 characters, no XML tags. A shipped skill's description says in its first words that the work is what an end user sees.
 - **One term per concept**, as `skills/finding-patterns/words.md` defines them.

@@ -34,7 +34,8 @@ function frontmatter(text: string): { fields: Record<string, string>; body: stri
 // Anthropic's limits for a skill: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
 describe('each skill, within the platform limits', () => {
   for (const skill of skills) {
-    const { fields, body } = frontmatter(read(join(skillsDir, skill, 'SKILL.md')));
+    const text = read(join(skillsDir, skill, 'SKILL.md'));
+    const { fields, body } = frontmatter(text);
 
     it(`${skill}: name is its directory, at most 64 lowercase letters, digits and hyphens`, () => {
       const name = fields['name'] ?? '';
@@ -53,6 +54,13 @@ describe('each skill, within the platform limits', () => {
 
     it(`${skill}: SKILL.md body is under 500 lines`, () => {
       expect(body.split('\n').length).toBeLessThan(500);
+    });
+
+    // After compaction Claude Code re-attaches only the first 5,000 tokens of a
+    // skill: https://code.claude.com/docs/en/skills. 16,000 characters is 5,000
+    // tokens at 3.2 characters a token, a low rate for English prose.
+    it(`${skill}: SKILL.md is at most 16,000 characters`, () => {
+      expect(text.length).toBeLessThanOrEqual(16_000);
     });
   }
 });

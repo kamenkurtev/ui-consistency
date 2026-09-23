@@ -9,8 +9,7 @@ description: For what the end user sees — checks whether it can be read and us
 
 Checks whether what the end user sees can be read, and used without a mouse, in
 six subjects **reported separately** — a page can be perfect on contrast and
-unusable without a mouse. **It is optional**: it runs only when somebody asks for
-it or the project states a requirement.
+unusable without a mouse.
 
 ## When it runs
 
@@ -40,18 +39,18 @@ reach without having opened its file is not done.
 3. **Where the project states none and the request asked for accessibility**, an
    external standard **named as the one used, never as the project's rule**,
    reported with its number so a person decides. The one used here is WCAG 2.2
-   AA. **Where nobody asked and the project states nothing, no standard is
-   measured** — say so in one line, and stop at step 1.
-4. **What could not be evaluated is named.**
+   AA.
+4. **Where nobody asked and the project states none**, say in one line that no
+   standard is measured, and stop at step 1.
+5. **What could not be evaluated is named.**
 
 Where the project's own rule differs from the standard, the project's rule
 stands: report the number and whose rule it is.
 
 ## 1. Contrast — pairs, in every scheme
 
-A foreground and a background can each be a correct theme entry and still be
-unreadable together. Check **pairs**, never single values — the rules, the
-thresholds and the arithmetic are in [contrast.md](contrast.md).
+Check **pairs**, never single values — the rules, the thresholds and the
+arithmetic are in [contrast.md](contrast.md).
 
 ## 2. Focus — whether it is visible, and where it goes
 
@@ -145,8 +144,8 @@ thresholds and the arithmetic are in [contrast.md](contrast.md).
   side owns a gap: [spacing.md](../finding-patterns/spacing.md). Only the
   minimum sizes an external standard sets belong here.
 - **Which element fills a role** is read from the project as a convention, in
-  `ui-consistency:finding-patterns`. This skill never judges markup against an
-  external standard; it reports what a person cannot read, reach or use.
+  `ui-consistency:finding-patterns`. This skill never judges which element a
+  role should be; it reports what a person cannot read, reach or use.
 
 ## Say what you could not evaluate
 

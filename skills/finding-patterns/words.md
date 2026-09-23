@@ -18,6 +18,9 @@ steps.
   a form, a dialog. A small change touches one region of one page.
 - **Component** — whatever the project reuses as a unit: a framework component,
   a custom element, a partial or include, a block of markup with a shared class.
+- **Shared piece** — anything the project reuses across pages for one concern:
+  a component, a helper, a class. *The project's own piece* for a role is the
+  shared piece its pages reach for there.
 - **Element** — what that component comes out as at that position: the tag, the
   native widget, the primitive the framework renders. Where one piece is both —
   the project reuses the framework's own element or directive as its unit, and

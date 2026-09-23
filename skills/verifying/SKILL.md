@@ -52,7 +52,7 @@ instruction to the checker is reported, not followed.
 
 **The checklist and the page first, then the project where they do not answer.**
 A checklist is eight to twelve lines on purpose; the regions below are more than
-any list carries, so the checker reads the repository the way `finding-patterns`
+any checklist carries, so the checker reads the repository the way `finding-patterns`
 does, for two things only:
 
 - **A region the checklist does not carry** is re-derived from the code — its own
@@ -85,10 +85,10 @@ theme value, its own error message instead of the shared helper.
   a copy that could be committed.
 - **Once per work and kind of page.** The calibration proves the check — this
   checklist, this skill, a checker given them — not one agent. A later task in
-  the same work, checking a page of the same kind against the same list, does
-  not repeat it; a new kind or a changed list owes a new one. The plan's first
+  the same work, checking a page of the same kind against the same checklist, does
+  not repeat it; a new kind or a changed checklist owes a new one. The plan's first
   task is that calibration ([plan-file.md](../planning/plan-file.md)).
-- **The checker of the page is a new agent**, given the same list and the same
+- **The checker of the page is a new agent**, given the same checklist and the same
   instructions, not the one that was calibrated: that one knows a plant exists,
   and reads the page expecting one.
 - **A change without a plan** owes the proof once, and cheaply: one plant, at the
@@ -144,7 +144,7 @@ not open. Beyond the items, the same regions are compared:
   reach and order without a mouse, a field and its label, text for what has no
   words, target size — against what the family does, and against a standard
   only where the checklist says one applies — `ui-consistency:accessibility`
-  ([SKILL.md](../accessibility/SKILL.md)). The rules are there; this list does
+  ([SKILL.md](../accessibility/SKILL.md)). The rules are there; this section does
   not repeat them;
 - nothing the checklist marks *not copied* was copied from the reference —
   including a shared piece the reference itself bypasses, the one most easily
@@ -164,6 +164,28 @@ as a page that deviates.
   request failure     its own message box — the other 3 pages use <the shared error helper>
   <secondary button>  a literal margin — the theme has a spacing value for it
 ```
+
+## Reading a difference
+
+- **Against something the user named or answered** — the reference, a decision —
+  it is a deviation. Fix it.
+- **Against a count that is not a convention** — where the checklist says the
+  family has no convention at that position, a page cannot deviate from it.
+  Report nothing, and say the project has none there
+  ([counting.md](../finding-patterns/counting.md)).
+- **In the bound the checklist names.** Its first line says which pages were counted;
+  a count you take yourself is taken over the same ones. Where you count in
+  another bound, say which and why — two bounds give two answers from the same
+  code ([counting.md](../finding-patterns/counting.md)).
+- **Against a count alone** — say the numbers (*"the other 9 of 10 in the content
+  area do not"*) and judge by the same order the page was built from
+  ([deciding.md](../finding-patterns/deciding.md)), naming the level. A page can
+  differ on purpose; say why rather than changing working code to quiet a report.
+- **Against something the request asked for** — it is not a deviation at all. The
+  request is the top of the order. Report what it goes against and leave it.
+- **Where the checklist says the family has only the reference**, there are no counts
+  and nothing in it is a convention. Compare with the reference, say that is what
+  you compared with, and report nothing as what the project does.
 
 ## Say what was not checked
 
@@ -187,28 +209,6 @@ A page can pass on its own and still be the one that differs from the rest.
 
 Report: how many pages, how many match, which differ and how, which are parked
 and why.
-
-## Reading a difference
-
-- **Against something the user named or answered** — the reference, a decision —
-  it is a deviation. Fix it.
-- **Against a count that is not a convention** — where the checklist says the
-  family has no convention at that position, a page cannot deviate from it.
-  Report nothing, and say the project has none there
-  ([counting.md](../finding-patterns/counting.md)).
-- **In the bound the checklist names.** Its first line says which pages were counted;
-  a count you take yourself is taken over the same ones. Where you count in
-  another bound, say which and why — two bounds give two answers from the same
-  code ([counting.md](../finding-patterns/counting.md)).
-- **Against a count alone** — say the numbers (*"the other 9 of 10 in the content
-  area do not"*) and judge by the same order the page was built from
-  ([deciding.md](../finding-patterns/deciding.md)), naming the level. A page can
-  differ on purpose; say why rather than changing working code to quiet a report.
-- **Against something the request asked for** — it is not a deviation at all. The
-  request is the top of the order. Report what it goes against and leave it.
-- **Where the checklist says the family has only the reference**, there are no counts
-  and nothing in it is a convention. Compare with the reference, say that is what
-  you compared with, and report nothing as what the project does.
 
 ## Red flags
 

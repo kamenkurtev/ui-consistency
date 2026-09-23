@@ -45,8 +45,7 @@ page title is one level in 5 of 5 files; a section heading is the next in 9 of
 ## This measures nothing against a standard
 
 Everything here is counted from the family — it is a convention, the way a
-component or a prop is one. Whether markup is right against an external standard
-is not this file's question and never becomes it: what a person can read, reach
-and use is `ui-consistency:accessibility`
-([SKILL.md](../accessibility/SKILL.md)), when it is asked for or the project
-requires it, and it says which standard it uses.
+component or a prop is one. Whether a person can read, reach and use what the
+element renders is not this file's question: that is
+`ui-consistency:accessibility` ([SKILL.md](../accessibility/SKILL.md)), when it
+is asked for or the project requires it, and it says which standard it uses.

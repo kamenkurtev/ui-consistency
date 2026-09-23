@@ -5,6 +5,23 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.8 (2026-09-23)
+
+### Small changes
+
+- `finding-patterns` gives one instruction to a line: the same steps, asking the
+  same things, in 14% fewer words and half as many sentences over thirty words.
+  A rule it said in full and again in `deciding.md` or `checklist.md` is now a
+  link there.
+- `accessibility` says once that it is optional, and says what it judges the
+  same way `elements.md` does: what a person can read, reach and use, never
+  which element a role should be.
+- *The checklist* is the only name for what a task carries — `planning` no
+  longer calls it *the pattern*, in its description included — and `words.md`
+  defines *shared piece*.
+- `verifying`'s *Reading a difference* sits under the step that uses it, and
+  `mockup.md` names a section that exists (#270).
+
 ## v0.51.7 (2026-09-23)
 
 ### Small changes
