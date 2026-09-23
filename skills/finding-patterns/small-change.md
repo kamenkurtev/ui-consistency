@@ -5,9 +5,7 @@ in place of its steps 1 to 8. `implementing` takes what this produced.
 
 One page, one region — a label, a value, a field added, what a button does. Not
 a new page, not a kind nobody has written down, not a change applied across
-pages: those take the whole phase. Run the whole phase on a one-line change and
-nobody will tolerate it twice; skip it and the change is written from memory,
-which is what this exists to stop.
+pages: those take the whole phase.
 
 **What is read**
 
@@ -24,17 +22,14 @@ reference — and the theme entries it uses: **about ten project files and ten
 searches in the phase itself, and about twenty-five of each for the whole
 change**, the checkers and every other subagent counted in.
 
-- **It counts what the cost line counts**, as one running total. A budget over
-  the phase alone never meets the number the run reports, and a change that
-  opened a hundred files through its checkers would cross nothing.
+- **It counts what the cost line counts**, as one running total.
 - **Say it at the crossing, not in the report.** The moment the total passes
   the budget — the eleventh search, the first checker that takes it over —
   **stop and say so in one line**, with both numbers.
 - **Past twice the whole-change budget — fifty of either — it is no longer a
   small change**: say that, and take it back to step 0 ([SKILL.md](SKILL.md)) to
   be sized again, which is where the whole phase starts.
-- **Keep the total as you go.** A number worked out at the end is how the
-  crossing goes unsaid.
+- **Keep the total as you go.**
 
 **What is deliberately skipped**
 
@@ -54,7 +49,7 @@ change**, the checkers and every other subagent counted in.
   ([deciding.md](deciding.md)).
 - **The check, by an agent that did not write the change** —
   `ui-consistency:verifying`. This is the part a small change is most tempted to
-  drop, and the one that makes it safe to read little. Its proof is one plant,
+  drop. Its proof is one plant,
   at the position the change touches, in a copy of that one file: **once for the
   change, not once per round of checking** — a second round reuses the first
   proof, and a second plant proves nothing the first did not.
@@ -78,5 +73,4 @@ one line each, with what settled them. Its first line says it covers one region,
 so nothing reads it as the list for the whole page.
 
 **Say what you did not read.** A reduced run reports its bounds out loud: which
-position it counted and which it did not. A short list that does not say how
-short it is reads as a clean result over work nothing looked at.
+position it counted and which it did not.

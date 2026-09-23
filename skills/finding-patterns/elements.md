@@ -7,11 +7,6 @@ A **role** is a position in the tree — the thing the page needs at that place.
 It is never an attribute a technology happens to spell the same way; such an
 attribute is part of **how the element is written**, not the position itself.
 
-The component at a position is counted already. What that component comes out as
-is not — so a clickable thing that is not the project's button, a page with no
-outermost holder of its own, and a heading level picked at random pass every
-phase unseen.
-
 ## What to record
 
 - **The element per role** — what the family actually writes at that position:

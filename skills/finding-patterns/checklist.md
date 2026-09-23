@@ -1,15 +1,13 @@
 # The checklist
 
-What a task gets instead of a document: **the page's own tree turned into
-questions, in the order the page is read.** `finding-patterns` produces it,
-`implementing` builds against it, and an agent that did not write the page walks
-it.
+**The page's own tree turned into questions, in the order the page is read.**
+`finding-patterns` produces it, `implementing` builds against it, and an agent
+that did not write the page walks it.
 
 It belongs to the task. It goes into the task in the plan, or into the document
 the process already running keeps, and where there is neither it lives in the
 turn and goes with it. **Nothing measured is written to a file that outlives the
-work** — a count is true of the code as it was read, and code that has moved on
-makes it a lie nobody notices.
+work.**
 
 ## The shape
 
@@ -72,9 +70,8 @@ a reader can tell what was drawn from what was counted
 
 ## Eight to twelve items
 
-Forty items on a page are ticked blind, and a list nobody reads is the same as no
-check at all. Keep to the positions that carry something: a piece the project
-shares, a convention with a count behind it, and what must not be copied.
+Keep to the positions that carry something: a piece the project shares, a
+convention with a count behind it, and what must not be copied.
 
 **What to leave out when it will not fit**: anything the technology gives for
 free, anything identical in every page of every kind, and any position where the
@@ -84,19 +81,9 @@ stays on the list, as *no convention*, whatever else is left out.
 
 ## Walked by somebody else
 
-The agent that wrote the page does not tick its own list. A checkbox is ticked by
-an optimist; that failure is on record twice, in the words of agents that had
-just checked their own work. `ui-consistency:verifying` walks it, and what it
-cannot judge it names rather than ticking.
-
-## What it is not
-
-- **Not a document per kind of page.** It goes with the task: nothing to review
-  on its own, keep in step between branches, or find stale.
-- **Not a test.** This plugin writes no test suite; that belongs to whatever
-  process runs the work.
-- **Not a record.** What was counted is evidence for the decisions in this task,
-  reported with them, and it is not kept.
+The agent that wrote the page does not tick its own list.
+`ui-consistency:verifying` walks it, and what it cannot judge it names rather
+than ticking.
 
 ## A snapshot, and the code wins
 

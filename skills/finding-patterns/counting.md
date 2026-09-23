@@ -50,8 +50,8 @@ kind, what decided it, and how many members were counted —
 
 ## The bound the family is counted in
 
-Two agents reading the same reference must count the same pages, or they report
-different conventions from the same code. So the bound is fixed, not chosen:
+The bound is fixed, not chosen, so two agents reading the same reference count
+the same pages:
 
 - **The application that mounts the page** — whatever routes to it or renders it
   from its entry — **and every library that application uses.** Not the library
@@ -103,9 +103,8 @@ region only the reference has.
 
 ## A kind whose family has only the reference
 
-It happens on the first page of a new kind, and on a project that has one of
-everything. There is nothing to count, so **the phase does not become a phase
-that found conventions.** It says so, and runs a different branch:
+There is nothing to count, so **the phase does not become a phase that found
+conventions.** It says so, and runs a different branch:
 
 - **Say it**, in as many words: this kind has one member, so what the list
   carries is that page's way and not the project's — a starting point somebody
@@ -183,12 +182,10 @@ second control where every member has one, a control nobody has here.
 ## When a count is not a convention at all
 
 *2 of 8* is a number, and written the way every other count is written it reads
-as a rule. It is not one, and recording it as one is how a project with no
-convention acquires a wrong one — from this tool, in writing.
+as a rule. It is not one.
 
 Read it off the numbers themselves. **Never a threshold from outside**: no
-percentage, no "most", nothing this file could be wrong about on the next
-project.
+percentage, no "most".
 
 - **Count the ways, not only the commonest.** A position is *4 of 4*, or *3 of 4
   and one other way*, or *3, 3 and 2 across three ways*. The last is a plurality,
@@ -198,7 +195,7 @@ project.
   have to write *some do this, some do that, some do the third*, there is none.
 - **The commonest way must outnumber the others put together.** Where it does
   not, say the family has no convention here and give every way with its
-  numbers. That is arithmetic on what you counted, not a rule brought in.
+  numbers.
 - **A convention with several different exceptions is a family drifting**, not a
   rule with deviations. Say which it is: *the commonest way, 5 of 8, against
   three others* is a different finding from *7 of 8 except `<page>`*.
@@ -206,5 +203,4 @@ project.
 **The order still decides.** Nothing stalls and nothing extra is asked: the
 newest members, then the reference, settle what to write — [deciding.md](deciding.md).
 What changes is the reporting. The line says *no convention here; the two newest
-write it this way*, so nobody reads a number as a rule the project does not
-have.
+write it this way*.

@@ -47,9 +47,7 @@ against each other:
 ## Never a value
 
 **Colour, spacing, size, weight, radius and typeface come from the theme**, every
-time, even when the design shows them plainly. A value taken off a picture is
-false precision: it is one screen's rendering at one size, and it ties the page
-to a number nobody can find again.
+time, even when the design shows them plainly.
 
 Where the design's own value is clearly not what the theme has, that is not a
 value to copy — it is the disagreement below.

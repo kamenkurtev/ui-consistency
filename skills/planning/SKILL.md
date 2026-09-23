@@ -5,10 +5,8 @@ description: Use when work the end user will see spans several steps or pages an
 
 # Planning from the pattern
 
-A plan that only names the components was tried on a thirty-page refactor and
-the pages still came out different: nothing checked page fifteen against it. A
-plan here carries **what makes each page checkable** — the checklist itself, what
-not to copy, and a check by somebody who did not write the page.
+Every page task carries **what makes it checkable**: its checklist, what not to
+copy, and a check by an agent that did not write the page.
 
 **Open a linked file when you reach the part that names it, never before** —
 whatever the request that handed you this skill says about its links. A part you
@@ -46,27 +44,24 @@ carries is [checklist.md](../finding-patterns/checklist.md).
   1. *Re-read the checklist before writing — do not work from memory.*
   2. *Hand the page to a separate agent with `ui-consistency:verifying`; fix what it reports.*
 
-A task that leaves any of these out is how page fifteen drifts. Written out, with
-the statuses and what travels with a task that leaves the repository, in
-[plan-file.md](plan-file.md).
+Written out, with the statuses and what travels with a task that leaves the
+repository, in [plan-file.md](plan-file.md).
 
 ## Stop for a yes
 
 For a new page or a refactor, show the plan, with the checklists its tasks carry,
-and **wait for the user's yes** before any code. Ask nothing new here — the questions were
-asked while the pattern was found — and by then almost nothing is left to ask
+and **wait for the user's yes** before any code. Ask nothing new here — the
+questions were asked while the pattern was found
 ([deciding.md](../finding-patterns/deciding.md)). A task waiting on the little
 that did reach a person is `parked — waiting on <what>` in the plan, with its
 counts ([plan-file.md](plan-file.md)).
 
-**An answer given now is an override** — the one thing a task cannot work out
-again for itself ([deciding.md](../finding-patterns/deciding.md)). Record it in
-the document the running process keeps, or under `## Decided` in this plan where
-this is the process — reported with the result when the plan closes — in the
-person's own words and with what it overrules; each
-task it was holding up goes from `parked` back to `todo`. An answer that only
-ever reaches the conversation is lost the moment it ends — and one nobody gave is
-never written at all.
+**An answer given now is an override**
+([deciding.md](../finding-patterns/deciding.md)). Record it in the document the
+running process keeps, or under `## Decided` in this plan where this is the
+process — reported with the result when the plan closes — in the person's own
+words and with what it overrules; each task it was holding up goes from `parked`
+back to `todo`. An override nobody gave is never written.
 
 A small change to one page has no plan and does not stop.
 
@@ -94,4 +89,4 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "stated once in the preamble rather than repeated" — the pattern path, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. Seen twice — in a scenario run and in a real twelve-task plan. |
+| "stated once in the preamble rather than repeated" — the pattern path, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. |

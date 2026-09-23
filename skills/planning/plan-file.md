@@ -5,11 +5,7 @@ The shape of the plan `planning` writes when no other process wrote one.
 every page task.
 
 **Nothing of it is written into the project's repository** — not committed, not
-left in the working copy, not a directory the project is asked to ignore. A plan
-belongs to one person and lasts days; the repository belongs to everyone and
-lasts years. Ten people each with an agent writing plans into it would fill it
-with documents nobody reads twice, stale the moment the code moves and
-conflicting wherever two of them touch the same area.
+left in the working copy, not a directory the project is asked to ignore.
 
 **It lives as long as the work, and no longer**, in one of three places — the
 three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
@@ -42,7 +38,7 @@ the pattern is parked with its reason, never forced and never silently skipped.
 A task waiting on the one kind of thing that reaches a person — the order tied
 **and** the answer changes code outside this work — is
 `parked — waiting on <what>`; there is no list of open questions beside the
-tasks, because a question with nothing waiting on it is not worth writing down.
+tasks.
 
 ## Decided
 
@@ -89,16 +85,11 @@ with the result, since nothing else keeps it.
 A subagent executing a task is given **that task and nothing else**; a preamble
 does not travel with it. So the checklist, the reference, what must not be copied,
 and the check are **in each task**, even when the user asks for one line per page.
-The checklist is short on purpose — eight to twelve lines
-([checklist.md](../finding-patterns/checklist.md)) — which is what makes carrying
-it in every task affordable.
 
-**However many tasks there are.** Twelve pages carrying thirteen lines each is
-long for a person to read top to bottom; a plan is not read that way. Each task
-is read alone, by whoever executes it. Writing the list once and telling the
-other tasks to *copy it in when picked up* is the preamble again, and it fails
-the same way: the subagent handed one task does not have it. For a person,
-the tasks' first lines are the summary: the page and its status.
+**However many tasks there are.** Writing the list once and telling the other
+tasks to *copy it in when picked up* is the preamble again: the subagent handed
+one task does not have it. For a person, the tasks' first lines are the summary:
+the page and its status.
 
 **A task's prose never narrows its own list.** *"Change nothing else"* does not
 take a line off the checklist. Where a line is left out of this task on purpose —
@@ -119,8 +110,7 @@ proved can see is not a check.
 
 Every task done or parked, and the last check passed: **the plan is closed.**
 
-- **The tasks and their checklists go.** They were true of the code as it was
-  read; the pages now are the record of what was built.
+- **The tasks and their checklists go.**
 - **What a person decided is reported** with the result. An override outlives
   the work only where a process keeps decisions
   ([deciding.md](../finding-patterns/deciding.md)); this plugin keeps none of its

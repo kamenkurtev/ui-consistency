@@ -142,10 +142,9 @@ sentence of the skill it followed is in the skill.
 in what it wrote to the user, taken from the transcript.
 
 **And only once a repeated run reproduces it.** A flag seen in one run of three
-is a sample, not a pattern: keep it if you like, with a note saying how often it
-was seen — *1 of 3 runs* — so a later reader knows what it rests on. A flag with
-no such note is read as something agents do, which is a claim a single run cannot
-make.
+is a sample, not a pattern. Where one goes into a skill anyway, the pull request
+that adds it says how often it was seen — *1 of 3 runs*; the skill carries the
+words and what they mean, not the count.
 
 **A result is evidence about the version it ran against.** The design changes;
 say which version, so an old run is not read as evidence for a behaviour that has
