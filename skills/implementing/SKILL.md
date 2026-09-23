@@ -118,8 +118,9 @@ and what is deliberately skipped. Take what it produced, re-read that part of
 the pattern, make the change, and hand the page to `ui-consistency:verifying`,
 run by an agent that did not write it, before calling it done. The check is not
 the part that gets dropped because the change was small; its proof is one plant
-at the changed position ([SKILL.md](../verifying/SKILL.md), *First, prove it can
-see*), and it is fixed and checked again twice at most, as in step 13.
+at the changed position, once for the change and not per round
+([SKILL.md](../verifying/SKILL.md), *First, prove it can see*), and it is fixed
+and checked again twice at most, as in step 13.
 
 ## Then
 
