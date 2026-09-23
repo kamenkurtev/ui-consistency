@@ -91,8 +91,8 @@ cannot judge it names rather than ticking.
 
 ## What it is not
 
-- **Not a document per kind of page.** There is no `patterns/<kind>.md`: nothing
-  to review on its own, keep in step between branches, or find stale.
+- **Not a document per kind of page.** It goes with the task: nothing to review
+  on its own, keep in step between branches, or find stale.
 - **Not a test.** This plugin writes no test suite; that belongs to whatever
   process runs the work.
 - **Not a record.** What was counted is evidence for the decisions in this task,

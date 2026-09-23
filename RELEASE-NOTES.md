@@ -5,6 +5,16 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.2 (2026-09-23)
+
+### Small changes
+
+- `implementing` and `verifying` call what the task carries **the checklist**,
+  the word `finding-patterns` and `planning` use; nothing in them reads as a
+  separate pattern document any more. `implementing` no longer asks for a plan
+  on disk where `planning` keeps it in the session: it re-reads the task from
+  wherever the plan is (#247).
+
 ## v0.51.1 (2026-09-23)
 
 ### Small changes

@@ -35,8 +35,8 @@ fact, read and counted like the rest.
   Say so; do not promote the most frequent value into a rule. Make one proposal,
   in the same batch as the others, for a single place to keep the base in the
   form the project can use — never a proposal per page.
-- **Record the base as derived**, with the values it came from — a file that
-  states a base without saying what produced it cannot be reviewed.
+- **Record the base as derived**, with the values it came from — a checklist
+  line that states a base without saying what produced it cannot be checked.
 - **The multiples in use** are counted separately from the base: which ones the
   family writes, where, and in how many files.
 
