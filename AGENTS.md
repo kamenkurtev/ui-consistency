@@ -151,11 +151,23 @@ harnesses have been run end to end.
 
 Skills are not prose — they shape what an agent does. A change to a skill:
 
-- is run as a scenario, without and with the skill, the way
-  `tests/skill-scenarios/RUNNING.md` describes, and the result recorded;
-- is tried on a **real repository**, not only the fixture;
+- names **the real run behind it** — a skill run on a real repository that went
+  wrong, with what was asked and what the agent did;
+- says **what the next run on that repository must show** — the numbers to beat,
+  or the thing the agent must now do — and that run is its evaluation;
 - does not rewrite the red flags, the order for deciding, or the wording of a
   rule without runs showing the change is better.
+
+**A change of wording that leaves what the skill asks the same** — a term made
+consistent, a sentence made true — needs no run, and the pull request says that
+is what it is.
+
+**A fixture scenario is optional**, and worth running only where it can show a
+difference: a step an agent does not take on its own even on four small pages
+(`tests/skill-scenarios/RUNNING.md`, *What a fixture scenario can show*). The
+fixture is read end to end whatever the agent is told, so it cannot tempt the
+shortcut a large project does; a scenario that passes there shows the idea is
+right in shape, never that it holds.
 
 ## General
 
