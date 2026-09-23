@@ -84,6 +84,8 @@ paste the complete transcript here
   how many, and how the outcome differed from before.
 - A change of wording that leaves what the skill asks the same: say so; it
   needs no run.
+- A changed description: the two sessions — one request that should start the
+  skill, one that should not — and what each did.
 - A fixture scenario, if one was run (`tests/skill-scenarios/RUNNING.md`): what
   it could show, and what it got.
 

@@ -38,5 +38,6 @@ Before the change is done:
 1. **Stale references.** Every file, section, skill, test and command the changed text names still exists. Search for each one.
 2. **Contradictions.** For every rule the change touched, search for its other copies — in other words as well as the same ones — in `skills/`, `USING.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/` and `.claude/skills/`. Each now says the same thing, or the change is not done.
 3. **Fix both in the same change**, and say in the pull request which copies were found.
+4. **A changed description.** Check it in two clean sessions, in a project with pages already built: a request in the words the description names must start the skill, and a request outside it must not. Say that it takes two sessions and wait for a yes before running them; say in the pull request what each did.
 
 How a wrong statement is corrected, and what may never be written publicly, is `.claude/rules/uic-docs.md`.
