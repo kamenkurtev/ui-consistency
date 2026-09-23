@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 /**
  * The skills' structure: what the platform requires of a skill, and that what a
- * skill points at exists. Their wording is not tested — it changes as runs show
- * what to change, and a real run is what checks it.
+ * skill points at exists. Their wording is not tested — it changes as real work
+ * shows what to change, and real work is what checks it.
  */
 
 const root = fileURLToPath(new URL('..', import.meta.url));

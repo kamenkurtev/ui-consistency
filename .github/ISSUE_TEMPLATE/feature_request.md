@@ -28,7 +28,7 @@ before — some were done differently, some were declined on purpose.
      to write, or one technology's special case does not belong here. -->
 
 ## Environment (required)
-<!-- We weigh a proposal grounded in a real run differently from one reasoned
+<!-- We weigh a proposal grounded in real work differently from one reasoned
      out of the documentation. -->
 
 | Field | Value |

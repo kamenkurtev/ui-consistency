@@ -8,7 +8,7 @@ import { join } from 'node:path';
 /**
  * Evidence from a private repository keeps its numbers and loses its names.
  *
- * Real runs against private repositories produce numbers worth recording, and
+ * Real work on private repositories produces numbers worth recording, and
  * names — components, screens, route files, test-id prefixes — that must not
  * ship in a public repository.
  *
