@@ -35,7 +35,7 @@ written: <date>
 Status of a task: unticked is `todo`, ticked is `done`, and `parked — <why>`
 stays unticked with its reason on the line. A page that genuinely should not take
 the pattern is parked with its reason, never forced and never silently skipped.
-A task waiting on the one kind of thing that reaches a person — the order tied
+A task waiting on the one question that waits on a person — the order tied
 **and** the answer changes code outside this work — is
 `parked — waiting on <what>`; there is no list of open questions beside the
 tasks.

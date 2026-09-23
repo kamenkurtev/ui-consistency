@@ -80,9 +80,9 @@ thresholds and the arithmetic are in [contrast.md](contrast.md).
 - **A region that holds focus and never gives it back** is a trap: a dialog is
   the usual one. A dialog that holds focus while it is open and returns it when
   it closes is the pattern; report either half that is missing.
-- **Where the project states no rule**, the standard used is WCAG 2.2 A:
-  reachable by keyboard (2.1.1), no trap (2.1.2), and a meaningful order
-  (2.4.3).
+- **Where the project states no rule**, the standard used is WCAG 2.2 AA, at its
+  level A criteria: reachable by keyboard (2.1.1), no trap (2.1.2), and a
+  meaningful order (2.4.3).
 - **Unevaluated**: behaviour that only runs, which you cannot judge from the
   code — say so rather than passing it.
 
@@ -96,9 +96,10 @@ thresholds and the arithmetic are in [contrast.md](contrast.md).
   placeholder standing in for a label; an error shown beside a field and not
   tied to it; a required or invalid state shown only by colour or only by
   position.
-- **Where the project states no rule**, the standard used is WCAG 2.2 A: the tie
-  between a label and its field (1.3.1), a label or instruction where input is
-  asked for (3.3.2), and a name for every control (4.1.2).
+- **Where the project states no rule**, the standard used is WCAG 2.2 AA, at its
+  level A criteria: the tie between a label and its field (1.3.1), a label or
+  instruction where input is asked for (3.3.2), and a name for every control
+  (4.1.2).
 - **Unevaluated**: a field whose label comes from somewhere you could not
   resolve — a translation file, a shared table of field definitions.
 
@@ -114,8 +115,8 @@ thresholds and the arithmetic are in [contrast.md](contrast.md).
   cause: a row that is only red, a required field marked only in colour.
 - **Decoration is not content.** Something purely decorative is not announced;
   report one that is, as well as meaning that is missing.
-- **Where the project states no rule**, the standard used is WCAG 2.2 A: a text
-  alternative (1.1.1) and never colour alone (1.4.1).
+- **Where the project states no rule**, the standard used is WCAG 2.2 AA, at its
+  level A criteria: a text alternative (1.1.1) and never colour alone (1.4.1).
 - **Unevaluated**: an alternative that comes from a translation mechanism or a
   shared table you could not resolve.
 
@@ -155,5 +156,5 @@ the cost as well: how many project files were opened and how many searches run.
 
 Inside a task, what the family does becomes items on the checklist —
 [checklist.md](../finding-patterns/checklist.md) — each carrying what settled it.
-Where the order ties and the fix would reach outside the task, that is the one
-thing put to a person ([deciding.md](../finding-patterns/deciding.md)).
+Where the order ties and the fix would reach outside the task, that is the
+question put to a person ([deciding.md](../finding-patterns/deciding.md)).

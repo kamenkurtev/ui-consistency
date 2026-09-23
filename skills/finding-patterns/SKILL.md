@@ -232,9 +232,10 @@ and the numbers under it; a decision nobody can see is the same as a decision
 nobody made.
 
 **Ask only where the order ties *and* the decision changes code outside what this
-task touches** — a snippet to extract, a place for shared values, a new component
-where nothing fits. One message, with the numbers and a proposal. Never a
-question per region, per prop, per pixel.
+task touches.** One message, with the numbers and a proposal. Never a question
+per region, per prop, per pixel. A snippet to extract, a place for shared
+values, a new component where nothing fits are proposals: reported with their
+numbers and shown with the plan ([deciding.md](deciding.md)).
 
 ## 8. Write the checklist
 

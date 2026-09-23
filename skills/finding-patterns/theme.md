@@ -37,8 +37,8 @@ and `verifying` for every value that names a theme entry.
   theme did not define, beside 31 correct ones under another theme. Counted
   across the workspace it read as a unanimous 131 of 131.
   **A value a theme does not define is never written as a convention.** Adding
-  an entry to a theme changes code outside the task, so this is one of the few
-  things that reaches a person ([deciding.md](deciding.md)): report it with the
+  an entry to a theme changes code outside the task, so this is a proposal
+  ([deciding.md](deciding.md)): report it with the
   theme it is missing from and the files that write it, and the choice between
   adding the entry and changing the usages.
 - **Nothing in the file shows this; only the theme does.** Where the theme that
