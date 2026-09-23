@@ -19,9 +19,9 @@ has more members than can be read in full.
   could not read.
 - If the harness lets a subagent run on a smaller, faster model, give it that
   model: search and arithmetic are its half.
-- **Keep the judgment in the phase**: the reference, the kind, which pages are
-  members, and every decision by the order. Do not hand them on.
-- **Add the counts up in the phase**, and decide there.
+- **Add the counts up in the phase, and keep the judgment there**: the
+  reference, the kind, which pages are members, and every decision by the order.
+  Do not hand them on.
 - Never re-read what a subagent read to check it. If a number looks wrong, send
   that one search back.
 
