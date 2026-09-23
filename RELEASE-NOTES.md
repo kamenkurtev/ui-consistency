@@ -5,6 +5,14 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.7 (2026-09-23)
+
+### Small changes
+
+- Each skill's description says what it does and then when to use it, with the
+  words a request uses — page, screen, form, component, *like an existing
+  page* — instead of summarising its own steps (#259).
+
 ## v0.51.6 (2026-09-23)
 
 ### Small changes

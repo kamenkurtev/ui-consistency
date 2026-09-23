@@ -1,6 +1,6 @@
 ---
 name: finding-patterns
-description: Use when building or changing what the end user sees — a new page or set of pages takes the whole phase, one region of one page a short branch chosen before anything is read — above all when a page is named to follow.
+description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use when building or changing a page, screen, form or component, above all when told to make it like an existing page.
 ---
 
 # Finding the pattern

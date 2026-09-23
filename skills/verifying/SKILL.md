@@ -1,6 +1,6 @@
 ---
 name: verifying
-description: Use when what the end user sees has been written and before calling it done or opening a PR, or when asked whether pages match the rest — "does this match", "did I miss a page", a page that looks or behaves unlike its neighbours.
+description: For what the end user sees — a separate agent checks written pages against their checklist and the rest of the project, and reports what differs. Use when UI has been written, before calling it done or opening a PR, or when asked whether pages match ("does this match", "did I miss a page", a page that looks or behaves unlike its neighbours).
 ---
 
 # Verifying against the checklist

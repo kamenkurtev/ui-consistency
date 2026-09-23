@@ -1,6 +1,6 @@
 ---
 name: accessibility
-description: Use when asked whether what the end user sees meets an accessibility standard — contrast, focus, keyboard reach, labels, text alternatives, target size — or when the project states an accessibility requirement.
+description: For what the end user sees — checks whether it can be read and used without a mouse (contrast, focus, keyboard reach, labels, text alternatives, target size) against a standard. Use when asked whether a page meets an accessibility standard, or when the project states an accessibility requirement.
 ---
 
 # Accessibility: can it be read, can it be used without a mouse
