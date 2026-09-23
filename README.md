@@ -118,7 +118,7 @@ the page is read. Shown here with roles; yours carries your own component names.
 
 ~~~~markdown
 new form page against form page (all four render the same holder and a form)
-— from <the page you named>, 4 of 5 members in <your app>, read 2026-08-30
+— from <the page you named>, 4 members of 5 candidates in <your app>, read 2026-08-30
 
 - [ ] page holder — <your holder>, as its own landmark — 4 of 4, 4 files
 - [ ] title one level down, in the toolbar — 4 of 4, 4 files

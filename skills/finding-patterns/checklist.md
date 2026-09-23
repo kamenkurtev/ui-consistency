@@ -14,8 +14,8 @@ page is read.**
 ## The shape
 
 ````markdown
-<page> against <kind> (<what decided the kind>) — from <reference>, <n> of <m>
-members in <the bound: the application, and its libraries>, read <date>
+<page> against <kind> (<what decided the kind>) — from <reference>, <n> members
+of <m> candidates in <the bound: the application, and its libraries>, read <date>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
@@ -26,15 +26,18 @@ members in <the bound: the application, and its libraries>, read <date>
 - One line per position, in the order the page is read: the outermost holder
   first, then inward and left to right, then what the user sees happen —
   [SKILL.md](SKILL.md) step 2.
-- The first line's *n of m* is the family of the page. **A line whose region has
-  a family of its own carries that count instead** — [counting.md](counting.md).
+- The first line's *<n> members of <m> candidates*: n is the family counted, m the
+  pages considered before non-members were removed
+  ([counting.md](counting.md), *Which pages are the family*).
+- A line's own count is over the members. **A line whose region has a family of
+  its own carries that count instead** — [counting.md](counting.md).
 
 An example, filled in:
 
 ````markdown
 returns against list page (all five render a toolbar and a table of rows, and
-src/pages keeps them together) — from orders, 4 of 5 members in the app,
-read 2026-09-17
+src/pages keeps them together) — from orders, 4 members of 5 candidates in the
+app, read 2026-09-17
 
 - [ ] page holder — the shared page holder, as its own landmark — 4 of 4, 4 files
 - [ ] toolbar in the header, title one level down — 4 of 4, 4 files
@@ -59,6 +62,9 @@ it is written, and what settled it** cannot be ticked without opening the page.
   the numbers under it — *the majority, 3 of 4 across 4 files*, *the shared
   piece, against the copy in <page>*, *as asked*. Walking the checklist is then
   also reading every decision that was made ([deciding.md](deciding.md)).
+- **If the family is split on whether the role is there at all**, the line
+  carries both decisions: *present — the majority, 14 of 21; through the shared
+  toggle — the shared piece* ([counting.md](counting.md), *Counting honestly*).
 - **If the family has no convention at a position**, say that on the line instead
   of a number that reads as one: *no convention — three ways across 8 files; the
   two newest write it this way* ([counting.md](counting.md)).

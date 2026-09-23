@@ -57,8 +57,8 @@ Then:
   do not, and are counted as a second kind.*
 - A tie inside the task's own reach is not a question ([deciding.md](deciding.md)).
 - **Say the decision and what it covered** in the checklist's first line: the
-  kind, what decided it, and how many members were counted —
-  [checklist.md](checklist.md).
+  kind, what decided it, and how many members of how many candidates were
+  counted — [checklist.md](checklist.md).
 
 ## The bound the family is counted in
 
@@ -159,6 +159,12 @@ was the opposite of the truth.
 - **Count per position** ([words.md](words.md)), never per component alone: 10
   of 18 buttons full-width reads as no rule, and was 10 of 10 in the content area
   and 0 of 4 in toolbars.
+- **Count *whether* apart from *which way*.** At each position, first count how
+  many members have the role at all. Then, over the members that have it, count
+  which way each writes it.
+- *None* answers *whether*; it is never one of the ways. *14 of 21 filter; of
+  those 14, 10 through the shared toggle and 4 by hand* — not *10, 4 and 7
+  across three ways*.
 - **Count what the component comes out as too**, per position and with its file
   spread, and the heading level where the position is a heading —
   [elements.md](elements.md).
@@ -200,9 +206,10 @@ as a rule. It is not one.
 
 - **Read it off the numbers themselves.** Never a threshold from outside: no
   percentage, no "most".
-- **Count the ways, not only the commonest.** A position is *4 of 4*, or *3 of 4
-  and one other way*, or *3, 3 and 2 across three ways*. The last is a
-  plurality, and a plurality is not a majority.
+- **Count the ways, not only the commonest**, over the members that have the
+  role. A position is *4 of 4*, or *3 of 4 and one other way*, or *3, 3 and 2
+  across three ways*. The last is a plurality, and a plurality is not a
+  majority.
 - **The test is whether the rest can be named.** If you can write *all of them
   except `<page>`*, there is a convention and that page is the exception. If you
   have to write *some do this, some do that, some do the third*, there is none.
