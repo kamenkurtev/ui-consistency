@@ -140,20 +140,13 @@ In this order; the rules are in [counting.md](counting.md):
    first. A zero for something it writes is a broken search.
 4. **The counts** — per position, with their file spread, by exact name.
 
-**Hand the counting to a subagent by default** — not only on a large project. It
-keeps the phase's context to conclusions.
+**Who counts:**
 
-- **Give it** the kind, the reference's tree of roles, the bound, and the exact
-  searches — by name, per position — with the proof step.
-- **It returns**, per position: the count and its ways, the members' spread, the
-  searches it ran, the files it opened, and what it could not read. Not the
-  files.
-- **Keep the judgment in the phase**: the reference, the kind, which pages are
-  members, and every decision by the order. Do not hand them on.
-- If the harness lets a subagent run on a smaller, faster model, give it this
-  half — search and arithmetic.
-- **Without subagents**, count in the phase itself: group the searches, and write
-  each count down once instead of re-opening the files behind it.
+- **Count in the phase itself.** Write each count down once instead of
+  re-opening the files behind it.
+- **If the search crosses areas** — more than one app, library or package —
+  hand the counting to one subagent per area, as
+  [large-project.md](large-project.md) says.
 
 **Read less:**
 
