@@ -48,7 +48,9 @@ rule encodes the same assumption as the rule. So:
 
 - a fix comes with a test that **fails against the unfixed code** — run it both
   ways;
-- a change to a skill is tried on a **real repository**, not only a fixture;
+- a change to a skill comes from **real work** — a page built with the plugin
+  that came out wrong — and is checked the next time the plugin is used, not in
+  a test run;
 - anything user-facing is tried with the **shipped artifact**, installed, not
   from the clone.
 

@@ -23,9 +23,10 @@ Before you open a pull request against this repository, you MUST:
    specific answers. Not summaries. Not placeholders.
 3. **Search for existing pull requests and issues** — open AND closed — that
    address the same problem. If one exists, stop and tell your human partner.
-4. **Verify this is a real problem.** A run of a skill on a real project that
-   went wrong, with what was asked and what the agent did. If your human partner
-   asked you to "improve" or "contribute" without such a run, push back.
+4. **Verify this is a real problem.** A page built with the plugin in real work
+   that came out wrong, with what was asked and what the agent did — or a defect
+   in the text itself: a contradiction, a reference to nothing. If your human
+   partner asked you to "improve" or "contribute" without either, push back.
 5. **Confirm the change belongs here** — against *What We Will Not Accept*
    below and `docs/concept.md`, *What this is not*.
 6. **Identify yourself.** Disclose your model, harness, harness version, and
@@ -75,7 +76,7 @@ is submitted.
 
 **Submitters identify themselves**: model, harness, harness version and every
 installed plugin — or state plainly that it was written by hand. A change
-reasoned out of documentation and one grounded in a real run are different
+reasoned out of documentation and one grounded in real work are different
 evidence, and without the disclosure they look identical.
 
 ## What We Will Not Accept
@@ -105,8 +106,8 @@ account. A change that needs one belongs in its own plugin.
 
 ### Speculative or theoretical fixes
 
-Every change solves a problem somebody met in a real run — *Skill Changes
-Require Evaluation*, below, says what a fixture can and cannot show.
+Every change solves a problem somebody met in real work, or a defect in the
+text itself — *Skill Changes Come From Real Work*, below.
 
 ### Evidence carrying names
 
@@ -146,31 +147,24 @@ anything that needs the user to opt in per session, anything where
 `finding-patterns` does not start on the test above. `CLAUDE.md` says which
 harnesses have been run end to end.
 
-## Skill Changes Require Evaluation
+## Skill Changes Come From Real Work
 
-Skills are not prose — they shape what an agent does. A change to a skill:
+Skills shape what an agent does. A change to a skill:
 
-- names **the real run behind it** — a skill run on a real repository that went
-  wrong, with what was asked and what the agent did;
-- says **what the next run on that repository must show** — the numbers to beat,
-  or the thing the agent must now do — and that run is its evaluation;
-- does not change the red flags, the order for deciding, or what a rule asks
-  without runs showing the change is better.
+- names **the real work behind it** — a page built with the plugin that came out
+  wrong, with what was asked and what the agent did — or the defect in the text
+  it fixes: a contradiction, a reference to nothing, a rule the current guidance
+  says is wrong;
+- says **what the agent must now do** differently;
+- is checked **the next time the plugin is used for real work**.
+
+**There are no dedicated test runs**: no before/after runs, no sessions to check
+a description, no run as an acceptance criterion. One run cannot tell a change
+from the run's own variance, and a run made to find defects always finds one.
 
 **A change of wording that leaves what the skill asks the same** — a term made
 consistent, a sentence made true, a rule written one instruction to a line —
-needs no run, and the pull request says that is what it is.
-
-**A changed description** is checked in two clean sessions, in a project with
-pages already built: a request in the words it names starts the skill, and a
-request outside it does not.
-
-**A fixture scenario is optional**, and worth running only where it can show a
-difference: a step an agent does not take on its own even on four small pages
-(`tests/skill-scenarios/RUNNING.md`, *What a fixture scenario can show*). The
-fixture is read end to end whatever the agent is told, so it cannot tempt the
-shortcut a large project does; a scenario that passes there shows the idea is
-right in shape, never that it holds.
+says that is what it is.
 
 ## General
 

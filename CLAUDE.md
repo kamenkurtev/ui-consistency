@@ -95,10 +95,12 @@ to this repository only — both trackers start at 1.
 
 ## Working here
 
-- The skills are validated on real projects; what fails comes back as issues.
+- A skill change comes from real work: a page built with the plugin that came
+  out wrong becomes an issue, and the change is checked the next time the plugin
+  is used. There are no dedicated test runs.
 - Designs and plans go on the issue, not into `docs/`.
 - The tests check the code, the manifests and the skills' structure — never
-  their wording, which a real run checks. `tests/skills.test.ts` fails on a skill
+  their wording, which real work checks. `tests/skills.test.ts` fails on a skill
   outside the platform's limits or over 16,000 characters, a link or skill name
   that points at nothing, or a library component name in the skills or
   `USING.md`.

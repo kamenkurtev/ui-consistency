@@ -37,7 +37,7 @@ happens.
 
 - What to test goes into an issue as acceptance criteria — *what* is checked,
   never where or on which projects.
-- Evidence from a real run keeps its numbers, described by role.
+- Evidence from real work keeps its numbers, described by role.
 - `tests/private-names.test.ts` covers names in tracked files only. An issue, a
   PR body or a comment has no test: reread the exact text before sending it.
 

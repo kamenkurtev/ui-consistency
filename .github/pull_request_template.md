@@ -1,14 +1,14 @@
 <!--
 BEFORE SUBMITTING: Read every word of this template, and AGENTS.md. Pull
 requests that leave sections blank, carry several unrelated changes, or show no
-evidence of a real run are closed without review.
+real work behind them are closed without review.
 
 Link the issue: `Closes #<number>`, and one `Closes` per issue — `Closes #6 and #19` only parses the first.
 -->
 
 ## Who is submitting this pull request? (required)
 <!-- We assume an agent wrote it — say which one and where it ran. A change
-     reasoned out of documentation and a change grounded in a real run are
+     reasoned out of documentation and a change grounded in real work are
      different evidence, and without this they look identical. -->
 
 | Field | Value |
@@ -78,18 +78,14 @@ paste the complete transcript here
 
 </details>
 
-## Evaluation
-- For a skill change: the real run behind it, and what the next run on that
-  repository must show — described by role, never by name. A run made since:
-  how many, and how the outcome differed from before.
-- A change of wording that leaves what the skill asks the same: say so; it
-  needs no run.
-- A changed description: the two sessions — one request that should start the
-  skill, one that should not — and what each did.
-- A fixture scenario, if one was run (`tests/skill-scenarios/RUNNING.md`): what
-  it could show, and what it got.
+## The real work behind it
+- For a skill change: the page that came out wrong in real work — what was
+  asked, what the agent did — or the defect in the text it fixes, and what the
+  agent must now do differently. Described by role, never by name.
+- A change of wording that leaves what the skill asks the same: say so.
 
-<!-- "It works" is not evaluation. -->
+<!-- No test runs: a skill change is checked the next time the plugin is used
+     for real work (AGENTS.md, *Skill Changes Come From Real Work*). -->
 
 ## Verification
 
@@ -127,10 +123,10 @@ found. **"Read, nothing false" is a result.**
 STOP. A contribution from outside with the box above unticked is not submitted.
 
 Closed without review:
-- no evidence of a person or of a real run
+- no evidence of a person or of real work behind it
 - several unrelated changes
 - a script or parser for analysis, or a technology's names in the skills
 - a name from a private repository
 - required sections blank or placeholder text
-- a skill's behaviour changed with no real run behind it
+- a skill's behaviour changed with no real work behind it
 -->
