@@ -7,7 +7,9 @@ tests, and `claude plugin validate` where the CLI is available.
 Three parts of the gate cannot run here and are stated rather than pretended:
 
 - **`claude plugin validate`** is skipped when the CLI is absent, which it is
-  on a runner. The manifest is still validated by `tests/packaging.test.ts`.
+  on a runner, so nothing there validates a manifest's shape.
+  `tests/packaging.test.ts` compares fields across the manifests — version,
+  description, licence, where the skills are — and nothing more.
 - **The three reviews** — simplification, correctness, security — are in
   `.claude/rules/uic-pr.md` and are done by whoever opens the PR. A workflow
   cannot do them, and pretending otherwise would be worse than the gap.

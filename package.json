@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
-  "version": "0.51.0",
+  "version": "0.51.1",
   "description": "Design-Driven Development for your coding agent: what the user sees drives the code, so pages come out consistent with your project the first time",
   "license": "MIT",
   "type": "module",

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // Move the shipped version, in every file that carries it.
 //
-// The version lives in seven places — one manifest per harness, plus
-// `package.json` and `src/version.ts` — and only `plugin.json` is read when a
-// plugin updates, so the other six drift with nothing to complain.
+// The version lives in every manifest a harness reads, `package.json` and the
+// lockfile, and only `plugin.json` is read when a plugin updates — so the others
+// drift with nothing to complain.
 //
 // Usage: npm run bump [patch|minor|major]     (patch by default)
 
@@ -57,19 +57,20 @@ for (const file of FILES) {
   console.log(`  ${file}`);
 }
 
-// The fourth place, and the only one that is code: the bundle stamps this into
-// every file it generates, so a wrong value here is shipped to every user and
-// nothing in a clone would notice.
+// The lockfile carries it twice, and a dependency can carry the same string, so
+// it is set by field. npm writes this file as two-space JSON, so writing it back
+// that way changes the two lines and nothing else.
 {
-  const target = path('src/version.ts');
-  const before = await readFile(target, 'utf8');
-  const after = before.replace(`'${current}'`, `'${next}'`);
-  if (after === before) {
-    console.error(`src/version.ts does not carry version ${current} — fix it by hand.`);
+  const target = path('package-lock.json');
+  const lock = JSON.parse(await readFile(target, 'utf8'));
+  if (lock.version !== current || lock.packages?.['']?.version !== current) {
+    console.error(`package-lock.json does not carry version ${current} — fix it by hand.`);
     process.exit(1);
   }
-  await writeFile(target, after, 'utf8');
-  console.log('  src/version.ts');
+  lock.version = next;
+  lock.packages[''].version = next;
+  await writeFile(target, `${JSON.stringify(lock, null, 2)}\n`, 'utf8');
+  console.log('  package-lock.json');
 }
 
 console.log(`\n${current} → ${next}. Add a "## v${next} (<date>)" entry to RELEASE-NOTES.md, and commit both with the change they ship.`);

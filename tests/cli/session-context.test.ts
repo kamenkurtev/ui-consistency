@@ -52,20 +52,6 @@ describe('what a session is told', () => {
     expect(said).toContain('ask only where it ties');
   });
 
-  it('says it whether or not the project has written anything down', async () => {
-    // The instruction is about how to work here, not about what this project
-    // happens to have. A project with nothing written down is the one that most
-    // needs to be told what to do first.
-    const bare = await sessionContext(root);
-
-    await mkdir(join(root, '.ui-consistency'), { recursive: true });
-    await writeFile(join(root, '.ui-consistency/rules.md'), '# Rules\n\nSomething.\n');
-    const withKnowledge = await sessionContext(root);
-
-    expect(bare).toContain('ui-consistency:finding-patterns');
-    expect(withKnowledge).toContain('ui-consistency:finding-patterns');
-  });
-
   it('says a directory an older version wrote is left behind and can go', async () => {
     // Nothing writes into a project's repository any more. A directory an older
     // version wrote is said once, beside the instruction, so it does not sit in

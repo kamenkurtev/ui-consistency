@@ -7,16 +7,6 @@ const read = async (path: string): Promise<Record<string, unknown>> =>
   JSON.parse(await readFile(fileURLToPath(new URL(`../${path}`, import.meta.url)), 'utf8'));
 
 /**
- * The version lives in three files, and only one of them is the one that
- * matters: a git-distributed plugin ships every commit, and an installed copy
- * updates when `plugin.json` says a new version exists — not when the code
- * changes. A fix that forgets the bump reaches nobody, silently, which is the
- * same failure shape as everything else in this repository.
- *
- * The other two drift because nothing reads them at install time, so nothing
- * complains.
- */
-/**
  * The files Gemini CLI loads: the one its manifest names, and every file that
  * one includes with a line of the form `@./<path>`.
  */
@@ -28,17 +18,27 @@ async function contextFiles(): Promise<string[]> {
   return [first, ...included];
 }
 
+/**
+ * The version is carried by every file `npm run bump` moves, and only one of
+ * them is the one that matters: a git-distributed plugin ships every commit, and
+ * an installed copy updates when `plugin.json` says a new version exists — not
+ * when the code changes. The others drift because nothing reads them at install
+ * time, so nothing complains.
+ */
 describe('the shipped version', () => {
-  it('is the same in the manifest, the marketplace entry and package.json', async () => {
+  it('is the same in the manifest, the marketplace entry, package.json and the lockfile', async () => {
     const plugin = await read('.claude-plugin/plugin.json');
     const marketplace = (await read('.claude-plugin/marketplace.json')) as {
       plugins: { name: string; version?: string }[];
     };
     const npm = await read('package.json');
+    const lock = (await read('package-lock.json')) as { version?: string; packages: Record<string, { version?: string }> };
 
     const entry = marketplace.plugins.find((p) => p.name === plugin['name']);
     expect(entry?.version).toBe(plugin['version']);
     expect(npm['version']).toBe(plugin['version']);
+    // Twice in the lockfile: its own field, and the root package's entry.
+    expect([lock.version, lock.packages['']?.version]).toEqual([plugin['version'], plugin['version']]);
   });
 
   it('describes the plugin the same way everywhere it is listed', async () => {
@@ -62,16 +62,6 @@ describe('the shipped version', () => {
     const plugin = await read('.claude-plugin/plugin.json');
     expect(plugin['version']).toMatch(/^\d+\.\d+\.\d+$/);
   });
-
-  it('is the same in the source the bundle carries', async () => {
-    // The fourth place, and the only one that is code. `bin/uic.mjs` runs from
-    // wherever it was installed, so it cannot read a package.json at runtime —
-    // it stamps this constant into every file it generates. Wrong here means
-    // wrong in every user's corpus, with a green suite in the clone.
-    const plugin = await read('.claude-plugin/plugin.json');
-    const { VERSION } = await import('../src/version.js');
-    expect(VERSION).toBe(plugin['version']);
-  });
 });
 
 describe('the hooks the plugin registers', () => {
@@ -90,8 +80,8 @@ describe('the hooks the plugin registers', () => {
 
     const session = hooks.hooks['SessionStart']?.[0]?.hooks[0];
     expect(session?.command).toContain('uic.mjs" session');
-    // Short on purpose: it is a stat and a few 512-byte reads, and it runs
-    // before anybody has asked for anything.
+    // Short on purpose: it lists two directories, and it runs before anybody
+    // has asked for anything.
     expect(session?.timeout).toBeLessThanOrEqual(5);
   });
 });
@@ -312,14 +302,12 @@ describe('what the program is allowed to know', () => {
         // Comments may discuss the names; only code may not carry them.
         .replace(/\/\*[\s\S]*?\*\//g, '')
         .replace(/\/\/[^\n]*/g, '')
-        // The parser's own node types are not a design system's vocabulary.
-        .replace(/\.type\s*[!=]==?\s*'[A-Za-z]+'/g, '')
-        .replace(/case\s+'[A-Za-z]+':/g, '')
-        // Nor are the **harness's** own names. `SessionStart` is a field value
-        // Claude Code reads back; spelling it differently means the hook says
-        // nothing. Exempt by exact name rather than by shape, so a component
-        // name cannot enter by looking like a protocol one.
-        .replace(/'(?:SessionStart|PostToolUse|UserPromptSubmit)'/g, '');
+        // The **harness's** own names are not a design system's vocabulary.
+        // `SessionStart` is a field value Claude Code reads back; spelling it
+        // differently means the hook says nothing. Exempt by exact name rather
+        // than by shape, so a component name cannot enter by looking like a
+        // protocol one.
+        .replace(/'SessionStart'/g, '');
 
       for (const match of source.matchAll(/['"]([A-Z][a-z]+[A-Za-z]*)['"]/g)) {
         named.push(`${file}: ${match[1]!}`);
@@ -402,9 +390,8 @@ describe('the other harnesses', () => {
   const manifests = ['.codex-plugin/plugin.json', '.cursor-plugin/plugin.json', 'gemini-extension.json'];
 
   it('all carry the same version as the Claude manifest', async () => {
-    // Four places now. `npm run bump` moves them together, and this is what
-    // notices when one is added and forgotten — which is exactly how the two
-    // original copies drifted.
+    // `npm run bump` moves them together, and this is what notices when one is
+    // added and forgotten — which is exactly how the two original copies drifted.
     const plugin = await read('.claude-plugin/plugin.json');
     for (const path of manifests) {
       expect((await read(path))['version']).toBe(plugin['version']);

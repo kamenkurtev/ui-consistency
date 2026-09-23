@@ -16,8 +16,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["src", "tests"],
-  // Fixtures stand in for someone else's repository; they name packages that
-  // are not installed here and are read as text, never compiled.
-  "exclude": ["tests/fixtures"]
+  "include": ["src", "tests"]
 }

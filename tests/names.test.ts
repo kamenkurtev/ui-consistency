@@ -13,8 +13,11 @@ import { join } from 'node:path';
 const ROOT = new URL('../', import.meta.url).pathname;
 
 /**
- * Two spellings: `uic check` is how prose names a command, and
- * `node "${CLAUDE_PLUGIN_ROOT}/bin/uic.mjs" check` is how a skill invokes one.
+ * A standing guard, not a finished cleanup. The skills once ran a binary that
+ * did the analysis, and its commands are gone; the one left is the session
+ * hook's. A command named in a skill is either one of those coming back, or an
+ * instruction to run something that does not exist. Two spellings: `uic
+ * session` in prose, and `node "…/bin/uic.mjs" session` as an invocation.
  */
 const COMMAND = /\buic(?:\.mjs"?)? ([a-z][\w-]*)/g;
 const SKILL = /\bui-consistency:([a-z][\w-]*)/g;
