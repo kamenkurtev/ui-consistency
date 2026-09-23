@@ -1,6 +1,6 @@
 ---
 name: planning
-description: Use when work the end user will see spans several steps or pages and needs a plan — a new feature, a refactor of many pages, one change applied to every page — including when another planning skill is about to write that plan.
+description: For what the end user sees — turns the pattern into a plan of one checkable task per page. Use when UI work spans several steps or pages (a new feature, a refactor of many pages, one change applied to every page), including when another planning skill is about to write that plan.
 ---
 
 # Planning from the pattern

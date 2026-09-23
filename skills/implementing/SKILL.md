@@ -1,6 +1,6 @@
 ---
 name: implementing
-description: Use when writing or changing what the end user sees and a checklist or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
+description: For what the end user sees — builds each page from its checklist, one page per task. Use when writing or changing UI and a checklist or UI plan exists, whether executing that plan page by page, refactoring a set of pages, or making a small change to one page.
 ---
 
 # Implementing from the checklist
