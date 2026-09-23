@@ -79,10 +79,13 @@ paste the complete transcript here
 </details>
 
 ## Evaluation
-- For a skill change: the scenario run without and with it
-  (`tests/skill-scenarios/RUNNING.md`), and the real repository it was tried on
-  — described by role, never by name.
-- How many runs after the change, and how the outcome differed from before.
+- For a skill change: the real run behind it, and what the next run on that
+  repository must show — described by role, never by name. A run made since:
+  how many, and how the outcome differed from before.
+- A change of wording that leaves what the skill asks the same: say so; it
+  needs no run.
+- A fixture scenario, if one was run (`tests/skill-scenarios/RUNNING.md`): what
+  it could show, and what it got.
 
 <!-- "It works" is not evaluation. -->
 
@@ -127,5 +130,5 @@ Closed without review:
 - a script or parser for analysis, or a technology's names in the skills
 - a name from a private repository
 - required sections blank or placeholder text
-- a skill's behaviour changed without a scenario run
+- a skill's behaviour changed with no real run behind it
 -->

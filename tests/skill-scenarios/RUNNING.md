@@ -3,6 +3,13 @@
 A scenario checks that an agent does what a skill says, and that it would not
 have done so without the skill (`superpowers:writing-skills`: RED, then GREEN).
 
+**It is optional.** A skill change is evaluated by the real run behind it and
+the next run on that repository (`AGENTS.md`, *Skill Changes Require
+Evaluation*). Run a scenario only where it can show **the difference** — below,
+*What a fixture scenario can show* — and not for a change of wording, which it
+cannot show anything about. Two scenarios at three runs per arm are twelve
+sessions against the account's limit.
+
 ## Files
 
 - `fixture/` — the project the agent works on: a small order-management app in
