@@ -39,7 +39,9 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   harnesses that do not read this file.
 - `.claude/skills/` — skills for working **on** the plugin, which an installed
   plugin never loads: `uic-writing`, how a skill or document here is written and
-  what is checked after — loaded when one of those files is being changed.
+  what is checked after — loaded when one of those files is being changed; and
+  `uic-auditing`, run by hand with `/uic-auditing`, which checks everything
+  against the current guidance and proposes issues.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
   hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
   what order. It has no off switch of its own: a harness disables a plugin its
