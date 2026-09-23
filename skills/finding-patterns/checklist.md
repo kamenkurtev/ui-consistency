@@ -54,11 +54,10 @@ read 2026-09-17
 
 *Is the button there* gets ticked without looking. **The project's own piece, how
 it is written, and what settled it** cannot be ticked without opening the page.
-An item with no *how* is worse than no item: it produces a tick and no work.
 
 **The tail of an item is the report.** The level of the order that settled it and
 the numbers under it — *the majority, 3 of 4 across 4 files*, *the shared piece,
-against the copy in <page>*, *as asked* — so walking the list is also reading
+against the copy in <page>*, *as asked* — so walking the checklist is also reading
 every decision that was made ([deciding.md](deciding.md)).
 
 **Where the family has no convention at a position**, the line says that instead
@@ -79,18 +78,18 @@ convention with a count behind it, and what must not be copied.
 free, anything identical in every page of every kind, and any position where the
 family has no convention — say that last one out loud instead of listing it.
 **Except the positions the task changes**: a position the work exists to settle
-stays on the list, as *no convention*, whatever else is left out.
+stays on the checklist, as *no convention*, whatever else is left out.
 
 ## Walked by somebody else
 
-The agent that wrote the page does not tick its own list.
+The agent that wrote the page does not tick its own checklist.
 `ui-consistency:verifying` walks it, and what it cannot judge it names rather
 than ticking.
 
 ## A snapshot, and the code wins
 
-The first line says when it was read. Where the list and the code disagree, the
-code is right and the list is taken again — never argued with the copy in hand.
+The first line says when it was read. Where the checklist and the code disagree,
+the code is right and the checklist is taken again — never argued with the copy in hand.
 
 That first line and the short body are also what make it **the extract a task
 carries out of the repository**: what a task takes with it, and who decides that

@@ -1,7 +1,7 @@
 # Counting: the kind, the family, the proof, the rules
 
 **Read when:** before any count is recorded — `finding-patterns` step 4, or a
-checker recounting a line of the list.
+checker recounting a line of the checklist.
 
 The sections run in the order of the work: the kind first, then the family, then
 the proof that a search can see, then the counts.
@@ -77,7 +77,7 @@ the same pages:
   the line**, and the order decides on the application's. A library unanimous
   inside itself is reported as that library's own way, never as the project's.
 - **Name the bound in the checklist's first line**
-  ([checklist.md](checklist.md)). A later phase handed the list counts in that
+  ([checklist.md](checklist.md)). A later phase handed the checklist counts in that
   bound, or says that it counted in another and why.
 
 ## Which pages are the family
@@ -120,7 +120,7 @@ region only the reference has.
 There is nothing to count, so **the phase does not become a phase that found
 conventions.** It says so, and runs a different branch:
 
-- **Say it**, in as many words: this kind has one member, so what the list
+- **Say it**, in as many words: this kind has one member, so what the checklist
   carries is that page's way and not the project's — a starting point somebody
   should look at, not a counted convention.
 - **Nothing in it is `<n> of <m>`** — *Counting honestly*, below.
@@ -155,8 +155,7 @@ was the opposite of the truth.
 
 ## Counting honestly
 
-- **A role is a position in the tree** ([words.md](words.md)). Count per
-  position, never per component alone: 10 of 18 buttons full-width reads as no rule, and was 10 of 10
+- **Count per position** ([words.md](words.md)), never per component alone: 10 of 18 buttons full-width reads as no rule, and was 10 of 10
   in the content area and 0 of 4 in toolbars.
 - **What the component comes out as is counted too**, per position and with its
   file spread, and so is the heading level where the position is a heading —

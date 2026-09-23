@@ -19,7 +19,7 @@ left in the working copy, not a directory the project is asked to ignore.
 three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
 
 1. **In the session**, while the work stays in one context. Where the work
-   outlives the context and the list must survive on disk, a file **outside the
+   outlives the context and the plan must survive on disk, a file **outside the
    working copy** — the scratch location the harness gives — deleted with the
    work.
 2. **Attached to a story** somebody else will implement — *The story*, below.
@@ -75,7 +75,7 @@ with the result, since nothing else keeps it.
       the checklist below.
       <the checklist's lines, one per position — checklist.md>
       Must not be copied from the reference: <what is particular to it>.
-      Not in this task: <a line of the list left out on purpose, and why> — or
+      Not in this task: <a line of the checklist left out on purpose, and why> — or
       nothing.
       1. Re-read the checklist before writing — do not work from memory.
       2. Hand the page to a separate agent with `ui-consistency:verifying`; fix
@@ -94,15 +94,15 @@ A subagent executing a task is given **that task and nothing else**; a preamble
 does not travel with it. So everything [SKILL.md](SKILL.md) *What every page task
 carries* lists is **in each task**, even when the user asks for one line per page.
 
-**However many tasks there are.** Writing the list once and telling the other
+**However many tasks there are.** Writing the checklist once and telling the other
 tasks to *copy it in when picked up* is the preamble again: the subagent handed
 one task does not have it. For a person, the tasks' first lines are the summary:
 the page and its status.
 
-**A task's prose never narrows its own list.** *"Change nothing else"* does not
+**A task's prose never narrows its own checklist.** *"Change nothing else"* does not
 take a line off the checklist. Where a line is left out of this task on purpose —
 another task owns it, a person said so — the task names it under *Not in this
-task*, with why, and the page is checked against the list less exactly that.
+task*, with why, and the page is checked against the checklist without that line.
 A line the prose contradicts without naming it is a line the task still carries.
 
 **A task handed on alone says where its status goes** — this plan, or whoever

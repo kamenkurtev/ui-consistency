@@ -66,7 +66,7 @@ person, reported and not waited on ([deciding.md](deciding.md)).
 ## What it cannot answer
 
 - **A design you cannot open** — a link to a tool you have no access to, a file
-  you cannot read — is said plainly and not guessed at. Silence is never success.
+  you cannot read — is said plainly and not guessed at.
 - **A role it shows and the project has no piece for** goes down the path that
   already exists: propose a piece and where it belongs, once, with the others.
 - **What the design does not show** is not decided by it. Fall back to the family

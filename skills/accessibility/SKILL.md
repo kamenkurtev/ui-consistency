@@ -42,10 +42,10 @@ reach without having opened its file is not done.
    reported with its number so a person decides. The one used here is WCAG 2.2
    AA. **Where nobody asked and the project states nothing, no standard is
    measured** — say so in one line, and stop at step 1.
-4. **What could not be evaluated is named.** Silence is not a pass.
+4. **What could not be evaluated is named.**
 
-A project that has decided something different from the standard has decided it.
-Report the number and whose rule it is; do not overrule the project.
+Where the project's own rule differs from the standard, the project's rule
+stands: report the number and whose rule it is.
 
 ## 1. Contrast — pairs, in every scheme
 
@@ -152,8 +152,8 @@ thresholds and the arithmetic are in [contrast.md](contrast.md).
 
 End with it, every time, per subject: the pairs whose surface could not be
 resolved, the stylesheets you could not read, the behaviour you could not judge
-from the code, the technology you could not read with confidence. A green result
-over what nothing looked at is worse than no result. Asked on its own, end with
+from the code, the technology you could not read with confidence. Asked on its
+own, end with
 the cost as well: how many project files were opened and how many searches run.
 
 Inside a task, what the family does becomes items on the checklist —

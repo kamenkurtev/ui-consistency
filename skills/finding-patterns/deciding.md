@@ -150,8 +150,7 @@ So a named reference is split the same way a design is
   the piece wins, and what the reference does there joins the things not copied
   from it.
 - **Say both sides in one line**: *the page you named writes its own error box;
-  the shared helper is used by 3 of 4 — I used the shared helper.* Reported, so
-  it is reversible in one sentence.
+  the shared helper is used by 3 of 4 — I used the shared helper.*
 - **The way back is open and short.** Asking for the reference's way is level 1,
   and deciding it for good is level 2.
 - **Where the named reference disagrees with the newest members**, say so too —

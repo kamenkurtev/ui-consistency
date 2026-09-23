@@ -68,9 +68,9 @@ sized as one page did not ask for.
 
 **What comes out**
 
-A **shorter list**, not a partial document: the positions the change touches,
+A **checklist for one region**, not a partial one: the positions the change touches,
 one line each, with what settled them. Its first line says it covers one region,
-so nothing reads it as the list for the whole page.
+so nothing reads it as the checklist for the whole page.
 
 **Say what you did not read.** A reduced run reports its bounds out loud: which
 position it counted and which it did not.
