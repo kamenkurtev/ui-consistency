@@ -37,6 +37,9 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 - `AGENTS.md` — the contributor guidelines for an agent working **in this
   repository**, in `superpowers`' shape; included below, and read on its own by
   harnesses that do not read this file.
+- `.claude/skills/` — skills for working **on** the plugin, which an installed
+  plugin never loads: `uic-writing`, how a skill or document here is written and
+  what is checked after — loaded when one of those files is being changed.
 - `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
   hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
   what order. It has no off switch of its own: a harness disables a plugin its
