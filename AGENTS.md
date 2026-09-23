@@ -105,14 +105,13 @@ account. A change that needs one belongs in its own plugin.
 
 ### Speculative or theoretical fixes
 
-Every change solves a problem somebody met in a real run. A fixture shows an
-idea is right in shape, never that it holds.
+Every change solves a problem somebody met in a real run — *Skill Changes
+Require Evaluation*, below, says what a fixture can and cannot show.
 
 ### Evidence carrying names
 
-A measurement from a private project keeps its numbers and loses its names, as
-above. A pull request that leaks one is closed, and the leak stays in GitHub's
-edit history.
+A pull request that leaks a name from a private repository is closed — *Names
+from private repositories*, above — and the leak stays in GitHub's edit history.
 
 ### Bulk or bundled pull requests
 

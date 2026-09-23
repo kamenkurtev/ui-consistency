@@ -1,9 +1,9 @@
 # A mockup of the page-to-be
 
 **Read when:** the shape is shown before any code ([deciding.md](deciding.md),
-*Show the shape before any code*), or a person asks to see the page before it is
-written. Otherwise it is optional: the checklist is the result, and this is a
-way to look at it.
+*With nothing near enough to be a reference*), or a person asks to see the page
+before it is written. Otherwise it is optional: the checklist is the result,
+and this is a way to look at it.
 
 It shows **whether the page hangs together**, drawn with the values the phase
 just measured. Nothing new is measured — it is the checklist with its numbers

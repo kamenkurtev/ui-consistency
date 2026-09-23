@@ -41,8 +41,8 @@ written: <date>
 # <Topic>
 
 Status of a task: unticked is `todo`, ticked is `done`, and `parked — <why>`
-stays unticked with its reason on the line. A page that genuinely should not take
-the pattern is parked with its reason, never forced and never silently skipped.
+stays unticked with its reason on the line. A page that genuinely should not follow
+the checklist is parked with its reason, never forced and never silently skipped.
 A task waiting on the one question that waits on a person — the order tied
 **and** the answer changes code outside this work — is
 `parked — waiting on <what>`; there is no list of open questions beside the
@@ -66,7 +66,7 @@ with the result, since nothing else keeps it.
       separate agent with `ui-consistency:verifying` and the checklist below,
       told only that the copy differs somewhere. Whoever plants does not check.
       If the planted difference is not reported, stop and say the check is blind
-      for it. Once passed, record it here — against which list, and what the
+      for it. Once passed, record it here — against which checklist, and what the
       copy could and could not prove; page tasks of this kind do not repeat it.
       <the checklist the page tasks carry>
 - [ ] **<the extraction the user accepted>** — build `<the shared piece>` in
@@ -138,7 +138,7 @@ What that test forces:
 - **Every task carries its checklist in full** — the positions with what settled
   each, and what must not be copied. A path into a repository is not an
   attachment.
-- **Each list's first line says it is a snapshot** of the code as it was read,
+- **Each checklist's first line says it is a snapshot** of the code as it was read,
   and when.
 - **What was decided is stated**, so nobody argues it again, and **what was not
   evaluated is named**, so silence is not read as a pass.

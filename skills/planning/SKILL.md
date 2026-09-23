@@ -1,9 +1,9 @@
 ---
 name: planning
-description: For what the end user sees — turns the pattern into a plan of one checkable task per page. Use when UI work spans several steps or pages (a new feature, a refactor of many pages, one change applied to every page), including when another planning skill is about to write that plan.
+description: For what the end user sees — turns each page's checklist into a plan of one checkable task per page. Use when UI work spans several steps or pages (a new feature, a refactor of many pages, one change applied to every page), including when another planning skill is about to write that plan.
 ---
 
-# Planning from the pattern
+# Planning from the checklist
 
 ## Overview
 
@@ -53,9 +53,9 @@ repository, in [plan-file.md](plan-file.md).
 ## Stop for a yes
 
 For a new page or a refactor, show the plan, with the checklists its tasks carry
-and the proposals the pattern phase made, and **wait for the user's yes** before
+and the proposals `finding-patterns` made, and **wait for the user's yes** before
 any code. Ask nothing new here — the
-questions were asked while the pattern was found
+questions were asked while `finding-patterns` ran
 ([deciding.md](../finding-patterns/deciding.md)). A task waiting on the little
 that did reach a person is `parked — waiting on <what>` in the plan, with its
 counts ([plan-file.md](plan-file.md)).
@@ -93,4 +93,4 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "stated once in the preamble rather than repeated" — the pattern path, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. |
+| "stated once in the preamble rather than repeated" — the checklist, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. |
