@@ -92,10 +92,11 @@ to this repository only — both trackers start at 1.
 - The skills are validated on real projects, not fixtures; what fails comes back
   as issues. A fixture shows an idea is right in shape, never that it holds.
 - Designs and plans go on the issue, not into `docs/`.
-- `tests/names.test.ts` fails on a skill or command named in `skills/` that does
-  not exist. `tests/packaging.test.ts` fails on a library component name in the
-  skills or `USING.md`. `tests/private-names.test.ts` fails on private names
-  (see `uic-docs.md`).
+- The tests check the code, the manifests and the skills' structure — never
+  their wording, which a real run checks. `tests/skills.test.ts` fails on a skill
+  outside the platform's limits, a link or skill name that points at nothing, or
+  a library component name in the skills or `USING.md`.
+  `tests/private-names.test.ts` fails on private names (see `uic-docs.md`).
 - Commands:
   - `npm run gate` — everything a PR needs: typecheck, build, stale bundle,
     version check, tests, plugin validate.

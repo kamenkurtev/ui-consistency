@@ -90,7 +90,7 @@ not writing another. The only code is the session hook.
 
 Skills and examples name roles — page holder, field, submit button, the shared
 error helper — never a framework's or library's component or prop.
-`tests/packaging.test.ts` fails on the common ones.
+`tests/skills.test.ts` fails on the common ones.
 
 ### Configuration a project has to write
 

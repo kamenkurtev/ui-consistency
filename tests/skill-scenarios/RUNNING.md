@@ -24,7 +24,8 @@ every run, so a word there about drift, the answer key or scenarios reaches
 every agent in both arms, and an agent told that faults were planted hunts for
 them as no agent on a real project would. What a reader of this repository
 needs to know about the fixture is written here and in `DRIFT.md`, never in it.
-`tests/skill-scenarios.test.ts` fails on such a word.
+Before a run, search `fixture/` for such a word and check it still carries every
+drift `DRIFT.md` lists — no test does it.
 - `inputs/` — what a scenario hands the agent, such as a checklist for work that
   is already under way.
 - `scenarios/<skill>-<n>.md` — one scenario: the task, the temptation, what must happen.
