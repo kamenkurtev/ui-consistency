@@ -21,8 +21,20 @@ which is what this exists to stop.
 **The budget.** A change to one region reads the page, what the family writes
 at that one position — grouped into a search or two, with the proof on the
 reference — and the theme entries it uses: **about ten project files and ten
-searches.** Past twice that, it is no longer a small change: say so in one line,
-and run the phase for it.
+searches in the phase itself, and about twenty-five of each for the whole
+change**, the checkers and every other subagent counted in.
+
+- **It counts what the cost line counts**, as one running total. A budget over
+  the phase alone never meets the number the run reports, and a change that
+  opened a hundred files through its checkers would cross nothing.
+- **Say it at the crossing, not in the report.** The moment the total passes
+  the budget — the eleventh search, the first checker that takes it over —
+  **stop and say so in one line**, with both numbers.
+- **Past twice the whole-change budget — fifty of either — it is no longer a
+  small change**: say that, and take it back to step 0 ([SKILL.md](SKILL.md)) to
+  be sized again, which is where the whole phase starts.
+- **Keep the total as you go.** A number worked out at the end is how the
+  crossing goes unsaid.
 
 **What is deliberately skipped**
 
@@ -43,8 +55,9 @@ and run the phase for it.
 - **The check, by an agent that did not write the change** —
   `ui-consistency:verifying`. This is the part a small change is most tempted to
   drop, and the one that makes it safe to read little. Its proof is one plant,
-  at the position the change touches, in a copy of that one file; fixed and
-  checked again twice at most.
+  at the position the change touches, in a copy of that one file: **once for the
+  change, not once per round of checking** — a second round reuses the first
+  proof, and a second plant proves nothing the first did not.
 
 **What it may write**
 

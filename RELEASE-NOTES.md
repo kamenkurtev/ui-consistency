@@ -5,6 +5,18 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.0 (2026-09-23)
+
+### Small changes
+
+- **The budget counts what the cost line counts** — every checker and subagent,
+  as one running total: about ten files and ten searches in the phase itself,
+  about twenty-five for the whole change, and past fifty it is not a small
+  change any more. Crossing it is said **at the crossing**, in one line, not
+  worked out afterwards in the report (#243).
+- The proof that a checker can see is planted **once for the change**, not once
+  per round of checking.
+
 ## v0.50.1 (2026-09-22)
 
 ### finding-patterns

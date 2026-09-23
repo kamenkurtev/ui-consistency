@@ -78,7 +78,9 @@ theme value, its own error message instead of the shared helper.
   instructions, not the one that was calibrated: that one knows a plant exists,
   and reads the page expecting one.
 - **A change without a plan** owes the proof once, and cheaply: one plant, at the
-  position the change touches, in a copy of that one file.
+  position the change touches, in a copy of that one file. **Once for the
+  change**: the second round of checking, and any later checker of the same
+  page, reuses it.
 
 If the planted difference is not reported, the check is blind for that kind of
 difference. **Say so before anything is built or passed.**
