@@ -1,5 +1,6 @@
-list page (all five render the page holder, a toolbar and a table of rows, and
-`src/pages/` keeps them together) — from `src/pages/orders.js`, 4 of 5 members in the app,
+list page (all four render the page holder, a toolbar and a list section, and
+`src/pages/` keeps them together; `index.js` beside them only picks which one
+renders) — from `src/pages/orders.js`, 4 members of 5 candidates in the app,
 read 2026-09-17
 
 - [ ] page holder — `main.page.stack-3`, outer padding `--space-4` — 4 of 4, 4 files

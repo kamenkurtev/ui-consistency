@@ -28,6 +28,8 @@ stack-2         0 of 5
 ## What it can show
 
 **The phase, not the difference.** The arm without the skill rejected the zeros
-on its own (2026-09-15): the reference visibly writes all four, so nothing
-tempts an agent to trust them. The failure the rule exists for needs a count the
-agent produces itself, on a family too large to read — `finding-patterns-4`.
+on its own, in a run of the design before 0.25.0 — its result was removed from
+`results/` with that design (#248) and is in git: the reference visibly writes
+all four, so nothing tempts an agent to trust them. The failure the rule exists
+for needs a count the agent produces itself, on a family too large to read —
+`finding-patterns-4`.

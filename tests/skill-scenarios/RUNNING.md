@@ -21,7 +21,8 @@ needs to know about the fixture is written here and in `DRIFT.md`, never in it.
 - `inputs/` — what a scenario hands the agent, such as a checklist for work that
   is already under way.
 - `scenarios/<skill>-<n>.md` — one scenario: the task, the temptation, what must happen.
-- `results/<skill>-<n>-<date>.md` — one run of a scenario, both arms.
+- `results/<skill>-<n>-<date>.md` — one run of a scenario, both arms, kept while
+  the design it ran against is the current one.
 
 ## One run
 
@@ -142,6 +143,12 @@ make.
 say which version, so an old run is not read as evidence for a behaviour that has
 since been replaced. The fixture changes too, and a version does not move when
 only the fixture does — the commit is what ties a result to the fixture it read.
+
+**When the design a result ran against is replaced, the result is removed, not
+marked** (`.claude/rules/uic-docs.md`): git keeps it. So `results/` is the list —
+**a scenario with no file there has no result against the current design.** A red
+flag counted from a removed result keeps its count, and the result it came
+from is in git.
 
 ## Names
 
