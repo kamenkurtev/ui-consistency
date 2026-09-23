@@ -171,6 +171,8 @@ right in shape, never that it holds.
 
 ## General
 
+- Changing a skill or a document: follow `.claude/skills/uic-writing/SKILL.md`.
+  Claude Code loads it on its own; any other harness can read it.
 - Read `.github/pull_request_template.md` before submitting.
 - One problem per pull request.
 - Report where the change was exercised in the template's table.
