@@ -5,9 +5,8 @@ description: Use when what the end user sees has been written and before calling
 
 # Verifying against the checklist
 
-This replaces a person opening every page and comparing it by eye. It answers one
-question: **which of these pages do not look and behave like the reference and
-the rest of the project.**
+The question it answers: **which of these pages do not look and behave like the
+reference and the rest of the project.**
 
 **Open a linked file when you reach the part that names it, never before** —
 whatever the request that handed you this skill says about its links. A part you
@@ -164,9 +163,9 @@ loads**, including any from outside the project, and look up every class it uses
 A class with no rule in the project is not unstyled — its rule may live where you
 cannot read it, so its colours and spacing are unevaluated.
 
-End with the cost, so one run can be compared with another: **how many pages
-were compared, how many project files were opened and how many searches were
-run — every checker's included, as one total.** A number you did not keep is said to be an estimate.
+End with the cost: **how many pages were compared, how many project files were
+opened and how many searches were run — every checker's included, as one
+total.** A number you did not keep is said to be an estimate.
 
 ## The whole set, at the end
 
@@ -204,6 +203,6 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "Consistency check, done by diffing against the reference" — from the agent that wrote the page | The author checked its own work. Hand it to a separate agent, or say plainly that none was available. Seen once. |
-| "Not evaluated: nothing — every pair resolved" | Only true after every loaded stylesheet was found. A class with no rule in the project is unevaluated, not unstyled. Seen once. |
-| `mkdir -p /tmp/<name>-$$` for the planted copy | A name anyone can predict, reused if it already exists. Let the system create the directory new — `mktemp -d`, or your harness's own temporary directory. Seen once, and not in the two later runs that planted a copy. |
+| "Consistency check, done by diffing against the reference" — from the agent that wrote the page | The author checked its own work. Hand it to a separate agent, or say plainly that none was available. |
+| "Not evaluated: nothing — every pair resolved" | Only true after every loaded stylesheet was found. A class with no rule in the project is unevaluated, not unstyled. |
+| `mkdir -p /tmp/<name>-$$` for the planted copy | A name anyone can predict, reused if it already exists. Let the system create the directory new — `mktemp -d`, or your harness's own temporary directory. |

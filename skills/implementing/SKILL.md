@@ -5,9 +5,8 @@ description: Use when writing or changing what the end user sees and a checklist
 
 # Implementing from the checklist
 
-The failure this exists for: the checklist is agreed, and the twenty-seventh page
-still does not match the first. Attention thins across a batch and the work
-drifts toward the last page seen instead of the one agreed.
+Each page is built from its checklist, re-read every time: across a batch, the
+work drifts toward the last page written instead of the one agreed.
 
 **Open a linked file when you reach the part that names it, never before** —
 whatever the request that handed you this skill says about its links. A part you
@@ -29,9 +28,6 @@ If another process is executing the plan, follow its loop; the steps below are
 what each page task does inside it.
 
 ## For each page
-
-Everything `ui-consistency:verifying` will check is listed here, so nothing is
-reported against a page that was never asked to get it right.
 
 1. **Re-read the checklist.** Every time. Not remembered. Its shape is
    [checklist.md](../finding-patterns/checklist.md), and its order is the order
@@ -84,10 +80,9 @@ reported against a page that was never asked to get it right.
 10. **Do not copy what is particular to the reference.**
 11. **Where the checklist is silent, the order settles it** —
     [deciding.md](../finding-patterns/deciding.md) — and you say which level
-    settled it. Do not invent, and do not stop: a decision reported is
-    reversible, a question is not free. Park a page only where the order ties
-    **and** the decision reaches outside what this task touches; those go to the
-    user together, once, not page by page.
+    settled it. Do not invent, and do not stop. Park a page only where the order
+    ties **and** the decision reaches outside what this task touches; those go to
+    the user together, once, not page by page.
     **A task's prose does not narrow its list**: where it says *change nothing
     else* and a line of its own list names a deviation, the line stands unless
     the task names it under *Not in this task*.
@@ -109,8 +104,7 @@ reported against a page that was never asked to get it right.
 ## What this does not write
 
 No tests. Whatever process is running the work owns its tests and its logic; this
-one owns what the end user sees. A page that comes out right and a suite nobody
-asked for is a worse result than a page that comes out right.
+one owns what the end user sees.
 
 ## A small change without a plan
 
@@ -135,5 +129,5 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "Verified by diffing each new file against" a sibling — from the agent that wrote them | The author checked its own pages. Hand them to a separate agent, or say plainly that none was available. Seen once. |
-| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | Right outcome, silent reasoning. The request is the top of the order: do it, and report in one line what it goes against. Seen once. |
+| "Verified by diffing each new file against" a sibling — from the agent that wrote them | The author checked its own pages. Hand them to a separate agent, or say plainly that none was available. |
+| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | Right outcome, silent reasoning. The request is the top of the order: do it, and report in one line what it goes against. |

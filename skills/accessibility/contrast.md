@@ -29,9 +29,7 @@ unreadable together. Check **pairs**, never single values.
   for large text and for non-text elements that carry meaning. That standard
   exempts disabled controls, so under it their pairs are recorded with a ratio,
   not reported as failing. Report each ratio so a person can decide.
-- **The ratio is arithmetic**, not a tool: for each colour, take each channel
-  `c = value / 255`, linearise it (`c / 12.92` if `c ≤ 0.04045`, else
-  `((c + 0.055) / 1.055) ^ 2.4`), luminance `L = 0.2126 R + 0.7152 G + 0.0722 B`;
-  ratio `(L_lighter + 0.05) / (L_darker + 0.05)`.
+- **The ratio is computed** with the WCAG relative-luminance formula, never
+  estimated by eye.
 
 Record the pairings the family actually uses, in each scheme, with their ratios.

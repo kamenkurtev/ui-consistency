@@ -3,10 +3,6 @@
 Read by `finding-patterns` when it records how a family spaces its roles, and by
 `implementing` and `verifying` for every gap.
 
-Two pages with the same holder, components and props still look unrelated when
-one separates its sections by one unit and the other by three. The space is a
-fact, read and counted like the rest.
-
 ## The base is derived, never assumed
 
 - **Derive it from the values the project keeps**, in this order: the named
@@ -16,14 +12,12 @@ fact, read and counted like the rest.
   of. Say which values you read and which mechanism carried them.
 - **A literal that sits off what those produce is a candidate deviation, not
   evidence about the base.** Folding it in collapses the base to something that
-  divides everything, and then nothing is ever off it — which is the same as
-  having no check at all.
+  divides everything, and then nothing is ever off it.
 - **A largest common divisor is not automatically a base.** Any set of whole
   numbers has one. Check that the multiples it produces are the ones the project
   actually writes; where they are not, the project has no base.
 - **Never assume one.** The numbers that are common elsewhere are not this
-  project's answer until its own values say so, and a base taken from habit
-  turns every correct value into a deviation.
+  project's answer until its own values say so.
 - **Too few values show no base.** Two values share a divisor whatever they
   are, and it says nothing about the project. Before deriving one from a
   handful, widen the source in the same order: the theme, then shared classes,
@@ -65,10 +59,6 @@ across 6 files* is a convention.
 
 ## The rhythm the text sets
 
-The gaps between roles are only half of it. The text sets a rhythm of its own,
-and a page whose lines sit differently reads as another product even when every
-gap between its sections matches.
-
 - **The line height belongs to a type role**, and is recorded with the rest of
   the bundle in [typography.md](typography.md) — not here.
 - **Whether the space around a block of text stands on the base** is this file's
@@ -77,8 +67,7 @@ gap between its sections matches.
 
 ## The heights of controls, rows and bars
 
-The most visible difference between two pages that otherwise match, and the one
-nothing counted. They sit on the same base as the gaps.
+They sit on the same base as the gaps.
 
 - Count them **per role, with their file spread**: the page's own bar, one row
   of a collection, a field, the submit button, a dialog's action row.

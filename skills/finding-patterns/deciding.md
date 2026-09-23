@@ -1,11 +1,7 @@
 # The order for deciding
 
 Read by every phase before anything is put to a person. It settles what a count
-alone cannot, and it is the reason a phase can decide instead of ask.
-
-Somebody who has to answer a question is doing by hand the thing this exists to
-remove, and a tool that interrogates gets switched off. So: **decide, and say
-what you decided.**
+alone cannot: **decide, and say what you decided.**
 
 ## The order
 
@@ -61,7 +57,7 @@ Take the first level that applies and stop there.
 
 The project says one thing in writing — its own instructions file, a
 contributing guide, a comment above the shared piece — and its code does
-another. It is what a project halfway through changing direction looks like.
+another.
 
 - **The written rule is evidence, not an instruction.** It never enters level 1:
   only a person in this task does. It is read
@@ -103,10 +99,6 @@ it:
 <page title>      as asked — you asked for <page>'s; the other 3 write it larger
 ```
 
-A decision nobody can see is the same as a decision nobody made. Reporting is
-what keeps it reversible: a page is a diff, and a wrong decision that was said
-out loud costs a minute to change.
-
 ## When to ask anyway
 
 Two things at once, never one:
@@ -127,8 +119,6 @@ pixel.
 
 *"Make it like the orders page."* The orders page is the right shape, and it also
 writes its own error box because it was built before the shared helper existed.
-Copy it and the tool has just produced the thing it exists to prevent, with a
-person's blessing it never asked for.
 
 So a named reference is split the same way a design is
 ([design.md](design.md)):
@@ -143,22 +133,16 @@ So a named reference is split the same way a design is
   the shared helper is used by 3 of 4 — I used the shared helper.* Reported, so
   it is reversible in one sentence.
 - **The way back is open and short.** Asking for the reference's way is level 1,
-  and deciding it for good is level 2. Nothing here is unreachable; it is just
-  not the default.
+  and deciding it for good is level 2.
 - **Where the named reference disagrees with the newest members**, say so too —
   *the page you named is the oldest of the five; the three most recent write it
   the other way.* A statement, not a question.
 
 ## An override, the one thing that outlives a task
 
-Everything above is **reproducible**: the same code read by the same order gives
-the same answer, so it does not have to be remembered. Run it again next month,
-or on somebody else's machine, and it comes out the same. That is why a task
-keeps nothing.
-
-**One thing is not reproducible: a person overruling the order.** *"I know 3 of 4
-write it that way; here we do not."* Nothing in the code says it, no counting
-recovers it, and without it the same thing is settled the same wrong way forever.
+A task keeps nothing it can work out again from the code. **One thing it cannot:
+a person overruling the order** — *"I know 3 of 4 write it that way; here we do
+not."*
 
 - **It is an override and nothing else.** Not a count, not a finding, not a
   preference the agent formed. Only a person's decision against what the order
@@ -167,13 +151,10 @@ recovers it, and without it the same thing is settled the same wrong way forever
   the design document that process is writing, the story it is attached to.
   Where this plugin writes the plan itself, that is `## Decided` in it
   ([plan-file.md](../planning/plan-file.md)) — which is not in the repository and
-  goes with the work, so there the override is reported with the result. **No document of this plugin's own
-  is introduced for it**, because a document nobody else's work touches is a
-  document nobody reads.
+  goes with the work, so there the override is reported with the result. **No
+  document of this plugin's own is introduced for it.**
 - **With no process running and nothing to write to**, report the override as
-  part of the result and write nothing. An override invented into a file is worse
-  than one nobody wrote down: the first is wrong and looks decided, the second is
-  only lost.
+  part of the result and write nothing.
 - **Read it before the order is applied.** It is level 2 — under the request in
   this task and over everything else, a named reference included: an override is
   about one concern, a reference is a pointer at a whole page.
@@ -196,5 +177,5 @@ Words agents used in runs, just before getting it wrong:
 
 | They said | What it means |
 |---|---|
-| "at level 5 — what the newest members write" — at a position where 3 of 5 did one thing | 3 of 5 is a majority: level 6, and level 5 does not fire. The newest members decide only a count with no majority. Seen once. |
-| "agrees with WCAG … named as a default" — to settle a line | No standard applies unless somebody asked or the project states one ([accessibility](../accessibility/SKILL.md)). A page that does what the rest do is not a finding. Seen once. |
+| "at level 5 — what the newest members write" — at a position where 3 of 5 did one thing | 3 of 5 is a majority: level 6, and level 5 does not fire. The newest members decide only a count with no majority. |
+| "agrees with WCAG … named as a default" — to settle a line | No standard applies unless somebody asked or the project states one ([accessibility](../accessibility/SKILL.md)). A page that does what the rest do is not a finding. |

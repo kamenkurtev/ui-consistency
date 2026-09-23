@@ -3,22 +3,16 @@
 Read by `finding-patterns` when it records how a family sets its text, and by
 `implementing` and `verifying` for every piece of text on a page.
 
-A page whose text is one step larger, one weight heavier or set in another
-typeface reads as a different product even when every component and every gap
-matches. Text is counted like the rest.
-
 ## The type roles
 
 Read them from the project, never decide them for it. The positions where text
 stands: the page's own title, a section heading, body text, a label, helper
 text, an error, a caption, a number in a column. **Record the ones this project
-has, and what it calls them** — a project with no caption has no caption, and
-inventing one is how a convention gets imported from somewhere else.
+has, and what it calls them** — a project with no caption has no caption.
 
 **When to use which is what the counts answer.** Record each type role against
 the position in the tree where the family writes it, with its file spread — *the
-page title is the theme's largest step in 5 of 5 across 5 files*. That is what
-"when to use which" means here: read from the project, never decided for it.
+page title is the theme's largest step in 5 of 5 across 5 files*.
 
 ## The bundle, per role
 
@@ -57,10 +51,7 @@ the moment the shared one moves, and the next page is copied from it.
 ## The unit
 
 Record the unit the sizes are written in, and **say whether it follows the
-reader's own text setting**. A project whose sizes are fixed does not grow when
-somebody has asked for larger text. That is a fact about the project, recorded
-with the rest; it is not a verdict, and no number from outside the project turns
-it into one.
+reader's own text setting** — a fact about the project, not a verdict.
 
 ## What it lives beside
 

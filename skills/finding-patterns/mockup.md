@@ -5,10 +5,9 @@ Read by `finding-patterns` where the shape is shown before any code
 asks to see the page before it is written. Optional otherwise: the checklist is
 the result, and this is a way to look at it.
 
-A tree of words says which roles the page has. A picture of the same tree, drawn
-with the values the phase just measured, answers what words cannot: **does the
-page hang together.** Nothing new is measured — it is the checklist with its
-numbers applied.
+It shows **whether the page hangs together**, drawn with the values the phase
+just measured. Nothing new is measured — it is the checklist with its numbers
+applied.
 
 ## What it is
 
@@ -28,20 +27,16 @@ like at each position.
 - **Never an imitation of a piece the project has.** A region is drawn as a
   plain box at **the measured values** — the control height the family writes,
   the radius and border from the theme, the label's type bundle — and **labelled
-  with the project's own piece** for that role. Hand-drawing something that looks
-  like the project's field or button is the drift this plugin exists to prevent,
-  produced by the plugin, in a picture somebody then approves.
-- **No behaviour.** No hover, focus, error state, animation or interaction. A
-  picture that implies behaviour nobody showed gets approved for behaviour
-  nobody checked.
+  with the project's own piece** for that role — never drawn to look like the
+  project's field or button.
+- **No behaviour.** No hover, focus, error state, animation or interaction.
 - **It says what it is, on its face**: a line at the top of the document — *a
   static arrangement with this project's values, not its components*.
 - **Nothing invented.** A value the phase could not resolve is drawn as
   unresolved — marked, with what was missing — never filled with something
   plausible.
 - **Never read back.** Values go into it from the theme; nothing is ever taken
-  out of it. A value read off a picture this plugin drew would close the loop on
-  its own guess ([design.md](design.md), *Never a value*).
+  out of it ([design.md](design.md), *Never a value*).
 
 ## Three levels, and the question each answers
 

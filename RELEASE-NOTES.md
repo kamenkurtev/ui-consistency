@@ -5,6 +5,15 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.3 (2026-09-23)
+
+### Small changes
+
+- The skills are about 7% shorter: the stories of earlier runs, the plugin's own
+  history, the arguments for its design and the explanations a model already
+  has are gone, and red flag rows no longer carry how often they were seen.
+  Every instruction is where it was (#255).
+
 ## v0.51.2 (2026-09-23)
 
 ### Small changes
