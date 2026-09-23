@@ -3,7 +3,7 @@ name: verifying
 description: Use when what the end user sees has been written and before calling it done or opening a PR, or when asked whether pages match the rest — "does this match", "did I miss a page", a page that looks or behaves unlike its neighbours.
 ---
 
-# Verifying against the pattern
+# Verifying against the checklist
 
 This replaces a person opening every page and comparing it by eye. It answers one
 question: **which of these pages do not look and behave like the reference and
@@ -97,7 +97,7 @@ not open. Beyond the items, the same regions are compared:
   heading ([elements.md](../finding-patterns/elements.md)). Report one that
   differs from what the family writes there, with what the others use. Where the
   element could not be read, name it as unevaluated;
-- how each is written, against the counts in the pattern;
+- how each is written, against the counts in the checklist;
 - the reused pieces: shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;
@@ -113,7 +113,7 @@ not open. Beyond the items, the same regions are compared:
   deviation, reported with the base and the nearest multiples; a value **on the
   base that no page writes yet** is not wrong — say it is on the base and new
   here, with what the family does write. A gap that differs is reported with
-  what the neighbouring pages use instead. Where the pattern says the project
+  what the neighbouring pages use instead. Where the checklist says the project
   has no base or no consistent rhythm, report nothing about it and say so;
 - **typography** ([typography.md](../finding-patterns/typography.md)), against
   what the list records: the whole bundle at each position, not the size alone, and
@@ -148,7 +148,7 @@ as a page that deviates.
 <path to the page> against <kind of page>
   <page title>        two levels down — the other 4 pages write the page title one level down
   <submit button>     a larger size and another style — the reference has neither, nor do the other 3 submit buttons
-  request failure     its own message box — the pattern reuses <the shared error helper>
+  request failure     its own message box — the other 3 pages use <the shared error helper>
   <secondary button>  a literal margin — the theme has a spacing value for it
 ```
 
@@ -170,7 +170,7 @@ run — every checker's included, as one total.** A number you did not keep is s
 
 ## The whole set, at the end
 
-After the last page, compare **all the pages together** against the same pattern.
+After the last page, compare **all the pages together** against the same checklist.
 A page can pass on its own and still be the one that differs from the rest.
 
 Report: how many pages, how many match, which differ and how, which are parked

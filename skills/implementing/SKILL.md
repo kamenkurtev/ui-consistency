@@ -3,9 +3,9 @@ name: implementing
 description: Use when writing or changing what the end user sees and a checklist or a UI plan exists — executing that plan page by page, refactoring a set of pages, or making a small change to one page.
 ---
 
-# Implementing from the pattern
+# Implementing from the checklist
 
-The failure this exists for: the pattern is agreed, and the twenty-seventh page
+The failure this exists for: the checklist is agreed, and the twenty-seventh page
 still does not match the first. Attention thins across a batch and the work
 drifts toward the last page seen instead of the one agreed.
 
@@ -18,10 +18,12 @@ reach without having opened its file is not done.
 - Where the harness has subagents, **one subagent per page**. It starts cold, so
   the brief carries the checklist itself, the reference, and what is particular
   to the reference.
-- Where it does not, one page per turn, working from the plan on disk — never
-  from a list held in the conversation. Its shape is
-  [plan-file.md](../planning/plan-file.md): every task carries what it needs, so
-  a task is executed from itself and not from what the plan says around it.
+- Where it does not, one page per turn, **re-reading the task as the plan
+  writes it** — wherever `ui-consistency:planning` left the plan: in the session,
+  in a file outside the working copy, or in another process's plan — never from
+  memory of it. Its shape is [plan-file.md](../planning/plan-file.md): every task
+  carries what it needs, so a task is executed from itself and not from what the
+  plan says around it.
 
 If another process is executing the plan, follow its loop; the steps below are
 what each page task does inside it.
@@ -36,17 +38,17 @@ reported against a page that was never asked to get it right.
    you write the page in.
 2. **Write the page region by region**, in the order of the tree: holders, then
    the components in each, then what each comes out as, then how each is
-   written, as the counts say. **The element the pattern records at a position
+   written, as the counts say. **The element the checklist records at a position
    is the element you write** — including the heading level
-   ([elements.md](../finding-patterns/elements.md)). Where the pattern records
-   none for a position, say so rather than choosing one.
+   ([elements.md](../finding-patterns/elements.md)). Where it records none for a
+   position, say so rather than choosing one.
 3. **Use what the project reuses.** The shared component, helper or class named in
-   the pattern — never a new one beside it. Where the list says the project has
+   the checklist — never a new one beside it. Where the list says the project has
    no piece for the role and every other control at that position is shared,
    the new piece is the proposal the list carries
    ([SKILL.md](../finding-patterns/SKILL.md), step 5) — built only once accepted,
    never written privately into the page in the meantime.
-4. **What the user sees happen, as the pattern says**: validation, field errors,
+4. **What the user sees happen, as the checklist says**: validation, field errors,
    when the submit is enabled, how a failure is caught and shown, loading and
    empty.
 5. **Values through the theme that applies**, and only entries that exist in it —
@@ -57,10 +59,10 @@ reported against a page that was never asked to get it right.
    theme has none. No literal copied from the reference.
 6. **Spacing on the base the list names**
    ([spacing.md](../finding-patterns/spacing.md)): every value a whole multiple
-   of the base the pattern derived, the gaps between roles as the family spaces
-   them, owned by the side the pattern names, the line heights it records, and
-   the heights of controls, rows and bars as the family writes them. A multiple
-   the family has not written yet is allowed — say you used one.
+   of that base, the gaps between roles as the family spaces them, owned by the
+   side the list names, the line heights it records, and the heights of
+   controls, rows and bars as the family writes them. A multiple the family has
+   not written yet is allowed — say you used one.
 7. **Text as the list records it**
    ([typography.md](../finding-patterns/typography.md)): the type role the
    family writes at that position, the whole bundle for it — size, weight, line
@@ -80,7 +82,7 @@ reported against a page that was never asked to get it right.
    list says one applies — `ui-consistency:accessibility`
    ([SKILL.md](../accessibility/SKILL.md)).
 10. **Do not copy what is particular to the reference.**
-11. **Where the pattern is silent, the order settles it** —
+11. **Where the checklist is silent, the order settles it** —
     [deciding.md](../finding-patterns/deciding.md) — and you say which level
     settled it. Do not invent, and do not stop: a decision reported is
     reversible, a question is not free. Park a page only where the order ties
@@ -114,8 +116,8 @@ asked for is a worse result than a page that comes out right.
 
 `ui-consistency:finding-patterns` has a reduced branch for it
 ([small-change.md](../finding-patterns/small-change.md)), which says what is read
-and what is deliberately skipped. Take what it produced, re-read that part of
-the pattern, make the change, and hand the page to `ui-consistency:verifying`,
+and what is deliberately skipped. Take the shorter list it produced, re-read it,
+make the change, and hand the page to `ui-consistency:verifying`,
 run by an agent that did not write it, before calling it done. The check is not
 the part that gets dropped because the change was small; its proof is one plant
 at the changed position, once for the change and not per round

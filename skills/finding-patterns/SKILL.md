@@ -213,7 +213,7 @@ its line of the checklist**: a line written from the stylesheets alone, without 
 subject's file, is a guess about rules that file states. The colour pairings,
 focus and labels the family uses are recorded as conventions like the rest;
 measuring them against a standard is [accessibility](../accessibility/SKILL.md),
-**only when the task asks for it or the project states a requirement**. Three
+**only when the task asks for it or the project states a requirement**. Four
 things belong to the phase rather than to a subject:
 
 - **A value that names a theme entry must exist in the theme that applies.** It
