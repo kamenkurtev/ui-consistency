@@ -142,8 +142,8 @@ was the opposite of the truth.
 
 ## Counting honestly
 
-- **A role is a component plus where it stands.** Count per position, never per
-  component alone: 10 of 18 buttons full-width reads as no rule, and was 10 of 10
+- **A role is a position in the tree** ([words.md](words.md)). Count per
+  position, never per component alone: 10 of 18 buttons full-width reads as no rule, and was 10 of 10
   in the content area and 0 of 4 in toolbars.
 - **What the component comes out as is counted too**, per position and with its
   file spread, and so is the heading level where the position is a heading —
@@ -200,7 +200,8 @@ percentage, no "most".
   rule with deviations. Say which it is: *the commonest way, 5 of 8, against
   three others* is a different finding from *7 of 8 except `<page>`*.
 
-**The order still decides.** Nothing stalls and nothing extra is asked: the
-newest members, then the reference, settle what to write — [deciding.md](deciding.md).
+**The order still decides**, and nothing stalls or is asked: with no majority,
+the newest members settle what the levels above them did not —
+[deciding.md](deciding.md).
 What changes is the reporting. The line says *no convention here; the two newest
 write it this way*.

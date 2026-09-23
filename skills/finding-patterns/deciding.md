@@ -40,7 +40,9 @@ Take the first level that applies and stop there.
    where the project last chose for this concern; the page's date decides only
    where the region's history cannot be read. Say which pages they are and which
    of the two you read. **Only where there is no majority** — a count with a
-   majority is level 6, and this level never overrides it.
+   majority is level 6, and this level never overrides it, except where the
+   project's own written rule agrees with the newest members (*A written rule
+   the code does not follow*, below).
 6. **The majority, with its file spread.** More files outrank more occurrences:
    four in one file are one page's habit, not a convention —
    [counting.md](counting.md).
@@ -108,8 +110,14 @@ Two things at once, never one:
   shared piece, adding an entry to the theme, moving something other work
   already uses.
 
-Then ask, once, with the numbers and a proposal. This is what a proposal always
-was, and it is now the only thing that reaches a person unasked.
+Then ask, once, with the numbers and a proposal. Besides the plan's yes, it is
+the only question that waits on a person.
+
+**A proposal is not a question.** Extracting a snippet the pages paste, a theme
+entry a value needs, a new shared piece, a single place for shared values: each
+is reported with its numbers and shown with the plan, and answered with the
+plan's yes. Declined, or with no plan, the pages are written the way the project
+writes them now.
 
 **A tie inside the task's own reach is not a question.** Take the lowest level
 that applies, say so, and move on. Never a question per region, per prop, per
@@ -138,7 +146,7 @@ So a named reference is split the same way a design is
   *the page you named is the oldest of the five; the three most recent write it
   the other way.* A statement, not a question.
 
-## An override, the one thing that outlives a task
+## An override, the one thing a task cannot work out again
 
 A task keeps nothing it can work out again from the code. **One thing it cannot:
 a person overruling the order** — *"I know 3 of 4 write it that way; here we do

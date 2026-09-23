@@ -49,8 +49,9 @@ repository, in [plan-file.md](plan-file.md).
 
 ## Stop for a yes
 
-For a new page or a refactor, show the plan, with the checklists its tasks carry,
-and **wait for the user's yes** before any code. Ask nothing new here — the
+For a new page or a refactor, show the plan, with the checklists its tasks carry
+and the proposals the pattern phase made, and **wait for the user's yes** before
+any code. Ask nothing new here — the
 questions were asked while the pattern was found
 ([deciding.md](../finding-patterns/deciding.md)). A task waiting on the little
 that did reach a person is `parked — waiting on <what>` in the plan, with its

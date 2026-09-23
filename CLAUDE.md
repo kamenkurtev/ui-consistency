@@ -75,8 +75,9 @@ to this repository only — both trackers start at 1.
    the component stands, and in how many files.
 5. **It decides and reports; it does not interrogate.** A written order settles
    what a count alone cannot, and every decision carries the level that settled
-   it and the numbers. One thing reaches a person: the order ties **and** the
-   answer changes code outside the task.
+   it and the numbers. Two things wait on a person: the plan, shown for a yes,
+   and a tie in the order whose answer changes code outside the task. Proposals
+   and contradictions are reported, with the plan where there is one.
 6. **Join the process that is running.** A spec or plan that already exists is
    added to, not duplicated. Without one, the skills run the four phases
    themselves.
@@ -84,8 +85,8 @@ to this repository only — both trackers start at 1.
    verified by an agent that did not write it, with a check proved first to
    catch a difference planted by somebody else.
    **Nothing is kept that can be worked out again**: counts belong to the task
-   and go with it. Only a person's override of the order outlives one, and it
-   goes where the running process already records decisions.
+   and go with it. Only a person's override of the order outlives one, where the
+   running process records decisions; with none, it is reported and not kept.
 8. **Silence is never success.** Every phase says what it read and what it could
    not.
 9. **Free.** No licence checks, telemetry or paywalls.

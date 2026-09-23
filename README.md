@@ -59,9 +59,9 @@ phases:
 A small change to one page skips the plan. Checking code that is already written
 is the last phase, after the first one where no checklist exists yet.
 
-It works on its own, and it works inside another process: with
-[superpowers](https://github.com/obra/superpowers) installed, the phases add to
-its brainstorming and its plan instead of running a second one.
+It works on its own, and it works inside another process: where
+[superpowers](https://github.com/obra/superpowers) or another process has already
+written a spec or plan, the phases add to it instead of running a second one.
 
 The agent you already use does all the reading. There is no script, no parser, no
 API key and nothing to configure.
@@ -118,14 +118,16 @@ the page is read. Shown here with roles; yours carries your own component names.
 
 ~~~~markdown
 new form page against form page (all four render the same holder and a form)
-— from <the page you named>, 4 of 5 members, read 2026-08-30
+— from <the page you named>, 4 of 5 members in <your app>, read 2026-08-30
 
 - [ ] page holder — <your holder>, as its own landmark — 4 of 4, 4 files
 - [ ] title one level down, in the toolbar — 4 of 4, 4 files
 - [ ] form — <your validation approach>, not its own — 4 of 4, 4 files
 - [ ] field — label tied to it, error under it, through <your field> — 8 of 8
-- [ ] submit — <your button>, full-width, in the content area — 3 of 4, 4 files
-- [ ] request failure — <your shared error helper>, not a new message box
+- [ ] submit — <your button>, full-width, in the content area — the majority,
+      3 of 4 across 4 files
+- [ ] request failure — <your shared error helper>, not a new message box —
+      the shared piece, against the copy in <a page>
 - [ ] colour and spacing through the theme; no literal, nothing off the base
 - [ ] not copied from <the page you named>: <what only that page has>
 ~~~~
@@ -187,10 +189,11 @@ so once:
 That is an **override**, and it is worth having precisely because it contradicts
 the count: the agent would otherwise follow the majority and keep writing the old
 way, correctly and unhelpfully. It outranks everything below your request,
-including every count, and it stands until somebody changes it. It is written down where your
-process already records decisions — the spec, the plan, the design document — not
-into a file of this plugin's own. Nothing invents one: if you did not say it, it
-is not there.
+including every count. It is written down where your process already records
+decisions — the spec, the plan, the design document — not into a file of this
+plugin's own, and there it stands until somebody changes it. With no such
+process it is reported with the result and nothing keeps it, so say it again
+next time. Nothing invents one: if you did not say it, it is not there.
 
 ## Philosophy
 
@@ -202,8 +205,9 @@ is not there.
 - **Before, not after.** An agent that reads the pattern first writes the right
   page once.
 - **It decides, you are not interrogated.** A written order settles what a count
-  alone cannot, and every decision is reported with what settled it. One thing
-  reaches you: the order ties *and* the answer changes code outside the task.
+  alone cannot, and every decision is reported with what settled it. Two things
+  wait on you: the plan, before any code, and a tie whose answer changes code
+  outside the task.
 - **Silence is never success.** Where it could not read something, it says so.
 
 Read [docs/concept.md](docs/concept.md) for the reasoning.

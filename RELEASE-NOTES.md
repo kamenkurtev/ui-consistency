@@ -5,6 +5,23 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.4 (2026-09-23)
+
+### Small changes
+
+- Where a design and the theme disagree, the page gets the theme's value and the
+  disagreement is reported, instead of the page waiting on a person.
+- Two things wait on a person: the plan's yes, and a tie in the order whose
+  answer changes code outside the task. A snippet to extract, a theme entry, a
+  new shared piece are proposals, shown with the plan and answered with its yes.
+- Heading levels are settled like everything else: the majority first, the
+  newest members only where there is none. A role is a position in the tree,
+  everywhere.
+- The documents say what the skills do: an override is kept only where a
+  process keeps decisions, the phases join another process when a spec or plan
+  exists rather than when a plugin is installed, and `USING.md` carries the two
+  sentences the session hook says (#256).
+
 ## v0.51.3 (2026-09-23)
 
 ### Small changes

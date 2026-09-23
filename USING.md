@@ -13,13 +13,14 @@ pages already built.
 ## Which skills a job takes
 
 For anything the end user will see, these join the phases of whatever process is
-already running, and run the phases themselves when none is.
+already running, and run the phases themselves when none is. Use them without
+being asked.
 
 | The job | Skills, in order |
 | --- | --- |
 | a new page or feature | `ui-consistency:finding-patterns` → `ui-consistency:planning` → `ui-consistency:implementing` → `ui-consistency:verifying` |
 | a refactor across pages | the same four |
-| a small change to one page | finding-patterns, its reduced branch → implementing → verifying |
+| a small change to one page | finding-patterns, its reduced branch → implementing → verifying. The check is never the part that gets dropped. |
 | checking code already written | verifying — after finding-patterns where no checklist exists yet |
 | measuring against an accessibility standard — only when asked for, or when the project states a requirement | `ui-consistency:accessibility`, on its own or from any of the four |
 

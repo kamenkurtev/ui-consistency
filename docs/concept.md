@@ -104,11 +104,13 @@ inside the reference, and both sides are said in one line.
 them auto* — the case counting can never reach, because the project is half way
 through changing and the majority is the old way. It sits directly under the
 request and above a named page, because it is about one concern while a
-reference is a pointer at a whole page, and it stands until somebody changes it.
+reference is a pointer at a whole page, and where it is kept it stands until
+somebody changes it.
 
 An override is the one thing a task cannot work out again for itself, so it is
 the one thing kept — in whatever document the running process already uses for
-decisions, never in a file of this plugin's own. Nothing writes one nobody gave.
+decisions, never in a file of this plugin's own. With no such process it is
+reported with the result, and nothing keeps it. Nothing writes one nobody gave.
 
 ### It decides, and says what settled it
 
@@ -119,9 +121,11 @@ copy, the newest members, the majority with its file spread, the reference — a
 the decision is reported with the level that settled it and the numbers under it.
 
 A question is a thing somebody has to settle by hand, which is the work this
-exists to remove, and a tool that interrogates gets switched off. One thing
-reaches a person: the order ties **and** the answer changes code outside the
-task.
+exists to remove, and a tool that interrogates gets switched off. Two things
+wait on a person: the plan, shown for a yes before any code, and a tie in the
+order whose answer changes code outside the task. A proposal — a snippet to
+extract, a theme entry, a new shared piece — and a contradiction the project
+carries are reported, with the plan where there is one.
 
 ### A plan carries its check
 
@@ -144,7 +148,7 @@ order settles is reproducible from the same code, so a task keeps nothing.
 
 One thing is not reproducible: a person overruling the order. That goes wherever
 the running process already records what was decided — never into a document of
-this plugin's own.
+this plugin's own; with no such process, it is reported with the result.
 
 ## What it writes down
 
