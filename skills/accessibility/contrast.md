@@ -26,9 +26,10 @@ unreadable together. Check **pairs**, never single values.
   does.
 - **If the project states none and accessibility was not asked for**, measure no
   threshold: record the pairings with their ratios and report none as failing.
-- **If accessibility was asked for**, use an external standard and name it as
-  the one used, not as the project's rule: WCAG 2.2 AA — 4.5:1 for text, 3:1 for
-  large text and for non-text elements that carry meaning.
+- **If the project states none and accessibility was asked for**, use an
+  external standard and name it as the one used, not as the project's rule:
+  WCAG 2.2 AA — 4.5:1 for text, 3:1 for large text and for non-text elements
+  that carry meaning.
 - That standard exempts disabled controls: record their pairs with a ratio, and
   do not report them as failing.
 - Report each ratio so a person can decide.
