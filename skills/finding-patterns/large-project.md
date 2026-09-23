@@ -1,8 +1,8 @@
 # A large project: split, sample, group
 
-Read by `finding-patterns` at step 3, and only when the project is large: the
-family, or the search for a shared piece, spans more than one app, library or
-area, or has more members than can be read in full.
+**Read when:** `finding-patterns` step 3, on a large project only — the family,
+or the search for a shared piece, spans more than one app, library or area, or
+has more members than can be read in full.
 
 ## Split by area, across subagents
 
@@ -39,12 +39,8 @@ signature of each position instead of opening them.
 
 ## Group the searches
 
-- **One search per position, over every member at once** — an alternation of
-  the exact names, across all the files — rather than one search per file.
-- **Independent searches go out together**, in the same turn, where the harness
-  runs tools in parallel.
-- **A search that returns too much is narrowed, not paged through**: add the
-  position, not a limit.
+As [SKILL.md](SKILL.md) step 4 says; split across areas, each subagent groups
+its own.
 
 ## What the report carries
 

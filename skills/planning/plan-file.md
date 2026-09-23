@@ -1,8 +1,16 @@
 # The plan
 
+**Read when:** writing a plan, or adding its tasks to another process's plan
+(`planning`), or executing one of its tasks (`implementing`).
+
 The shape of the plan `planning` writes when no other process wrote one.
-`implementing` executes it one task at a time, and `verifying` is named inside
-every page task.
+
+## Contents
+
+- The shape
+- Every task stands alone
+- When the work is done
+- The story
 
 **Nothing of it is written into the project's repository** — not committed, not
 left in the working copy, not a directory the project is asked to ignore.
@@ -83,8 +91,8 @@ with the result, since nothing else keeps it.
 ## Every task stands alone
 
 A subagent executing a task is given **that task and nothing else**; a preamble
-does not travel with it. So the checklist, the reference, what must not be copied,
-and the check are **in each task**, even when the user asks for one line per page.
+does not travel with it. So everything [SKILL.md](SKILL.md) *What every page task
+carries* lists is **in each task**, even when the user asks for one line per page.
 
 **However many tasks there are.** Writing the list once and telling the other
 tasks to *copy it in when picked up* is the preamble again: the subagent handed
@@ -102,9 +110,6 @@ handed it over — so step 3 has somewhere to report.
 
 A page judged to match already is still a task that carries them — its check is
 how "already matches" becomes known.
-
-**The calibration is the first task**, before anything is built. A checker nobody
-proved can see is not a check.
 
 ## When the work is done
 
@@ -144,6 +149,6 @@ What that test forces:
 **Whoever sends the story decides that it goes** — this says only what it must
 carry when it does.
 
-**The code stays authoritative.** A checklist is a snapshot and drifts from what
-it was taken from; where the two disagree the code wins and the list is taken
-again, never argued with the copy in hand.
+**The code stays authoritative**
+([checklist.md](../finding-patterns/checklist.md), *A snapshot, and the code
+wins*).

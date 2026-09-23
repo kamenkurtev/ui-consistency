@@ -1,7 +1,7 @@
 # What the words mean
 
-Read by `finding-patterns` at step 2, and by the other phases wherever one of
-these words appears.
+**Read when:** `finding-patterns` step 2, or in any phase where one of these
+words needs its meaning.
 
 Every technology builds a page with different pieces, so name **roles** — page
 holder, header, toolbar, content area, field, submit button, the project's

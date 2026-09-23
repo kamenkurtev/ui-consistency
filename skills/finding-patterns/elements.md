@@ -1,7 +1,8 @@
 # Elements: what fills a role, and at which heading level
 
-Read by `finding-patterns` when it records what the family writes at each
-position, and by `implementing` and `verifying` for every position in the tree.
+**Read when:** recording what the family writes at each position
+(`finding-patterns`), or writing or checking any position in the tree
+(`implementing`, `verifying`).
 
 A **role** is a position in the tree — the thing the page needs at that place.
 It is never an attribute a technology happens to spell the same way; such an

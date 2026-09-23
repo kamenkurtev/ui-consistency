@@ -1,9 +1,9 @@
 # A mockup of the page-to-be
 
-Read by `finding-patterns` where the shape is shown before any code
-([deciding.md](deciding.md), *Show the shape before any code*), or where a person
-asks to see the page before it is written. Optional otherwise: the checklist is
-the result, and this is a way to look at it.
+**Read when:** the shape is shown before any code ([deciding.md](deciding.md),
+*Show the shape before any code*), or a person asks to see the page before it is
+written. Otherwise it is optional: the checklist is the result, and this is a
+way to look at it.
 
 It shows **whether the page hangs together**, drawn with the values the phase
 just measured. Nothing new is measured — it is the checklist with its numbers

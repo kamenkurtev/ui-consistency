@@ -1,8 +1,22 @@
 # Counting: the kind, the family, the proof, the rules
 
-Read by `finding-patterns` before any count is recorded. The order is the order
-of work: the kind first, then the family, then the proof that a search can see,
-then the counts.
+**Read when:** before any count is recorded — `finding-patterns` step 4, or a
+checker recounting a line of the list.
+
+The sections run in the order of the work: the kind first, then the family, then
+the proof that a search can see, then the counts.
+
+## Contents
+
+- Which kind of page this is
+- The bound the family is counted in
+- Which pages are the family
+- A family that differs by region
+- A kind whose family has only the reference
+- Prove the search can see before trusting a count
+- Counting honestly
+- A position no member has
+- When a count is not a convention at all
 
 ## Which kind of page this is
 
@@ -109,8 +123,7 @@ conventions.** It says so, and runs a different branch:
 - **Say it**, in as many words: this kind has one member, so what the list
   carries is that page's way and not the project's — a starting point somebody
   should look at, not a counted convention.
-- **Nothing in it is `<n> of <m>`.** A count over one page is not a convention;
-  see *Counting honestly* below.
+- **Nothing in it is `<n> of <m>`** — *Counting honestly*, below.
 - **What is not particular to the kind is still counted**, over the pages nearest
   in kind and over the project: the theme and its entries, the shared pieces
   every page reuses, the spacing scale, how failures are caught and shown. Say
