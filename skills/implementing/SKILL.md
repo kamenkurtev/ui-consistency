@@ -17,92 +17,104 @@ reach without having opened its file is not done.
 
 ## One page per task, in a fresh context
 
-- Where the harness has subagents, **one subagent per page**. It starts cold, so
+- **Where the harness has subagents, one subagent per page.** It starts cold:
   the brief carries the checklist itself, the reference, and what is particular
   to the reference.
-- Where it does not, one page per turn, **re-reading the task as the plan
-  writes it** — wherever `ui-consistency:planning` left the plan: in the session,
-  in a file outside the working copy, or in another process's plan — never from
-  memory of it. Its shape is [plan-file.md](../planning/plan-file.md): every task
-  carries what it needs, so a task is executed from itself and not from what the
-  plan says around it.
-
-If another process is executing the plan, follow its loop; the steps below are
-what each page task does inside it.
+- **Where it does not, one page per turn.** Re-read the task as the plan writes
+  it — wherever `ui-consistency:planning` left the plan: in the session, in a
+  file outside the working copy, or in another process's plan. Never work from
+  memory of it.
+- Execute a task from itself, not from what the plan says around it: every task
+  carries what it needs ([plan-file.md](../planning/plan-file.md)).
+- If another process is executing the plan, follow its loop; the steps below are
+  what each page task does inside it.
 
 ## For each page
 
-1. **Re-read the checklist.** Every time. Not remembered. Its shape is
+1. **Re-read the checklist.** Every time; never from memory. Its shape is
    [checklist.md](../finding-patterns/checklist.md), and its order is the order
    you write the page in.
 2. **Write the page region by region**, in the order of the tree: holders, then
    the components in each, then what each comes out as, then how each is
-   written, as the counts say. **The element the checklist records at a position
-   is the element you write** — including the heading level
-   ([elements.md](../finding-patterns/elements.md)). Where it records none for a
-   position, say so rather than choosing one.
-3. **Use what the project reuses.** The shared component, helper or class named in
-   the checklist — never a new one beside it. Where the checklist says the project has
-   no piece for the role and every other control at that position is shared,
-   the new piece is the proposal the checklist carries
-   ([SKILL.md](../finding-patterns/SKILL.md), step 5) — built only once accepted,
-   never written privately into the page in the meantime.
-4. **What the user sees happen, as the checklist says**: validation, field errors,
-   when the submit is enabled, how a failure is caught and shown, loading and
-   empty.
-5. **Values through the theme that applies**, and only entries that exist in it —
-   never a value read off a design, however plainly it shows one
-   ([design.md](../finding-patterns/design.md)) —
-   for a file in a shared layer, every theme that renders it
-   ([theme.md](../finding-patterns/theme.md)). A named constant where the
-   theme has none. No literal copied from the reference.
+   written, as the counts say.
+   - **Write the element the checklist records at a position** — the heading
+     level included ([elements.md](../finding-patterns/elements.md)).
+   - If it records none for a position, say so rather than choosing one.
+3. **Use what the project reuses**: the shared component, helper or class the
+   checklist names — never a new one beside it.
+   - If the checklist says the project has no piece for the role, and every other
+     control at that position is shared, the new piece is the proposal the
+     checklist carries ([SKILL.md](../finding-patterns/SKILL.md), step 5).
+   - Build it only once it is accepted. Never write it privately into the page in
+     the meantime.
+4. **What the user sees happen, as the checklist says**: validation, field
+   errors, when the submit is enabled, how a failure is caught and shown, loading
+   and empty.
+5. **Values through the theme that applies**, and only entries that exist in it
+   ([theme.md](../finding-patterns/theme.md)).
+   - For a file in a shared layer, only entries that exist in every theme that
+     renders it.
+   - Never a value read off a design, however plainly it shows one
+     ([design.md](../finding-patterns/design.md)).
+   - A named constant where the theme has none.
+   - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
-   ([spacing.md](../finding-patterns/spacing.md)): every value a whole multiple
-   of that base, the gaps between roles as the family spaces them, owned by the
-   side the checklist names, the line heights it records, and the heights of
-   controls, rows and bars as the family writes them. A multiple the family has
-   not written yet is allowed — say you used one.
+   ([spacing.md](../finding-patterns/spacing.md)):
+   - every value a whole multiple of that base;
+   - the gaps between roles as the family spaces them, owned by the side the
+     checklist names;
+   - the line heights it records, and the heights of controls, rows and bars as
+     the family writes them.
+   - A multiple the family has not written yet is allowed — say you used one.
 7. **Text as the checklist records it**
-   ([typography.md](../finding-patterns/typography.md)): the type role the
-   family writes at that position, the whole bundle for it — size, weight, line
-   height, letter spacing, typeface, case — and **applied the way the family
-   applies it**: the shared entry, class or component, never a style written by
-   hand beside one that exists.
+   ([typography.md](../finding-patterns/typography.md)):
+   - the type role the family writes at that position;
+   - the whole bundle for it — size, weight, line height, letter spacing,
+     typeface, case;
+   - **applied the way the family applies it**: the shared entry, class or
+     component, never a style written by hand beside one that exists.
 8. **Colour as a pair**: every foreground on the surface actually behind it is a
-   pairing the family already uses, in every scheme the project has. Where the
-   checklist names a contrast threshold — the project states one, or the task asked
-   for accessibility — it meets it
-   ([contrast.md](../accessibility/contrast.md)).
+   pairing the family already uses, in every scheme the project has.
+   - If the checklist names a contrast threshold — the project states one, or the
+     task asked for accessibility — meet it
+     ([contrast.md](../accessibility/contrast.md)).
 9. **The rest of what a person has to be able to read and use**, as the checklist
-   records it: focus shown the way the family shows it and
-   landing where the family puts it, every control reachable without a mouse, a
-   field tied to its label the way the shared field does it, text for what has
-   none, targets the size the family's are. Against a standard only where the
-   checklist says one applies — `ui-consistency:accessibility`
-   ([SKILL.md](../accessibility/SKILL.md)).
+   records it:
+   - focus shown the way the family shows it, and landing where the family puts
+     it;
+   - every control reachable without a mouse;
+   - a field tied to its label the way the shared field does it;
+   - text for what has none;
+   - targets the size the family's are.
+   - Against a standard only where the checklist says one applies —
+     `ui-consistency:accessibility` ([SKILL.md](../accessibility/SKILL.md)).
 10. **Do not copy what is particular to the reference.**
 11. **Where the checklist is silent, the order settles it** —
-    [deciding.md](../finding-patterns/deciding.md) — and you say which level
-    settled it. Do not invent, and do not stop. Park a page only where the order
-    ties **and** the decision reaches outside what this task touches; those go to
-    the user together, once, not page by page.
-12. **A task's prose does not narrow its checklist.** Where it says *change
-    nothing else* and a line of its own checklist names a deviation, the line
-    stands unless the task names it under *Not in this task*.
-13. **When the request asks for what the counts call a deviation** — "make it
-    look like" the page that differs — **do what was asked**: an explicit
-    request is the top of the order. Report in one line what it goes against:
-    *"as asked, like <page>; the other 3 of 4 write the submit button
-    full-width."* Do not quietly build it the other way.
+    [deciding.md](../finding-patterns/deciding.md). Say which level settled it.
+    - Do not invent, and do not stop.
+    - Park a page only where the order ties **and** the decision reaches outside
+      what this task touches.
+    - Put those to the user together, once, not page by page.
+12. **A task's prose does not narrow its checklist.** If it says *change nothing
+    else* and a line of its own checklist names a deviation, the line stands —
+    unless the task names it under *Not in this task*.
+13. **If the request asks for what the counts call a deviation** — "make it look
+    like" the page that differs — **do what was asked**: an explicit request is
+    the top of the order.
+    - Report in one line what it goes against: *"as asked, like <page>; the other
+      3 of 4 write the submit button full-width."*
+    - Do not quietly build it the other way.
 14. **Hand the page to verification** — `ui-consistency:verifying`, run by an
     agent that did not write it.
-15. **Fix what it reports**, then verify again — **twice at most.** What the
-    second check still reports is listed as open, with the checker's words, not
-    fixed a third time; a report that keeps changing is a problem with the
-    checklist or the checker, and is said as that.
+15. **Fix what it reports**, then verify again — **twice at most.**
+    - List what the second check still reports as open, with the checker's
+      words. Do not fix it a third time.
+    - Say a report that keeps changing is a problem with the checklist or the
+      checker.
 16. **Mark it** in the plan: ticked for `done`, or left unticked with
-    `parked — <why>` ([plan-file.md](../planning/plan-file.md)). Handed the task
-    without the plan, report the same status to whoever handed it over.
+    `parked — <why>` ([plan-file.md](../planning/plan-file.md)).
+    - If you were handed the task without the plan, report the same status to
+      whoever handed it over.
 
 ## What this does not write
 
@@ -111,15 +123,16 @@ one owns what the end user sees.
 
 ## A small change without a plan
 
-`ui-consistency:finding-patterns` has a reduced branch for it
-([small-change.md](../finding-patterns/small-change.md)), which says what is read
-and what is deliberately skipped. Take the checklist for one region it produced, re-read it,
-make the change, and hand the page to `ui-consistency:verifying`,
-run by an agent that did not write it, before calling it done. The check is not
-the part that gets dropped because the change was small; its proof is one plant
-at the changed position, once for the change and not per round
-([SKILL.md](../verifying/SKILL.md), *First, prove it can see*), and it is fixed
-and checked again twice at most, as in step 15.
+- `ui-consistency:finding-patterns` has a reduced branch for it
+  ([small-change.md](../finding-patterns/small-change.md)): what is read, and
+  what is deliberately skipped.
+- Take the checklist for one region it produced, re-read it, and make the change.
+- Before calling it done, hand the page to `ui-consistency:verifying`, run by an
+  agent that did not write it. The check is not the part that gets dropped
+  because the change was small.
+- Its proof is one plant at the changed position, once for the change and not
+  per round ([SKILL.md](../verifying/SKILL.md), *First, prove it can see*).
+- Fix and check again twice at most, as in step 15.
 
 ## Then
 

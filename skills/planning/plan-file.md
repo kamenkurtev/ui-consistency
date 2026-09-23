@@ -18,10 +18,10 @@ left in the working copy, not a directory the project is asked to ignore.
 **It lives as long as the work, and no longer**, in one of three places — the
 three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
 
-1. **In the session**, while the work stays in one context. Where the work
-   outlives the context and the plan must survive on disk, a file **outside the
-   working copy** — the scratch location the harness gives — deleted with the
-   work.
+1. **In the session**, while the work stays in one context.
+   - If the work outlives the context and the plan must survive on disk, a file
+     **outside the working copy** — the scratch location the harness gives —
+     deleted with the work.
 2. **Attached to a story** somebody else will implement — *The story*, below.
 3. **Inside another process's plan**, in its shape.
 
@@ -91,44 +91,44 @@ with the result, since nothing else keeps it.
 ## Every task stands alone
 
 A subagent executing a task is given **that task and nothing else**; a preamble
-does not travel with it. So everything [SKILL.md](SKILL.md) *What every page task
-carries* lists is **in each task**, even when the user asks for one line per page.
+does not travel with it.
 
-**However many tasks there are.** Writing the checklist once and telling the other
-tasks to *copy it in when picked up* is the preamble again: the subagent handed
-one task does not have it. For a person, the tasks' first lines are the summary:
-the page and its status.
-
-**A task's prose never narrows its own checklist.** *"Change nothing else"* does not
-take a line off the checklist. Where a line is left out of this task on purpose —
-another task owns it, a person said so — the task names it under *Not in this
-task*, with why, and the page is checked against the checklist without that line.
-A line the prose contradicts without naming it is a line the task still carries.
-
-**A task handed on alone says where its status goes** — this plan, or whoever
-handed it over — so step 3 has somewhere to report.
-
-A page judged to match already is still a task that carries them — its check is
-how "already matches" becomes known.
+- **Put everything [SKILL.md](SKILL.md) *What every page task carries* lists in
+  each task**, even when the user asks for one line per page.
+- **However many tasks there are.** Never write the checklist once and tell the
+  other tasks to *copy it in when picked up*: that is the preamble again, and the
+  subagent handed one task does not have it.
+- For a person, the tasks' first lines are the summary: the page and its status.
+- **A task's prose never narrows its own checklist.** *"Change nothing else"*
+  does not take a line off it.
+- If a line is left out of this task on purpose — another task owns it, a person
+  said so — name it under *Not in this task*, with why, and check the page
+  against the checklist without that line.
+- A line the prose contradicts without naming it is a line the task still
+  carries.
+- **A task handed on alone says where its status goes** — this plan, or whoever
+  handed it over — so step 3 has somewhere to report.
+- A page judged to match already is still a task that carries them: its check is
+  how "already matches" becomes known.
 
 ## When the work is done
 
 Every task done or parked, and the last check passed: **the plan is closed.**
 
 - **The tasks and their checklists go.**
-- **What a person decided is reported** with the result. An override outlives
-  the work only where a process keeps decisions
+- **What a person decided is reported** with the result.
+- An override outlives the work only where a process keeps decisions
   ([deciding.md](../finding-patterns/deciding.md)); this plugin keeps none of its
   own.
 - **A file is deleted** where the plan was one.
-- **A parked task is not done.** While one is parked the plan stays open, and
+- **A parked task is not done.** While one is parked, the plan stays open and
   says so in its status line.
 
 ## The story
 
-Where the work becomes a story for somebody else, the plan and what the
-implementation needs are **attached to the story**. One test decides whether the
-attachment is finished, and it is the only specification it gets:
+Where the work becomes a story for somebody else, **attach the plan and what the
+implementation needs to the story**. One test decides whether the attachment is
+finished, and it is the only specification it gets:
 
 > A developer who was not in the conversation, and does not have the checkout
 > open, implements the story from the attachment alone.
@@ -140,8 +140,8 @@ What that test forces:
   attachment.
 - **Each checklist's first line says it is a snapshot** of the code as it was read,
   and when.
-- **What was decided is stated**, so nobody argues it again, and **what was not
-  evaluated is named**, so silence is not read as a pass.
+- **What was decided is stated**, so nobody argues it again.
+- **What was not evaluated is named**, so silence is not read as a pass.
 - **The check, written so an agent that never saw the plan can run it**: which
   skill to invoke, what to compare against, and that whoever wrote the page does
   not run it.

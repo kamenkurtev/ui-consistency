@@ -154,12 +154,16 @@ Skills are not prose — they shape what an agent does. A change to a skill:
   wrong, with what was asked and what the agent did;
 - says **what the next run on that repository must show** — the numbers to beat,
   or the thing the agent must now do — and that run is its evaluation;
-- does not rewrite the red flags, the order for deciding, or the wording of a
-  rule without runs showing the change is better.
+- does not change the red flags, the order for deciding, or what a rule asks
+  without runs showing the change is better.
 
 **A change of wording that leaves what the skill asks the same** — a term made
-consistent, a sentence made true — needs no run, and the pull request says that
-is what it is.
+consistent, a sentence made true, a rule written one instruction to a line —
+needs no run, and the pull request says that is what it is.
+
+**A changed description** is checked in two clean sessions, in a project with
+pages already built: a request in the words it names starts the skill, and a
+request outside it does not.
 
 **A fixture scenario is optional**, and worth running only where it can show a
 difference: a step an agent does not take on its own even on four small pages

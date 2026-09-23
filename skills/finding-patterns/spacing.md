@@ -7,9 +7,10 @@ step 6), or writing or checking any gap (`implementing`, `verifying`).
 
 - **Derive it from the values the project keeps**, in this order: the named
   values in the theme, then the multiples carried by utility or shared classes.
-  Only where the project keeps its values nowhere do the literals in the pages
-  become the source. The base is the largest value they are all whole multiples
-  of. Say which values you read and which mechanism carried them.
+- Only if the project keeps its values nowhere, take the literals in the pages
+  as the source.
+- The base is the largest value they are all whole multiples of.
+- Say which values you read and which mechanism carried them.
 - **A literal that sits off what those produce is a candidate deviation, not
   evidence about the base.** Folding it in collapses the base to something that
   divides everything, and then nothing is ever off it.
@@ -19,16 +20,17 @@ step 6), or writing or checking any gap (`implementing`, `verifying`).
 - **Never assume one.** The numbers that are common elsewhere are not this
   project's answer until its own values say so.
 - **Too few values show no base.** Two values share a divisor whatever they
-  are, and it says nothing about the project. Before deriving one from a
-  handful, widen the source in the same order: the theme, then shared classes,
-  then the pages nearest in kind. Where there are still too few for their
-  multiples to be tested against what the project writes, **the base is not
-  derivable**: say so, with the values. Nothing is reported off a base there is
-  not; each gap is checked against what the family writes at that position.
-- **Where the values share no base**, the finding is that the project has none.
-  Say so; do not promote the most frequent value into a rule. Make one proposal,
-  in the same batch as the others, for a single place to keep the base in the
-  form the project can use — never a proposal per page.
+  are, and it says nothing about the project.
+- Before deriving one from a handful, widen the source in the same order: the
+  theme, then shared classes, then the pages nearest in kind.
+- If there are still too few for their multiples to be tested against what the
+  project writes, **the base is not derivable**: say so, with the values.
+- Then report nothing as off a base there is not. Check each gap against what
+  the family writes at that position.
+- **If the values share no base**, the finding is that the project has none. Say
+  so; do not promote the most frequent value into a rule.
+- Then make one proposal, in the same batch as the others, for a single place to
+  keep the base in the form the project can use — never a proposal per page.
 - **Record the base as derived**, with the values it came from — a checklist
   line that states a base without saying what produced it cannot be checked.
 - **The multiples in use** are counted separately from the base: which ones the
@@ -39,9 +41,8 @@ step 6), or writing or checking any gap (`implementing`, `verifying`).
 - **Off the base** — not a whole multiple of it. A deviation: report it with the
   base and the nearest multiples on either side.
 - **On the base but not in use** — a whole multiple no page has written yet.
-  **Not wrong, and never reported as wrong.** Say what it is: on the project's
-  base, new here, with the multiples the family does write and their file
-  spread.
+  **Not wrong; never report it as wrong.** Say what it is: on the project's base,
+  new here, with the multiples the family does write and their file spread.
 
 ## The rhythm between roles
 
@@ -52,7 +53,7 @@ across 6 files* is a convention.
 
 - **Which side owns the gap** — a margin on one component, a padding on the
   other, or a gap on the container holding both. Record it where the project is
-  consistent; mixing them is how a gap doubles or collapses.
+  consistent: mixing them is how a gap doubles or collapses.
 - **No consistent rhythm** is also a finding: say the project has none. Do not
   invent one from a plurality — [counting.md](counting.md) says how to tell.
 

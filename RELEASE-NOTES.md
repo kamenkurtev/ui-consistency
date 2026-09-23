@@ -5,6 +5,21 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.9 (2026-09-23)
+
+### Changes
+
+- `finding-patterns` counts in the phase itself. Only when the search crosses
+  areas — more than one app, library or package — does it hand the counting to
+  one subagent per area; `large-project.md` carries what that subagent is given
+  and what it returns.
+
+### Small changes
+
+- Every skill file gives one instruction to a line, with an exception as its own
+  condition: the same steps, levels and headings, asking the same things, in
+  shorter sentences — 135 over thirty words where there were 162 (#270).
+
 ## v0.51.8 (2026-09-23)
 
 ### Small changes

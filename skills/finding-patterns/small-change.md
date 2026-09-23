@@ -3,9 +3,9 @@
 **Read when:** `finding-patterns` step 0 sized the work as one region of one
 page. It replaces steps 1 to 8, and `implementing` takes what it produces.
 
-One page, one region — a label, a value, a field added, what a button does. Not
-a new page, not a kind nobody has written down, not a change applied across
-pages: those take the whole phase.
+One page, one region — a label, a value, a field added, what a button does. A
+new page, a kind nobody has written down, or a change applied across pages takes
+the whole phase.
 
 **What is read**
 
@@ -18,10 +18,11 @@ pages: those take the whole phase.
 
 **The budget.** A change to one region reads the page, what the family writes
 at that one position — grouped into a search or two, with the proof on the
-reference — and the theme entries it uses: **about ten project files and ten
-searches in the phase itself, and about twenty-five of each for the whole
-change**, the checkers and every other subagent counted in.
+reference — and the theme entries it uses.
 
+- **About ten project files and ten searches in the phase itself.**
+- **About twenty-five of each for the whole change**, the checkers and every
+  other subagent counted in.
 - **It counts what the cost line counts**, as one running total.
 - **Say it at the crossing, not in the report.** The moment the total passes
   the budget — the eleventh search, the first checker that takes it over —
@@ -49,28 +50,30 @@ change**, the checkers and every other subagent counted in.
   ([deciding.md](deciding.md)).
 - **The check, by an agent that did not write the change** —
   `ui-consistency:verifying`. This is the part a small change is most tempted to
-  drop. Its proof is one plant,
-  at the position the change touches, in a copy of that one file: **once for the
-  change, not once per round of checking** — a second round reuses the first
-  proof, and a second plant proves nothing the first did not.
+  drop.
+- Its proof is one plant, at the position the change touches, in a copy of that
+  one file — **once for the change, not once per round of checking**. A second
+  round reuses the first proof; a second plant proves nothing the first did not.
 
 **What it may write**
 
-The page, and nothing outside it. **The page is the page with the files only it
-uses** — its own strings, its own styles, its own panels — the same unit
-[counting.md](counting.md) counts as one member. A file anything else imports is
-outside it, however close it sits. Where the order would put the piece in the
-shared layer — the family's other controls at that position are all shared
-pieces, and this one has none yet — **it is no longer a small change.** Say so
-in one line before writing anything, with the numbers, and put the new shared
-piece as a proposal: building it changes code other work uses, which a task
-sized as one page did not ask for.
+- The page, and nothing outside it.
+- **The page is the page with the files only it uses** — its own strings, its
+  own styles, its own panels — the same unit [counting.md](counting.md) counts as
+  one member.
+- A file anything else imports is outside it, however close it sits.
+- **If the order would put the piece in the shared layer** — the family's other
+  controls at that position are all shared pieces, and this one has none yet —
+  it is no longer a small change.
+- Say so in one line before writing anything, with the numbers, and put the new
+  shared piece as a proposal: building it changes code other work uses, which a
+  task sized as one page did not ask for.
 
 **What comes out**
 
-A **checklist for one region**, not a partial one: the positions the change touches,
-one line each, with what settled them. Its first line says it covers one region,
-so nothing reads it as the checklist for the whole page.
-
-**Say what you did not read.** A reduced run reports its bounds out loud: which
-position it counted and which it did not.
+- A **checklist for one region**, not a partial one: the positions the change
+  touches, one line each, with what settled them.
+- Its first line says it covers one region, so nothing reads it as the checklist
+  for the whole page.
+- **Say what you did not read**: which position you counted and which you did
+  not.
