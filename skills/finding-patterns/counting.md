@@ -43,8 +43,8 @@ Then:
 
 - **The first signal above that answers decides it.**
 - If a later signal disagrees — the project's word groups two pages whose trees
-  differ — the word still decides, and say the disagreement in the checklist's
-  first line.
+  differ — the word still decides, since it is the project keeping them apart.
+  Say the disagreement in the checklist's first line.
 - If the trees differ below a shared outer holder, it is a family that differs by
   region — *A family that differs by region*, below.
 - **Name the kind in the project's own word** — the folder, the route, what the
