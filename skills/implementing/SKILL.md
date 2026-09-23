@@ -42,9 +42,9 @@ what each page task does inside it.
    ([elements.md](../finding-patterns/elements.md)). Where it records none for a
    position, say so rather than choosing one.
 3. **Use what the project reuses.** The shared component, helper or class named in
-   the checklist — never a new one beside it. Where the list says the project has
+   the checklist — never a new one beside it. Where the checklist says the project has
    no piece for the role and every other control at that position is shared,
-   the new piece is the proposal the list carries
+   the new piece is the proposal the checklist carries
    ([SKILL.md](../finding-patterns/SKILL.md), step 5) — built only once accepted,
    never written privately into the page in the meantime.
 4. **What the user sees happen, as the checklist says**: validation, field errors,
@@ -56,13 +56,13 @@ what each page task does inside it.
    for a file in a shared layer, every theme that renders it
    ([theme.md](../finding-patterns/theme.md)). A named constant where the
    theme has none. No literal copied from the reference.
-6. **Spacing on the base the list names**
+6. **Spacing on the base the checklist names**
    ([spacing.md](../finding-patterns/spacing.md)): every value a whole multiple
    of that base, the gaps between roles as the family spaces them, owned by the
-   side the list names, the line heights it records, and the heights of
+   side the checklist names, the line heights it records, and the heights of
    controls, rows and bars as the family writes them. A multiple the family has
    not written yet is allowed — say you used one.
-7. **Text as the list records it**
+7. **Text as the checklist records it**
    ([typography.md](../finding-patterns/typography.md)): the type role the
    family writes at that position, the whole bundle for it — size, weight, line
    height, letter spacing, typeface, case — and **applied the way the family
@@ -73,7 +73,7 @@ what each page task does inside it.
    list names a contrast threshold — the project states one, or the task asked
    for accessibility — it meets it
    ([contrast.md](../accessibility/contrast.md)).
-9. **The rest of what a person has to be able to read and use**, as the list
+9. **The rest of what a person has to be able to read and use**, as the checklist
    records it: focus shown the way the family shows it and
    landing where the family puts it, every control reachable without a mouse, a
    field tied to its label the way the shared field does it, text for what has
@@ -86,21 +86,21 @@ what each page task does inside it.
     settled it. Do not invent, and do not stop. Park a page only where the order
     ties **and** the decision reaches outside what this task touches; those go to
     the user together, once, not page by page.
-    **A task's prose does not narrow its list**: where it says *change nothing
-    else* and a line of its own list names a deviation, the line stands unless
-    the task names it under *Not in this task*.
-    **When the request asks for what the counts call a deviation** — "make it
+12. **A task's prose does not narrow its checklist.** Where it says *change
+    nothing else* and a line of its own checklist names a deviation, the line
+    stands unless the task names it under *Not in this task*.
+13. **When the request asks for what the counts call a deviation** — "make it
     look like" the page that differs — **do what was asked**: an explicit
     request is the top of the order. Report in one line what it goes against:
     *"as asked, like <page>; the other 3 of 4 write the submit button
     full-width."* Do not quietly build it the other way.
-12. **Hand the page to verification** — `ui-consistency:verifying`, run by an
+14. **Hand the page to verification** — `ui-consistency:verifying`, run by an
     agent that did not write it.
-13. **Fix what it reports**, then verify again — **twice at most.** What the
+15. **Fix what it reports**, then verify again — **twice at most.** What the
     second check still reports is listed as open, with the checker's words, not
     fixed a third time; a report that keeps changing is a problem with the
     checklist or the checker, and is said as that.
-14. **Mark it** in the plan: ticked for `done`, or left unticked with
+16. **Mark it** in the plan: ticked for `done`, or left unticked with
     `parked — <why>` ([plan-file.md](../planning/plan-file.md)). Handed the task
     without the plan, report the same status to whoever handed it over.
 
@@ -113,13 +113,13 @@ one owns what the end user sees.
 
 `ui-consistency:finding-patterns` has a reduced branch for it
 ([small-change.md](../finding-patterns/small-change.md)), which says what is read
-and what is deliberately skipped. Take the shorter list it produced, re-read it,
+and what is deliberately skipped. Take the checklist for one region it produced, re-read it,
 make the change, and hand the page to `ui-consistency:verifying`,
 run by an agent that did not write it, before calling it done. The check is not
 the part that gets dropped because the change was small; its proof is one plant
 at the changed position, once for the change and not per round
 ([SKILL.md](../verifying/SKILL.md), *First, prove it can see*), and it is fixed
-and checked again twice at most, as in step 13.
+and checked again twice at most, as in step 15.
 
 ## Then
 

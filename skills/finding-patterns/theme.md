@@ -43,5 +43,4 @@ writing or checking any value that names a theme entry (`implementing`,
   theme it is missing from and the files that write it, and the choice between
   adding the entry and changing the usages.
 - **Nothing in the file shows this; only the theme does.** Where the theme that
-  applies could not be resolved, say the values are unchecked. Silence about
-  them is not a pass.
+  applies could not be resolved, say the values are unchecked.

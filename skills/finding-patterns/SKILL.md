@@ -65,8 +65,8 @@ second dialogue. If nothing exists, run this phase yourself.
 **A reference somebody named outranks anything you count** — so if the request
 names one, that is the reference. For a refactor, it is the page already right,
 or the first one fixed by hand. It settles **what the page is**, not whether to
-use the project's own shared pieces: a shared piece the reference bypasses is
-still used, and said ([deciding.md](deciding.md)).
+use the project's own shared pieces: where the reference bypasses one, use the
+shared piece anyway, and say so ([deciding.md](deciding.md)).
 
 **Where nobody named one, choose it and say so**: the nearest in kind, and among
 those the one most recently written and most reused. *Most reused* says nothing
@@ -169,7 +169,7 @@ phase's context to conclusions.
 - **A family too large to read in full is sampled** — the reference and the
   members that decide the order read in full, the rest searched by signature —
   and said to be ([large-project.md](large-project.md)).
-- **What a list already carries is not counted again** by a later phase, unless
+- **What a checklist already carries is not counted again** by a later phase, unless
   a line is in doubt.
 
 **Group the searches** either way: one search per position — an alternation of
@@ -181,8 +181,9 @@ narrowed by position, not paged through.
 
 **By import** — a shared component, helper or piece of logic is used, never
 rewritten, and it is searched for as wide as the page can import from, not over
-the family alone ([deciding.md](deciding.md), level 4): the project's loading indicator rather than the library's, its shared
-error helper rather than a new message box. A page that bypasses a shared helper
+the family alone ([deciding.md](deciding.md), level 4): the project's loading
+indicator rather than the library's, its shared error helper rather than a new
+message box. A page that bypasses a shared helper
 is the drift this phase exists to catch — **including a reference somebody
 named** ([deciding.md](deciding.md), *A named reference does not carry its own
 drift*).
@@ -190,8 +191,8 @@ drift*).
 **By copy** — the same snippet pasted into many files is a pattern and **a
 candidate to extract**: propose making it reusable in the form this project can
 use, and where it belongs — the shared or core layer if other modules paste it
-too, the module if only this one does. Declined, it is written the same way as
-the others.
+too, the module if only this one does. If the proposal is declined, write it
+the way the other pages do.
 
 **A piece with no instance yet** takes the same branch. Where the task needs a
 control the project has none of, and every other control at that position is a
@@ -257,17 +258,15 @@ takes the branch in [small-change.md](small-change.md) instead of steps 1 to 8.
 
 ## Say what you read, what it cost, and what you could not read
 
-Silence is never a clean result. Say so when the technology could not be read
-with confidence, only a sample was read, no theme was found, or the reference has
-no counterparts to compare with.
+Say when the technology could not be read with confidence, only a sample was
+read, no theme was found, or the reference has no counterparts to compare with.
 
 **A gap outside this subject that blocks the work is said first.** The page
 needs something nothing in the codebase provides — an action with nothing to
 call, data with no source. It is not this phase's to design or fill in; the
 process that keeps the logic owns it. Put it at the top of the result as
 blocking, with what was searched and where, and still write the checklist for
-what the end user sees. A finding the phase was not asked for is still not
-silence.
+what the end user sees.
 
 End with the cost: **how many project files were opened, how many searches were
 run, and which of this skill's files were read — the subagents' included, as

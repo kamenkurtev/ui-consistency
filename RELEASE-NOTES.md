@@ -5,6 +5,17 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.6 (2026-09-23)
+
+### Small changes
+
+- The skills say plainly what to do: maxims that carried no instruction are
+  gone, and a double negative in `verifying` reads straight.
+- One word for each thing: *the checklist* is the only name for what a task
+  carries, and `words.md` defines role, position and region apart — a position
+  is a role where it stands, and counts are taken per position.
+- `implementing` has one rule per step; its steps after 11 are renumbered (#258).
+
 ## v0.51.5 (2026-09-23)
 
 ### Small changes

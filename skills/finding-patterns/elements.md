@@ -4,9 +4,7 @@
 (`finding-patterns`), or writing or checking any position in the tree
 (`implementing`, `verifying`).
 
-A **role** is a position in the tree — the thing the page needs at that place.
-It is never an attribute a technology happens to spell the same way; such an
-attribute is part of **how the element is written**, not the position itself.
+Role, position, component and element are as [words.md](words.md) defines them.
 
 ## What to record
 

@@ -41,8 +41,7 @@ step 6), or writing or checking any gap (`implementing`, `verifying`).
 - **On the base but not in use** — a whole multiple no page has written yet.
   **Not wrong, and never reported as wrong.** Say what it is: on the project's
   base, new here, with the multiples the family does write and their file
-  spread. A project that has not needed a value yet is not a project that
-  forbids it.
+  spread.
 
 ## The rhythm between roles
 

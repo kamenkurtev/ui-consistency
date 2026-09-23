@@ -75,7 +75,7 @@ In one of three ways, **chosen and said in one line**: *ending 2 — this become
 a story for another developer.*
 
 1. **The work stays with us, in one context.** The tasks live in the session.
-   Where the work outlives the context and the list must survive on disk, a file
+   Where the work outlives the context and the plan must survive on disk, a file
    outside the working copy, in the scratch location the harness gives, deleted
    with the work. Then `ui-consistency:implementing`.
 2. **The work becomes a story for somebody else.** The plan and what the

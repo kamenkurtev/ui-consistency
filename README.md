@@ -133,11 +133,11 @@ new form page against form page (all four render the same holder and a form)
 ~~~~
 
 Every line carries **how**, not whether, and what settled it — so ticking one
-means opening the page. An agent that did not write the page walks the list.
+means opening the page. An agent that did not write the page walks the checklist.
 
 **Nothing is left behind.** The counts are true of the code as it was read, and
 code moves on: a file of them would be a thing to review, keep in step between
-branches, and find stale. The list belongs to the task and goes with it.
+branches, and find stale. The checklist belongs to the task and goes with it.
 
 **Plans** — when no other process wrote one, and **never in your repository**.
 Each task carries its own checklist, which is what makes it executable by
