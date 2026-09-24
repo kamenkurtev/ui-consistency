@@ -1,8 +1,8 @@
 # A large project: split, sample, group
 
-**Read when:** `finding-patterns` step 3, on a large project only — the
-family's members span more than one area, or are more than can be read in
-full.
+**Read when:** `finding-patterns` step 4, once the family is known, on a large
+project only — its members span more than one area, or are more than can be
+read in full.
 
 ## Split by area, across subagents
 
@@ -20,7 +20,7 @@ full.
   could not read.
 - If the harness lets a subagent run on a smaller, faster model, give it that
   model: search and arithmetic are its half.
-- **Add the counts up in the phase, and keep the judgment there**: the
+- **Add the counts up yourself, and keep the judgment**: the
   reference, the kind, which pages are members, and every decision by the order.
   Do not hand them on.
 - Never re-read what a subagent read to check it. If a number looks wrong, send
