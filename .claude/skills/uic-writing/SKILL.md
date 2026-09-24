@@ -67,14 +67,16 @@ Before the change is done:
 2. **Contradictions.** For every rule the change touched, search for its other copies — in other words as well as the same ones — in `skills/`, `USING.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/` and `.claude/skills/`.
    - Each copy now says the same thing, or the change is not done.
 3. **Fix every stale reference and every contradiction in the same change**, and say in the pull request which copies were found.
-4. **One fresh read, once — if a skill changed.** Hand a subagent with no other context only the changed skill files — and `skills/finding-patterns/words.md`, if a shipped skill changed — and ask it for:
-   - any line that can be read two ways;
-   - any two lines that disagree;
-   - any word used in two senses, or one a shipped skill uses that `skills/finding-patterns/words.md` does not define.
+4. **One fresh read, once — if a skill changed.** Hand a subagent with no other context the diff of the changed skill files, and those files in full as context only — with `skills/finding-patterns/words.md` if a shipped skill changed. Ask it about the **changed lines only**:
+   - a changed line that can be read two ways;
+   - a changed line that disagrees with any line of the full files;
+   - a word a changed line uses in a sense different from its other uses in the full files — or, in a shipped skill, a term `words.md` does not define.
 
-   Then:
+   Ask for at most five items, ranked by how much each changes what an agent does. Then:
 
-   - Fix what is a defect in the text, and say in the pull request what the read found — "nothing" is a result.
+   - Fix every item that changes what an agent does. If a changed line disagrees with older wording, fix the pair, as step 2 asks.
+   - Say in the pull request what was fixed and name any other item; "nothing" is a result.
+   - Leave older wording that no changed line touches or contradicts: reviewing whole files is `/uic-auditing`'s, run by hand.
    - Do the read once. Do not repeat it after the fixes, and never run the skill on a project for it.
    - If the harness has no subagents, skip it and say so.
 

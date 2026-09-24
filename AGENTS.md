@@ -163,11 +163,11 @@ a description, no run as an acceptance criterion. One run cannot tell a change
 from the run's own variance, and a run made to find defects always finds one.
 
 **The one check before a pull request is a fresh read, once.** A subagent with no
-other context reads only the changed skill files — with `words.md` for a shipped
-skill — and names any line that reads two ways, any two lines that disagree, and
-any word used in two senses
-(`.claude/skills/uic-writing/SKILL.md`, *After writing*). It reads text and runs
-nothing on a project, and it is not repeated after the fixes.
+other context reads the diff of the changed skill files, with those files as
+context, and names at most five changed lines that read two ways, disagree with
+another line, or use a word in a new sense (`.claude/skills/uic-writing/SKILL.md`, *After
+writing*). What changes what an agent does is fixed; the rest is named in the
+pull request. It reads text, runs nothing on a project, and is not repeated.
 
 **A change of wording that leaves what the skill asks the same** — a term made
 consistent, a sentence made true, a rule written one instruction to a line —
