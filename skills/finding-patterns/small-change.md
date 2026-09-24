@@ -65,10 +65,10 @@ reference — and the theme entries it uses.
 - **If the order would put the piece in the shared layer** — the family's other
   controls at that position are all shared pieces, and this one has none yet —
   it is no longer a small change.
-- Say so in one line before writing anything, and ask whether to create the
-  shared piece, with the numbers ([deciding.md](deciding.md), *When to ask
-  anyway*): building it changes code other work uses, which a task sized as one
-  page did not ask for.
+- Say so in one line before writing anything, size the work again at step 0
+  ([SKILL.md](SKILL.md)), and ask whether to create the shared piece, with the
+  numbers ([deciding.md](deciding.md), *When to ask anyway*): building it changes
+  code other work uses, which a task sized as one page did not ask for.
 
 **What comes out**
 

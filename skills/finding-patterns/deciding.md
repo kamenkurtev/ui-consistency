@@ -116,8 +116,9 @@ another.
   compare against, and what follows is a proposal, not what the project does.
 - Take the options in this order: the components of the page's own area, then
   the shared layer, then the UI library.
-- If nothing fits, ask whether to create a new component, and where it belongs —
-  *When to ask anyway*, below.
+- If nothing fits, decide where a new component belongs. If it belongs in the
+  shared layer, ask first — *When to ask anyway*, below; otherwise write it with
+  the page, and say so.
 - **Show the shape before any code** — the role tree of the page-to-be, so there
   is something to disagree with before anything is written.
 - If the work has a design, read that tree from it rather than proposing one
@@ -145,15 +146,17 @@ below. Everything else is decided and reported.
 **A new or extracted shared piece — always asked.** Creating a shared piece, or
 extracting a snippet the pages paste into one, changes code other pages use.
 
-- Ask it as a question of its own, whether or not the order ties.
+- Ask it whether or not the order ties, as a question of its own — never folded
+  into the plan's yes. It may share a message with the other questions that wait
+  on a person.
 - The question says:
   - what is created;
   - where it will live;
   - which pages it touches, and in how many files, with the numbers;
   - what happens on a no: the page is written the way the project writes it now
     — the copies stay, and a piece nobody has yet is written inside the page.
-- With a plan, ask it on its own, apart from the plan's yes.
-- Without a plan, ask it before any page code is written.
+- Ask it while `finding-patterns` runs, before any plan is shown and before any
+  page code is written.
 - If nobody can answer — the work runs where no person is asked — write the page
   the way the project writes it now, and report the question.
 

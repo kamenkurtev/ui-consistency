@@ -194,8 +194,8 @@ In this order; the rules are in [counting.md](counting.md):
   none of, and every other control at that position is a shared piece, ask
   before creating the new one in the shared layer
   ([deciding.md](deciding.md), *When to ask anyway*).
-- Do not build it in the page while the question is open: building it changes
-  code other work uses.
+- While the question is open, build it nowhere: the answer decides where it
+  goes.
 
 ## 6. Values, spacing, type, and what can be read and used
 
