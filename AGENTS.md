@@ -163,8 +163,9 @@ a description, no run as an acceptance criterion. One run cannot tell a change
 from the run's own variance, and a run made to find defects always finds one.
 
 **The one check before a pull request is a fresh read, once.** A subagent with no
-other context reads only the changed skill files and names any line that reads
-two ways, any two lines that disagree, and any word used in two senses
+other context reads only the changed skill files — with `words.md` for a shipped
+skill — and names any line that reads two ways, any two lines that disagree, and
+any word used in two senses
 (`.claude/skills/uic-writing/SKILL.md`, *After writing*). It reads text and runs
 nothing on a project, and it is not repeated after the fixes.
 

@@ -29,7 +29,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 - No story of an earlier run, no history of the plugin, no argument for its design, no maxim.
 - Keep a clause of why where it changes a judgment.
 - Keep a concrete failure where it shows a rule nobody would guess.
-- Earlier issues, commits and concepts are not arguments for or against a change; how the plugin behaves now is.
+- Earlier issues, commits and decisions are not arguments for or against a change; how the plugin behaves now is.
 
 **How a line is written**
 
@@ -44,7 +44,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 **A reference file**
 
 - Title, then one line `**Read when:** …`, then `## Contents` when it runs over 100 lines.
-- Link it from the `SKILL.md` that needs it, one level deep.
+- Link it directly from the `SKILL.md` that needs it, never only from another reference file.
 
 **A description**
 
@@ -55,7 +55,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 
 **Terms and rules**
 
-- One term per concept, as `skills/finding-patterns/words.md` defines them.
+- One term per meaning. In a shipped skill, use the terms as `skills/finding-patterns/words.md` defines them.
 - Say a rule once inside a skill, where it is first needed, and link it everywhere else in that skill.
 - Keep a rule repeated across skills: each skill can be loaded alone.
 
@@ -66,8 +66,8 @@ Before the change is done:
 1. **Stale references.** Search for every file, section, skill, test and command the changed text names; each must still exist.
 2. **Contradictions.** For every rule the change touched, search for its other copies — in other words as well as the same ones — in `skills/`, `USING.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/` and `.claude/skills/`.
    - Each copy now says the same thing, or the change is not done.
-3. **Fix both in the same change**, and say in the pull request which copies were found.
-4. **One fresh read, once — if a skill changed.** Hand only the changed skill files to a subagent with no other context, and ask it for:
+3. **Fix every stale reference and every contradiction in the same change**, and say in the pull request which copies were found.
+4. **One fresh read, once — if a skill changed.** Hand a subagent with no other context only the changed skill files — and `skills/finding-patterns/words.md`, if a shipped skill changed — and ask it for:
    - any line that can be read two ways;
    - any two lines that disagree;
    - any word used in two senses, or one a shipped skill uses that `skills/finding-patterns/words.md` does not define.
@@ -75,7 +75,7 @@ Before the change is done:
    Then:
 
    - Fix what is a defect in the text, and say in the pull request what the read found — "nothing" is a result.
-   - Run it once. Do not repeat it after the fixes, and never run the skill on a project.
+   - Do the read once. Do not repeat it after the fixes, and never run the skill on a project for it.
    - If the harness has no subagents, skip it and say so.
 
 How a wrong statement is corrected, and what may never be written publicly, is `.claude/rules/uic-docs.md`.
