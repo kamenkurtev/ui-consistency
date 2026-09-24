@@ -26,7 +26,8 @@ being asked.
 
 If a spec or plan for this work already exists, add to it instead of starting
 another. Decide by the order the skills carry and report what settled each
-decision; ask only where it ties and the change reaches outside the task.
+decision; ask only where it ties and the change reaches outside the task, or
+before a shared piece is created or extracted.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the

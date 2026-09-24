@@ -43,10 +43,12 @@ reach without having opened its file is not done.
 3. **Use what the project reuses**: the shared component, helper or class the
    checklist names — never a new one beside it.
    - If the checklist says the project has no piece for the role, and every other
-     control at that position is shared, the new piece is the proposal the
-     checklist carries ([SKILL.md](../finding-patterns/SKILL.md), step 5).
-   - Build it only once it is accepted. Never write it privately into the page in
-     the meantime.
+     control at that position is shared, the new piece is a question that waits
+     on a person ([deciding.md](../finding-patterns/deciding.md), *When to ask
+     anyway*).
+   - Build it only on a yes. On a no, write the page the way the project writes
+     it now.
+   - Never write it privately into the page while the question is open.
 4. **What the user sees happen, as the checklist says**: validation, field
    errors, when the submit is enabled, how a failure is caught and shown, loading
    and empty.
@@ -92,8 +94,8 @@ reach without having opened its file is not done.
 11. **Where the checklist is silent, the order settles it** —
     [deciding.md](../finding-patterns/deciding.md). Say which level settled it.
     - Do not invent, and do not stop.
-    - Park a page only where the order ties **and** the decision reaches outside
-      what this task touches.
+    - Park a page only while a question that waits on a person is open —
+      [deciding.md](../finding-patterns/deciding.md), *When to ask anyway*.
     - Put those to the user together, once, not page by page.
 12. **A task's prose does not narrow its checklist.** If it says *change nothing
     else* and a line of its own checklist names a deviation, the line stands —

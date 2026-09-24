@@ -161,6 +161,8 @@ Skills shape what an agent does. A change to a skill:
 **There are no dedicated test runs**: no before/after runs, no sessions to check
 a description, no run as an acceptance criterion. One run cannot tell a change
 from the run's own variance, and a run made to find defects always finds one.
+The one session this project asks for is a harness integration's transcript
+(*New Harness Support*): it proves the plugin loads, not how a skill behaves.
 
 **The one check before a pull request is a fresh read, once.** A subagent with no
 other context reads the diff of the changed skill files, with those files as
