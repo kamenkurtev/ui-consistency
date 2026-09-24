@@ -59,7 +59,9 @@ unticked means the issue does not go to `Done`.
 |         |                 |       |                  |              |
 
 ## Harness support (required if this changes how a harness loads the plugin)
-<!-- A manifest, the hook, `USING.md`, `GEMINI.md`, `AGENTS.md`: attach a
+<!-- The one session this project asks for: it proves the plugin loads, not how
+     a skill behaves (AGENTS.md, *Skill Changes Come From Real Work*).
+     A manifest, the hook, `USING.md`, `GEMINI.md`, `AGENTS.md`: attach a
      **transcript** of a clean session in that harness, in a project with pages
      already built, sending exactly
 

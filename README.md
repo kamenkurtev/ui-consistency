@@ -205,9 +205,10 @@ next time. Nothing invents one: if you did not say it, it is not there.
 - **Before, not after.** An agent that reads the pattern first writes the right
   page once.
 - **It decides, you are not interrogated.** A written order settles what a count
-  alone cannot, and every decision is reported with what settled it. Two things
-  wait on you: the plan, before any code, and a tie whose answer changes code
-  outside the task.
+  alone cannot, and every decision is reported with what settled it. Three
+  things wait on you: the plan, before any code; a tie whose answer changes code
+  outside the task; and a new or extracted shared piece, asked with what it
+  touches.
 - **Silence is never success.** Where it could not read something, it says so.
 
 Read [docs/concept.md](docs/concept.md) for the reasoning.

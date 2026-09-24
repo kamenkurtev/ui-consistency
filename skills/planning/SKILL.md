@@ -57,6 +57,8 @@ repository, in [plan-file.md](plan-file.md).
   yes** before any code.
 - Ask nothing new here: the questions were asked while `finding-patterns` ran
   ([deciding.md](../finding-patterns/deciding.md)).
+- A new or extracted shared piece is not part of this yes: it is asked on its
+  own, with what it touches (*When to ask anyway*).
 - Mark a task waiting on the little that did reach a person
   `parked — waiting on <what>` in the plan, with its counts
   ([plan-file.md](plan-file.md)).

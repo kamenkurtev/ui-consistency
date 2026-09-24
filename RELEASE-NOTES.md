@@ -5,6 +5,22 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.52.0 (2026-09-24)
+
+### Changes
+
+- **Creating a shared piece, or extracting pasted code into one, is asked.** It
+  is a question of its own, not a proposal riding on the plan's yes. It says
+  what is created, where it lives, which pages and how many files it touches,
+  and what happens on a no: the page is written the way the project writes it
+  now. Without a plan it is asked before any page code; with nobody to answer,
+  the page is written the old way and the question is reported.
+- Three things wait on a person now: the plan, a tie whose answer changes code
+  outside the task, and a new or extracted shared piece. The session hook and
+  `USING.md` say so.
+- `finding-patterns`' description says it is for any change to what the end
+  user sees, whether or not the request names a page to follow (#285).
+
 ## v0.51.12 (2026-09-24)
 
 ### Small changes

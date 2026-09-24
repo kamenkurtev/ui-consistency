@@ -1,6 +1,6 @@
 ---
 name: finding-patterns
-description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use when building or changing a page, screen, form or component — above all when told to make it like an existing page, and also when the request names no existing page and says nothing about consistency.
+description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use for any change to what the end user sees — building or changing a page, screen, form or component — whether or not the request names a page to follow.
 ---
 
 # Finding the pattern
@@ -186,13 +186,16 @@ In this order; the rules are in [counting.md](counting.md):
 - A page that bypasses a shared piece is the drift this phase exists to catch — a
   named reference included ([deciding.md](deciding.md)).
 - **By copy** — the same snippet pasted into many files is **worth extracting**.
-  Propose making it reusable, in the form this project can use: in the shared
-  layer if other areas paste it too, in the page's own area if only it does.
-- If the proposal is declined, write it the way the other pages do.
+  Ask whether to make it reusable, in the form this project can use: in the
+  shared layer if other areas paste it too, in the page's own area if only it
+  does — as [deciding.md](deciding.md), *When to ask anyway*, says.
+- On a no, write it the way the other pages do.
 - **A piece with no instance yet** — if the task needs a control the project has
-  none of, and every other control at that position is a shared piece, propose
-  the new one for the shared layer. Do not build it in the page: building it
-  changes code other work uses.
+  none of, and every other control at that position is a shared piece, ask
+  before creating the new one in the shared layer
+  ([deciding.md](deciding.md), *When to ask anyway*).
+- Do not build it in the page while the question is open: building it changes
+  code other work uses.
 
 ## 6. Values, spacing, type, and what can be read and used
 
@@ -223,8 +226,8 @@ In this order; the rules are in [counting.md](counting.md):
 - Where they disagree, **the order decides** — [deciding.md](deciding.md).
 - Report each decision with the level and the numbers that settled it, in the
   form *Say what settled it* shows.
-- Ask, and report proposals, as *When to ask anyway* in
-  [deciding.md](deciding.md) says.
+- Ask the questions that wait on a person, and report proposals, as *When to ask
+  anyway* in [deciding.md](deciding.md) says.
 
 ## 8. Write the checklist
 

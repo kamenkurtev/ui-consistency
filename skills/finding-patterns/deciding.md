@@ -116,7 +116,8 @@ another.
   compare against, and what follows is a proposal, not what the project does.
 - Take the options in this order: the components of the page's own area, then
   the shared layer, then the UI library.
-- If nothing fits, propose a new component and where it belongs.
+- If nothing fits, ask whether to create a new component, and where it belongs —
+  *When to ask anyway*, below.
 - **Show the shape before any code** — the role tree of the page-to-be, so there
   is something to disagree with before anything is written.
 - If the work has a design, read that tree from it rather than proposing one
@@ -138,20 +139,36 @@ Report every decision with the level that settled it and the numbers under it:
 
 ## When to ask anyway
 
-Ask only when both hold:
+Three things wait on a person: the plan's yes (`planning`), and the two questions
+below. Everything else is decided and reported.
+
+**A new or extracted shared piece — always asked.** Creating a shared piece, or
+extracting a snippet the pages paste into one, changes code other pages use.
+
+- Ask it as a question of its own, whether or not the order ties.
+- The question says:
+  - what is created;
+  - where it will live;
+  - which pages it touches, and in how many files, with the numbers;
+  - what happens on a no: the page is written the way the project writes it now
+    — the copies stay, and a piece nobody has yet is written inside the page.
+- With a plan, ask it on its own, apart from the plan's yes.
+- Without a plan, ask it before any page code is written.
+- If nobody can answer — the work runs where no person is asked — write the page
+  the way the project writes it now, and report the question.
+
+**A tie whose answer reaches outside the task** — only when both hold:
 
 - the order **ties** — nothing above settles it; **and**
 - the decision **changes code outside what this task touches** — changing or
   moving something other work already uses.
+- Ask once, with the numbers and a proposal.
 
-Then:
+**Everything else is not a question:**
 
-- Ask once, with the numbers and a proposal. Besides the plan's yes, it is the
-  only question that waits on a person.
-- **A proposal is not a question.** Extracting a snippet the pages paste, a theme
-  entry a value needs, a new shared piece, a single place for shared values:
-  report each with its numbers, show it with the plan, and take the plan's yes
-  as its answer.
+- **A proposal is not a question.** A theme entry a value needs, a single place
+  for shared values: report each with its numbers, show it with the plan, and
+  take the plan's yes as its answer.
 - If a proposal is declined, or there is no plan, write the pages the way the
   project writes them now.
 - **A tie inside what this task touches is not a question.** Settle it by level
