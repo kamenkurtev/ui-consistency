@@ -17,8 +17,9 @@ steps.
 - **Holder** — a region that frames other roles: the page holder, a header, a
   toolbar, a sidebar, the content area, a footer, a dialog frame.
 - **Region** — a part of the page that holds roles: a holder, a form, a dialog. A small change touches one region of one page.
-- **Component** — whatever the project reuses as a unit: a framework component,
-  a custom element, a partial or include, a block of markup with a shared class.
+- **Component** — whatever the project builds as a unit, reused or not: a
+  framework component, a custom element, a partial or include, a block of markup
+  with a shared class.
 - **Shared piece** — anything the project reuses across pages for one concern:
   a component, a helper, a class. *The project's own piece* for a role is the
   shared piece its pages reach for there.

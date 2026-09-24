@@ -5,6 +5,17 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.52.1 (2026-09-24)
+
+### Small changes
+
+- Every new component is asked, shared or kept with the page — not only a
+  shared one. All of a work's new components and extractions go into one
+  question, a line each, saying where each would live: the shared layer, the
+  page's own area, or the page's own files. A small change that needs one in the
+  page's own files asks and stays small; one that would live outside the page is
+  sized again (#285).
+
 ## v0.52.0 (2026-09-24)
 
 ### Changes
