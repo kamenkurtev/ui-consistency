@@ -63,6 +63,9 @@ it is written, and what settled it** cannot be ticked without opening the page.
   the numbers under it — *the majority, 3 of 4 across 4 files*, *the shared
   piece, against the copy in <page>*, *as asked*. Walking the checklist is then
   also reading every decision that was made ([deciding.md](deciding.md)).
+- A bare count names no level. After a shared piece — *the shared field — 8 of
+  8* — it is level 4, with the piece's use among the members. After anything
+  else it is the majority, level 6. Name every other level.
 - **If the family is split on whether the role is there at all**, the line
   carries both decisions: *present — the majority, 6 of 8; through the shared
   date picker — the shared piece* ([counting.md](counting.md), *Counting honestly*).

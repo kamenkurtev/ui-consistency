@@ -114,8 +114,8 @@ another.
   order**, saying what settled it.
 - **If no pages are near in kind either**, say that first: there is nothing to
   compare against, and what follows is a proposal, not what the project does.
-- Take the options in this order: the module's own components, then the shared
-  or core layer, then the UI library.
+- Take the options in this order: the components of the page's own area, then
+  the shared layer, then the UI library.
 - If nothing fits, propose a new component and where it belongs.
 - **Show the shape before any code** — the role tree of the page-to-be, so there
   is something to disagree with before anything is written.

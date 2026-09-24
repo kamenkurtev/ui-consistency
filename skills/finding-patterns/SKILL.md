@@ -28,8 +28,8 @@ before anything is written.
 | 0 | Size the work — before any project file is opened | below |
 | 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
 | 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](elements.md), [design.md](design.md) only where there is a design |
-| 3 | The bound, and the theme that applies | [theme.md](theme.md); [large-project.md](large-project.md) only on a large project |
-| 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md) |
+| 3 | The bound, and the theme that applies | [theme.md](theme.md) |
+| 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md); [large-project.md](large-project.md) only on a large project |
 | 5 | What the other pages reuse — by import, by copy | below |
 | 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
 | 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
@@ -60,17 +60,22 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 ## 1. The reference
 
-- **If the request names a reference, that is the reference.** It outranks
-  anything you count.
-- For a refactor, the reference is the page already right, or the first one fixed
-  by hand.
+- **If the request names a reference, that is the reference** — level 3 of the
+  order. It outranks anything you count.
+- **For a refactor**, a page a person says is already right, or the first one
+  fixed by hand, is the named reference, level 3.
 - A named reference settles **what the page is**, never whether to use a shared
   piece — [deciding.md](deciding.md), *A named reference does not carry its own
   drift*.
-- **If nobody named one, choose it and say so**: the nearest in kind, and among
-  those the one most recently written and most reused.
-- If pages are imported only by the route table, *most reused* says nothing: the
-  most recently written decides.
+- **If nobody named one, choose it and say so** — level 7 of the order. Take the
+  pages that look nearest in kind by their folder, route and file names, and
+  among them, in this order:
+  1. the one other pages import, beyond the route table;
+  2. otherwise the one added most recently;
+  3. if several were added together, the one changed most recently.
+- Step 4 decides the kind. If the chosen reference is not of it, choose again
+  from the family by the same order, and say so. The counts do not change: they
+  are taken over the family.
 - Do not open with a question — [deciding.md](deciding.md).
 - If nothing is near enough to be a reference, take that branch in
   [deciding.md](deciding.md).
@@ -120,13 +125,9 @@ the project's answers into it:
 
 - Count what the theme does not define inside the bound
   ([words.md](words.md)), not the whole workspace.
-- Count a value that names a theme entry across every project that selects that
-  theme.
+- Count a value that names a theme entry across every application that selects
+  that theme.
 - Find the theme that applies first — [theme.md](theme.md).
-- **On a large project** — the family's members span more than one area, or are
-  more than can be read in full — follow [large-project.md](large-project.md).
-- A shared piece's reach search crossing areas does not make a project large.
-- If you read only a sample, **say so and how large**.
 
 ## 4. The kind, the family, the proof, the counts
 
@@ -136,26 +137,32 @@ In this order; the rules are in [counting.md](counting.md):
    project's own word.
 2. **The family** — remove non-members first, and write both numbers down. If the
    reference is the only member, run the branch for it: nothing is a convention.
+   - **If the members span more than one area, or are more than can be read in
+     full**, it is a large project: follow [large-project.md](large-project.md)
+     before counting.
+   - A shared piece's reach search crossing areas does not make a project large.
+   - If you read only a sample, **say so and how large**.
 3. **The proof** that the search can see — run every search on the reference
    first. A zero for something it writes is a broken search.
 4. **The counts** — per position, with their file spread, by exact name.
 
 **Who counts:**
 
-- **Count in the phase itself.** Write each count down once instead of
-  re-opening the files behind it.
+- **Count yourself.** Write each count down once instead of re-opening the files
+  behind it.
 - **If the family's members sit in more than one area**
   ([words.md](words.md)), hand the counting of the members to one subagent per
-  area, as [large-project.md](large-project.md) says.
-- **Measure a shared piece's reach in the phase itself**, whatever it crosses,
+  area instead, as [large-project.md](large-project.md) says.
+- **Measure a shared piece's reach yourself**, whatever it crosses,
   with one grouped search: that it exists, and how many files use it. Do not
   open those files.
 
 **Read less:**
 
-- **Count only the positions the checklist will carry** — the eight to twelve
-  that hold a shared piece, a convention or what must not be copied — and the
-  position the task changes.
+- **Count only the positions likely to carry a line** — a role filled by a
+  shared piece, a way of writing a role the family may share, something
+  particular to the reference — and the position the task changes. The checklist
+  keeps eight to twelve of them.
 - **Sample a family too large to read in full**: read the reference and the
   members that decide the order in full, search the rest by signature, and say so
   ([large-project.md](large-project.md)).
@@ -178,10 +185,9 @@ In this order; the rules are in [counting.md](counting.md):
   ([deciding.md](deciding.md), level 4).
 - A page that bypasses a shared piece is the drift this phase exists to catch — a
   named reference included ([deciding.md](deciding.md)).
-- **By copy** — the same snippet pasted into many files is **a candidate to
-  extract**. Propose making it reusable, in the form this project can use: in the
-  shared or core layer if other modules paste it too, in the module if only this
-  one does.
+- **By copy** — the same snippet pasted into many files is **worth extracting**.
+  Propose making it reusable, in the form this project can use: in the shared
+  layer if other areas paste it too, in the page's own area if only it does.
 - If the proposal is declined, write it the way the other pages do.
 - **A piece with no instance yet** — if the task needs a control the project has
   none of, and every other control at that position is a shared piece, propose

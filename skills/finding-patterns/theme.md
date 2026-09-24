@@ -4,7 +4,7 @@
 writing or checking any value that names a theme entry (`implementing`,
 `verifying`).
 
-## The bound and the theme's reach
+## The bound, and a theme's applications
 
 - **The bound** is the application the page belongs to and the libraries it
   uses — in a monorepo, not the whole workspace ([counting.md](counting.md),
@@ -12,11 +12,11 @@ writing or checking any value that names a theme entry (`implementing`,
 - Count inside it anything the theme does not define: which component fills a
   role, what it is passed that names no theme entry, what the page reuses.
 - **It is the application, never the library the reference happens to live in.**
-- **The theme's reach** is every project that selects the same theme. Count a
+- **A theme's applications** are every application that selects it, each with
+  the libraries it uses. Count a
   value that names a theme entry — a palette colour, a variant, a size or
-  spacing token — across it: all the projects that select the theme, and only
-  those.
-- **The two cross in both directions.** Several projects can share one theme:
+  spacing token — across all of them, and only those.
+- **The two cross in both directions.** Several applications can share one theme:
   bounded per project, one convention is counted as several local habits, each
   with a smaller spread. And one shared layer renders under several themes.
 - **Find the theme that applies** by following how the application selects it —
@@ -25,9 +25,9 @@ writing or checking any value that names a theme entry (`implementing`,
 - Treat presets as alternatives unless the code says one extends another: an
   entry defined in one is not inherited by the rest.
 - **A file in a shared layer has no theme of its own.** It renders under every
-  theme whose projects use it; its theme-defined values are checked against
+  theme whose applications use it; its theme-defined values are checked against
   each of them.
-- **Each count says what produced it** — the bound, or the theme's reach.
+- **Each count says what produced it** — the bound, or the theme's applications.
 
 ## A theme entry must exist
 

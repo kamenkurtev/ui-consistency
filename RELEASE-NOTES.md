@@ -5,6 +5,21 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.12 (2026-09-24)
+
+### Small changes
+
+- `finding-patterns` says how it picks a reference nobody named, in order: the
+  page other pages import, then the one added most recently, then the one
+  changed most recently. A refactor's reference a person points at is named,
+  level 3; one the phase picks is level 7.
+- The large-project check moves to step 4, once the family is known, instead of
+  step 3 asking about a family not yet built.
+- `words.md` defines holder, family, kind, member and candidate, convention,
+  workspace and shared layer. *Project*, *reach*, *phase* and *module* are each
+  used in one sense, and a bare count on a checklist line means the majority
+  (#282).
+
 ## v0.51.11 (2026-09-24)
 
 ### Small changes

@@ -20,7 +20,7 @@ the whole phase.
 at that one position — grouped into a search or two, with the proof on the
 reference — and the theme entries it uses.
 
-- **About ten project files and ten searches in the phase itself.**
+- **About ten project files and ten searches in `finding-patterns` itself.**
 - **About twenty-five of each for the whole change**, the checkers and every
   other subagent counted in.
 - **It counts what the cost line counts**, as one running total.
