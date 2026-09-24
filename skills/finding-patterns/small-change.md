@@ -63,13 +63,14 @@ reference — and the theme entries it uses.
   own styles, its own panels — the same unit [counting.md](counting.md) counts as
   one member.
 - A file anything else imports is outside it, however close it sits.
-- **If the change needs a new component**, ask before creating it, with the
-  numbers ([deciding.md](deciding.md), *When to ask anyway*).
-- **If it would live in the shared layer** — the family's other controls at that
-  position are all shared pieces — it is no longer a small change: say so in one
-  line before writing anything, and size the work again at step 0
-  ([SKILL.md](SKILL.md)). Building it changes code other work uses, which a task
-  sized as one page did not ask for.
+- **If the change needs a new component in the page's own files**, ask before
+  creating it, with the numbers ([deciding.md](deciding.md), *When to ask
+  anyway*), and stay in this branch.
+- **If it would live outside the page** — the pieces that fill that position on
+  the other pages live in the shared layer or the page's area — it is no longer
+  a small change. Say so in one line before writing anything, size the work
+  again at step 0 ([SKILL.md](SKILL.md)), and ask there. Building it changes code
+  other work uses, which a task sized as one page did not ask for.
 
 **What comes out**
 

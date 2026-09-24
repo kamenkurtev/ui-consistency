@@ -193,8 +193,8 @@ In this order; the rules are in [counting.md](counting.md):
 - **A piece with no instance yet** — if the task needs a control the project has
   none of, ask before creating it ([deciding.md](deciding.md), *When to ask
   anyway*).
-- Say where it would live: in the shared layer if every other control at that
-  position is a shared piece, otherwise with the page.
+- Say where it would live: beside the pieces that fill that position on the other
+  pages — the shared layer, the page's own area, or the page's own files.
 - While the question is open, build it nowhere: the answer decides where it
   goes.
 

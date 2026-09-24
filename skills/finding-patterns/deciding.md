@@ -150,11 +150,14 @@ have.
 - Ask it whether or not the order ties, as a question of its own — never folded
   into the plan's yes. It may share a message with the other questions that wait
   on a person.
-- The question says:
+- Put every new component and every extraction of the work into that one
+  question, one line each — never a question per component or per region.
+- Each line says:
   - what is created;
-  - where it will live: the shared layer, or with the page;
-  - which pages it touches, and in how many files, with the numbers — for one
-    kept with the page, that page alone;
+  - where it will live: the shared layer, the page's own area, or the page's own
+    files — beside the pieces that fill that position on the other pages;
+  - which pages it touches, and in how many files, with the numbers — for one in
+    the page's own files, that page alone;
   - what happens on a no: the page is written the way the project writes it now
     — the copies stay, and a piece nobody has yet is written inside the page.
 - Ask it while `finding-patterns` runs, before any plan is shown and before any
