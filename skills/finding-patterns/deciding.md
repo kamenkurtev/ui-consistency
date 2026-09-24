@@ -69,7 +69,8 @@ members that have the role ([counting.md](counting.md), *Counting honestly*).
      the project last chose for this concern.
    - Use the page's date only where the region's history cannot be read.
    - Say which pages they are, and which of the two histories you read.
-   - A count with a majority is level 6, and this level never overrides it.
+   - A count with a majority is level 6, and this level does not override it —
+     with one exception.
    - If the project's own written rule agrees with the newest members, they
      decide even against a majority — *A written rule the code does not follow*,
      below.
@@ -140,9 +141,8 @@ Report every decision with the level that settled it and the numbers under it:
 Ask only when both hold:
 
 - the order **ties** — nothing above settles it; **and**
-- the decision **changes code outside what this task touches** — extracting a
-  shared piece, adding an entry to the theme, moving something other work
-  already uses.
+- the decision **changes code outside what this task touches** — changing or
+  moving something other work already uses.
 
 Then:
 
@@ -154,8 +154,8 @@ Then:
   as its answer.
 - If a proposal is declined, or there is no plan, write the pages the way the
   project writes them now.
-- **A tie inside the task's own reach is not a question.** Take the lowest level
-  that applies, say so, and move on.
+- **A tie inside what this task touches is not a question.** Settle it by level
+  7, the reference the phase chose; say so, and move on.
 - Never a question per region, per prop, per pixel.
 
 ## A named reference does not carry its own drift

@@ -10,7 +10,7 @@ writing or checking any value that names a theme entry (`implementing`,
   uses — in a monorepo, not the whole workspace ([counting.md](counting.md),
   *The bound the family is counted in*).
 - Count inside it anything the theme does not define: which component fills a
-  role, what it is passed, what the page reuses.
+  role, what it is passed that names no theme entry, what the page reuses.
 - **It is the application, never the library the reference happens to live in.**
 - **The theme's reach** is every project that selects the same theme. Count a
   value that names a theme entry — a palette colour, a variant, a size or

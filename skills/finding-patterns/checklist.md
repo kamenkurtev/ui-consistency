@@ -29,7 +29,8 @@ of <m> candidates in <the bound: the application, and its libraries>, read <date
 - The first line's *<n> members of <m> candidates*: n is the family counted, m the
   pages considered before non-members were removed
   ([counting.md](counting.md), *Which pages are the family*).
-- A line's own count is over the members. **A line whose region has a family of
+- A line's own count is over that position in the members — *4 of 4* pages, or
+  *8 of 8* fields where each page has two. **A line whose region has a family of
   its own carries that count instead** — [counting.md](counting.md).
 
 An example, filled in:
@@ -80,7 +81,7 @@ it is written, and what settled it** cannot be ticked without opening the page.
 - **If it will not fit, leave out** anything the technology gives for free,
   anything identical in every page of every kind, and any position where the
   family has no convention.
-- Say a position with no convention out loud instead of listing it.
+- If a position with no convention is left out for room, say so out loud.
 - **Keep every position the task changes**: a position the work exists to settle
   stays on the checklist, as *no convention*, whatever else is left out.
 
@@ -93,8 +94,8 @@ it is written, and what settled it** cannot be ticked without opening the page.
 ## A snapshot, and the code wins
 
 - The first line says when it was read.
-- If the checklist and the code disagree, the code is right: take the checklist
-  again, never argue with the copy in hand.
+- If the checklist and the code disagree, the code is right: work the checklist
+  out again from the code, never argue with the copy in hand.
 - That first line and the short body make it **the extract a task carries out of
   the repository**. What a task takes with it, and who decides that it goes, is
   [plan-file.md](../planning/plan-file.md).

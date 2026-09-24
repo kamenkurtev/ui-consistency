@@ -50,5 +50,5 @@ its own.
 
 ## What the report carries
 
-The cost line the phase ends with, per area where the work was split: files
-opened, searches run, and which were sampled.
+The cost line the phase ends with — one total, and beside it each area where the
+work was split: files opened, searches run, and which were sampled.

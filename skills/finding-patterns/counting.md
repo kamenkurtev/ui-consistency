@@ -55,7 +55,7 @@ Then:
 - If the project does not answer it, decide it by what the pages render and
   report it: *these six render the same holders and the same regions; these two
   do not, and are counted as a second kind.*
-- A tie inside the task's own reach is not a question ([deciding.md](deciding.md)).
+- A tie inside what this task touches is not a question ([deciding.md](deciding.md)).
 - **Say the decision and what it covered** in the checklist's first line: the
   kind, what decided it, and how many members of how many candidates were
   counted — [checklist.md](checklist.md).
