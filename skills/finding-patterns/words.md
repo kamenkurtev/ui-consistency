@@ -26,7 +26,11 @@ steps.
   the project reuses the framework's own element or directive as its unit, and
   nothing wraps it — record it once, as that piece, and say the component and
   the element are the same; do not invent a split to fill both columns.
-- **How it is written** — everything passed to it.
+- **How it is written** — everything passed to it and everything that styles it.
+- **Area** — one app, library or package of the workspace.
+- **Bound** — the application that mounts the page and every library it uses:
+  where the family is counted ([counting.md](counting.md), *The bound the family
+  is counted in*).
 - **The theme** — wherever shared values live: a theme object, custom
   properties, preprocessor variables, a shared stylesheet, a config file.
 - **Validation** — a library, or the platform's own form attributes.
