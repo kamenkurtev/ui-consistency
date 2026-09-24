@@ -1,22 +1,21 @@
-# Themes: the boundary and the entries that must exist
+# Themes: the bound and the entries that must exist
 
 **Read when:** before anything is counted (`finding-patterns` step 3), or
 writing or checking any value that names a theme entry (`implementing`,
 `verifying`).
 
-## The project and the theme are two boundaries
+## The bound and the theme's reach
 
-- **The project boundary** is the application the page belongs to and the
-  libraries it uses — in a monorepo, not the whole workspace.
+- **The bound** is the application the page belongs to and the libraries it
+  uses — in a monorepo, not the whole workspace ([counting.md](counting.md),
+  *The bound the family is counted in*).
 - Count inside it anything the theme does not define: which component fills a
   role, what it is passed, what the page reuses.
 - **It is the application, never the library the reference happens to live in.**
-  How the family is bounded inside it is [counting.md](counting.md), *The bound
-  the family is counted in*.
-- **The theme boundary** is every project that selects the same theme. A value
-  that names a theme entry — a palette colour, a variant, a size or spacing
-  token — is counted across the theme's reach: all the projects that select it,
-  and only those.
+- **The theme's reach** is every project that selects the same theme. Count a
+  value that names a theme entry — a palette colour, a variant, a size or
+  spacing token — across it: all the projects that select the theme, and only
+  those.
 - **The two cross in both directions.** Several projects can share one theme:
   bounded per project, one convention is counted as several local habits, each
   with a smaller spread. And one shared layer renders under several themes.
@@ -28,8 +27,7 @@ writing or checking any value that names a theme entry (`implementing`,
 - **A file in a shared layer has no theme of its own.** It renders under every
   theme whose projects use it; its theme-defined values are checked against
   each of them.
-- **Each count says which bound produced it** — the project, or the theme and
-  the projects in its reach.
+- **Each count says what produced it** — the bound, or the theme's reach.
 
 ## A theme entry must exist
 

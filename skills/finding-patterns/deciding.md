@@ -131,8 +131,8 @@ Report every decision with the level that settled it and the numbers under it:
 <submit button>   full-width — the majority, 3 of 4 across 4 files
 <field error>     the shared helper — the shared piece, against the copy in <page>
 <page title>      as asked — you asked for <page>'s; the other 3 write it larger
-<filter control>  present — the majority, 14 of 21; through the shared toggle —
-                  the shared piece, against 4 written by hand
+<status column>   present — the majority, 9 of 12; through the shared badge —
+                  the shared piece, against 2 written by hand
 ```
 
 ## When to ask anyway

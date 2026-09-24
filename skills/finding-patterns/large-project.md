@@ -1,13 +1,12 @@
 # A large project: split, sample, group
 
 **Read when:** `finding-patterns` step 3, on a large project only — the
-family's members span more than one app, library or area, or are more than can
-be read in full.
+family's members span more than one area, or are more than can be read in
+full.
 
 ## Split by area, across subagents
 
-- **Split when the family crosses areas**: more than one app, library or package
-  holds its members.
+- **Split when the family's members sit in more than one area.**
 - Hand the counting of the members to one subagent per area, where the harness
   has them.
 - A shared piece's reach search is never split — [SKILL.md](SKILL.md) step 4.

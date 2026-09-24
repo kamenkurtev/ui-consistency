@@ -5,6 +5,20 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.51.11 (2026-09-24)
+
+### Small changes
+
+- `finding-patterns`' description also reaches a request that names no existing
+  page and says nothing about consistency.
+- `words.md` defines *area* (one app, library or package) and *bound* (the
+  application that mounts the page and every library it uses), and the skills
+  use each in that one sense; `theme.md` says *the bound* and *the theme's
+  reach* where it said *project boundary* and *theme boundary*.
+- Step 4 says once that a shared piece's reach is one grouped search, run in the
+  phase, and the filter example appears once, with the other files carrying
+  their own (#277).
+
 ## v0.51.10 (2026-09-23)
 
 ### Changes

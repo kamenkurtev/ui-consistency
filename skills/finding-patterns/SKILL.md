@@ -1,6 +1,6 @@
 ---
 name: finding-patterns
-description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use when building or changing a page, screen, form or component, above all when told to make it like an existing page.
+description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use when building or changing a page, screen, form or component — above all when told to make it like an existing page, and also when the request names no existing page and says nothing about consistency.
 ---
 
 # Finding the pattern
@@ -28,7 +28,7 @@ before anything is written.
 | 0 | Size the work — before any project file is opened | below |
 | 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
 | 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](elements.md), [design.md](design.md) only where there is a design |
-| 3 | Bounds: the project, and the theme that applies | [theme.md](theme.md); [large-project.md](large-project.md) only on a large project |
+| 3 | The bound, and the theme that applies | [theme.md](theme.md); [large-project.md](large-project.md) only on a large project |
 | 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md) |
 | 5 | What the other pages reuse — by import, by copy | below |
 | 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
@@ -116,16 +116,15 @@ the project's answers into it:
     <shared footer component>  as <element>
 ```
 
-## 3. Bounds
+## 3. The bound and the theme
 
-- Count what the theme does not define inside the project the page belongs to,
-  not the whole workspace.
+- Count what the theme does not define inside the bound
+  ([words.md](words.md)), not the whole workspace.
 - Count a value that names a theme entry across every project that selects that
   theme.
 - Find the theme that applies first — [theme.md](theme.md).
-- **On a large project** — the family's members span more than one app, library
-  or area, or are more than can be read in full — follow
-  [large-project.md](large-project.md).
+- **On a large project** — the family's members span more than one area, or are
+  more than can be read in full — follow [large-project.md](large-project.md).
 - A shared piece's reach search crossing areas does not make a project large.
 - If you read only a sample, **say so and how large**.
 
@@ -145,19 +144,18 @@ In this order; the rules are in [counting.md](counting.md):
 
 - **Count in the phase itself.** Write each count down once instead of
   re-opening the files behind it.
-- **If the family's members sit in more than one area** — app, library or
-  package — hand the counting of the members to one subagent per area, as
-  [large-project.md](large-project.md) says.
-- **Run a shared piece's reach search in the phase itself**, whatever it
-  crosses: it is one grouped search that returns a number.
+- **If the family's members sit in more than one area**
+  ([words.md](words.md)), hand the counting of the members to one subagent per
+  area, as [large-project.md](large-project.md) says.
+- **Measure a shared piece's reach in the phase itself**, whatever it crosses,
+  with one grouped search: that it exists, and how many files use it. Do not
+  open those files.
 
 **Read less:**
 
 - **Count only the positions the checklist will carry** — the eight to twelve
   that hold a shared piece, a convention or what must not be copied — and the
   position the task changes.
-- **Measure a shared piece's reach with one grouped search**: that it exists, and
-  how many files use it. Do not open those files.
 - **Sample a family too large to read in full**: read the reference and the
   members that decide the order in full, search the rest by signature, and say so
   ([large-project.md](large-project.md)).

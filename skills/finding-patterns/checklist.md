@@ -63,8 +63,8 @@ it is written, and what settled it** cannot be ticked without opening the page.
   piece, against the copy in <page>*, *as asked*. Walking the checklist is then
   also reading every decision that was made ([deciding.md](deciding.md)).
 - **If the family is split on whether the role is there at all**, the line
-  carries both decisions: *present — the majority, 14 of 21; through the shared
-  toggle — the shared piece* ([counting.md](counting.md), *Counting honestly*).
+  carries both decisions: *present — the majority, 6 of 8; through the shared
+  date picker — the shared piece* ([counting.md](counting.md), *Counting honestly*).
 - **If the family has no convention at a position**, say that on the line instead
   of a number that reads as one: *no convention — three ways across 8 files; the
   two newest write it this way* ([counting.md](counting.md)).
