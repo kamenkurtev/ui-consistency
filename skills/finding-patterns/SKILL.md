@@ -1,6 +1,6 @@
 ---
 name: finding-patterns
-description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use for any change to what the end user sees — building or changing a page, screen, form or component — whether or not the request names a page to follow.
+description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use when anything the end user sees is built or changed — a page, screen, form or component — whether or not the request names a page to follow.
 ---
 
 # Finding the pattern
