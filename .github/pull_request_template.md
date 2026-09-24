@@ -83,9 +83,9 @@ paste the complete transcript here
   asked, what the agent did — or the defect in the text it fixes, and what the
   agent must now do differently. Described by role, never by name.
 - A change of wording that leaves what the skill asks the same: say so.
-- If a skill changed: what the one fresh read found
-  (`.claude/skills/uic-writing/SKILL.md`, *After writing*) — "nothing" is a
-  result.
+- If a skill changed: what the one fresh read of the changed lines found, what
+  was fixed and what was only named (`.claude/skills/uic-writing/SKILL.md`,
+  *After writing*) — "nothing" is a result.
 
 <!-- No test runs: a skill change is checked the next time the plugin is used
      for real work (AGENTS.md, *Skill Changes Come From Real Work*). -->
