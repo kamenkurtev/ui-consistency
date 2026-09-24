@@ -163,9 +163,9 @@ a description, no run as an acceptance criterion. One run cannot tell a change
 from the run's own variance, and a run made to find defects always finds one.
 
 **The one check before a pull request is a fresh read, once.** A subagent with no
-other context reads the diff, with the changed skill files as context, and names
-at most five changed lines that read two ways, disagree with another line, or
-use a word in a new sense (`.claude/skills/uic-writing/SKILL.md`, *After
+other context reads the diff of the changed skill files, with those files as
+context, and names at most five changed lines that read two ways, disagree with
+another line, or use a word in a new sense (`.claude/skills/uic-writing/SKILL.md`, *After
 writing*). What changes what an agent does is fixed; the rest is named in the
 pull request. It reads text, runs nothing on a project, and is not repeated.
 
