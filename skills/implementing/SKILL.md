@@ -42,10 +42,9 @@ reach without having opened its file is not done.
    - If it records none for a position, say so rather than choosing one.
 3. **Use what the project reuses**: the shared component, helper or class the
    checklist names — never a new one beside it.
-   - If the checklist says the project has no piece for the role, and every other
-     control at that position is shared, the new piece is a question that waits
-     on a person ([deciding.md](../finding-patterns/deciding.md), *When to ask
-     anyway*).
+   - If the checklist says the project has no piece for the role, the new piece
+     is a question that waits on a person, shared or kept with the page
+     ([deciding.md](../finding-patterns/deciding.md), *When to ask anyway*).
    - Build it only on a yes. On a no, write the page the way the project writes
      it now.
    - Never write it privately into the page while the question is open.

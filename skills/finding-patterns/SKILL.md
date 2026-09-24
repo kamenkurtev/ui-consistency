@@ -191,9 +191,10 @@ In this order; the rules are in [counting.md](counting.md):
   does — as [deciding.md](deciding.md), *When to ask anyway*, says.
 - On a no, write it the way the other pages do.
 - **A piece with no instance yet** — if the task needs a control the project has
-  none of, and every other control at that position is a shared piece, ask
-  before creating the new one in the shared layer
-  ([deciding.md](deciding.md), *When to ask anyway*).
+  none of, ask before creating it ([deciding.md](deciding.md), *When to ask
+  anyway*).
+- Say where it would live: in the shared layer if every other control at that
+  position is a shared piece, otherwise with the page.
 - While the question is open, build it nowhere: the answer decides where it
   goes.
 

@@ -38,7 +38,8 @@ reference — and the theme entries it uses.
 - The subjects the change does not touch: no type scale for a change that moves
   no text, no spacing sweep for a change that moves no gap.
 - Showing the shape, the plan, and the stop for a yes — a small change does not
-  stop.
+  stop, except for a question that waits on a person
+  ([deciding.md](deciding.md), *When to ask anyway*).
 
 **What is never skipped**
 
@@ -62,13 +63,13 @@ reference — and the theme entries it uses.
   own styles, its own panels — the same unit [counting.md](counting.md) counts as
   one member.
 - A file anything else imports is outside it, however close it sits.
-- **If the order would put the piece in the shared layer** — the family's other
-  controls at that position are all shared pieces, and this one has none yet —
-  it is no longer a small change.
-- Say so in one line before writing anything, size the work again at step 0
-  ([SKILL.md](SKILL.md)), and ask whether to create the shared piece, with the
-  numbers ([deciding.md](deciding.md), *When to ask anyway*): building it changes
-  code other work uses, which a task sized as one page did not ask for.
+- **If the change needs a new component**, ask before creating it, with the
+  numbers ([deciding.md](deciding.md), *When to ask anyway*).
+- **If it would live in the shared layer** — the family's other controls at that
+  position are all shared pieces — it is no longer a small change: say so in one
+  line before writing anything, and size the work again at step 0
+  ([SKILL.md](SKILL.md)). Building it changes code other work uses, which a task
+  sized as one page did not ask for.
 
 **What comes out**
 

@@ -78,8 +78,9 @@ to this repository only — both trackers start at 1.
 5. **It decides and reports; it does not interrogate.** A written order settles
    what a count alone cannot, and every decision carries the level that settled
    it and the numbers. Three things wait on a person: the plan, shown for a yes;
-   a tie in the order whose answer changes code outside the task; and a new or
-   extracted shared piece, asked on its own with what it touches. Other
+   a tie in the order whose answer changes code outside the task; and a new
+   component, or code extracted into one, asked on its own with what it
+   touches. Other
    proposals and contradictions are reported, with the plan where there is one.
 6. **Join the process that is running.** A spec or plan that already exists is
    added to, not duplicated. Without one, the skills run the four phases

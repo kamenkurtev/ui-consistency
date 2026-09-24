@@ -29,7 +29,7 @@ var STANDING = [
   "If a spec or plan for this work already exists, add to it instead of starting",
   "another. Decide by the order the skills carry and report what settled each",
   "decision; ask only where it ties and the change reaches outside the task, or",
-  "before a shared piece is created or extracted."
+  "before a component is created or code is extracted into one."
 ].join("\n");
 var LEFT_BEHIND = [".ui-consistency", ".claude/ui-consistency"];
 async function sessionContext(rootDir) {

@@ -123,8 +123,9 @@ the decision is reported with the level that settled it and the numbers under it
 A question is a thing somebody has to settle by hand, which is the work this
 exists to remove, and a tool that interrogates gets switched off. Three things
 wait on a person: the plan, shown for a yes before any code; a tie in the order
-whose answer changes code outside the task; and a new or extracted shared piece,
-asked on its own with what it touches, since it changes code other pages use. A
+whose answer changes code outside the task; and a new component, or code
+extracted into one, asked on its own with what it touches, since it adds a piece
+the project did not have. A
 proposal — a theme entry, a single place for shared values — and a
 contradiction the project carries are reported, with the plan where there is
 one.
