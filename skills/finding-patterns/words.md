@@ -35,10 +35,11 @@ steps.
 - **Bound** — the application that mounts the page and every library it uses:
   where the family is counted ([counting.md](counting.md), *The bound the family
   is counted in*).
-- **Kind** — what a page is, decided before counting: a list, a detail view, a
-  form ([counting.md](counting.md), *Which kind of page this is*).
-- **Family** — the pages of the reference's kind, which the counts are taken
-  over. Where members differ below a shared holder, a region has its own family:
+- **Kind** — what the page the task builds or changes is, decided before
+  counting: a list, a detail view, a form. A named reference settles it
+  ([counting.md](counting.md), *Which kind of page this is*).
+- **Family** — the pages of that kind, the reference among them; the counts are
+  taken over it. Where members differ below a shared holder, a region has its own family:
   the members that render it ([counting.md](counting.md), *A family that differs
   by region*).
 - **Member**, **candidate** — a page of the family; a page considered before

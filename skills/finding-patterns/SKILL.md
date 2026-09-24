@@ -73,8 +73,9 @@ Decide the branch **from the request alone, before any project file is opened**.
   1. the one other pages import, beyond the route table;
   2. otherwise the one added most recently;
   3. if several were added together, the one changed most recently.
-- Step 4 decides the kind. If the chosen reference is not of it, choose again and
-  say so.
+- Step 4 decides the kind. If the chosen reference is not of it, choose again
+  from the family by the same order, and say so. The counts do not change: they
+  are taken over the family.
 - Do not open with a question — [deciding.md](deciding.md).
 - If nothing is near enough to be a reference, take that branch in
   [deciding.md](deciding.md).
@@ -147,21 +148,21 @@ In this order; the rules are in [counting.md](counting.md):
 
 **Who counts:**
 
-- **Count yourself, without a subagent.** Write each count down once instead of
-  re-opening the files behind it.
+- **Count yourself.** Write each count down once instead of re-opening the files
+  behind it.
 - **If the family's members sit in more than one area**
   ([words.md](words.md)), hand the counting of the members to one subagent per
-  area, as [large-project.md](large-project.md) says.
+  area instead, as [large-project.md](large-project.md) says.
 - **Measure a shared piece's reach yourself**, whatever it crosses,
   with one grouped search: that it exists, and how many files use it. Do not
   open those files.
 
 **Read less:**
 
-- **Count only the positions that can carry a line** — where the reference uses
-  a shared piece, writes a value or a style by hand, or has something that must
-  not be copied — and the position the task changes. The checklist keeps eight
-  to twelve of them.
+- **Count only the positions likely to carry a line** — a role filled by a
+  shared piece, a way of writing a role the family may share, something
+  particular to the reference — and the position the task changes. The checklist
+  keeps eight to twelve of them.
 - **Sample a family too large to read in full**: read the reference and the
   members that decide the order in full, search the rest by signature, and say so
   ([large-project.md](large-project.md)).

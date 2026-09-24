@@ -12,7 +12,8 @@ writing or checking any value that names a theme entry (`implementing`,
 - Count inside it anything the theme does not define: which component fills a
   role, what it is passed that names no theme entry, what the page reuses.
 - **It is the application, never the library the reference happens to live in.**
-- **A theme's applications** are every application that selects it. Count a
+- **A theme's applications** are every application that selects it, each with
+  the libraries it uses. Count a
   value that names a theme entry — a palette colour, a variant, a size or
   spacing token — across all of them, and only those.
 - **The two cross in both directions.** Several applications can share one theme:
