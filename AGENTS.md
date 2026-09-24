@@ -162,6 +162,12 @@ Skills shape what an agent does. A change to a skill:
 a description, no run as an acceptance criterion. One run cannot tell a change
 from the run's own variance, and a run made to find defects always finds one.
 
+**The one check before a pull request is a fresh read, once.** A subagent with no
+other context reads only the changed skill files and names any line that reads
+two ways, any two lines that disagree, and any word used in two senses
+(`.claude/skills/uic-writing/SKILL.md`, *After writing*). It reads text and runs
+nothing on a project, and it is not repeated after the fixes.
+
 **A change of wording that leaves what the skill asks the same** — a term made
 consistent, a sentence made true, a rule written one instruction to a line —
 says that is what it is.
