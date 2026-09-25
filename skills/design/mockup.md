@@ -5,9 +5,9 @@ written, or asks for alternatives. Never otherwise.
 
 It shows **whether the page hangs together**, drawn with the project's values:
 the checklist's, where one exists; otherwise read from the theme as
-`finding-patterns`' [theme.md](../finding-patterns/theme.md),
-[spacing.md](../finding-patterns/spacing.md) and
-[typography.md](../finding-patterns/typography.md) say. Nothing new is measured.
+`finding-patterns`' [theme.md](../values/theme.md),
+[spacing.md](../values/spacing.md) and
+[typography.md](../values/typography.md) say. Nothing new is measured.
 
 ## What it is
 

@@ -26,15 +26,15 @@ before anything is written.
 | # | Step | Open, at that step |
 |---|---|---|
 | 0 | Size the work — before any project file is opened | below |
-| 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
-| 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](elements.md), [reading.md](../design/reading.md) only where there is a design |
-| 3 | The bound, and the theme that applies | [theme.md](theme.md) |
-| 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md); [large-project.md](large-project.md) only on a large project |
+| 1 | The reference: named, or chosen and said | below, [decisions](../decisions/SKILL.md) |
+| 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](../values/elements.md), [reading.md](../design/reading.md) only where there is a design |
+| 3 | The bound, and the theme that applies | [theme.md](../values/theme.md) |
+| 4 | The kind, the family, proof that the search can see, then the counts | [conventions](../conventions/SKILL.md); [large-project.md](../conventions/large-project.md) only on a large project |
 | 5 | What the other pages reuse — by import, by copy | below |
-| 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
-| 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
+| 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](../values/theme.md), [spacing.md](../values/spacing.md), [typography.md](../values/typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
+| 7 | Decide by the order, and report what settled it | [decisions](../decisions/SKILL.md) |
 | 8 | Write the checklist for the task | [checklist.md](checklist.md) |
-| — | One region of one page, as sized at step 0: read less, skip deliberately, say so | [small-change.md](small-change.md) |
+| — | One region of one page, as sized at step 0: read less, skip deliberately, say so | [adjusting](../adjusting/SKILL.md) |
 
 ## 0. Size the work first
 
@@ -43,7 +43,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 | The work | Branch | May read | May write |
 |---|---|---|---|
 | a new page, a set of pages, a refactor across pages | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
-| one region of one page — a label, a value, a field, a button | [small-change.md](small-change.md) | the page, and that one position across the family — its budget | the page only — with the files only it uses |
+| one region of one page — a label, a value, a field, a button | [adjusting](../adjusting/SKILL.md) | the page, and that one position across the family — its budget | the page only — with the files only it uses |
 | checking code already written | `ui-consistency:verifying`, after this phase where no checklist exists | the checklist and the page | a report |
 
 - **Say it in one line** before anything else: *sized as one region of one page —
@@ -65,7 +65,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 - **For a refactor**, a page a person says is already right, or the first one
   fixed by hand, is the named reference, level 3.
 - A named reference settles **what the page is**, never whether to use a shared
-  piece — [deciding.md](deciding.md), *A named reference does not carry its own
+  piece — [decisions](../decisions/SKILL.md), *A named reference does not carry its own
   drift*.
 - **If nobody named one, choose it and say so** — level 7 of the order. Take the
   pages that look nearest in kind by their folder, route and file names, and
@@ -76,9 +76,9 @@ Decide the branch **from the request alone, before any project file is opened**.
 - Step 4 decides the kind. If the chosen reference is not of it, choose again
   from the family by the same order, and say so. The counts do not change: they
   are taken over the family.
-- Do not open with a question — [deciding.md](deciding.md).
+- Do not open with a question — [decisions](../decisions/SKILL.md).
 - If nothing is near enough to be a reference, take that branch in
-  [deciding.md](deciding.md).
+  [decisions](../decisions/SKILL.md).
 
 ## 2. Read the reference: top to bottom, then left to right
 
@@ -95,7 +95,7 @@ Read in this order:
    dialog frame.
 2. **The components in each holder**, in reading order.
 3. **What each comes out as** — the element at that position, and the heading
-   level where the position is a heading — [elements.md](elements.md).
+   level where the position is a heading — [elements.md](../values/elements.md).
 4. **How each is written** — everything passed to it and everything that styles
    it.
 5. **Down into the children.** A page often only arranges child components; open
@@ -128,18 +128,18 @@ the project's answers into it:
   ([words.md](words.md)), not the whole workspace.
 - Count a value that names a theme entry across every application that selects
   that theme.
-- Find the theme that applies first — [theme.md](theme.md).
+- Find the theme that applies first — [theme.md](../values/theme.md).
 
 ## 4. The kind, the family, the proof, the counts
 
-In this order; the rules are in [counting.md](counting.md):
+In this order; the rules are in [conventions](../conventions/SKILL.md):
 
 1. **The kind** — decide it before anything is counted, and name it in the
    project's own word.
 2. **The family** — remove non-members first, and write both numbers down. If the
    reference is the only member, run the branch for it: nothing is a convention.
    - **If the members span more than one area, or are more than can be read in
-     full**, it is a large project: follow [large-project.md](large-project.md)
+     full**, it is a large project: follow [large-project.md](../conventions/large-project.md)
      before counting.
    - A shared piece's reach search crossing areas does not make a project large.
    - If you read only a sample, **say so and how large**.
@@ -153,7 +153,7 @@ In this order; the rules are in [counting.md](counting.md):
   behind it.
 - **If the family's members sit in more than one area**
   ([words.md](words.md)), hand the counting of the members to one subagent per
-  area instead, as [large-project.md](large-project.md) says.
+  area instead, as [large-project.md](../conventions/large-project.md) says.
 - **Measure a shared piece's reach yourself**, whatever it crosses,
   with one grouped search: that it exists, and how many files use it. Do not
   open those files.
@@ -166,7 +166,7 @@ In this order; the rules are in [counting.md](counting.md):
   keeps eight to twelve of them.
 - **Sample a family too large to read in full**: read the reference and the
   members that decide the order in full, search the rest by signature, and say so
-  ([large-project.md](large-project.md)).
+  ([large-project.md](../conventions/large-project.md)).
 - In a later phase, **do not count again what a checklist already carries**,
   unless a line is in doubt.
 
@@ -183,16 +183,16 @@ In this order; the rules are in [counting.md](counting.md):
   it. The project's loading indicator, not the library's; its shared error
   helper, not a new message box.
 - Search for it across everything the page can import from, not the family alone
-  ([deciding.md](deciding.md), level 4).
+  ([decisions](../decisions/SKILL.md), level 4).
 - A page that bypasses a shared piece is the drift this phase exists to catch — a
-  named reference included ([deciding.md](deciding.md)).
+  named reference included ([decisions](../decisions/SKILL.md)).
 - **By copy** — the same snippet pasted into many files is **worth extracting**.
   Ask whether to make it reusable, in the form this project can use: in the
   shared layer if other areas paste it too, in the page's own area if only it
-  does — as [deciding.md](deciding.md), *When to ask anyway*, says.
+  does — as [decisions](../decisions/SKILL.md), *When to ask anyway*, says.
 - On a no, write it the way the other pages do.
 - **A piece with no instance yet** — if the task needs a control the project has
-  none of, ask before creating it ([deciding.md](deciding.md), *When to ask
+  none of, ask before creating it ([decisions](../decisions/SKILL.md), *When to ask
   anyway*).
 - Say where it would live: beside the pieces that fill that position on the other
   pages — the shared layer, the page's own area, or the page's own files.
@@ -204,13 +204,13 @@ In this order; the rules are in [counting.md](counting.md):
 - Find how the theme expresses colour, spacing, size, typography, radius and
   breakpoints.
 - **Open each subject's file before writing its line of the checklist** —
-  [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md).
+  [theme.md](../values/theme.md), [spacing.md](../values/spacing.md), [typography.md](../values/typography.md).
   A line written from the stylesheets alone is a guess.
 - Record the colour pairings, focus and labels the family uses as conventions.
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — [accessibility](../accessibility/SKILL.md).
 - **A value that names a theme entry must exist in the theme that applies**
-  ([theme.md](theme.md)).
+  ([theme.md](../values/theme.md)).
 - Write a literal that has a theme equivalent **through the theme**; one without
   becomes a **named constant** where the project keeps them.
 - Put translated text through the translation mechanism.
@@ -225,18 +225,18 @@ In this order; the rules are in [counting.md](counting.md):
 
 - Where the reference and the rest of the project agree, **take the answer, say
   what you took, and move on.**
-- Where they disagree, **the order decides** — [deciding.md](deciding.md).
+- Where they disagree, **the order decides** — [decisions](../decisions/SKILL.md).
 - Report each decision with the level and the numbers that settled it, in the
   form *Say what settled it* shows.
 - Ask the questions that wait on a person, and report proposals, as *When to ask
-  anyway* in [deciding.md](deciding.md) says.
+  anyway* in [decisions](../decisions/SKILL.md) says.
 
 ## 8. Write the checklist
 
 - Turn the page's tree into the checklist — its shape, and where it goes, are
   [checklist.md](checklist.md).
 - If a person asks to see the page-to-be, it is drawn by `ui-consistency:design`
-  ([SKILL.md](../design/SKILL.md), step 4) — never unasked.
+  ([design](../design/SKILL.md), step 4) — never unasked.
 - **Write nothing into the project's repository.** A plan this plugin writes
   lives outside it and goes with the work
   ([plan-file.md](../planning/plan-file.md)).
@@ -257,8 +257,8 @@ In this order; the rules are in [counting.md](counting.md):
 ## Then
 
 - For a new page or a refactor: `ui-consistency:planning`.
-- For a small change to one page: `ui-consistency:implementing`, then
-  `ui-consistency:verifying` by an agent that did not write it.
+- A small change to one page, sized so at step 0, goes to
+  `ui-consistency:adjusting` in place of steps 1–8.
 
 ## Red flags
 

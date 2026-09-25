@@ -5,6 +5,21 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.54.0 (2026-09-25)
+
+### Changes
+
+- **Four new skills, split out of `finding-patterns`:**
+  - `values` — theme, spacing, type and elements;
+  - `conventions` — counting what the pages do;
+  - `decisions` — the order that settles a choice, and what waits on a person;
+  - `adjusting` — a change to one region of one page, as a phase of its own.
+- The text moved as it was. `finding-patterns`, `implementing`, `verifying`,
+  `design` and `accessibility` call the new skills at the steps that need them.
+- A small change no longer loads all of `finding-patterns`, and the rules every
+  phase uses are skills now, so they survive compaction. Shrinking the text
+  follows in #294 (#295).
+
 ## v0.53.1 (2026-09-25)
 
 ### Small changes

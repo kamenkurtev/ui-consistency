@@ -7,7 +7,7 @@ writing or checking any value that names a theme entry (`implementing`,
 ## The bound, and a theme's applications
 
 - **The bound** is the application the page belongs to and the libraries it
-  uses — in a monorepo, not the whole workspace ([counting.md](counting.md),
+  uses — in a monorepo, not the whole workspace ([conventions](../conventions/SKILL.md),
   *The bound the family is counted in*).
 - Count inside it anything the theme does not define: which component fills a
   role, what it is passed that names no theme entry, what the page reuses.
@@ -39,7 +39,7 @@ writing or checking any value that names a theme entry (`implementing`,
   another theme. Counted across the workspace it read as a unanimous 131 of 131.
 - **Never write a value a theme does not define as a convention.**
 - Adding an entry to a theme changes code outside the task, so it is a proposal
-  ([deciding.md](deciding.md)): report the theme it is missing from, the files
+  ([decisions](../decisions/SKILL.md)): report the theme it is missing from, the files
   that write it, and the choice between adding the entry and changing the
   usages.
 - **Nothing in the file shows this; only the theme does.** Where the theme that

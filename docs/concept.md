@@ -73,6 +73,11 @@ superpowers is running or not:
 4. **Verify** — a separate agent compares each page with the reference, region by
    region, and then the whole set.
 
+A change to one region of one page takes a shorter phase of its own, which reads
+only that position across the pages. Three more skills are called from the
+phases when a step needs them: the project's values — theme, spacing, type,
+elements — how to count what its pages do, and the order that settles a choice.
+
 The design has a skill of its own. Where one comes with the work it is read for
 the page's structure, never for its values. Where there is none and no page is
 near enough to follow, the shape is agreed with the person in words, as a tree

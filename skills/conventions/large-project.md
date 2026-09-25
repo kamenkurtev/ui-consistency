@@ -9,7 +9,7 @@ read in full.
 - **Split when the family's members sit in more than one area.**
 - Hand the counting of the members to one subagent per area, where the harness
   has them.
-- A shared piece's reach search is never split — [SKILL.md](SKILL.md) step 4.
+- A shared piece's reach search is never split — [finding-patterns](../finding-patterns/SKILL.md) step 4.
 - **Do not split a single area.** One agent reads a family inside one app: the
   handover costs more than it saves.
 - **Give each subagent** what it needs and nothing else: the kind, the
@@ -36,16 +36,16 @@ read in full.
   them.
 - **Say which** were read in full and which were searched, and how many of each.
 - **Never sample the proof.** Run every search on the reference first, whatever
-  else is sampled ([counting.md](counting.md)).
+  else is sampled ([conventions](SKILL.md)).
 - **Never sample a shared piece's reach.** Search in full whether the project has
   its own piece for a role, never over a sample of the family: a piece most
   members bypass can still be used in a hundred other files, and a sample would
   count its bypass as the convention.
-- How wide that search goes is the order's to say ([deciding.md](deciding.md)).
+- How wide that search goes is the order's to say ([decisions](../decisions/SKILL.md)).
 
 ## Group the searches
 
-As [SKILL.md](SKILL.md) step 4 says. Split across areas, each subagent groups
+As [finding-patterns](../finding-patterns/SKILL.md) step 4 says. Split across areas, each subagent groups
 its own.
 
 ## What the report carries

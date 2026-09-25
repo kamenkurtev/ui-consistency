@@ -38,13 +38,13 @@ reach without having opened its file is not done.
    the components in each, then what each comes out as, then how each is
    written, as the counts say.
    - **Write the element the checklist records at a position** — the heading
-     level included ([elements.md](../finding-patterns/elements.md)).
+     level included ([elements.md](../values/elements.md)).
    - If it records none for a position, say so rather than choosing one.
 3. **Use what the project reuses**: the shared component, helper or class the
    checklist names — never a new one beside it.
    - If the checklist names a new component to create — shared or kept with the
      page — it is a question that waits on a person
-     ([deciding.md](../finding-patterns/deciding.md), *When to ask anyway*).
+     ([decisions](../decisions/SKILL.md), *When to ask anyway*).
    - Build it only on a yes. On a no, write the page the way the project writes
      it now.
    - Never write it privately into the page while the question is open.
@@ -52,7 +52,7 @@ reach without having opened its file is not done.
    errors, when the submit is enabled, how a failure is caught and shown, loading
    and empty.
 5. **Values through the theme that applies**, and only entries that exist in it
-   ([theme.md](../finding-patterns/theme.md)).
+   ([theme.md](../values/theme.md)).
    - For a file in a shared layer, only entries that exist in every theme that
      renders it.
    - Never a value read off a design, however plainly it shows one
@@ -60,7 +60,7 @@ reach without having opened its file is not done.
    - A named constant where the theme has none.
    - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
-   ([spacing.md](../finding-patterns/spacing.md)):
+   ([spacing.md](../values/spacing.md)):
    - every value a whole multiple of that base;
    - the gaps between roles as the family spaces them, owned by the side the
      checklist names;
@@ -68,7 +68,7 @@ reach without having opened its file is not done.
      the family writes them.
    - A multiple the family has not written yet is allowed — say you used one.
 7. **Text as the checklist records it**
-   ([typography.md](../finding-patterns/typography.md)):
+   ([typography.md](../values/typography.md)):
    - the type role the family writes at that position;
    - the whole bundle for it — size, weight, line height, letter spacing,
      typeface, case;
@@ -88,13 +88,13 @@ reach without having opened its file is not done.
    - text for what has none;
    - targets the size the family's are.
    - Against a standard only where the checklist says one applies —
-     `ui-consistency:accessibility` ([SKILL.md](../accessibility/SKILL.md)).
+     `ui-consistency:accessibility` ([accessibility](../accessibility/SKILL.md)).
 10. **Do not copy what is particular to the reference.**
 11. **Where the checklist is silent, the order settles it** —
-    [deciding.md](../finding-patterns/deciding.md). Say which level settled it.
+    [decisions](../decisions/SKILL.md). Say which level settled it.
     - Do not invent, and do not stop.
     - Park a page only while a question that waits on a person is open —
-      [deciding.md](../finding-patterns/deciding.md), *When to ask anyway*.
+      [decisions](../decisions/SKILL.md), *When to ask anyway*.
     - Put those to the user together, once, not page by page.
 12. **A task's prose does not narrow its checklist.** If it says *change nothing
     else* and a line of its own checklist names a deviation, the line stands —
@@ -124,15 +124,14 @@ one owns what the end user sees.
 
 ## A small change without a plan
 
-- `ui-consistency:finding-patterns` has a reduced branch for it
-  ([small-change.md](../finding-patterns/small-change.md)): what is read, and
-  what is deliberately skipped.
+- `ui-consistency:adjusting` prepares it ([adjusting](../adjusting/SKILL.md)):
+  what is read, and what is deliberately skipped.
 - Take the checklist for one region it produced, re-read it, and make the change.
 - Before calling it done, hand the page to `ui-consistency:verifying`, run by an
   agent that did not write it. The check is not the part that gets dropped
   because the change was small.
 - Its proof is one plant at the changed position, once for the change and not
-  per round ([SKILL.md](../verifying/SKILL.md), *First, prove it can see*).
+  per round ([verifying](../verifying/SKILL.md), *First, prove it can see*).
 - Fix and check again twice at most, as in step 15.
 
 ## Then

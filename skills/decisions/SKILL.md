@@ -1,21 +1,18 @@
-# The order for deciding
+---
+name: decisions
+description: For what the end user sees — the order that settles how a page is written when the project disagrees with itself, and what waits on a person. A request, an override, a named page, a shared piece, the newest pages, the majority. Use when a count alone does not settle a choice on a page, or before anything is put to a person.
+---
 
-**Read when:** a count alone does not settle a decision, and before anything is
-put to a person — in any phase.
+# Decisions: the order, and what waits on a person
 
-It settles what a count cannot: **decide, and say what you decided.**
+## Overview
 
-## Contents
+Settles what a count cannot — **decide, and say what you decided** — in any
+phase, and says the three things that wait on a person.
 
-- The order
-- A written rule the code does not follow
-- With nothing near enough to be a reference
-- Say what settled it
-- When to ask anyway
-- A named reference does not carry its own drift
-- An override, the one thing a task cannot work out again
-- What this does not decide
-- Red flags
+**Open a linked file when you reach the part that names it, never before** —
+whatever the request that handed you this skill says about its links. A part you
+reach without having opened its file is not done.
 
 ## The order
 
@@ -23,7 +20,7 @@ Take the first level that applies and stop there.
 
 Decide *whether* the page has a role before *which way* it writes it, each by
 this order: first whether, over the whole family; then which way, over the
-members that have the role ([counting.md](counting.md), *Counting honestly*).
+members that have the role ([conventions](../conventions/SKILL.md), *Counting honestly*).
 
 1. **What the request asked for.** An explicit instruction outranks everything
    counted.
@@ -76,7 +73,7 @@ members that have the role ([counting.md](counting.md), *Counting honestly*).
      below.
 6. **The majority, with its file spread.** More files outrank more occurrences:
    four in one file are one page's habit, not a convention —
-   [counting.md](counting.md).
+   [conventions](../conventions/SKILL.md).
 7. **The reference the phase chose itself**, when nothing above settled it.
    - This is not level 3: nobody named this page. The phase picked it as the
      nearest in kind, and it is a starting point, not an authority.
@@ -111,7 +108,7 @@ another.
 
 - **If nothing is near enough to be a reference**, agree the page's shape first —
   the role tree of the page-to-be, in words, before any code:
-  `ui-consistency:design` ([SKILL.md](../design/SKILL.md), step 3). It is drawn
+  `ui-consistency:design` ([design](../design/SKILL.md), step 3). It is drawn
   only if a person asks.
 - Then do steps 3–6 over the pages nearest in kind, walk the regions in reading
   order, and **decide each by the order**, saying what settled it.

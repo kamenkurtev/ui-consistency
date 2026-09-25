@@ -43,7 +43,7 @@ Only for a new page with no design and no page near enough to follow, or when a
 person asks to agree or see a page's shape.
 
 - Propose the page as a tree of roles, in the order a page is read — the form of
-  `finding-patterns` step 2 ([SKILL.md](../finding-patterns/SKILL.md)) — with the
+  `finding-patterns` step 2 ([finding-patterns](../finding-patterns/SKILL.md)) — with the
   project's own piece at each role where it has one.
 - Take the pieces in this order: the components of the page's own area, then the
   shared layer, then the UI library.
@@ -51,7 +51,7 @@ person asks to agree or see a page's shape.
   what stands there when it is empty, loading or failing — say so first, as a gap
   that blocks the work, in one message.
 - A new component the tree needs is a question that waits on a person
-  ([deciding.md](../finding-patterns/deciding.md), *When to ask anyway*).
+  ([decisions](../decisions/SKILL.md), *When to ask anyway*).
 - With a plan, the proposed tree is shown with it and agreed by the plan's yes.
   Asked on its own, the person agrees it or changes it here.
 - The agreed tree is the page's design. The pieces it names stand where no family

@@ -34,7 +34,7 @@ steps.
 - **Shared layer** — the area whose pieces the other areas import: a shared or
   core library.
 - **Bound** — the application that mounts the page and every library it uses:
-  where the family is counted ([counting.md](counting.md), *The bound the family
+  where the family is counted ([conventions](../conventions/SKILL.md), *The bound the family
   is counted in*).
 - **Shape** — which roles a page has, in what order, and what each shows.
 - **Design** — where a page's shape comes from when it is not a page already
@@ -42,16 +42,16 @@ steps.
   (`ui-consistency:design`). Its values never count.
 - **Kind** — what the page the task builds or changes is, decided before
   counting: a list, a detail view, a form. A named reference settles it
-  ([counting.md](counting.md), *Which kind of page this is*).
+  ([conventions](../conventions/SKILL.md), *Which kind of page this is*).
 - **Family** — the pages of that kind, the reference among them; the counts are
   taken over it. Where members differ below a shared holder, a region has its own family:
-  the members that render it ([counting.md](counting.md), *A family that differs
+  the members that render it ([conventions](../conventions/SKILL.md), *A family that differs
   by region*).
 - **Member**, **candidate** — a page of the family; a page considered before
-  non-members are removed ([counting.md](counting.md), *Which pages are the
+  non-members are removed ([conventions](../conventions/SKILL.md), *Which pages are the
   family*).
 - **Convention** — what the family writes at a position, by a majority with its
-  spread ([counting.md](counting.md), *When a count is not a convention at
+  spread ([conventions](../conventions/SKILL.md), *When a count is not a convention at
   all*).
 - **The theme** — wherever shared values live: a theme object, custom
   properties, preprocessor variables, a shared stylesheet, a config file.

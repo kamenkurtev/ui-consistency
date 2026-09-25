@@ -1,22 +1,18 @@
-# Counting: the kind, the family, the proof, the rules
+---
+name: conventions
+description: For what the end user sees — counts what a project's pages do, so a convention is told from one page's habit. The kind of page, the family and its bound, proof that a search can see, and when a count is a convention. Use when a count of how the other pages write something is about to be recorded, or when a checker recounts a line of a checklist.
+---
 
-**Read when:** before any count is recorded — `finding-patterns` step 4, or a
-checker recounting a line of the checklist.
+# Conventions: the kind, the family, the proof, the counts
 
-The sections run in the order of the work: the kind first, then the family, then
-the proof that a search can see, then the counts.
+## Overview
 
-## Contents
+Counts what the project's pages do, in the order of the work: the kind first,
+then the family, then the proof that a search can see, then the counts.
 
-- Which kind of page this is
-- The bound the family is counted in
-- Which pages are the family
-- A family that differs by region
-- A kind whose family has only the reference
-- Prove the search can see before trusting a count
-- Counting honestly
-- A position no member has
-- When a count is not a convention at all
+**Open a linked file when you reach the part that names it, never before** —
+whatever the request that handed you this skill says about its links. A part you
+reach without having opened its file is not done.
 
 ## Which kind of page this is
 
@@ -55,10 +51,10 @@ Then:
 - If the project does not answer it, decide it by what the pages render and
   report it: *these six render the same holders and the same regions; these two
   do not, and are counted as a second kind.*
-- A tie inside what this task touches is not a question ([deciding.md](deciding.md)).
+- A tie inside what this task touches is not a question ([decisions](../decisions/SKILL.md)).
 - **Say the decision and what it covered** in the checklist's first line: the
   kind, what decided it, and how many members of how many candidates were
-  counted — [checklist.md](checklist.md).
+  counted — [checklist.md](../finding-patterns/checklist.md).
 
 ## The bound the family is counted in
 
@@ -75,7 +71,7 @@ the same pages.
   and decide by the order on the application's.
 - Report a library unanimous inside itself as that library's own way, never as
   the project's.
-- **Name the bound in the checklist's first line** ([checklist.md](checklist.md)).
+- **Name the bound in the checklist's first line** ([checklist.md](../finding-patterns/checklist.md)).
 - A later phase handed the checklist counts in that bound, or says that it
   counted in another and why.
 
@@ -112,7 +108,7 @@ same frame, and a form region only the reference has.
   counts.
 - **Each checklist line carries the count that applies to it**, not the page's:
   *8 of 8* on the holder, *only the reference* on the form
-  ([checklist.md](checklist.md)).
+  ([checklist.md](../finding-patterns/checklist.md)).
 
 ## A kind whose family has only the reference
 
@@ -156,7 +152,7 @@ was the opposite of the truth.
 
 ## Counting honestly
 
-- **Count per position** ([words.md](words.md)), never per component alone: 10
+- **Count per position** ([words.md](../finding-patterns/words.md)), never per component alone: 10
   of 18 buttons full-width reads as no rule, and was 10 of 10 in the content area
   and 0 of 4 in toolbars.
 - **Count *whether* apart from *which way*.** At each position, first count how
@@ -167,7 +163,7 @@ was the opposite of the truth.
   across three ways*.
 - **Count what the component comes out as too**, per position and with its file
   spread, and the heading level where the position is a heading —
-  [elements.md](elements.md).
+  [elements.md](../values/elements.md).
 - **A count carries its spread.** Four identical buttons, all in one file, are
   one page's habit; 10 of 10 across 8 files is a convention. Write both numbers.
 - **Count the spread in members**: a page and the files only it imports — its
@@ -196,7 +192,7 @@ second control where every member has one, a control nobody has here.
 - If there is nowhere to read that from, the existing control keeps its place and
   the new one follows it in reading order; say that is what decided it.
 - **If there is nothing anywhere**, the order's last line applies: build it the
-  plainest way the technology allows, and say so ([deciding.md](deciding.md),
+  plainest way the technology allows, and say so ([decisions](../decisions/SKILL.md),
   *What this does not decide*).
 
 ## When a count is not a convention at all
@@ -220,6 +216,6 @@ as a rule. It is not one.
   three others* is a different finding from *7 of 8 except `<page>`*.
 - **The order still decides**, and nothing stalls or is asked: with no majority,
   the newest members settle what the levels above them did not —
-  [deciding.md](deciding.md).
+  [decisions](../decisions/SKILL.md).
 - Only the reporting changes. The line says *no convention here; the two newest
   write it this way*.

@@ -59,7 +59,7 @@ reader's own text setting** — a fact about the project, not a verdict.
   to a type role and is recorded here**; whether the space *around* a block of
   text stands on the base is spacing's question.
 - **The standards** are `ui-consistency:accessibility`
-  ([SKILL.md](../accessibility/SKILL.md)): whether text can be read at all — its
+  ([accessibility](../accessibility/SKILL.md)): whether text can be read at all — its
   contrast against what is behind it — is judged there, and only when
   accessibility is asked for or the project states a requirement.
 - Nothing in this file carries a number the project did not produce.

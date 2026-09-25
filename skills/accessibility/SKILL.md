@@ -141,7 +141,7 @@ arithmetic are in [contrast.md](contrast.md).
 ## What it lives beside
 
 - **Spacing** is a separate subject — the scale, the rhythm between roles, which
-  side owns a gap: [spacing.md](../finding-patterns/spacing.md). Only the
+  side owns a gap: [spacing.md](../values/spacing.md). Only the
   minimum sizes an external standard sets belong here.
 - **Which element fills a role** is read from the project as a convention, in
   `ui-consistency:finding-patterns`. This skill never judges which element a
@@ -158,4 +158,4 @@ arithmetic are in [contrast.md](contrast.md).
   [checklist.md](../finding-patterns/checklist.md) — each carrying what settled
   it.
 - If the order ties and the fix would reach outside the task, that is the
-  question put to a person ([deciding.md](../finding-patterns/deciding.md)).
+  question put to a person ([decisions](../decisions/SKILL.md)).
