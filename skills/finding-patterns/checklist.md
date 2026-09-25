@@ -31,7 +31,8 @@ of <m> candidates in <the bound: the application, and its libraries>, read <date
   ([conventions](../conventions/SKILL.md), *Which pages are the family*).
 - A line's own count is over that position in the members — *4 of 4* pages, or
   *8 of 8* fields where each page has two. **A line whose region has a family of
-  its own carries that count instead** — [conventions](../conventions/SKILL.md).
+  its own carries that count instead** — [rare.md](../conventions/rare.md),
+  *A family that differs by region*.
 
 An example, filled in:
 

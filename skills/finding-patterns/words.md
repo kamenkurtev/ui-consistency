@@ -45,8 +45,8 @@ steps.
   ([conventions](../conventions/SKILL.md), *Which kind of page this is*).
 - **Family** — the pages of that kind, the reference among them; the counts are
   taken over it. Where members differ below a shared holder, a region has its own family:
-  the members that render it ([conventions](../conventions/SKILL.md), *A family that differs
-  by region*).
+  the members that render it ([rare.md](../conventions/rare.md), *A family that
+  differs by region*).
 - **Member**, **candidate** — a page of the family; a page considered before
   non-members are removed ([conventions](../conventions/SKILL.md), *Which pages are the
   family*).

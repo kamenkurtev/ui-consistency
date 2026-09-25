@@ -137,7 +137,8 @@ In this order; the rules are in [conventions](../conventions/SKILL.md):
 1. **The kind** — decide it before anything is counted, and name it in the
    project's own word.
 2. **The family** — remove non-members first, and write both numbers down. If the
-   reference is the only member, run the branch for it: nothing is a convention.
+   reference is the only member, run the branch for it: nothing is a convention
+   ([rare.md](../conventions/rare.md)).
    - **If the members span more than one area, or are more than can be read in
      full**, it is a large project: follow [large-project.md](../conventions/large-project.md)
      before counting.
