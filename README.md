@@ -1,50 +1,44 @@
 # ui-consistency
 
-Anyone who has built UI knows the feeling: the code is correct and the page is
-still wrong. Anyone who has handed that work to an AI agent knows the faster
-version of it. The button ships. It works. It is also the wrong variant, one size
-up, and styled in a way nothing else in the app is styled. Two lines under a
-theme that has `--color-danger` in it, there is a hardcoded `#c62828`. The form
-validates itself instead of importing the helper every other page imports. The
-failure toast is the fourth way this app shows a failure.
+**An AI-aware design system, read from the code you already have.**
 
-Nothing errors. Nothing lints. You catch it in review, and you fix it by hand —
-again.
+Your app already has a design system, even if nobody ever drew one. It lives in
+the components every page imports, in the theme and its tokens, in the way four
+pages space their sections the same way, in the error helper nobody rewrites.
+The people on your team know it because they work in it every day.
 
-It is not carelessness, and the agent does not have bad taste. **It has
-everybody's taste.** It has read millions of projects and writes the average of
-them, fluently and with complete confidence — and the average of everything is
-exactly what does not look like yours. It never sees the page it produced. And
-the one thing that would have told it what *right* means here is spread across
-the other pages in your repository, which it did not open.
+Your coding agent doesn't. It has read millions of projects and writes the
+average of them, so the button it ships is the wrong variant and one size up.
+Two lines under a theme that has `--color-danger`, it hardcodes `#c62828`. The
+form validates itself instead of importing the helper every other page imports,
+and the failure toast becomes the fourth way your app shows a failure. None of
+it errors or fails a lint, so it gets caught in review and fixed by hand, again.
 
-**ui-consistency is Design-Driven Development for your coding agent.** What the
-user sees drives the code, the way tests drive it in test-driven development, so
-the page comes out right the first time instead of being corrected afterwards.
+ui-consistency makes your design system visible to the agent. Before it writes a
+page, the agent reads how your pages are already built and writes the new one
+the same way. Nothing is exported for it and nothing has to be kept in sync:
+there is no tokens file to generate and no catalogue to maintain, because the
+code is the source.
 
-Design first — and the design is read **wherever it actually lives**: the design
-for the page if there is one, your theme and its tokens if there is one, and
-otherwise the pages you have already shipped. That last one is the usual case,
-and the one most of this space skips. **Your design system exists whether or not
-anybody drew it.** It is in the component everyone imports, in the four pages
-that space their sections the same way, in the error helper nobody
-re-implements. The agent's job is to read it before writing, not to invent a
-fifth way.
+The way of working behind it is **Design-Driven Development**. What the user
+will see drives the code, the way tests drive it in test-driven development, so
+the page comes out right the first time instead of being fixed afterwards. When
+a page has a design of its own, a picture or a described screen, the agent
+follows its structure and takes every value from your theme. When it has none,
+the pages you have already shipped are the design.
 
-No component name is baked in — every team names its own — so React, Vue,
-Angular, Svelte and plain HTML and CSS all go through the same steps. Nothing to
-configure, no schema, no build step.
-
-It does one thing and joins whatever else you run. Your planning process keeps
-the plan; your tests and your logic stay yours. It writes no tests of its own.
+It names roles rather than components, so React, Vue, Angular, Svelte and plain
+HTML and CSS all go through the same steps. There is nothing to configure and no
+build step. It joins whatever else you run: your planning process keeps the plan,
+and your tests and your logic stay yours. It writes no tests of its own.
 
 ## How it works
 
 When you ask for a new page, a feature or a refactor, the agent goes through four
 phases:
 
-1. **Find the pattern.** It takes the page you name as the reference — or picks
-   the nearest one and says so — and reads it top to bottom and left to right:
+1. **Find the pattern.** It takes the page you name as the reference, or picks
+   the nearest one and says so, and reads it top to bottom and left to right:
    the holders, the components in each, how each is written, how forms validate
    and errors are shown. Then it searches how the other pages reuse those pieces.
    Values come from your theme. Where your project disagrees with itself it
@@ -53,8 +47,12 @@ phases:
    from the reference. It shows you the plan and waits for a yes.
 3. **Implement.** One page at a time, from the checklist, in a fresh context.
 4. **Verify.** A separate agent compares each page with the reference, region by
-   region — with a check first proved to catch a difference planted on purpose — and
-   then all the pages together.
+   region, and then all the pages together. Before its result counts, the check
+   is proved to catch a difference planted on purpose.
+
+A new page with nothing close enough to follow gets its shape agreed with you
+first, in words, as a tree of your own components. It is drawn, with your
+project's values, only if you ask to see it.
 
 A small change to one page skips the plan. Checking code that is already written
 is the last phase, after the first one where no checklist exists yet.

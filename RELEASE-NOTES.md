@@ -5,6 +5,15 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.53.1 (2026-09-25)
+
+### Small changes
+
+- The plugin introduces itself as **an AI-aware design system, read from the
+  code you already have**, with Design-Driven Development as the way it works.
+  The marketplace description, the README, the site and the concept say so.
+  Nothing a skill does changes (#290).
+
 ## v0.53.0 (2026-09-25)
 
 ### Changes

@@ -2,12 +2,15 @@
 
 ## What this is
 
-A plugin — Claude Code first, with manifests for Codex, Cursor and Gemini CLI —
-that brings **Design-Driven Development** to an agent writing UI: what the end
-user sees drives the code, so a page comes out consistent and right while it is
-being written rather than corrected afterwards. In practice that means the right
-component written the way the other pages write it, the project's own validation
-and error handling, values from the theme, repeated code turned into components.
+A plugin, Claude Code first with manifests for Codex, Cursor and Gemini CLI, that
+makes a project's own design system **AI-aware, read from the code it already
+has**. Before an agent writes UI, it reads how the pages are built and writes
+the new one the same way: the right component written the way the other pages
+write it, the project's own validation and error handling, values from the
+theme, repeated code turned into components. The way of working is
+**Design-Driven Development**: what the end user sees drives the code, so a page
+comes out consistent and right while it is being written rather than corrected
+afterwards.
 
 **The design is read wherever it lives** — a design for the page, the theme and
 its tokens, or the pages already built, which is the usual case.
