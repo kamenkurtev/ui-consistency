@@ -109,19 +109,18 @@ another.
 
 ## With nothing near enough to be a reference
 
-- **If nothing is near enough to be a reference**, do steps 3–6 over the pages
-  nearest in kind, walk the regions in reading order, and **decide each by the
-  order**, saying what settled it.
+- **If nothing is near enough to be a reference**, agree the page's shape first —
+  the role tree of the page-to-be, in words, before any code:
+  `ui-consistency:design` ([SKILL.md](../design/SKILL.md), step 3). It is drawn
+  only if a person asks.
+- Then do steps 3–6 over the pages nearest in kind, walk the regions in reading
+  order, and **decide each by the order**, saying what settled it.
 - **If no pages are near in kind either**, say that first: there is nothing to
   compare against, and what follows is a proposal, not what the project does.
 - Take the options in this order: the components of the page's own area, then
   the shared layer, then the UI library.
 - If nothing fits, ask whether to create a new component, and where it belongs —
   *When to ask anyway*, below.
-- **Agree the shape before any code** — the role tree of the page-to-be, in
-  words, so there is something to disagree with before anything is written:
-  `ui-consistency:design` ([SKILL.md](../design/SKILL.md), step 3). It is drawn
-  only if a person asks.
 
 ## Say what settled it
 

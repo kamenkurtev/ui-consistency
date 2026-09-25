@@ -28,8 +28,9 @@ there is none — in words, drawn only when asked.
   task or ticket carries, what the request points at.
 - Say which it was, or say there was no design — otherwise an agent that never
   looked and an agent that found nothing report the same thing.
-- If there is none and a page near enough to follow exists, the pages already
-  built are the design: `ui-consistency:finding-patterns` reads them.
+- If there is none and a page near enough to follow exists, that page gives the
+  shape: `ui-consistency:finding-patterns` reads it, and this skill has nothing
+  to do.
 
 ## 2. A design exists: read it for the tree
 
@@ -39,19 +40,23 @@ for a value: [reading.md](reading.md).
 ## 3. No design: agree the shape in words
 
 Only for a new page with no design and no page near enough to follow, or when a
-person asks.
+person asks to agree or see a page's shape.
 
 - Propose the page as a tree of roles, in the order a page is read — the form of
   `finding-patterns` step 2 ([SKILL.md](../finding-patterns/SKILL.md)) — with the
   project's own piece at each role where it has one.
-- Take the pieces as [deciding.md](../finding-patterns/deciding.md), *With
-  nothing near enough to be a reference*, orders them.
+- Take the pieces in this order: the components of the page's own area, then the
+  shared layer, then the UI library.
 - If the request leaves open what the page must show — its content, its actions,
-  what stands there when it is empty, loading or failing — ask in one message.
+  what stands there when it is empty, loading or failing — say so first, as a gap
+  that blocks the work, in one message.
 - A new component the tree needs is a question that waits on a person
   ([deciding.md](../finding-patterns/deciding.md), *When to ask anyway*).
-- The person agrees the tree or changes it. The agreed tree is the page's design,
-  read like any other ([reading.md](reading.md)).
+- With a plan, the proposed tree is shown with it and agreed by the plan's yes.
+  Asked on its own, the person agrees it or changes it here.
+- The agreed tree is the page's design. The pieces it names stand where no family
+  answers them; where a family does, [reading.md](reading.md) says which half
+  comes from where.
 - Offer a drawing in one line at most. Draw only if asked — step 4.
 
 ## 4. Draw it — only when asked
@@ -65,8 +70,8 @@ person asks.
 
 - If a person changes the shape after a checklist or a plan exists, agree the
   new tree here.
-- Then `finding-patterns` takes the checklist again from it, and `planning`
-  updates the tasks it touches.
+- Then `finding-patterns` works out again only the checklist lines the change
+  touches, and `planning` updates the tasks that carry them.
 
 ## Say what you read and could not
 

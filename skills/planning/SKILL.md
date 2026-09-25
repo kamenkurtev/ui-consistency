@@ -52,16 +52,17 @@ repository, in [plan-file.md](plan-file.md).
 
 ## Stop for a yes
 
-- Before the yes, every new page in the plan has an agreed shape — a design read,
-  or a tree agreed with `ui-consistency:design`. Send a page without one there
-  first.
+- Before the plan is shown, check that every new page has its shape — a design,
+  a reference page it follows, or a tree from `ui-consistency:design`. A page
+  without one goes back to `finding-patterns` first.
 - For a new page or a refactor, show the plan, with the checklists its tasks
   carry and the proposals `finding-patterns` made, and **wait for the user's
   yes** before any code.
 - Show a drawing only if a person asked for one ([SKILL.md](../design/SKILL.md),
   step 4).
-- A change to a page's shape at this stop goes back to `ui-consistency:design`;
-  its checklist is taken again before the yes.
+- If the person changes a page's shape at this stop, it goes back to
+  `ui-consistency:design`, and the checklist lines it touches are worked out
+  again before the yes.
 - Ask nothing new here: the questions were asked while `finding-patterns` ran
   ([deciding.md](../finding-patterns/deciding.md)).
 - A new component, or code extracted into one, is not part of this yes: it was asked on its
