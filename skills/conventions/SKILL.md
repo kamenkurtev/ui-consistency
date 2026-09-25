@@ -163,7 +163,7 @@ was the opposite of the truth.
   across three ways*.
 - **Count what the component comes out as too**, per position and with its file
   spread, and the heading level where the position is a heading —
-  [elements.md](../values/elements.md).
+  [values](../values/SKILL.md), *Elements*.
 - **A count carries its spread.** Four identical buttons, all in one file, are
   one page's habit; 10 of 10 across 8 files is a convention. Write both numbers.
 - **Count the spread in members**: a page and the files only it imports — its

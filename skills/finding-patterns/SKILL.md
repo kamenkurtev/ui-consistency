@@ -27,11 +27,11 @@ before anything is written.
 |---|---|---|
 | 0 | Size the work — before any project file is opened | below |
 | 1 | The reference: named, or chosen and said | below, [decisions](../decisions/SKILL.md) |
-| 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](../values/elements.md), [reading.md](../design/reading.md) only where there is a design |
-| 3 | The bound, and the theme that applies | [theme.md](../values/theme.md) |
+| 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [values](../values/SKILL.md), *Elements*, [reading.md](../design/reading.md) only where there is a design |
+| 3 | The bound, and the theme that applies | [values](../values/SKILL.md), *The theme* |
 | 4 | The kind, the family, proof that the search can see, then the counts | [conventions](../conventions/SKILL.md); [large-project.md](../conventions/large-project.md) only on a large project |
 | 5 | What the other pages reuse — by import, by copy | below |
-| 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](../values/theme.md), [spacing.md](../values/spacing.md), [typography.md](../values/typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
+| 6 | Values through the theme; spacing; type; what can be read and used | [values](../values/SKILL.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
 | 7 | Decide by the order, and report what settled it | [decisions](../decisions/SKILL.md) |
 | 8 | Write the checklist for the task | [checklist.md](checklist.md) |
 | — | One region of one page, as sized at step 0: read less, skip deliberately, say so | [adjusting](../adjusting/SKILL.md) |
@@ -95,7 +95,7 @@ Read in this order:
    dialog frame.
 2. **The components in each holder**, in reading order.
 3. **What each comes out as** — the element at that position, and the heading
-   level where the position is a heading — [elements.md](../values/elements.md).
+   level where the position is a heading — [values](../values/SKILL.md), *Elements*.
 4. **How each is written** — everything passed to it and everything that styles
    it.
 5. **Down into the children.** A page often only arranges child components; open
@@ -128,7 +128,7 @@ the project's answers into it:
   ([words.md](words.md)), not the whole workspace.
 - Count a value that names a theme entry across every application that selects
   that theme.
-- Find the theme that applies first — [theme.md](../values/theme.md).
+- Find the theme that applies first — [values](../values/SKILL.md), *The theme*.
 
 ## 4. The kind, the family, the proof, the counts
 
@@ -203,14 +203,13 @@ In this order; the rules are in [conventions](../conventions/SKILL.md):
 
 - Find how the theme expresses colour, spacing, size, typography, radius and
   breakpoints.
-- **Open each subject's file before writing its line of the checklist** —
-  [theme.md](../values/theme.md), [spacing.md](../values/spacing.md), [typography.md](../values/typography.md).
-  A line written from the stylesheets alone is a guess.
+- **Read [values](../values/SKILL.md) before writing a line of the checklist
+  about a value.** A line written from the stylesheets alone is a guess.
 - Record the colour pairings, focus and labels the family uses as conventions.
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — [accessibility](../accessibility/SKILL.md).
 - **A value that names a theme entry must exist in the theme that applies**
-  ([theme.md](../values/theme.md)).
+  ([values](../values/SKILL.md), *The theme*).
 - Write a literal that has a theme equivalent **through the theme**; one without
   becomes a **named constant** where the project keeps them.
 - Put translated text through the translation mechanism.

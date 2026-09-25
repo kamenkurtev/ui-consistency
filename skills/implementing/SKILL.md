@@ -38,7 +38,7 @@ reach without having opened its file is not done.
    the components in each, then what each comes out as, then how each is
    written, as the counts say.
    - **Write the element the checklist records at a position** — the heading
-     level included ([elements.md](../values/elements.md)).
+     level included ([values](../values/SKILL.md), *Elements*).
    - If it records none for a position, say so rather than choosing one.
 3. **Use what the project reuses**: the shared component, helper or class the
    checklist names — never a new one beside it.
@@ -52,7 +52,7 @@ reach without having opened its file is not done.
    errors, when the submit is enabled, how a failure is caught and shown, loading
    and empty.
 5. **Values through the theme that applies**, and only entries that exist in it
-   ([theme.md](../values/theme.md)).
+   ([values](../values/SKILL.md), *The theme*).
    - For a file in a shared layer, only entries that exist in every theme that
      renders it.
    - Never a value read off a design, however plainly it shows one
@@ -60,7 +60,7 @@ reach without having opened its file is not done.
    - A named constant where the theme has none.
    - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
-   ([spacing.md](../values/spacing.md)):
+   ([values](../values/SKILL.md), *Spacing*):
    - every value a whole multiple of that base;
    - the gaps between roles as the family spaces them, owned by the side the
      checklist names;
@@ -68,7 +68,7 @@ reach without having opened its file is not done.
      the family writes them.
    - A multiple the family has not written yet is allowed — say you used one.
 7. **Text as the checklist records it**
-   ([typography.md](../values/typography.md)):
+   ([values](../values/SKILL.md), *Type*):
    - the type role the family writes at that position;
    - the whole bundle for it — size, weight, line height, letter spacing,
      typeface, case;

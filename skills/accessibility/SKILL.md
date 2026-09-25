@@ -141,7 +141,7 @@ arithmetic are in [contrast.md](contrast.md).
 ## What it lives beside
 
 - **Spacing** is a separate subject — the scale, the rhythm between roles, which
-  side owns a gap: [spacing.md](../values/spacing.md). Only the
+  side owns a gap: [values](../values/SKILL.md), *Spacing*. Only the
   minimum sizes an external standard sets belong here.
 - **Which element fills a role** is read from the project as a convention, in
   `ui-consistency:finding-patterns`. This skill never judges which element a
