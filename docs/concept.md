@@ -4,16 +4,25 @@
 
 ## What it is
 
-**Design-Driven Development.** What the end user sees drives the code, the way
-tests drive it in test-driven development: the page is read before it is written,
-and comes out consistent and right the first time rather than being corrected
-afterwards in review.
+**An AI-aware design system, read from the implementation.** Every app that has
+shipped a few pages has a design system, whether or not anyone drew it: the
+components the pages import, the theme and its tokens, the spacing the pages
+share, the way forms validate and failures are shown. The team knows it by
+working in it. A coding agent does not, and nothing in the repository tells it.
+This plugin makes that system readable to the agent at the moment it writes,
+from the code itself, with nothing exported or maintained for the purpose.
 
-Design first — and the part that is this plugin's own: **the design is read
-wherever it actually lives.** A design for the page where there is one; the theme
-and its tokens where there is one; and otherwise the pages already built, which
-is the usual case and the one most of this space skips. A design system exists
-whether or not anybody drew it.
+The way of working is **Design-Driven Development**. What the end user sees
+drives the code, the way tests drive it in test-driven development: the page is
+read before it is written, and comes out consistent with the rest the first time
+instead of being corrected in review.
+
+The design is read wherever it actually lives. Where a page has a design of its
+own, a picture or a described screen, its structure is followed and its values
+come from the theme. Where there is none, the pages already built are the
+design. That is the usual case. Tools that make a design system AI-ready
+usually do it by exporting it for the agent; this one reads it where it already
+is.
 
 ## The problem
 

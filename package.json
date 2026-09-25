@@ -1,7 +1,7 @@
 {
   "name": "ui-consistency",
-  "version": "0.53.0",
-  "description": "Design-Driven Development for your coding agent: what the user sees drives the code, so pages come out consistent with your project the first time",
+  "version": "0.53.1",
+  "description": "An AI-aware design system, read from the code you already have: your coding agent writes each page the way your other pages are built",
   "license": "MIT",
   "type": "module",
   "engines": {
