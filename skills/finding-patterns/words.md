@@ -36,6 +36,10 @@ steps.
 - **Bound** — the application that mounts the page and every library it uses:
   where the family is counted ([counting.md](counting.md), *The bound the family
   is counted in*).
+- **Shape** — which roles a page has, in what order, and what each shows.
+- **Design** — where a page's shape comes from when it is not a page already
+  built: a picture, a described screen, a prototype, or a tree a person agreed
+  (`ui-consistency:design`). Its values never count.
 - **Kind** — what the page the task builds or changes is, decided before
   counting: a list, a detail view, a form. A named reference settles it
   ([counting.md](counting.md), *Which kind of page this is*).

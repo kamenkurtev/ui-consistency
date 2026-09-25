@@ -24,8 +24,8 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 ## Layout
 
 - `skills/` — the four phases, `finding-patterns`, `planning`, `implementing`,
-  `verifying`, and one subject, `accessibility`, asked on its own or reached
-  from a phase. Each is reached by its `description`, in any language. **A phase
+  `verifying`, and two subjects, `design` and `accessibility`, each asked on its
+  own or reached from a phase. Each is reached by its `description`, in any language. **A phase
   is a gerund with no object, a subject skill is a noun** — that is how the two
   kinds are told apart in a listing. The plugin's own name carries the domain,
   so no skill name repeats it; where a harness shows no namespace the

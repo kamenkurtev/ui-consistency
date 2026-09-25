@@ -109,21 +109,18 @@ another.
 
 ## With nothing near enough to be a reference
 
-- **If nothing is near enough to be a reference**, do steps 3–6 over the pages
-  nearest in kind, walk the regions in reading order, and **decide each by the
-  order**, saying what settled it.
+- **If nothing is near enough to be a reference**, agree the page's shape first —
+  the role tree of the page-to-be, in words, before any code:
+  `ui-consistency:design` ([SKILL.md](../design/SKILL.md), step 3). It is drawn
+  only if a person asks.
+- Then do steps 3–6 over the pages nearest in kind, walk the regions in reading
+  order, and **decide each by the order**, saying what settled it.
 - **If no pages are near in kind either**, say that first: there is nothing to
   compare against, and what follows is a proposal, not what the project does.
 - Take the options in this order: the components of the page's own area, then
   the shared layer, then the UI library.
 - If nothing fits, ask whether to create a new component, and where it belongs —
   *When to ask anyway*, below.
-- **Show the shape before any code** — the role tree of the page-to-be, so there
-  is something to disagree with before anything is written.
-- If the work has a design, read that tree from it rather than proposing one
-  ([design.md](design.md)).
-- The tree can also be drawn, with the values the phase measured —
-  [mockup.md](mockup.md).
 
 ## Say what settled it
 
@@ -189,7 +186,7 @@ have.
 writes its own error box because it was built before the shared helper existed.
 
 Split a named reference the same way a design is split
-([design.md](design.md)):
+([reading.md](../design/reading.md)):
 
 - **What it settles**: which roles the page has, in what order, what it shows,
   how it behaves. That is what somebody means by *like that one*.

@@ -125,7 +125,7 @@ Beyond the items, compare the same regions:
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;
 - **values through the theme**, not literals — a literal that matches what a
-  design showed included ([design.md](../finding-patterns/design.md));
+  design showed included ([reading.md](../design/reading.md));
 - **every value that names a theme entry exists in the theme that applies** —
   for a shared layer, in every theme that renders it
   ([theme.md](../finding-patterns/theme.md)). Report one that is missing, naming

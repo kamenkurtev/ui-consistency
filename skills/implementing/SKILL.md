@@ -56,7 +56,7 @@ reach without having opened its file is not done.
    - For a file in a shared layer, only entries that exist in every theme that
      renders it.
    - Never a value read off a design, however plainly it shows one
-     ([design.md](../finding-patterns/design.md)).
+     ([reading.md](../design/reading.md)).
    - A named constant where the theme has none.
    - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
