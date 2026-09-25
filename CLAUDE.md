@@ -26,9 +26,10 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 
 ## Layout
 
-- `skills/` — the four phases, `finding-patterns`, `planning`, `implementing`,
-  `verifying`, and two subjects, `design` and `accessibility`, each asked on its
-  own or reached from a phase. Each is reached by its `description`, in any language. **A phase
+- `skills/` — five phases, `finding-patterns`, `adjusting`, `planning`,
+  `implementing`, `verifying`, and five subjects: `design` and `accessibility`,
+  each asked on its own or reached from a phase, and `values`, `conventions`
+  and `decisions`, reached from the phases when a step needs them. Each is reached by its `description`, in any language. **A phase
   is a gerund with no object, a subject skill is a noun** — that is how the two
   kinds are told apart in a listing. The plugin's own name carries the domain,
   so no skill name repeats it; where a harness shows no namespace the
@@ -86,7 +87,7 @@ to this repository only — both trackers start at 1.
    touches. Other
    proposals and contradictions are reported, with the plan where there is one.
 6. **Join the process that is running.** A spec or plan that already exists is
-   added to, not duplicated. Without one, the skills run the four phases
+   added to, not duplicated. Without one, the skills run the phases
    themselves.
 7. **A plan carries its check.** Every page task carries its checklist and is
    verified by an agent that did not write it, with a check proved first to

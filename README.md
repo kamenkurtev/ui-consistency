@@ -103,11 +103,15 @@ harness-specific. `USING.md` gives the words to hand a phase to an agent with.
 The agent picks them up on its own. You don't need to name them.
 
 - **finding-patterns** — how pages of this kind are built here
+- **adjusting** — a change to one region of one page, the way the others write it
 - **planning** — one checkable task per page
 - **implementing** — one page at a time, from the checklist
 - **verifying** — a separate agent compares each page with the reference
 - **design** — reads a design for the page, or agrees its shape with you in
   words; draws it only when you ask
+- **values**, **conventions**, **decisions** — called by the others when a step
+  needs them: your theme and scales, counting what your pages do, and the order
+  that settles a choice
 - **accessibility** — optional: measured against a standard only when you ask
   for it or your project states a requirement
 

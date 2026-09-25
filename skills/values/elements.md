@@ -4,7 +4,7 @@
 (`finding-patterns`), or writing or checking any position in the tree
 (`implementing`, `verifying`).
 
-Role, position, component and element are as [words.md](words.md) defines them.
+Role, position, component and element are as [words.md](../finding-patterns/words.md) defines them.
 
 ## What to record
 
@@ -37,7 +37,7 @@ page title is one level in 5 of 5 files; a section heading is the next in 9 of
   one at the same position, with what the others write there.
 - **If the family disagrees with itself**, the order settles it — the majority
   with its spread, and only where there is none, the newest members
-  ([deciding.md](deciding.md)). Say which level of the order did.
+  ([decisions](../decisions/SKILL.md)). Say which level of the order did.
 - Never pick a heading level silently.
 - **If the level comes from a shared component**, record it against that
   component. A page that writes its own heading beside the shared one is the
@@ -48,5 +48,5 @@ page title is one level in 5 of 5 files; a section heading is the next in 9 of
 Everything here is counted from the family — it is a convention, the way a
 component or a prop is one. Whether a person can read, reach and use what the
 element renders is not this file's question: that is
-`ui-consistency:accessibility` ([SKILL.md](../accessibility/SKILL.md)), when it
+`ui-consistency:accessibility` ([accessibility](../accessibility/SKILL.md)), when it
 is asked for or the project requires it, and it says which standard it uses.

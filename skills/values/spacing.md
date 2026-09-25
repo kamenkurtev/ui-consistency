@@ -55,7 +55,7 @@ across 6 files* is a convention.
   other, or a gap on the container holding both. Record it where the project is
   consistent: mixing them is how a gap doubles or collapses.
 - **No consistent rhythm** is also a finding: say the project has none. Do not
-  invent one from a plurality — [counting.md](counting.md) says how to tell.
+  invent one from a plurality — [conventions](../conventions/SKILL.md) says how to tell.
 
 ## The rhythm the text sets
 
@@ -80,4 +80,4 @@ They sit on the same base as the gaps.
 Nothing here carries a number the project did not produce. A **minimum** size
 somebody has to be able to hit is a different question with a different answer,
 and it lives with the standards: `ui-consistency:accessibility`
-([SKILL.md](../accessibility/SKILL.md)).
+([accessibility](../accessibility/SKILL.md)).

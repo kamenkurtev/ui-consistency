@@ -60,7 +60,7 @@ for two things only:
 
 - **A region the checklist does not carry**: re-derive it from the code — its own
   search, run on the reference first, in the bound the checklist names
-  ([counting.md](../finding-patterns/counting.md)) — or name it unevaluated.
+  ([conventions](../conventions/SKILL.md)) — or name it unevaluated.
   Never pass it because the checklist was silent.
 - **A line of the checklist you have reason to doubt** — a count that does not
   match what you see: recount it the same way. Report a wrong line as a
@@ -117,7 +117,7 @@ Beyond the items, compare the same regions:
 - the holders and their order;
 - the component in each role;
 - **the element it comes out as**, and the heading level where the position is a
-  heading ([elements.md](../finding-patterns/elements.md)). Report one that
+  heading ([elements.md](../values/elements.md)). Report one that
   differs from what the family writes there, with what the others use. Name an
   element that could not be read as unevaluated;
 - how each is written, against the counts in the checklist;
@@ -128,9 +128,9 @@ Beyond the items, compare the same regions:
   design showed included ([reading.md](../design/reading.md));
 - **every value that names a theme entry exists in the theme that applies** —
   for a shared layer, in every theme that renders it
-  ([theme.md](../finding-patterns/theme.md)). Report one that is missing, naming
+  ([theme.md](../values/theme.md)). Report one that is missing, naming
   the theme;
-- **spacing** ([spacing.md](../finding-patterns/spacing.md)), against the base
+- **spacing** ([spacing.md](../values/spacing.md)), against the base
   the checklist carries and the gaps, line heights and heights it names:
   - report a value **off the base** as a deviation, with the base and the
     nearest multiples;
@@ -139,7 +139,7 @@ Beyond the items, compare the same regions:
   - report a gap that differs with what the neighbouring pages use instead;
   - if the checklist says the project has no base or no consistent rhythm,
     report nothing about it and say so;
-- **typography** ([typography.md](../finding-patterns/typography.md)), against
+- **typography** ([typography.md](../values/typography.md)), against
   what the checklist records — the whole bundle at each position, not the size
   alone, and how the style is applied:
   - report a style written by hand where the family uses the shared one, **even
@@ -157,11 +157,11 @@ Beyond the items, compare the same regions:
   field and its label, text for what has no words, target size. Check against
   what the family does, and against a standard only where the checklist says one
   applies — `ui-consistency:accessibility`
-  ([SKILL.md](../accessibility/SKILL.md)). The rules are there; this section
+  ([accessibility](../accessibility/SKILL.md)). The rules are there; this section
   does not repeat them;
 - nothing the checklist marks *not copied* was copied from the reference — a
   shared piece the reference itself bypasses included, the one most easily
-  copied in good faith ([deciding.md](../finding-patterns/deciding.md)).
+  copied in good faith ([decisions](../decisions/SKILL.md)).
 
 Report **only what differs**, where, and what the reference and the rest of the
 project do instead. Say nothing about regions that match.
@@ -185,14 +185,14 @@ page that deviates.
 - **Against a count that is not a convention** — where the checklist says the
   family has no convention at that position — a page cannot deviate from it.
   Report nothing, and say the project has none there
-  ([counting.md](../finding-patterns/counting.md)).
+  ([conventions](../conventions/SKILL.md)).
 - **Count in the bound the checklist names.** Its first line says which pages
   were counted; take a count of your own over the same ones.
 - If you count in another bound, say which and why — two bounds give two answers
-  from the same code ([counting.md](../finding-patterns/counting.md)).
+  from the same code ([conventions](../conventions/SKILL.md)).
 - **Against a count alone**, say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge by the same order the page was built from
-  ([deciding.md](../finding-patterns/deciding.md)), naming the level.
+  ([decisions](../decisions/SKILL.md)), naming the level.
 - A page can differ on purpose: say why, rather than changing working code to
   quiet a report.
 - **Against something the request asked for**, it is not a deviation at all. The

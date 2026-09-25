@@ -64,8 +64,8 @@ is `.claude/rules/uic-docs.md`.
 ## Filing an issue
 
 Say what you asked the agent, what it did, and what you expected, and which skill
-it was in if you know: finding-patterns, design, planning, implementing,
-verifying or accessibility. The checklist it produced is the most useful thing
+it was in if you know: finding-patterns, adjusting, design, planning,
+implementing, verifying, values, conventions, decisions or accessibility. The checklist it produced is the most useful thing
 to paste, with names made neutral. If the complaint is that nothing happened,
 say so, and say what the agent reported it could not read.
 

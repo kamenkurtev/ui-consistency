@@ -58,13 +58,13 @@ repository, in [plan-file.md](plan-file.md).
 - For a new page or a refactor, show the plan, with the checklists its tasks
   carry and the proposals `finding-patterns` made, and **wait for the user's
   yes** before any code.
-- Show a drawing only if a person asked for one ([SKILL.md](../design/SKILL.md),
+- Show a drawing only if a person asked for one ([design](../design/SKILL.md),
   step 4).
 - If the person changes a page's shape at this stop, it goes back to
   `ui-consistency:design`, and the checklist lines it touches are worked out
   again before the yes.
 - Ask nothing new here: the questions were asked while `finding-patterns` ran
-  ([deciding.md](../finding-patterns/deciding.md)).
+  ([decisions](../decisions/SKILL.md)).
 - A new component, or code extracted into one, is not part of this yes: it was asked on its
   own while `finding-patterns` ran, with what it touches (*When to ask
   anyway*).
@@ -72,7 +72,7 @@ repository, in [plan-file.md](plan-file.md).
   `parked — waiting on <what>` in the plan, with its counts
   ([plan-file.md](plan-file.md)).
 - **An answer given now is an override**
-  ([deciding.md](../finding-patterns/deciding.md)). Record it in the person's own
+  ([decisions](../decisions/SKILL.md)). Record it in the person's own
   words, with what it overrules: in the document the running process keeps, or
   under `## Decided` in this plan where this is the process, reported with the
   result when the plan closes.
