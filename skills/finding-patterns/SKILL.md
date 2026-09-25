@@ -257,7 +257,8 @@ In this order; the rules are in [conventions](../conventions/SKILL.md):
 ## Then
 
 - For a new page or a refactor: `ui-consistency:planning`.
-- For a small change to one page: `ui-consistency:adjusting`.
+- A small change to one page, sized so at step 0, goes to
+  `ui-consistency:adjusting` in place of steps 1–8.
 
 ## Red flags
 

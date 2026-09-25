@@ -1,15 +1,15 @@
 ---
 name: adjusting
-description: For what the end user sees — makes a change to one region of one existing page the way the project's other pages write that position, reading only that position. Use when changing a label, a value, a field, a button or what a control does on one page, when no new page and no change across pages is asked for.
+description: For what the end user sees — prepares a change to one region of one existing page: reads only that position across the project's other pages and writes the checklist for it, which implementing builds from. Use when changing a label, a value, a field, a button or what a control does on one page, when no new page and no change across pages is asked for.
 ---
 
 # Adjusting one region of one page
 
 ## Overview
 
-A change to one region of one page, written the way the family writes that
-position, reading only what that position needs. `implementing` takes what it
-produces.
+Reads what a change to one region of one page needs — that position across the
+family, and nothing more — and writes its checklist. `implementing` makes the
+change from it.
 
 - One page, one region — a label, a value, a field added, what a button does.
 - A new page, a kind nobody has written down, or a change applied across pages
@@ -27,6 +27,8 @@ produces.
   it comes out as, how it is written, the values it takes — counted as
   [conventions](../conventions/SKILL.md) says, with the values as
   [values](../values/SKILL.md) says, over that one position.
+- Whether the project has its own piece for that position — searched as wide as
+  the page can import from ([decisions](../decisions/SKILL.md), level 4).
 - Any checklist this task already carries — one may have been written for an
   earlier page of the work, and it may answer the whole question.
 
@@ -34,9 +36,10 @@ produces.
 at that one position — grouped into a search or two, with the proof on the
 reference — and the theme entries it uses.
 
-- **About ten project files and ten searches in this phase itself.**
-- **About twenty-five of each for the whole change**, the checkers and every
-  other subagent counted in.
+- **About ten project files and ten searches in this phase**, before
+  `implementing`.
+- **About twenty-five of each for the whole change**, `implementing`, the
+  checkers and every other subagent counted in.
 - **It counts what the cost line counts**, as one running total.
 - **Say it at the crossing, not in the report.** The moment the total passes
   the budget — the eleventh search, the first checker that takes it over —
@@ -79,7 +82,7 @@ reference — and the theme entries it uses.
 - A file anything else imports is outside it, however close it sits.
 - **If the change needs a new component in the page's own files**, ask before
   creating it, with the numbers ([decisions](../decisions/SKILL.md), *When to ask
-  anyway*), and stay in this branch.
+  anyway*), and stay in this phase.
 - **If it would live outside the page** — the pieces that fill that position on
   the other pages live in the shared layer or the page's area — it is no longer
   a small change. Say so in one line before writing anything, size the work

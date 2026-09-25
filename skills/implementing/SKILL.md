@@ -124,9 +124,8 @@ one owns what the end user sees.
 
 ## A small change without a plan
 
-- `ui-consistency:finding-patterns` has a reduced branch for it
-  ([adjusting](../adjusting/SKILL.md)): what is read, and
-  what is deliberately skipped.
+- `ui-consistency:adjusting` prepares it ([adjusting](../adjusting/SKILL.md)):
+  what is read, and what is deliberately skipped.
 - Take the checklist for one region it produced, re-read it, and make the change.
 - Before calling it done, hand the page to `ui-consistency:verifying`, run by an
   agent that did not write it. The check is not the part that gets dropped

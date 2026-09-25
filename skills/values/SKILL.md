@@ -1,6 +1,6 @@
 ---
 name: values
-description: For what the end user sees — how this project sets its values and elements. The theme that applies and the entries that must exist in it, the spacing base and rhythm, each type role with its whole bundle, and which element fills each role. Use when recording, writing or checking a colour, gap, size, font or element on a page, or when asked what the project's theme or scale is.
+description: For what the end user sees — how this project sets its values and elements. The theme that applies and the entries that must exist in it, the spacing base and rhythm, each type role with its whole bundle, and which element fills each role. Use when a phase needs a value or an element recorded, written or checked, or when somebody asks what the project's theme or scale is.
 ---
 
 # Values: theme, spacing, type, elements
@@ -25,8 +25,10 @@ ones the work touches.
 | a gap, a padding, the height of a control, a row or a bar | [spacing.md](spacing.md) |
 | text: its size, weight, line height, letter spacing, typeface, case | [typography.md](typography.md) |
 | which element fills a role, and a heading level | [elements.md](elements.md) |
-| a foreground on a surface | [contrast.md](../accessibility/contrast.md) |
+| a foreground on its surface: record the pairing; measure it against a standard only when accessibility is asked for or the project requires it | [contrast.md](../accessibility/contrast.md) |
 
 ## Then
 
-Go back to the phase that called this skill, with what you recorded.
+- Called by a phase: go back to it, with what you recorded.
+- Asked on its own — what the theme is, what the scale is: answer, and say which
+  files and values you read.
