@@ -117,7 +117,7 @@ Beyond the items, compare the same regions:
 - the holders and their order;
 - the component in each role;
 - **the element it comes out as**, and the heading level where the position is a
-  heading ([elements.md](../values/elements.md)). Report one that
+  heading ([values](../values/SKILL.md), *Elements*). Report one that
   differs from what the family writes there, with what the others use. Name an
   element that could not be read as unevaluated;
 - how each is written, against the counts in the checklist;
@@ -128,9 +128,9 @@ Beyond the items, compare the same regions:
   design showed included ([reading.md](../design/reading.md));
 - **every value that names a theme entry exists in the theme that applies** —
   for a shared layer, in every theme that renders it
-  ([theme.md](../values/theme.md)). Report one that is missing, naming
+  ([values](../values/SKILL.md), *The theme*). Report one that is missing, naming
   the theme;
-- **spacing** ([spacing.md](../values/spacing.md)), against the base
+- **spacing** ([values](../values/SKILL.md), *Spacing*), against the base
   the checklist carries and the gaps, line heights and heights it names:
   - report a value **off the base** as a deviation, with the base and the
     nearest multiples;
@@ -139,7 +139,7 @@ Beyond the items, compare the same regions:
   - report a gap that differs with what the neighbouring pages use instead;
   - if the checklist says the project has no base or no consistent rhythm,
     report nothing about it and say so;
-- **typography** ([typography.md](../values/typography.md)), against
+- **typography** ([values](../values/SKILL.md), *Type*), against
   what the checklist records — the whole bundle at each position, not the size
   alone, and how the style is applied:
   - report a style written by hand where the family uses the shared one, **even

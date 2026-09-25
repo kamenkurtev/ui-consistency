@@ -5,6 +5,19 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.54.1 (2026-09-25)
+
+### Small changes
+
+- A new page loads a quarter fewer words: 8,472 where it was 11,158.
+  - `values` states once the rules its four subjects shared, and keeps what is
+    particular to each in one file.
+  - `decisions` and `conventions` keep a short core, with their rare cases in
+    files opened only when such a case appears.
+  - `finding-patterns` drops what repeated the new skills, and carries one worked
+    example from the request to the checklist.
+- The skills ask the same things as before (#294).
+
 ## v0.54.0 (2026-09-25)
 
 ### Changes

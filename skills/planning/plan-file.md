@@ -118,7 +118,7 @@ Every task done or parked, and the last check passed: **the plan is closed.**
 - **The tasks and their checklists go.**
 - **What a person decided is reported** with the result.
 - An override outlives the work only where a process keeps decisions
-  ([decisions](../decisions/SKILL.md)); this plugin keeps none of its
+  ([rare.md](../decisions/rare.md), *An override*); this plugin keeps none of its
   own.
 - **A file is deleted** where the plan was one.
 - **A parked task is not done.** While one is parked, the plan stays open and
