@@ -72,7 +72,7 @@ repository, in [plan-file.md](plan-file.md).
   `parked — waiting on <what>` in the plan, with its counts
   ([plan-file.md](plan-file.md)).
 - **An answer given now is an override**
-  ([decisions](../decisions/SKILL.md)). Record it in the person's own
+  ([rare.md](../decisions/rare.md), *An override*). Record it in the person's own
   words, with what it overrules: in the document the running process keeps, or
   under `## Decided` in this plan where this is the process, reported with the
   result when the plan closes.
