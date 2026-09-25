@@ -110,16 +110,20 @@ must find what the reference writes.
   shared toggle and 4 by hand* — not *10, 4 and 7 across three ways*.
 - **Count what the component comes out as too**, and the heading level where the
   position is a heading — [values](../values/SKILL.md), *Elements*.
-- **A count carries its spread, counted in members.** Four identical buttons in
-  one file are one page's habit; 10 of 10 across 8 files is a convention. A page
-  and the files only it imports are one member; say so where a member spans
-  files.
+- **A count carries its file spread.** Four identical buttons in one file are
+  one page's habit; 10 of 10 across 8 files is a convention. A page and the files
+  only it imports count as one file of the spread, however many they are; say so
+  where a member spans files.
 - **A missing prop is not yet a deviation.** The theme or one of the project's
   wrappers may set it already.
 - **Search for the exact name.** A container whose name starts with the
   component's once turned 18 uses into 25.
-- **A family of one is never a convention.** *1 of 1* is what the reference does:
-  write it so, and say the family has no other members.
+- **If the task adds a position no member has** — a second control, a control
+  nobody has here — count it as [rare.md](rare.md), *A position no member has*,
+  says.
+- **A family of one is never a convention.** Write what the page does as the
+  reference's own way — never as a count, and never as what the project does —
+  and say the family has no other members.
 
 ## When a count is not a convention at all
 
@@ -132,11 +136,11 @@ not one.
   role: *4 of 4*, *3 of 4 and one other way*, *3, 3 and 2 across three ways*. A
   plurality is not a majority.
 - **There is a convention only if the commonest way outnumbers the others put
-  together** — if you can write *all of them except `<page>`*. Otherwise say the
-  family has none here, and give every way with its numbers.
-- **Several different exceptions make a family drifting**, not a rule with
-  deviations: *the commonest way, 5 of 8, against three others* is a different
-  finding from *7 of 8 except `<page>`*.
+  together** — a majority. Otherwise say the family has none here, and give every
+  way with its numbers.
+- **Say which kind of majority it is.** One exception is written *7 of 8 except
+  `<page>`*. Several different ones make a family drifting: still the majority,
+  written *the commonest way, 5 of 8, against three others*.
 - **The order still decides**, and nothing stalls or is asked: with no majority,
   the newest members settle it ([decisions](../decisions/SKILL.md)). The line
   says *no convention here; the two newest write it this way*.

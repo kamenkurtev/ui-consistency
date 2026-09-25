@@ -218,15 +218,15 @@ In this order; the rules are in [conventions](../conventions/SKILL.md):
 - **Step 1.** Orders is named: it is the reference, at level 3.
 - **Step 2.** Its tree: the shared page holder; a toolbar with the title one
   level down; a filter row; a table of rows; on a failed load, its own error box.
-- **Steps 3–4.** A list page — `src/pages` keeps them together. Four members of
-  five candidates; the route table is removed. Each search finds orders' own use
-  first, so it can see.
+- **Steps 3–4.** The kind is *list*, the project's own word: its list pages
+  live in `src/pages/lists`. Four members of five candidates; the route table
+  is removed. Each search finds orders' own use first, so it can see.
 - **Step 5.** The shared error helper is used in 28 files and by 3 of the 4
   members. Orders' own error box is not copied: the shared piece wins at level 4.
-- **Step 6.** The theme's spacing base is 4. Orders' literal 18 is off it and is
-  not copied.
-- **Step 7.** A filter row in 3 of 4 is the majority, at level 6; the shared
-  filter bar fills it, at level 4.
+- **Step 6.** The theme's spacing base is 4. Orders' literal 18 is not copied —
+  a reference's literals never are — and it is off the base besides.
+- **Step 7.** The filter row is there because orders has one, at level 3; it is
+  written through the shared filter bar the other members use, at level 4.
 - **Step 8.** Each of these becomes a line with what settled it — the finished
   checklist is the example in [checklist.md](checklist.md).
 
