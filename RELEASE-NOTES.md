@@ -9,7 +9,7 @@ this repository.
 
 ### Small changes
 
-- A new page loads a quarter fewer words: 8,405 where it was 11,158.
+- A new page loads a quarter fewer words: 8,472 where it was 11,158.
   - `values` states once the rules its four subjects shared, and keeps what is
     particular to each in one file.
   - `decisions` and `conventions` keep a short core, with their rare cases in
