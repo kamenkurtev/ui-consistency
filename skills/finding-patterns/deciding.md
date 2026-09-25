@@ -118,12 +118,10 @@ another.
   the shared layer, then the UI library.
 - If nothing fits, ask whether to create a new component, and where it belongs —
   *When to ask anyway*, below.
-- **Show the shape before any code** — the role tree of the page-to-be, so there
-  is something to disagree with before anything is written.
-- If the work has a design, read that tree from it rather than proposing one
-  ([design.md](design.md)).
-- The tree can also be drawn, with the values the phase measured —
-  [mockup.md](mockup.md).
+- **Agree the shape before any code** — the role tree of the page-to-be, in
+  words, so there is something to disagree with before anything is written:
+  `ui-consistency:design` ([SKILL.md](../design/SKILL.md), step 3). It is drawn
+  only if a person asks.
 
 ## Say what settled it
 
@@ -189,7 +187,7 @@ have.
 writes its own error box because it was built before the shared helper existed.
 
 Split a named reference the same way a design is split
-([design.md](design.md)):
+([reading.md](../design/reading.md)):
 
 - **What it settles**: which roles the page has, in what order, what it shows,
   how it behaves. That is what somebody means by *like that one*.

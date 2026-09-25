@@ -64,6 +64,12 @@ superpowers is running or not:
 4. **Verify** — a separate agent compares each page with the reference, region by
    region, and then the whole set.
 
+The design has a skill of its own. Where one comes with the work it is read for
+the page's structure, never for its values. Where there is none and no page is
+near enough to follow, the shape is agreed with the person in words, as a tree
+of the project's own pieces — and drawn, with the project's values, only when
+somebody asks to see it.
+
 With another process running, each phase adds to that process's spec and plan
 rather than starting a second one. It tells by what exists on disk, not by which
 plugins are installed.

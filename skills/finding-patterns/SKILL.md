@@ -27,13 +27,13 @@ before anything is written.
 |---|---|---|
 | 0 | Size the work — before any project file is opened | below |
 | 1 | The reference: named, or chosen and said | below, [deciding.md](deciding.md) |
-| 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](elements.md), [design.md](design.md) only where there is a design |
+| 2 | Read the reference — and the design where there is one — top to bottom, left to right, into its children; what the words role, component, element mean | below, [words.md](words.md), [elements.md](elements.md), [reading.md](../design/reading.md) only where there is a design |
 | 3 | The bound, and the theme that applies | [theme.md](theme.md) |
 | 4 | The kind, the family, proof that the search can see, then the counts | [counting.md](counting.md); [large-project.md](large-project.md) only on a large project |
 | 5 | What the other pages reuse — by import, by copy | below |
 | 6 | Values through the theme; spacing; type; what can be read and used | [theme.md](theme.md), [spacing.md](spacing.md), [typography.md](typography.md); [accessibility](../accessibility/SKILL.md) only when asked for or required |
 | 7 | Decide by the order, and report what settled it | [deciding.md](deciding.md) |
-| 8 | Write the checklist for the task; a mockup of it, where the shape is shown or asked for | [checklist.md](checklist.md); [mockup.md](mockup.md) only then |
+| 8 | Write the checklist for the task | [checklist.md](checklist.md) |
 | — | One region of one page, as sized at step 0: read less, skip deliberately, say so | [small-change.md](small-change.md) |
 
 ## 0. Size the work first
@@ -83,10 +83,11 @@ Decide the branch **from the request alone, before any project file is opened**.
 ## 2. Read the reference: top to bottom, then left to right
 
 - **If the work has a design for the page** — a picture, a screen described in
-  the request — read it first, in this same order, for **which roles the page has
-  and what each shows**.
+  the request, a tree a person agreed with `ui-consistency:design` — read it
+  first, in this same order, for **which roles the page has and what each
+  shows** ([reading.md](../design/reading.md)).
 - The family answers what fills each role and how it is written, and its values
-  are the ones written. Never take a value off a design — [design.md](design.md).
+  are the ones written. Never take a value off a design.
 
 Read in this order:
 
@@ -234,8 +235,8 @@ In this order; the rules are in [counting.md](counting.md):
 
 - Turn the page's tree into the checklist — its shape, and where it goes, are
   [checklist.md](checklist.md).
-- Where the shape is shown before any code, or a person asks to see the
-  page-to-be, draw it too — [mockup.md](mockup.md).
+- If a person asks to see the page-to-be, it is drawn by `ui-consistency:design`
+  ([SKILL.md](../design/SKILL.md), step 4) — never unasked.
 - **Write nothing into the project's repository.** A plan this plugin writes
   lives outside it and goes with the work
   ([plan-file.md](../planning/plan-file.md)).

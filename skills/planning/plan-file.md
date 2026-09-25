@@ -140,6 +140,8 @@ What that test forces:
   attachment.
 - **Each checklist's first line says it is a snapshot** of the code as it was read,
   and when.
+- **Each new page's agreed shape** — the tree, and the drawing if one was asked
+  for.
 - **What was decided is stated**, so nobody argues it again.
 - **What was not evaluated is named**, so silence is not read as a pass.
 - **The check, written so an agent that never saw the plan can run it**: which

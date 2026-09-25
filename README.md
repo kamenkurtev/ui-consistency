@@ -108,6 +108,8 @@ The agent picks them up on its own. You don't need to name them.
 - **planning** — one checkable task per page
 - **implementing** — one page at a time, from the checklist
 - **verifying** — a separate agent compares each page with the reference
+- **design** — reads a design for the page, or agrees its shape with you in
+  words; draws it only when you ask
 - **accessibility** — optional: measured against a standard only when you ask
   for it or your project states a requirement
 

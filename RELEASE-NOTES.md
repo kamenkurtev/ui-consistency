@@ -5,6 +5,21 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.53.0 (2026-09-25)
+
+### Changes
+
+- **A new skill, `ui-consistency:design`.** Where the work has a design — a
+  picture, a described screen — it is read for the page's structure, never for
+  its values. Where there is none, and no page is near enough to follow, the
+  page's shape is agreed with you in words, as a tree of the project's own
+  pieces, before any code. It is drawn, with the project's values, only when you
+  ask to see it or for alternatives.
+- `finding-patterns` sends a page with no design and no near reference there;
+  `planning` makes sure every new page has an agreed shape before the plan's yes,
+  and a change to a shape at that stop goes back to `design`. Nothing is drawn
+  unasked (#288).
+
 ## v0.52.1 (2026-09-24)
 
 ### Small changes

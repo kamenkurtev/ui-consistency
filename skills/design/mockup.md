@@ -1,18 +1,18 @@
 # A mockup of the page-to-be
 
-**Read when:** the shape is shown before any code ([deciding.md](deciding.md),
-*With nothing near enough to be a reference*), or a person asks to see the page
-before it is written. Otherwise it is optional: the checklist is the result,
-and this is a way to look at it.
+**Read when:** `design` step 4 — a person asks to see the page before it is
+written, or asks for alternatives. Never otherwise.
 
-It shows **whether the page hangs together**, drawn with the values the phase
-just measured. Nothing new is measured — it is the checklist with its numbers
-applied.
+It shows **whether the page hangs together**, drawn with the project's values:
+the checklist's, where one exists; otherwise read from the theme as
+`finding-patterns`' [theme.md](../finding-patterns/theme.md),
+[spacing.md](../finding-patterns/spacing.md) and
+[typography.md](../finding-patterns/typography.md) say. Nothing new is measured.
 
 ## What it is
 
 - **One self-contained HTML document**, with inline styles.
-- Its `:root` carries the values the phase resolved: the theme's entries, the
+- Its `:root` carries the values resolved: the theme's entries, the
   spacing base and the gaps, each position's type bundle, the radius, the
   heights of controls, rows and bars.
 - Embed every image: an SVG as markup, a raster as a data URI.
@@ -21,6 +21,8 @@ applied.
 - Show **the roles in their order, at the sizes the family writes**: which
   holders, what stands in each, how the regions are spaced, what the text looks
   like at each position.
+- If alternatives are asked for, draw two or three arrangements of the same
+  roles, each labelled, in the same document.
 
 ## What it must not do
 
@@ -32,10 +34,10 @@ applied.
 - **No behaviour.** No hover, focus, error state, animation or interaction.
 - **It says what it is, on its face**: a line at the top of the document — *a
   static arrangement with this project's values, not its components*.
-- **Nothing invented.** Draw a value the phase could not resolve as unresolved —
+- **Nothing invented.** Draw a value that could not be resolved as unresolved —
   marked, with what was missing. Never fill it with something plausible.
 - **Never read back.** Values go into it from the theme; nothing is ever taken
-  out of it ([design.md](design.md), *Never a value*).
+  out of it ([reading.md](reading.md), *Never a value*).
 
 ## Three levels, and the question each answers
 

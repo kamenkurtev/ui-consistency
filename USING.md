@@ -22,6 +22,7 @@ being asked.
 | a refactor across pages | the same four |
 | a small change to one page | finding-patterns, its reduced branch → implementing → verifying. The check is never the part that gets dropped. |
 | checking code already written | verifying — after finding-patterns where no checklist exists yet |
+| a design for the page, a new page with no page near enough to follow, or a wish to see a page before it is built | `ui-consistency:design`, on its own or from finding-patterns and planning. It agrees the shape in words, and draws it only when asked. |
 | measuring against an accessibility standard — only when asked for, or when the project states a requirement | `ui-consistency:accessibility`, on its own or from any of the four |
 
 If a spec or plan for this work already exists, add to it instead of starting
@@ -40,6 +41,10 @@ before a component is created or code is extracted into one.
 - **implementing** — one page per task in a fresh context, from the checklist.
 - **verifying** — a separate agent compares each page with the reference region
   by region, with a check first proved to catch a planted difference.
+- **design** — reads the design for a page where there is one; where there is
+  none and no page is near enough to follow, agrees the page's shape in words, as
+  a tree of the project's own pieces. Draws it with the project's values only
+  when asked, and never reads a value back out of a design.
 - **accessibility** — optional: contrast, focus, reach without a mouse, a field
   and its label, text alternatives and target size, each reported separately,
   measured against a standard only when somebody asks for it or the project

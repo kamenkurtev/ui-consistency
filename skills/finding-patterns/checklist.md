@@ -75,7 +75,7 @@ it is written, and what settled it** cannot be ticked without opening the page.
 - **If a design gave the tree**, say on the line which half came from where —
   *the design puts a filter row above the table; the family writes one as 4 of
   4* — so a reader can tell what was drawn from what was counted
-  ([design.md](design.md)).
+  ([reading.md](../design/reading.md)).
 
 ## Eight to twelve items
 
