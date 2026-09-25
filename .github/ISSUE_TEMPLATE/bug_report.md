@@ -34,8 +34,9 @@ welcome; names are not.
 - [ ] I confirmed the skills were loaded in the session
 
 ## What happened?
-<!-- What you asked the agent, which phase it was in (finding, planning,
-     implementing, verifying), what it did, and what you expected. The
+<!-- What you asked the agent, which skill it was in (finding-patterns,
+     design, planning, implementing, verifying, accessibility), what it did, and
+     what you expected. The
      checklist it produced is the most useful thing to paste, with names made
      neutral. If nothing happened, say so, and what it reported it could not
      read. -->

@@ -181,6 +181,10 @@ this plugin's own; with no such process, it is reported with the result.
   developer without the conversation or the checkout; or another process is
   running, and the tasks go into its plan. When the work is done, what a person
   decided is reported and the plan goes.
+- **A drawing of the page-to-be**, only when somebody asks to see it: one
+  self-contained document outside the working copy, drawn with the project's
+  values and labelled with its own components. Nothing is ever read back out of
+  it.
 
 ## What this is not
 
