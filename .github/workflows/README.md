@@ -13,5 +13,6 @@ Three parts of the gate cannot run here and are stated rather than pretended:
 - **The three reviews** — simplification, correctness, security — are in
   `.claude/rules/uic-pr.md` and are done by whoever opens the PR. A workflow
   cannot do them, and pretending otherwise would be worse than the gap.
-- **The run on real projects.** The skills are validated on real projects, not
-  fixtures, and a workflow cannot do that either.
+- **Real work.** A skill change is checked the next time the plugin is used for
+  real work (`AGENTS.md`, *Skill Changes Come From Real Work*), and a workflow
+  cannot do that either.

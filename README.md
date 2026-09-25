@@ -156,12 +156,13 @@ and says which:
 When the work is done, what you decided against the order is reported with the
 result; the plan itself goes.
 
-## Two things you can say to it
+## Three things you can say to it
 
 Most of the time you say nothing: where your project agrees with itself, the
 agent takes the answer and moves on, and where it disagrees the agent decides by
-a written order and tells you what settled it. Two sentences are worth knowing
-anyway, because they outrank everything it counted.
+a written order and tells you what settled it. Three sentences are worth knowing
+anyway. Two of them outrank everything it counted, and the third shows you a
+page before it exists.
 
 **Point at a page.** A page you name beats any number of pages that disagree with
 it — which is what you want on a codebase that has been through three eras.
@@ -194,6 +195,17 @@ decisions — the spec, the plan, the design document — not into a file of thi
 plugin's own, and there it stands until somebody changes it. With no such
 process it is reported with the result and nothing keeps it, so say it again
 next time. Nothing invents one: if you did not say it, it is not there.
+
+**Ask to see it.** Before any code is written, you can ask what a page will look
+like:
+
+> *Show me how the returns page will look.*
+
+The agent draws it as one static page with your project's own spacing, type and
+colours, each region labelled with the component that will fill it, and opens it
+in your browser. Ask for two or three arrangements and it draws them on the same
+page. It never draws unasked, and it never reads a value back out of a drawing:
+the values stay your theme's.
 
 ## Philosophy
 

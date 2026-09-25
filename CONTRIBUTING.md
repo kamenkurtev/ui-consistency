@@ -63,10 +63,11 @@ is `.claude/rules/uic-docs.md`.
 
 ## Filing an issue
 
-Say what you asked the agent, what it did, and what you expected — and which
-phase it was in, if you know: finding, planning, implementing or verifying. The
-checklist it produced is the most useful thing to paste, with names made neutral. If the complaint is that nothing happened, say
-so, and say what the agent reported it could not read.
+Say what you asked the agent, what it did, and what you expected, and which skill
+it was in if you know: finding-patterns, design, planning, implementing,
+verifying or accessibility. The checklist it produced is the most useful thing
+to paste, with names made neutral. If the complaint is that nothing happened,
+say so, and say what the agent reported it could not read.
 
 ## Before you open a pull request
 
