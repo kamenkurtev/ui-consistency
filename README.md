@@ -4,6 +4,7 @@
 > ui-consistency is at an early stage and under active development. It is
 > developed entirely with Claude Code. If something does not work as it should,
 > please [open an issue](https://github.com/kamenkurtev/ui-consistency/issues).
+> Thank you for your understanding.
 
 **An AI-aware design system, read from the code you already have.**
 
