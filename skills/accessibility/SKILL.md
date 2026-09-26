@@ -159,4 +159,4 @@ arithmetic are in [contrast.md](contrast.md).
   [checklist.md](../finding-patterns/checklist.md) — each carrying what settled
   it.
 - If the order ties and the fix would reach outside the task, that is the
-  question put to a person (`ui-consistency:decisions`).
+  question put to a person (`ui-consistency:decisions`, *When to ask anyway*).

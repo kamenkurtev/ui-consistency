@@ -56,7 +56,8 @@ over the members that have the role (`ui-consistency:conventions`,
      members, they decide even against a majority ([rare.md](rare.md), *A written
      rule the code does not follow*).
 6. **The majority, with its file spread.** More files outrank more occurrences:
-   four in one file are one page's habit (`ui-consistency:conventions`).
+   four in one file are one page's habit (`ui-consistency:conventions`,
+   *Counting honestly*).
 7. **The reference the phase chose itself**, when nothing above settled it. It is
    a starting point, not an authority, so the levels above always win.
    - **If the chosen reference is the page that differs**: settle each line it

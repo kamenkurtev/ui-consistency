@@ -42,7 +42,7 @@ Then:
 - If the project does not answer, decide by what the pages render and report it:
   *these six render the same holders and regions; these two do not, and are
   counted as a second kind.* A tie inside what this task touches is not a
-  question (`ui-consistency:decisions`).
+  question (`ui-consistency:decisions`, *When to ask anyway*).
 - Say in the checklist's first line the kind, what decided it, and how many
   members of how many candidates were counted
   ([checklist.md](../finding-patterns/checklist.md)).
@@ -147,5 +147,5 @@ not one.
   `<page>`*. Several different ones make a family drifting: still the majority,
   written *the commonest way, 5 of 8, against three others*.
 - **The order still decides**, and nothing stalls or is asked: with no majority,
-  the newest members settle it (`ui-consistency:decisions`). The line
+  the newest members settle it (`ui-consistency:decisions`, level 5). The line
   says *no convention here; the two newest write it this way*.

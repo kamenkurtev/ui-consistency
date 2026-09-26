@@ -59,10 +59,11 @@ A checklist is eight to twelve lines on purpose, and the regions below are more
 than any checklist carries. Read the repository the way `finding-patterns` does,
 for two things only:
 
-- **A region the checklist does not carry**: re-derive it from the code — its own
-  search, run on the reference first, in the bound the checklist names
-  (`ui-consistency:conventions`) — or name it unevaluated.
-  Never pass it because the checklist was silent.
+- **A region the checklist does not carry**: re-derive it from the code — its
+  own search, run on the reference first, in the bound the checklist names
+  (`ui-consistency:conventions`, *Prove the search can see before trusting a
+  count*) — or name it unevaluated. Never pass it because the checklist was
+  silent.
 - **A line of the checklist you have reason to doubt** — a count that does not
   match what you see: recount it the same way. Report a wrong line as a
   correction of the checklist, never as a deviation of the page.
@@ -161,7 +162,8 @@ Beyond the items, compare the same regions:
   does not repeat them;
 - nothing the checklist marks *not copied* was copied from the reference — a
   shared piece the reference itself bypasses included, the one most easily
-  copied in good faith (`ui-consistency:decisions`).
+  copied in good faith (`ui-consistency:decisions`, *A named reference does not
+  carry its own drift*).
 
 Report **only what differs**, where, and what the reference and the rest of the
 project do instead. Say nothing about regions that match.
@@ -185,14 +187,15 @@ page that deviates.
 - **Against a count that is not a convention** — where the checklist says the
   family has no convention at that position — a page cannot deviate from it.
   Report nothing, and say the project has none there
-  (`ui-consistency:conventions`).
+  (`ui-consistency:conventions`, *When a count is not a convention at all*).
 - **Count in the bound the checklist names.** Its first line says which pages
   were counted; take a count of your own over the same ones.
 - If you count in another bound, say which and why — two bounds give two answers
-  from the same code (`ui-consistency:conventions`).
+  from the same code (`ui-consistency:conventions`, *The bound the family is
+  counted in*).
 - **Against a count alone**, say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge by the same order the page was built from
-  (`ui-consistency:decisions`), naming the level.
+  (`ui-consistency:decisions`, *The order*), naming the level.
 - A page can differ on purpose: say why, rather than changing working code to
   quiet a report.
 - **Against something the request asked for**, it is not a deviation at all. The

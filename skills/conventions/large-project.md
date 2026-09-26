@@ -40,7 +40,8 @@ more than one area, or are more than can be read in full.
   its own piece for a role, never over a sample of the family: a piece most
   members bypass can still be used in a hundred other files, and a sample would
   count its bypass as the convention.
-- How wide that search goes is the order's to say (`ui-consistency:decisions`).
+- How wide that search goes is the order's to say (`ui-consistency:decisions`,
+  level 4).
 
 ## Group the searches
 

@@ -65,7 +65,7 @@ repository, in [plan-file.md](plan-file.md).
   `ui-consistency:design`, and the checklist lines it touches are worked out
   again before the yes.
 - Ask nothing new here: the questions were asked while `finding-patterns` ran
-  (`ui-consistency:decisions`).
+  (`ui-consistency:decisions`, *When to ask anyway*).
 - A new component, or code extracted into one, is not part of this yes: it was asked on its
   own while `finding-patterns` ran, with what it touches (*When to ask
   anyway*).

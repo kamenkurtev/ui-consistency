@@ -55,8 +55,8 @@ states a size, a colour or a gap the project decides differently:
 - Report the disagreement with both sides' numbers: what the design says, and
   what the family does in how many files.
 - Settling it for good changes the design or many pages: report it as a proposal
-  for a person, and do not wait on it
-  (`ui-consistency:decisions`).
+  for a person, and do not wait on it (`ui-consistency:decisions`, *When to ask
+  anyway*).
 
 ## What it cannot answer
 

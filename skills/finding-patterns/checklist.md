@@ -63,7 +63,8 @@ it is written, and what settled it** cannot be ticked without opening the page.
 - **End each item with the report**: the level of the order that settled it and
   the numbers under it — *the majority, 3 of 4 across 4 files*, *the shared
   piece, against the copy in <page>*, *as asked*. Walking the checklist is then
-  also reading every decision that was made (`ui-consistency:decisions`).
+  also reading every decision that was made (`ui-consistency:decisions`, *Say
+  what settled it*).
 - A bare count names no level. After a shared piece — *the shared field — 8 of
   8* — it is level 4, with the piece's use among the members. After anything
   else it is the majority, level 6. Name every other level.
@@ -71,9 +72,10 @@ it is written, and what settled it** cannot be ticked without opening the page.
   carries both decisions: *present — the majority, 6 of 8; through the shared
   date picker — the shared piece* (`ui-consistency:conventions`, *Counting
   honestly*).
-- **If the family has no convention at a position**, say that on the line instead
-  of a number that reads as one: *no convention — three ways across 8 files; the
-  two newest write it this way* (`ui-consistency:conventions`).
+- **If the family has no convention at a position**, say that on the line
+  instead of a number that reads as one: *no convention — three ways across 8
+  files; the two newest write it this way* (`ui-consistency:conventions`, *When
+  a count is not a convention at all*).
 - **If a design gave the tree**, say on the line which half came from where —
   *the design puts a filter row above the table; the family writes one as 4 of
   4* — so a reader can tell what was drawn from what was counted

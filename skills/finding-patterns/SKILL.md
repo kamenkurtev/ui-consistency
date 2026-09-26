@@ -63,9 +63,10 @@ Decide the branch **from the request alone, before any project file is opened**.
 - Step 4 decides the kind. If the chosen reference is not of it, choose again
   from the family by the same order, and say so. The counts do not change: they
   are taken over the family.
-- Do not open with a question — `ui-consistency:decisions`.
+- Do not open with a question — `ui-consistency:decisions`, *When to ask
+  anyway*.
 - If nothing is near enough to be a reference, take that branch in
-  `ui-consistency:decisions`.
+  `ui-consistency:decisions`, *With nothing near enough to be a reference*.
 
 ## 2. Read the reference: top to bottom, then left to right
 
@@ -163,8 +164,9 @@ In this order; the rules are in `ui-consistency:conventions`:
   helper, not a new message box.
 - Search for it across everything the page can import from, not the family alone
   (`ui-consistency:decisions`, level 4).
-- A page that bypasses a shared piece is the drift this phase exists to catch — a
-  named reference included (`ui-consistency:decisions`).
+- A page that bypasses a shared piece is the drift this phase exists to catch —
+  a named reference included (`ui-consistency:decisions`, *A named reference
+  does not carry its own drift*).
 - **By copy** — the same snippet pasted into many files is **worth extracting**.
   Ask whether to make it reusable, in the form this project can use: in the
   shared layer if other areas paste it too, in the page's own area if only it
@@ -200,11 +202,12 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 - Where the reference and the rest of the project agree, **take the answer, say
   what you took, and move on.**
-- Where they disagree, **the order decides** — `ui-consistency:decisions`.
+- Where they disagree, **the order decides** — `ui-consistency:decisions`, *The
+  order*.
 - Report each decision with the level and the numbers that settled it, in the
   form *Say what settled it* shows.
-- Ask the questions that wait on a person, and report proposals, as *When to ask
-  anyway* in `ui-consistency:decisions` says.
+- Ask the questions that wait on a person, and report proposals, as
+  `ui-consistency:decisions`, *When to ask anyway*, says.
 
 ## 8. Write the checklist
 

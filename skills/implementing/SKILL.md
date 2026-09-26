@@ -92,7 +92,7 @@ the skill invoked.
      `ui-consistency:accessibility`.
 10. **Do not copy what is particular to the reference.**
 11. **Where the checklist is silent, the order settles it** —
-    `ui-consistency:decisions`. Say which level settled it.
+    `ui-consistency:decisions`, *The order*. Say which level settled it.
     - Do not invent, and do not stop.
     - Park a page only while a question that waits on a person is open —
       `ui-consistency:decisions`, *When to ask anyway*.

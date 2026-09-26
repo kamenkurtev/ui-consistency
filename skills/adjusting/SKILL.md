@@ -66,12 +66,12 @@ reference — and the theme entries it uses.
 
 **What is never skipped**
 
-- **The proof that the search can see**: whatever you do count, run the search on
-  the reference first — `ui-consistency:conventions`. A reduced run has fewer
-  counts, not softer ones.
+- **The proof that the search can see**: whatever you do count, run the search
+  on the reference first — `ui-consistency:conventions`, *Prove the search can
+  see before trusting a count*. A reduced run has fewer counts, not softer ones.
 - **The order** — what you read contradicting itself is settled by it and
   reported with the level, never carried to the user
-  (`ui-consistency:decisions`).
+  (`ui-consistency:decisions`, *The order*).
 - **The check, by an agent that did not write the change** —
   `ui-consistency:verifying`. This is the part a small change is most tempted to
   drop.
@@ -83,8 +83,8 @@ reference — and the theme entries it uses.
 
 - The page, and nothing outside it.
 - **The page is the page with the files only it uses** — its own strings, its
-  own styles, its own panels — the same unit `ui-consistency:conventions`
-  counts as one member.
+  own styles, its own panels — the same unit `ui-consistency:conventions`,
+  *Which pages are the family*, counts as one member.
 - A file anything else imports is outside it, however close it sits.
 - **If the change needs a new component in the page's own files**, ask before
   creating it, with the numbers (`ui-consistency:decisions`, *When to ask

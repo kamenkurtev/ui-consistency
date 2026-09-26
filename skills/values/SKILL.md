@@ -51,8 +51,9 @@ is particular to each.
   threshold is a standard, and only `ui-consistency:accessibility` measures one,
   when it is asked for or the project requires it.
 - **If the family disagrees with itself**, the order settles it —
-  `ui-consistency:decisions`. No consistent pattern is a finding too:
-  `ui-consistency:conventions` says how to tell.
+  `ui-consistency:decisions`, *The order*. No consistent pattern is a finding
+  too: `ui-consistency:conventions`, *When a count is not a convention at all*,
+  says how to tell.
 
 ## The theme
 
@@ -82,9 +83,9 @@ is particular to each.
   it read as a unanimous 131 of 131.
 - **Never write a value a theme does not define as a convention.** Adding the
   entry changes code outside the task, so it is a proposal
-  (`ui-consistency:decisions`): report the theme it is missing from, the
-  files that write it, and the choice between adding the entry and changing the
-  usages.
+  (`ui-consistency:decisions`, *When to ask anyway*): report the theme it is
+  missing from, the files that write it, and the choice between adding the entry
+  and changing the usages.
 - If the theme that applies could not be resolved, say the values are
   unchecked.
 
