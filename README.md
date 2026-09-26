@@ -1,10 +1,10 @@
 # ui-consistency
 
 > [!NOTE]
-> ui-consistency is at an early stage and under active development. It is
-> developed entirely with Claude Code. If something does not work as it should,
-> please [open an issue](https://github.com/kamenkurtev/ui-consistency/issues).
-> Thank you for your understanding.
+> ui-consistency is in its early stages and under active development. It is
+> built entirely using Claude Code. If you run into a problem, please
+> [open an issue](https://github.com/kamenkurtev/ui-consistency/issues). Thank you
+> for your understanding.
 
 **An AI-aware design system, read from the code you already have.**
 
