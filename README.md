@@ -1,5 +1,11 @@
 # ui-consistency
 
+> [!NOTE]
+> **Early and under active development.** The skills change often, and a page
+> can still come out wrong. The plugin is written by Claude, in Claude Code, and
+> being written by an AI, it may contain mistakes. If something goes wrong,
+> please [open an issue](https://github.com/kamenkurtev/ui-consistency/issues).
+
 **An AI-aware design system, read from the code you already have.**
 
 Your app already has a design system, even if nobody ever drew one. It lives in
