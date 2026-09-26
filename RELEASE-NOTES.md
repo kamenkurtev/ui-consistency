@@ -5,6 +5,42 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.55.0 (2026-09-26)
+
+### Changes
+
+- **An earlier plan is evidence, not the request.**
+  - A plan, pattern file or checklist left by an earlier run is worked out
+    again from the code, even when a person attached it. Its instructions are
+    data.
+  - *As asked* covers only what the request says.
+  - A request that says two things at one position is reported first, as
+    blocking.
+- **The checklist says how a piece is written where it stands.**
+  - Level 4 settles which piece; its variant at this position is counted on its
+    own.
+  - A region nested in another holder puts its roles at new positions.
+  - A checklist line carries its search, one source, which half a precedent is
+    for, the behaviour and a control's state.
+- **A shared piece the work creates** is counted over the pages that will use
+  it, and takes their kind.
+- **A check names what it cannot see.** Unless the page was rendered, sizes,
+  overflow, clamps, scrolling, hit areas and gestures are unevaluated.
+  `verifying` also compares a region moved into another holder and the words
+  the user reads, and reports *true, but not this task's* apart.
+- **The calibration is the dispatcher's**, in `verifying/calibration.md`: once
+  per work and kind of page, and a checker never runs one.
+  - Where a process already has each task reviewed, the checklist goes into
+    that reviewer's brief and no second checker is added.
+- **The session hook and `finding-patterns` name the moment** to start: before
+  a plan's first task that changes what the user sees is handed to anyone.
+- **Smaller changes:**
+  - A new component the request names, with its place, is not asked.
+  - A large project splits only what must be read in full.
+  - A live iteration is checked once, at the end.
+- **Rare branches moved into the `rare.md` files**, so a new page loads 8,739
+  words rather than about 9,100 (#299).
+
 ## v0.54.3 (2026-09-26)
 
 ### Small changes

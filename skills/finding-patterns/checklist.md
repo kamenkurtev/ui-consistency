@@ -95,10 +95,6 @@ it is written, and what settled it** cannot be ticked without opening the page.
   instead of a number that reads as one: *no convention — three ways across 8
   files; the two newest write it this way* (`ui-consistency:conventions`, *When
   a count is not a convention at all*).
-- **If a design gave the tree**, say on the line which half came from where —
-  *the design puts a filter row above the table; the family writes one as 4 of
-  4* — so a reader can tell what was drawn from what was counted
-  ([reading.md](../design/reading.md)).
 
 ## Eight to twelve items
 

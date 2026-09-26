@@ -25,14 +25,8 @@ what is particular to each.
 - **A literal off what those produce is a candidate deviation, not evidence
   about the scale.** Folding it in collapses the scale to something that fits
   everything.
-- **Too few values show no scale.** Widen the source in the same order — the
-  theme, shared classes, the pages nearest in kind.
-- If there are still too few, say the scale is not derivable, with the values.
-  Then report nothing as off it, and check each value against what the family
-  writes at that position.
-- **If the values share no scale**, that is the finding: say so, and do not
-  promote the most frequent value into a rule. Make one proposal, with the
-  others, for a single place to keep it — never one per page.
+- **If the values are too few to show a scale, or share none**:
+  [rare.md](rare.md), *Too few values, or no scale*.
 - **Off the scale** is a deviation: report it with the nearest steps on either
   side.
 - **On the scale but not in use** — a step no page writes yet — is not wrong:
@@ -74,7 +68,8 @@ properties, preprocessor variables, a shared stylesheet, a config file.
 - **Find the theme that applies** by following how the application selects it —
   the provider, factory or import at its root — not by listing the workspace's
   themes. Treat presets as alternatives unless the code says one extends
-  another.
+  another. If it cannot be resolved: [rare.md](rare.md), *A theme that cannot
+  be resolved*.
 - **A file in a shared layer has no theme of its own.** Check its theme-defined
   values against every theme whose applications use it.
 - **A value that names a theme entry must exist in the theme that applies** — for
@@ -88,8 +83,6 @@ properties, preprocessor variables, a shared stylesheet, a config file.
   (`ui-consistency:decisions`, *When to ask anyway*): report the theme it is
   missing from, the files that write it, and the choice between adding the entry
   and changing the usages.
-- If the theme that applies could not be resolved, say the values are
-  unchecked.
 
 ## Spacing
 

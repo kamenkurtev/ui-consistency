@@ -18,8 +18,10 @@ person agreed at step 3 — or `finding-patterns` step 2 reads one.
 
 **A design never overrules how this project writes a button. It says there is a
 button there.** The checklist is the design's tree with the family's answers
-filled into it, and each line says which of the two produced it —
-[checklist.md](../finding-patterns/checklist.md).
+filled into it ([checklist.md](../finding-patterns/checklist.md)), and each line
+says which half came from where — *the design puts a filter row above the table;
+the family writes one as 4 of 4* — so a reader can tell what was drawn from what
+was counted.
 
 ## Read it the way a page is read
 

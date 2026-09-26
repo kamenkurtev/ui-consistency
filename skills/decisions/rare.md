@@ -2,7 +2,8 @@
 
 **Read when:** [SKILL.md](SKILL.md) names one of these — the request says two
 things at one position, the project writes a rule its code does not follow, a
-person overrules the order, or nothing is near enough to be a reference.
+person overrules the order, nothing is near enough to be a reference, or nothing
+at all is written.
 
 ## A request that says two things
 
@@ -76,3 +77,9 @@ not."*
 - Take pieces from the page's own area, then the shared layer, then the UI
   library. If nothing fits, ask whether to create a new component, and where —
   [SKILL.md](SKILL.md), *When to ask anyway*.
+
+## What this does not decide
+
+The order settles what the project's own code can answer, and never invents a
+rule. If nothing at all is written — no shared piece, no majority, no reference
+— say so, and build it the plainest way the technology allows.

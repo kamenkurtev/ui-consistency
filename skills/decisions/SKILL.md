@@ -80,7 +80,9 @@ a role over the whole family, then *which way* over the members that have it
      so a refactor changes it too.
 
 **If nothing is near enough to be a reference**: [rare.md](rare.md), *With
-nothing near enough to be a reference*.
+nothing near enough to be a reference*. **If nothing at all is written** — no
+shared piece, no majority, no reference: [rare.md](rare.md), *What this does not
+decide*.
 
 ## Say what settled it
 
@@ -151,12 +153,6 @@ own error box, because it was built before the shared helper existed.
 - If the named reference disagrees with the newest members, say that too, as a
   statement: *the page you named is the oldest of the five; the three most
   recent write it the other way.*
-
-## What this does not decide
-
-The order settles what the project's own code can answer, and never invents a
-rule. If nothing at all is written — no shared piece, no majority, no reference
-— say so, and build it the plainest way the technology allows.
 
 ## Red flags
 
