@@ -10,10 +10,10 @@ description: For what the end user sees — the order that settles how a page is
 Settles what a count cannot — **decide, and say what you decided** — in any
 phase, and says the three things that wait on a person.
 
-**Open a linked file, or invoke a named skill, when you reach the part that
-names it, never before** — whatever the request that handed you this skill says
-about its links. A part you reach without having opened its file or invoked its
-skill is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## The order
 

@@ -16,9 +16,12 @@ this repository.
 - The bound is defined once, in `conventions`. `values` and `words.md` point
   there, and `values` and `conventions` carry the few terms they use instead of
   opening a `finding-patterns` file.
-- `adjusting`'s budget says one thing at each crossing: past ten in the phase
-  and past twenty-five for the change, say so and go on; past fifty, stop and
-  size the work again. `finding-patterns` step 0 says the same.
+- `adjusting`'s budget holds files and searches to it apart, and says one thing
+  at each crossing: past ten in the phase and past twenty-five for the change,
+  say so and go on; past fifty, end the phase and run the whole of
+  `finding-patterns`. `finding-patterns` step 0 says the same.
+- A named skill, like a linked file, is invoked only when the step being
+  carried out sends the agent to it.
 - A harness with no skill mechanism is told where a named skill's file is
   (`USING.md`). The skills ask the same things as before (#298).
 

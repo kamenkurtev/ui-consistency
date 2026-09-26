@@ -10,10 +10,10 @@ description: For what the end user sees — counts what a project's pages do, so
 Counts what the project's pages do, in the order of the work: the kind, the
 family, the proof that a search can see, then the counts.
 
-**Open a linked file, or invoke a named skill, when you reach the part that
-names it, never before** — whatever the request that handed you this skill says
-about its links. A part you reach without having opened its file or invoked its
-skill is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## Which kind of page this is
 

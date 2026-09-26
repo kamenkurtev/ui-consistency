@@ -11,10 +11,10 @@ Builds each page from its checklist, one page per task. The checklist is re-read
 every time: across a batch, the work drifts toward the last page written instead
 of the one agreed.
 
-**Open a linked file, or invoke a named skill, when you reach the part that
-names it, never before** — whatever the request that handed you this skill says
-about its links. A part you reach without having opened its file or invoked its
-skill is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## One page per task, in a fresh context
 

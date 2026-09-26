@@ -11,10 +11,10 @@ A separate agent answers one question: **which of these pages do not look and
 behave like the reference and the rest of the project.** It reports only what
 differs, and names what it could not check.
 
-**Open a linked file, or invoke a named skill, when you reach the part that
-names it, never before** — whatever the request that handed you this skill says
-about its links. A part you reach without having opened its file or invoked its
-skill is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## Steps
 
