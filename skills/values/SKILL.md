@@ -104,6 +104,9 @@ properties, preprocessor variables, a shared stylesheet, a config file.
 - **Which side owns the gap** — a margin on one component, a padding on the
   other, a gap on the container holding both. Record it where the project is
   consistent: mixing them is how a gap doubles or collapses.
+- **What separates two neighbouring regions** — a gap, a divider, a border, a
+  heading's underline — per position, with spread. Two separators stacked where
+  the family has one is how a page drifts.
 - **The space around a block of text stands on the base too.** A heading with a
   gap above it off the base is the common way a page drifts while every named
   value in it is correct.

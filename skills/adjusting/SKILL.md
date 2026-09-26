@@ -77,7 +77,10 @@ reference — and the theme entries it uses.
   drop.
 - Its proof is one plant, at the position the change touches, in a copy of that
   one file — **once for the change, not once per round of checking**. A second
-  round reuses the first proof; a second plant proves nothing the first did not.
+  round reuses the first proof; a second plant proves nothing the first did not
+  ([calibration.md](../verifying/calibration.md)).
+- **A live iteration** — a person setting a region by eye in small changes — is
+  checked once, when they say it is done, not after each change.
 
 **What it may write**
 
@@ -86,9 +89,9 @@ reference — and the theme entries it uses.
   own styles, its own panels — the same unit `ui-consistency:conventions`,
   *Which pages are the family*, counts as one member.
 - A file anything else imports is outside it, however close it sits.
-- **If the change needs a new component in the page's own files**, ask before
-  creating it, with the numbers (`ui-consistency:decisions`, *When to ask
-  anyway*), and stay in this phase.
+- **If the change needs a new component in the page's own files** that the
+  request did not name, ask before creating it, with the numbers
+  (`ui-consistency:decisions`, *When to ask anyway*), and stay in this phase.
 - **If it would live outside the page** — the pieces that fill that position on
   the other pages live in the shared layer or the page's area — it is no longer
   a small change. Say so in one line before writing anything, run the whole

@@ -2,7 +2,8 @@
 
 **Read when:** the family is not one plain set of pages — its members differ
 below a shared holder, the reference is its only member — or the task adds a
-position no member has.
+position no member has, or creates a shared piece that takes over roles the
+pages had.
 
 ## A family that differs by region
 
@@ -58,3 +59,17 @@ second control where every member has one, a control nobody has here.
 - **If there is nothing anywhere**, the order's last line applies: build it the
   plainest way the technology allows, and say so (`ui-consistency:decisions`,
   *What this does not decide*).
+
+## A shared piece the work creates
+
+The work builds a shared piece — a split layout, a list shell — that takes over
+roles the pages had: where a size or a state is kept, which side takes the
+default share.
+
+- **Count each role it takes over over the pages that will use it**, their own
+  stores and state included — never over the shared layer's other pieces.
+- **It takes their kind**: it is counted, checked and calibrated as one of those
+  pages.
+- **Its checklist carries what the user sees of that role on the page** — *the
+  pane, not the list, takes the default share* — as well as its own lines, and
+  so does the checklist of each page that uses it.

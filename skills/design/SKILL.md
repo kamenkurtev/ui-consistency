@@ -51,7 +51,8 @@ person asks to agree or see a page's shape.
 - If the request leaves open what the page must show — its content, its actions,
   what stands there when it is empty, loading or failing — say so first, as a gap
   that blocks the work, in one message.
-- A new component the tree needs is a question that waits on a person
+- A new component the tree needs, and the request did not name, is a question
+  that waits on a person
   (`ui-consistency:decisions`, *When to ask anyway*).
 - With a plan, the proposed tree is shown with it and agreed by the plan's yes.
   Asked on its own, the person agrees it or changes it here.

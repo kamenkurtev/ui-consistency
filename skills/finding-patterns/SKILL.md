@@ -1,6 +1,6 @@
 ---
 name: finding-patterns
-description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use when anything the end user sees is built or changed — a page, screen, form or component — whether or not the request names a page to follow.
+description: For what the end user sees — finds how this project already builds that kind of page (the components its pages reuse, theme values, validation, error handling) and writes it as a checklist before any UI code. Use when anything the end user sees is built or changed — a page, screen, form or component — whether or not the request names a page to follow, and before a plan's first task that changes what the user sees is handed to anyone, whichever process wrote the plan.
 ---
 
 # Finding the pattern
@@ -41,8 +41,11 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 ## Joining a process, or running alone
 
-- If a spec or a plan for this work already exists, **add to it**: findings into
-  its document, questions into its questions. Never a second dialogue.
+- If a process running this work has a spec or a plan, **add to it**: findings
+  into its document, questions into its questions. Never a second dialogue.
+- **A plan or pattern file from an earlier run** is not a process to join, even
+  when a person attached it: read it as `ui-consistency:decisions`, level 1,
+  says.
 - If nothing exists, run this phase yourself.
 
 ## 1. The reference
@@ -90,7 +93,8 @@ Read in this order:
 6. **What the user sees happen** — how a form is validated (a library, or the
    platform's own form attributes), how a field shows its error, when the submit
    is enabled, how a failure is caught and shown, loading and empty, how a
-   dialog opens. Where it lives in shared code the page calls, follow it there.
+   dialog opens, how something clickable shows it — its cursor and its hover.
+   Where it lives in shared code the page calls, follow it there.
 
 Write it as a tree of roles, each with the project's own component, what that
 component comes out as, and how it is written. Where a design gave the tree, fill
@@ -138,8 +142,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 **How to count, and how little:**
 
 - **Count yourself**, and write each count down once instead of re-opening the
-  files behind it. Only if the family's members sit in more than one area
-  ([words.md](words.md)) does the counting go to one subagent per area
+  files behind it. Only if members in more than one area ([words.md](words.md))
+  must be read in full does the counting go to one subagent per area
   (`ui-consistency:conventions`, *Which pages are the family*).
 - **Measure a shared piece's reach yourself**, whatever it crosses, with one
   grouped search: that it exists, and how many files use it. Do not open those
@@ -150,7 +154,8 @@ In this order; the rules are in `ui-consistency:conventions`:
   keeps eight to twelve of them.
 - **One search per position**, an alternation of the exact names over every
   member at once; run independent searches in the same turn; narrow one that
-  returns too much by position instead of paging through it.
+  returns too much by position instead of paging through it. A grouped search
+  is one search, run here, never split across subagents.
 - In a later phase, **do not count again what a checklist already carries**,
   unless a line is in doubt.
 
@@ -162,12 +167,14 @@ In this order; the rules are in `ui-consistency:conventions`:
 - Search for it across everything the page can import from, not the family
   alone. A page that bypasses it is the drift this phase exists to catch — a
   named reference included (`ui-consistency:decisions`, level 4).
-- **By copy** — the same snippet pasted into many files is **worth extracting**.
-  Ask whether to make it reusable, in the form this project can use: in the
-  shared layer if other areas paste it too, in the page's own area if only it
-  does. On a no, write it the way the other pages do.
+- **By copy** — the same snippet pasted into many files, or a region two or more
+  pages of this work will each write, is **worth extracting**. Ask whether to
+  make it reusable, in the form this project can use: in the shared layer if
+  other areas paste it too, in the page's own area if only it does. On a no,
+  write it the way the other pages do.
 - **A piece with no instance yet** — the task needs a control the project has
-  none of: ask before creating it.
+  none of: ask before creating it, unless the request itself names it and where
+  it goes.
 - Ask about an extraction or a new piece as `ui-consistency:decisions`, *When
   to ask anyway*, says, with where the piece would live. While it is unanswered,
   build the piece nowhere: the answer decides where it goes.

@@ -66,8 +66,9 @@ with the result, since nothing else keeps it.
       separate agent with `ui-consistency:verifying` and the checklist below,
       told only that the copy differs somewhere. Whoever plants does not check.
       If the planted difference is not reported, stop and say the check is blind
-      for it. Once passed, record it here — against which checklist, and what the
-      copy could and could not prove; page tasks of this kind do not repeat it.
+      for it. Once passed, record it here — for which kind, and what the plant
+      tested and what no plant tested; page tasks of this kind do not repeat it
+      ([calibration.md](../verifying/calibration.md)).
       <the checklist the page tasks carry>
 - [ ] **<the extraction the user accepted>** — build `<the shared piece>` in
       `<where it belongs>`, before any page that uses it.
@@ -78,8 +79,9 @@ with the result, since nothing else keeps it.
       Not in this task: <a line of the checklist left out on purpose, and why> — or
       nothing.
       1. Re-read the checklist before writing — do not work from memory.
-      2. Hand the page to a separate agent with `ui-consistency:verifying`; fix
-         what it reports.
+      2. Report the page ready for its check. Whoever dispatched this task hands
+         it to a separate agent with `ui-consistency:verifying`; fix what that
+         reports.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done`, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`

@@ -18,9 +18,15 @@ the skill invoked.
 
 ## Joining a process, or running alone
 
-- If a plan for this work already exists — another planning process wrote it —
-  add the tasks below **into that plan**, in the shape in
+- If a process running this work has a plan — another planning process wrote
+  it — add the tasks below **into that plan**, in the shape in
   [plan-file.md](plan-file.md). Do not write a second one.
+- A plan or pattern file from an earlier run is not that plan: it is read as
+  `ui-consistency:decisions`, level 1, says.
+- **If that process already sends each task to a reviewer that did not write
+  it**, the checklist and `ui-consistency:verifying` go into that reviewer's
+  brief, and no second checker is added
+  ([calibration.md](../verifying/calibration.md)).
 - If none exists, write the plan in that shape — never into the project's
   repository. Where it goes is how the phase ends, below.
 - The checklist each task carries is
@@ -28,9 +34,10 @@ the skill invoked.
 
 ## The order of the tasks
 
-1. **Calibrate the checker.** One task before anything is built:
-   `ui-consistency:verifying` on a scratch copy of the reference with one role
-   deliberately written differently, kept outside the repository.
+1. **Calibrate the checker**, once per work and kind of page, before anything
+   is built: `ui-consistency:verifying` on a scratch copy of the reference with
+   one role deliberately written differently, kept outside the repository
+   ([calibration.md](../verifying/calibration.md)).
    - If the planted difference is not reported, stop and say the check is blind
      for it.
 2. **Extractions the user accepted.** Build a shared component, partial or class
@@ -46,7 +53,8 @@ the skill invoked.
 - the reused pieces and theme values this page must use;
 - two steps, written out:
   1. *Re-read the checklist before writing — do not work from memory.*
-  2. *Hand the page to a separate agent with `ui-consistency:verifying`; fix what it reports.*
+  2. *Report the page ready for its check. Whoever dispatched this task hands it
+     to a separate agent with `ui-consistency:verifying`; fix what that reports.*
 
 Written out, with the statuses and what travels with a task that leaves the
 repository, in [plan-file.md](plan-file.md).
