@@ -30,9 +30,10 @@ helper.
   repeat it; a new kind owes a new one. A shared piece built for those pages is
   of their kind. The plan's first task is that calibration
   ([plan-file.md](../planning/plan-file.md)).
-- **The checker of the page is a new agent**, given the same checklist and the
+- **The checker of the pages is a new agent**, given the same checklist and the
   same instructions — not the one that was calibrated: that one knows a plant
-  exists, and reads the page expecting one.
+  exists, and reads the page expecting one. It is the one checker of that kind
+  for the work.
 - **A change without a plan** owes the proof once, and cheaply: one plant, at the
   position the change touches, in a copy of that one file.
 - **Once for the change**: the second round of checking, and any later checker of

@@ -80,8 +80,9 @@ with the result, since nothing else keeps it.
       nothing.
       1. Re-read the checklist before writing — do not work from memory.
       2. Report the page ready for its check. Whoever dispatched this task
-         dispatches it — a separate agent with `ui-consistency:verifying` — and
-         sends back what it reports; fix that.
+         sends it to the checker of its kind — one agent with
+         `ui-consistency:verifying`, not the one that wrote it — and sends back
+         what it reports; fix that.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`

@@ -38,6 +38,12 @@ the skill invoked.
   does not count.
 - If no separate agent is available, **say plainly that the author checked its
   own work**, and treat the result as that.
+- **One checker per work and kind of page.** It checks each page of that kind as
+  the page is written, each fix after, and the whole set at the end.
+  - Where the harness can continue an agent, send that checker every page and
+    every check again.
+  - Where it cannot, a new agent gets the same brief, with what was found on the
+    pages already checked.
 
 Give the checker:
 
@@ -206,8 +212,8 @@ page that deviates.
 
 ## The whole set, at the end
 
-- After the last page, compare **all the pages together** against the same
-  checklist. A page can pass on its own and still be the one that differs from
+- After the last page, the same checker compares **all the pages together**
+  against the same checklist. A page can pass on its own and still be the one that differs from
   the rest.
 - Report how many pages, how many match, which differ and how, which are parked
   and why.

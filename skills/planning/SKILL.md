@@ -53,9 +53,9 @@ the skill invoked.
 - the reused pieces and theme values this page must use;
 - two steps, written out:
   1. *Re-read the checklist before writing — do not work from memory.*
-  2. *Report the page ready for its check. Whoever dispatched this task
-     dispatches it — a separate agent with `ui-consistency:verifying` — and
-     sends back what it reports; fix that.*
+  2. *Report the page ready for its check. Whoever dispatched this task sends
+     it to the checker of its kind — one agent with `ui-consistency:verifying`,
+     not the one that wrote it — and sends back what it reports; fix that.*
 
 Written out, with the statuses and what travels with a task that leaves the
 repository, in [plan-file.md](plan-file.md).
