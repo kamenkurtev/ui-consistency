@@ -1,6 +1,6 @@
 ---
 name: values
-description: For what the end user sees — how this project sets its values and elements. The theme that applies and the entries that must exist in it, the spacing base and rhythm, each type role with its whole bundle, and which element fills each role. Use when a phase needs a value or an element recorded, written or checked, or when somebody asks what the project's theme or scale is.
+description: For what the end user sees — how this project sets its values and elements: its theme, spacing, type, and the element that fills each role. Use when a phase needs a value or an element recorded, written or checked, or when somebody asks what the project's theme or scale is.
 ---
 
 # Values: theme, spacing, type, elements

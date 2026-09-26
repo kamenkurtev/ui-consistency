@@ -40,6 +40,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 
 - Frontmatter, title, `## Overview` in one or two sentences, then the steps in order.
 - Under 500 lines and 16,000 characters: after compaction Claude Code re-attaches only the first 5,000 tokens of a skill (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
+- The skills one piece of work invokes share 25,000 tokens after compaction, the most recently invoked first, and an older one past the budget is dropped whole. A new page invokes seven: when a skill grows, measure their total against that budget.
 
 **A reference file**
 
