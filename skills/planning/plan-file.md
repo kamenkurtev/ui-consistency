@@ -66,8 +66,9 @@ with the result, since nothing else keeps it.
       separate agent with `ui-consistency:verifying` and the checklist below,
       told only that the copy differs somewhere. Whoever plants does not check.
       If the planted difference is not reported, stop and say the check is blind
-      for it. Once passed, record it here — against which checklist, and what the
-      copy could and could not prove; page tasks of this kind do not repeat it.
+      for it. Once passed, record it here — for which kind, and what the plant
+      tested and what no plant tested; page tasks of this kind do not repeat it
+      ([calibration.md](../verifying/calibration.md)).
       <the checklist the page tasks carry>
 - [ ] **<the extraction the user accepted>** — build `<the shared piece>` in
       `<where it belongs>`, before any page that uses it.
@@ -78,10 +79,11 @@ with the result, since nothing else keeps it.
       Not in this task: <a line of the checklist left out on purpose, and why> — or
       nothing.
       1. Re-read the checklist before writing — do not work from memory.
-      2. Hand the page to a separate agent with `ui-consistency:verifying`; fix
-         what it reports.
+      2. Report the page ready for its check. Whoever dispatched this task
+         dispatches it — a separate agent with `ui-consistency:verifying` — and
+         sends back what it reports; fix that.
       3. Report the status here — or, handed on without this plan, to whoever
-         handed it over: `done`, or `parked — <why>`.
+         handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
 - [ ] **Close the plan** — once every task above is done or parked: report what
       is under `## Decided` with the result, and delete the plan where it was a
@@ -142,7 +144,9 @@ What that test forces:
   and when.
 - **Each new page's agreed shape** — the tree, and the drawing if one was asked
   for.
-- **What was decided is stated**, so nobody argues it again.
+- **What a person decided goes into the story's own text**, in their words:
+  whoever implements it works the plan's counts and decisions out again from
+  the code, and the story's text is the request.
 - **What was not evaluated is named**, so silence is not read as a pass.
 - **The check, written so an agent that never saw the plan can run it**: which
   skill to invoke, what to compare against, and that whoever wrote the page does

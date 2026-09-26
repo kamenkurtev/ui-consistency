@@ -21,8 +21,8 @@ the skill invoked.
 1. A separate agent checks, never the author — *Never the author*.
 2. It reads the checklist and the page first, and the project only where they do
    not answer — *What the checker reads*.
-3. Before its result is trusted, it is proved on a copy with one planted
-   difference — *First, prove it can see*.
+3. Before its result is trusted, the dispatcher — never the checker — proves
+   the check on a copy with one planted difference — *First, prove it can see*.
 4. It compares region by region and reports only what differs, judged as
    *Reading a difference* says — *Compare region by region*.
 5. It names what it could not check, and the cost — *Say what was not checked*.
@@ -69,44 +69,15 @@ for two things only:
   correction of the checklist, never as a deviation of the page.
 
 Read no further than that: the checklist and the page stay the thing checked.
+Read no process's own state — its plan, its ledger, its progress files.
 
 ## First, prove it can see
 
-Before the checker's result is trusted, show it **a copy of the reference with
-one role deliberately written differently** — a different size on a button, a
-literal instead of a theme value, its own error message instead of the shared
-helper.
+Before a checker's result is trusted, **the dispatcher** proves the check on a
+copy with one planted difference, once per work and kind of page:
+[calibration.md](calibration.md).
 
-- **The one that plants is not the one that looks.** The dispatching agent — or
-  the author — makes the copy.
-- Tell the checker only that the copy differs from the checklist somewhere,
-  never what or where. An agent that plants and checks in one context proves
-  only that it can find what it just wrote.
-- **Where the copy lives decides what it proves.** In a git repository, make it
-  a temporary worktree in a newly created directory outside the checkout, and
-  remove it afterwards: imports, the theme and child components resolve, so the
-  calibration proves what needs the project.
-- Outside a git repository, copy the reference alone into a newly created
-  temporary directory. It proves only what one file shows: a class, a literal,
-  which helper is called.
-- **Say which**, and name what the calibration could not vouch for.
-- Never use a fixed, guessable path, and never a copy that could be committed.
-- **Calibrate once per work and kind of page.** The calibration proves the check
-  — this checklist, this skill, a checker given them — not one agent.
-- A later task in the same work, checking a page of the same kind against the
-  same checklist, does not repeat it. A new kind or a changed checklist owes a
-  new one. The plan's first task is that calibration
-  ([plan-file.md](../planning/plan-file.md)).
-- **The checker of the page is a new agent**, given the same checklist and the
-  same instructions — not the one that was calibrated: that one knows a plant
-  exists, and reads the page expecting one.
-- **A change without a plan** owes the proof once, and cheaply: one plant, at the
-  position the change touches, in a copy of that one file.
-- **Once for the change**: the second round of checking, and any later checker of
-  the same page, reuses it.
-
-If the planted difference is not reported, the check is blind for that kind of
-difference. **Say so before anything is built or passed.**
+- A checker handed a page neither runs a calibration nor reasons about one.
 
 ## Compare region by region
 
@@ -126,6 +97,11 @@ Beyond the items, compare the same regions:
 - the reused pieces: the shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;
+- **a region moved into another holder**, against that holder: children
+  written for a parent of another size — a fixed height, a scroll of their own —
+  that the code shows will size or scroll differently there;
+- **the words the user reads**: the project's string wherever one already says
+  the same thing, and one name for one thing across the page;
 - **values through the theme**, not literals — a literal that matches what a
   design showed included ([reading.md](../design/reading.md));
 - **every value that names a theme entry exists in the theme that applies** —
@@ -168,6 +144,10 @@ Beyond the items, compare the same regions:
 Report **only what differs**, where, and what the reference and the rest of the
 project do instead. Say nothing about regions that match.
 
+**True, but not this task's** — a difference the reference already has, or one
+a checklist line settled: report it apart, under that heading, never as a
+difference of the page.
+
 Name a file that is not of the kind — a dispatcher, a route table, a barrel, a
 wrapper that imports the pages — **as not of the kind**. Never measure it as a
 page that deviates.
@@ -209,6 +189,12 @@ page that deviates.
 - **Name a region you could not evaluate; never pass it** — a rule you cannot
   judge from the code, a technology you could not read with confidence, a child
   you could not open, a theme you could not resolve.
+- **Unless the page was rendered, name what only rendering shows as
+  unevaluated**: the size a region turns out at, overflow, which minimum or
+  maximum wins, what scrolls, overlapping hit areas, gestures. The values the
+  code writes are still checked.
+- **Every report says what the check could not see**, even when it found no
+  difference: *no differences* never means *the page is right*.
 - Before writing that nothing was left unevaluated, find **every stylesheet the
   page loads**, including any from outside the project, and look up every class
   it uses.
@@ -234,4 +220,3 @@ Words agents used in runs, just before getting it wrong:
 |---|---|
 | "Consistency check, done by diffing against the reference" — from the agent that wrote the page | The author checked its own work. Hand it to a separate agent, or say plainly that none was available. |
 | "Not evaluated: nothing — every pair resolved" | Only true after every loaded stylesheet was found. A class with no rule in the project is unevaluated, not unstyled. |
-| `mkdir -p /tmp/<name>-$$` for the planted copy | A name anyone can predict, reused if it already exists. Let the system create the directory new — `mktemp -d`, or your harness's own temporary directory. |

@@ -14,7 +14,8 @@ Component, element and the theme are defined in `ui-consistency:values`,
   attribute is part of how the element is written.
 - **Position** — a role where it stands. The submit button in the content area
   and the submit button in a toolbar are one role at two positions. Counts are
-  taken per position.
+  taken per position. A region nested in another holder puts its roles at new
+  positions: a heading inside a pane is not the page's heading.
 - **Holder** — a region that frames other roles: the page holder, a header, a
   toolbar, a sidebar, the content area, a footer, a dialog frame.
 - **Region** — a part of the page that holds roles: a holder, a form, a dialog.
@@ -34,7 +35,7 @@ Component, element and the theme are defined in `ui-consistency:values`,
   (`ui-consistency:design`). Its values never count.
 - **Kind** — what the page the task builds or changes is — a list, a detail
   view, a form — decided before counting (`ui-consistency:conventions`, *Which
-  kind of page this is*).
+  kind of page this is*). A shared piece built for those pages is of their kind.
 - **Family** — the pages of that kind, the reference among them; the counts are
   taken over it. Where members differ below a shared holder, a region has its
   own family (`ui-consistency:conventions`, *A family that differs by region*).

@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
-  "version": "0.54.3",
+  "version": "0.55.0",
   "description": "An AI-aware design system, read from the code you already have: your coding agent writes each page the way your other pages are built",
   "license": "MIT",
   "type": "module",

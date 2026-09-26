@@ -26,10 +26,12 @@ being asked.
 | a step that needs the project's values, a count of what its pages do, or a decision between them | `ui-consistency:values`, `ui-consistency:conventions`, `ui-consistency:decisions` — reached from the phases, not started on their own |
 | measuring against an accessibility standard — only when asked for, or when the project states a requirement | `ui-consistency:accessibility`, on its own or from any phase |
 
-If a spec or plan for this work already exists, add to it instead of starting
-another. Decide by the order the skills carry and report what settled each
-decision; ask only where it ties and the change reaches outside the task, or
-before a component is created or code is extracted into one.
+If a process running this work has a spec or plan, add to it, and run
+finding-patterns before its first task that changes what the user sees is
+handed to anyone, whichever process wrote it. Decide by the order the skills
+carry and report what settled each decision; ask only where it ties and the
+change reaches outside the task, or before a component the request did not name
+with its place is created or code is extracted into one.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the

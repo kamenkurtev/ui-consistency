@@ -31,18 +31,13 @@ answers:
 
 Then:
 
-- If a later signal disagrees — the project's word groups pages whose trees
-  differ — the word still decides: it is the project keeping them apart. Say the
-  disagreement in the checklist's first line.
+- If a later signal disagrees, or the project does not answer:
+  [rare.md](rare.md), *When the signals do not settle the kind*.
 - If the trees differ below a shared outer holder: [rare.md](rare.md), *A family
   that differs by region*.
 - **Name the kind in the project's own word** — folder, route, file name — never
   an invented one. If it has none, name it by what it renders, *a list with a
   form above it*, and say the name is yours.
-- If the project does not answer, decide by what the pages render and report it:
-  *these six render the same holders and regions; these two do not, and are
-  counted as a second kind.* A tie inside what this task touches is not a
-  question (`ui-consistency:decisions`, *When to ask anyway*).
 - Say in the checklist's first line the kind, what decided it, and how many
   members of how many candidates were counted
   ([checklist.md](../finding-patterns/checklist.md)).
@@ -82,6 +77,9 @@ what is not a member **before** counting:
 - **If the members span more than one area** — app, library or package — **or
   are more than can be read in full**, it is a large project: follow
   [large-project.md](large-project.md) before counting.
+- **If the work creates a shared piece that takes over roles the pages had** —
+  where a state is kept, which side takes a default share — count those roles
+  as [rare.md](rare.md), *A shared piece the work creates*, says.
 
 *Why:* a dispatcher counted as a page once turned 8 of 8 on every role into 8 of
 9 — a unanimous convention reported as one drifting page.

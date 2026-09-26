@@ -44,9 +44,9 @@ the skill invoked.
 3. **Use what the project reuses**: the shared component, helper or class the
    checklist names — never a new one beside it.
    - If the checklist names a new component to create — shared or kept with the
-     page — it is a question that waits on a person
-     (`ui-consistency:decisions`, *When to ask anyway*).
-   - Build it only on a yes. On a no, write the page the way the project writes
+     page — that the request did not name with its place, it is a question that
+     waits on a person (`ui-consistency:decisions`, *When to ask anyway*).
+   - Build that one only on a yes. On a no, write the page the way the project writes
      it now.
    - Never write it privately into the page while the question is open.
 4. **What the user sees happen, as the checklist says**: validation, field
@@ -106,9 +106,15 @@ the skill invoked.
     - Report in one line what it goes against: *"as asked, like <page>; the other
       3 of 4 write the submit button full-width."*
     - Do not quietly build it the other way.
-14. **Hand the page to verification** — `ui-consistency:verifying`, run by an
-    agent that did not write it.
-15. **Fix what it reports**, then verify again — **twice at most.**
+14. **Report the page ready for its check.** The check —
+    `ui-consistency:verifying`, run by an agent that did not write the page — is
+    dispatched by whoever dispatched this task, who sends back what it reports.
+    - If nobody dispatched this task, dispatch the check yourself.
+    - Where the process already sends each task to a reviewer, whoever dispatches
+      that reviewer puts the checklist and `ui-consistency:verifying` into its
+      brief ([calibration.md](../verifying/calibration.md)).
+15. **Fix what the check reports**, then have it checked again — **twice at
+    most.**
     - List what the second check still reports as open, with the checker's
       words. Do not fix it a third time.
     - Say a report that keeps changing is a problem with the checklist or the
@@ -132,7 +138,7 @@ one owns what the end user sees.
   agent that did not write it. The check is not the part that gets dropped
   because the change was small.
 - Its proof is one plant at the changed position, once for the change and not
-  per round ([verifying](../verifying/SKILL.md), *First, prove it can see*).
+  per round ([calibration.md](../verifying/calibration.md)).
 - Fix and check again twice at most, as in step 15.
 
 ## Then

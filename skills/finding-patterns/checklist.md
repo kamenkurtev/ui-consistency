@@ -43,6 +43,12 @@ app, read 2026-09-17
 - [ ] page holder — the shared page holder, as its own landmark — 4 of 4, 4 files
 - [ ] toolbar in the header, title one level down — 4 of 4, 4 files
 - [ ] rows — the shared table, row height on the base — 4 of 4, 4 files
+      (the three above: the holder's, the toolbar's and the table's exact names,
+      over the 4 members' page files)
+- [ ] open row — marked the way shipments marks it (the mechanism), with the
+      theme's pale tint the other 3 use (the values)
+- [ ] filter control — the shared toggle, showing *on* while a filter applies —
+      10 of 14
 - [ ] form — validated through the shared helper, not its own — the shared piece,
       against the copy in shipments
 - [ ] field — label tied to it, error under it, through the shared field — 8 of 8
@@ -64,6 +70,20 @@ it is written, and what settled it** cannot be ticked without opening the page.
   piece, against the copy in <page>*, *as asked*. Walking the checklist is then
   also reading every decision that was made (`ui-consistency:decisions`, *Say
   what settled it*).
+- *As asked* covers only what the request itself says. How it is done carries
+  its own level.
+- **Each count carries its search**: the exact names, and the files it ran over,
+  so a checker can count it again the same way. A search that served several
+  lines is written once, under them.
+- **One source for each claim.** Where two precedents could settle a position,
+  cite the one that did.
+- **A cited precedent says which half it is for** — the mechanism, or the values
+  — where the two come from different places.
+- **Name the behaviour** — *a click on the row, not on its checkbox or its
+  actions, opens the detail*. Name an event or a prop only when that is what was
+  counted.
+- **A line that names a control says the state it shows**: *pointing down while
+  the pane is open*.
 - A bare count names no level. After a shared piece — *the shared field — 8 of
   8* — it is level 4, with the piece's use among the members. After anything
   else it is the majority, level 6. Name every other level.
@@ -75,10 +95,6 @@ it is written, and what settled it** cannot be ticked without opening the page.
   instead of a number that reads as one: *no convention — three ways across 8
   files; the two newest write it this way* (`ui-consistency:conventions`, *When
   a count is not a convention at all*).
-- **If a design gave the tree**, say on the line which half came from where —
-  *the design puts a filter row above the table; the family writes one as 4 of
-  4* — so a reader can tell what was drawn from what was counted
-  ([reading.md](../design/reading.md)).
 
 ## Eight to twelve items
 
