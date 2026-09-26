@@ -106,15 +106,15 @@ the skill invoked.
     - Report in one line what it goes against: *"as asked, like <page>; the other
       3 of 4 write the submit button full-width."*
     - Do not quietly build it the other way.
-14. **Hand the page to verification** — `ui-consistency:verifying`, run by an
-    agent that did not write it.
-    - If you were handed this task and cannot dispatch an agent, report the page
-      ready for its check: whoever handed it over dispatches the check, and sends
-      back what it reports.
+14. **Report the page ready for its check.** The check —
+    `ui-consistency:verifying`, run by an agent that did not write the page — is
+    dispatched by whoever dispatched this task, who sends back what it reports.
+    - If nobody dispatched this task, dispatch the check yourself.
     - Where the process already sends each task to a reviewer, whoever dispatches
       that reviewer puts the checklist and `ui-consistency:verifying` into its
       brief ([calibration.md](../verifying/calibration.md)).
-15. **Fix what it reports**, then verify again — **twice at most.**
+15. **Fix what the check reports**, then have it checked again — **twice at
+    most.**
     - List what the second check still reports as open, with the checker's
       words. Do not fix it a third time.
     - Say a report that keeps changing is a problem with the checklist or the

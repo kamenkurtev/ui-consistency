@@ -79,9 +79,9 @@ with the result, since nothing else keeps it.
       Not in this task: <a line of the checklist left out on purpose, and why> — or
       nothing.
       1. Re-read the checklist before writing — do not work from memory.
-      2. Hand the page to a separate agent with `ui-consistency:verifying` — or,
-         handed this task and unable to dispatch one, report it ready for its
-         check to whoever handed it over. Fix what the check reports.
+      2. Report the page ready for its check. Whoever dispatched this task
+         dispatches it — a separate agent with `ui-consistency:verifying` — and
+         sends back what it reports; fix that.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
