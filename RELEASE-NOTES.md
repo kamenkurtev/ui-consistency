@@ -38,8 +38,8 @@ this repository.
   - A new component the request names, with its place, is not asked.
   - A large project splits only what must be read in full.
   - A live iteration is checked once, at the end.
-- **Rare branches moved into the `rare.md` files**, so a new page loads 8,739
-  words rather than about 9,100 (#299).
+- **Four rare branches moved into the `rare.md` files** to pay for the
+  additions. A new page loads 8,777 words, 403 more than 8,374 (#299).
 
 ## v0.54.3 (2026-09-26)
 
