@@ -18,13 +18,5 @@ jobs:
           # history has to be there for it to have anything to compare.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      # `npm ci` needs the lockfile to match; the bundle ships committed, so
-      # this installs only what the build and the tests need.
-      - run: npm ci
-
-      - run: npm run gate
+      # Bash and perl are on the runner; there is nothing to install.
+      - run: bash scripts/gate.sh

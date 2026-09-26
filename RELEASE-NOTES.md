@@ -5,6 +5,19 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.57.0 (2026-09-26)
+
+### Changes
+
+- **Installing no longer needs Node, and downloads nothing.** The session hook
+  is a short bash script that prints the text in `hooks/session-context.md`;
+  on Windows it runs through Git Bash, and says nothing where there is none.
+  The TypeScript build, the bundle in `bin/`, `package.json` and the lockfile
+  are gone, so an installed copy is the plugin's own files, about 59 MB lighter.
+- **The session no longer mentions `.ui-consistency/` or
+  `.claude/ui-consistency/`**, the directories older versions wrote. Nothing
+  reads them; delete them if a project still has them (#320).
+
 ## v0.56.0 (2026-09-26)
 
 ### Changes
