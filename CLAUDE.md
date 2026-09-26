@@ -84,9 +84,9 @@ to this repository only — both trackers start at 1.
    what a count alone cannot, and every decision carries the level that settled
    it and the numbers. Three things wait on a person: the plan, shown for a yes;
    a tie in the order whose answer changes code outside the task; and a new
-   component the request did not name, or code extracted into one, asked on its
-   own with what it touches. Other proposals and contradictions are reported,
-   with the plan where there is one.
+   component the request did not name with its place, or code extracted into
+   one, asked on its own with what it touches. Other proposals and
+   contradictions are reported, with the plan where there is one.
 6. **Join the process that is running.** A spec or plan that a running process
    keeps is added to, not duplicated; one left by an earlier run is evidence,
    worked out again from the code. Without one, the skills run the phases

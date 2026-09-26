@@ -31,7 +31,7 @@ finding-patterns before its first task that changes what the user sees is
 handed to anyone, whichever process wrote it. Decide by the order the skills
 carry and report what settled each decision; ask only where it ties and the
 change reaches outside the task, or before a component the request did not name
-is created or code is extracted into one.
+with its place is created or code is extracted into one.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the

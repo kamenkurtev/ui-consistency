@@ -97,8 +97,9 @@ Beyond the items, compare the same regions:
 - the reused pieces: the shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;
-- **a region moved into another holder**, against that holder: how its children
-  size and scroll there, when they were written for a parent of another size;
+- **a region moved into another holder**, against that holder: children
+  written for a parent of another size — a fixed height, a scroll of their own —
+  that the code shows will size or scroll differently there;
 - **the words the user reads**: the project's string wherever one already says
   the same thing, and one name for one thing across the page;
 - **values through the theme**, not literals — a literal that matches what a
@@ -188,9 +189,10 @@ page that deviates.
 - **Name a region you could not evaluate; never pass it** — a rule you cannot
   judge from the code, a technology you could not read with confidence, a child
   you could not open, a theme you could not resolve.
-- **Unless the page was rendered, name these as unevaluated**: sizes, overflow,
-  minimum and maximum clamps, what scrolls, overlapping hit areas, gestures. A
-  check that reads code cannot see them.
+- **Unless the page was rendered, name what only rendering shows as
+  unevaluated**: the size a region turns out at, overflow, which minimum or
+  maximum wins, what scrolls, overlapping hit areas, gestures. The values the
+  code writes are still checked.
 - **Every report says what the check could not see**, even when it found no
   difference: *no differences* never means *the page is right*.
 - Before writing that nothing was left unevaluated, find **every stylesheet the

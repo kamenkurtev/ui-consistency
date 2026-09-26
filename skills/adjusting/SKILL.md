@@ -90,7 +90,7 @@ reference — and the theme entries it uses.
   *Which pages are the family*, counts as one member.
 - A file anything else imports is outside it, however close it sits.
 - **If the change needs a new component in the page's own files** that the
-  request did not name, ask before creating it, with the numbers
+  request did not name with its place, ask before creating it, with the numbers
   (`ui-consistency:decisions`, *When to ask anyway*), and stay in this phase.
 - **If it would live outside the page** — the pieces that fill that position on
   the other pages live in the shared layer or the page's area — it is no longer

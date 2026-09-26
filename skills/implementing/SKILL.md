@@ -42,10 +42,11 @@ the skill invoked.
      level included (`ui-consistency:values`, *Elements*).
    - If it records none for a position, say so rather than choosing one.
 3. **Use what the project reuses**: the shared component, helper or class the
-   checklist names — never a new one beside it.   - If the checklist names a new component to create — shared or kept with the
-     page — that the request did not name, it is a question that waits on a
-     person (`ui-consistency:decisions`, *When to ask anyway*).
-   - Build it only on a yes. On a no, write the page the way the project writes
+   checklist names — never a new one beside it.
+   - If the checklist names a new component to create — shared or kept with the
+     page — that the request did not name with its place, it is a question that
+     waits on a person (`ui-consistency:decisions`, *When to ask anyway*).
+   - Build that one only on a yes. On a no, write the page the way the project writes
      it now.
    - Never write it privately into the page while the question is open.
 4. **What the user sees happen, as the checklist says**: validation, field
@@ -106,11 +107,13 @@ the skill invoked.
       3 of 4 write the submit button full-width."*
     - Do not quietly build it the other way.
 14. **Hand the page to verification** — `ui-consistency:verifying`, run by an
-    agent that did not write it, and dispatched by whoever dispatched this task.
-    - If you cannot dispatch an agent, report the page ready for its check.
-    - Where the process already sends each task to a reviewer, the checklist and
-      `ui-consistency:verifying` go into that reviewer's brief
-      ([calibration.md](../verifying/calibration.md)).
+    agent that did not write it.
+    - If you were handed this task and cannot dispatch an agent, report the page
+      ready for its check: whoever handed it over dispatches the check, and sends
+      back what it reports.
+    - Where the process already sends each task to a reviewer, whoever dispatches
+      that reviewer puts the checklist and `ui-consistency:verifying` into its
+      brief ([calibration.md](../verifying/calibration.md)).
 15. **Fix what it reports**, then verify again — **twice at most.**
     - List what the second check still reports as open, with the checker's
       words. Do not fix it a third time.

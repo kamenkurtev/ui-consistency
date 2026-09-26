@@ -21,8 +21,8 @@ the skill invoked.
 - If a process running this work has a plan — another planning process wrote
   it — add the tasks below **into that plan**, in the shape in
   [plan-file.md](plan-file.md). Do not write a second one.
-- A plan or pattern file from an earlier run is not that plan: it is read as
-  `ui-consistency:decisions`, level 1, says.
+- A plan or pattern file written before this work began is not that plan: it is
+  read as `ui-consistency:decisions`, level 1, says.
 - **If that process already sends each task to a reviewer that did not write
   it**, the checklist and `ui-consistency:verifying` go into that reviewer's
   brief, and no second checker is added
@@ -53,8 +53,9 @@ the skill invoked.
 - the reused pieces and theme values this page must use;
 - two steps, written out:
   1. *Re-read the checklist before writing — do not work from memory.*
-  2. *Report the page ready for its check. Whoever dispatched this task hands it
-     to a separate agent with `ui-consistency:verifying`; fix what that reports.*
+  2. *Hand the page to a separate agent with `ui-consistency:verifying` — or,
+     handed this task and unable to dispatch one, report it ready for its check
+     to whoever handed it over. Fix what the check reports.*
 
 Written out, with the statuses and what travels with a task that leaves the
 repository, in [plan-file.md](plan-file.md).

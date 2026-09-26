@@ -79,11 +79,11 @@ with the result, since nothing else keeps it.
       Not in this task: <a line of the checklist left out on purpose, and why> — or
       nothing.
       1. Re-read the checklist before writing — do not work from memory.
-      2. Report the page ready for its check. Whoever dispatched this task hands
-         it to a separate agent with `ui-consistency:verifying`; fix what that
-         reports.
+      2. Hand the page to a separate agent with `ui-consistency:verifying` — or,
+         handed this task and unable to dispatch one, report it ready for its
+         check to whoever handed it over. Fix what the check reports.
       3. Report the status here — or, handed on without this plan, to whoever
-         handed it over: `done`, or `parked — <why>`.
+         handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
 - [ ] **Close the plan** — once every task above is done or parked: report what
       is under `## Decided` with the result, and delete the plan where it was a
@@ -144,7 +144,9 @@ What that test forces:
   and when.
 - **Each new page's agreed shape** — the tree, and the drawing if one was asked
   for.
-- **What was decided is stated**, so nobody argues it again.
+- **What a person decided goes into the story's own text**, in their words:
+  whoever implements it works the plan's counts and decisions out again from
+  the code, and the story's text is the request.
 - **What was not evaluated is named**, so silence is not read as a pass.
 - **The check, written so an agent that never saw the plan can run it**: which
   skill to invoke, what to compare against, and that whoever wrote the page does

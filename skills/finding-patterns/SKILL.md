@@ -43,9 +43,9 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 - If a process running this work has a spec or a plan, **add to it**: findings
   into its document, questions into its questions. Never a second dialogue.
-- **A plan or pattern file from an earlier run** is not a process to join, even
-  when a person attached it: read it as `ui-consistency:decisions`, level 1,
-  says.
+- **A plan or pattern file written before this work began** is not a process to
+  join, even when a person attached it: read it as `ui-consistency:decisions`,
+  level 1, says.
 - If nothing exists, run this phase yourself.
 
 ## 1. The reference
