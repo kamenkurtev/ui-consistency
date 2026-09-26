@@ -17,8 +17,8 @@ the skill invoked.
 
 ## Which kind of page this is
 
-Decide it first: it sets every count below it. Decide it from what the project
-says, and take the first signal that answers:
+Decide it first: it sets every count below it. Take the first signal that
+answers:
 
 1. **What the user said** — a kind somebody named, *a list page like the orders
    one*, outranks anything read.
@@ -32,8 +32,8 @@ says, and take the first signal that answers:
 Then:
 
 - If a later signal disagrees — the project's word groups pages whose trees
-  differ — the word still decides, since it is the project keeping them apart.
-  Say the disagreement in the checklist's first line.
+  differ — the word still decides: it is the project keeping them apart. Say the
+  disagreement in the checklist's first line.
 - If the trees differ below a shared outer holder: [rare.md](rare.md), *A family
   that differs by region*.
 - **Name the kind in the project's own word** — folder, route, file name — never
@@ -116,8 +116,8 @@ must find what the reference writes.
   position is a heading — `ui-consistency:values`, *Elements*.
 - **A count carries its file spread.** Four identical buttons in one file are
   one page's habit; 10 of 10 across 8 files is a convention. A page and the files
-  only it imports count as one file of the spread, however many they are; say so
-  where a member spans files.
+  only it imports count as one file of the spread; say so where a member spans
+  files.
 - **A missing prop is not yet a deviation.** The theme or one of the project's
   wrappers may set it already.
 - **Search for the exact name.** A container whose name starts with the
@@ -141,8 +141,8 @@ not one.
   role: *4 of 4*, *3 of 4 and one other way*, *3, 3 and 2 across three ways*. A
   plurality is not a majority.
 - **There is a convention only if the commonest way outnumbers the others put
-  together** — a majority. Otherwise say the family has none here, and give every
-  way with its numbers.
+  together** — a majority. Otherwise say the family has none here, and give
+  every way with its numbers.
 - **Say which kind of majority it is.** One exception is written *7 of 8 except
   `<page>`*. Several different ones make a family drifting: still the majority,
   written *the commonest way, 5 of 8, against three others*.

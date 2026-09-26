@@ -51,9 +51,9 @@ Decide the branch **from the request alone, before any project file is opened**.
   order. It outranks anything you count.
 - **For a refactor**, a page a person says is already right, or the first one
   fixed by hand, is the named reference, level 3.
-- A named reference settles **what the page is**, never whether to use a shared
-  piece — `ui-consistency:decisions`, *A named reference does not carry its own
-  drift*.
+- **A named reference settles what the page is** — its roles, their order, how it
+  behaves — never whether to use a shared piece. Where it hand-writes what the
+  project shares, the shared piece is used (step 5).
 - **If nobody named one, choose it and say so** — level 7 of the order. Take the
   pages that look nearest in kind by their folder, route and file names, and
   among them, in this order:
@@ -63,8 +63,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 - Step 4 decides the kind. If the chosen reference is not of it, choose again
   from the family by the same order, and say so. The counts do not change: they
   are taken over the family.
-- Do not open with a question — `ui-consistency:decisions`, *When to ask
-  anyway*.
+- **Do not open with a question.** Decide, and report what you decided.
 - If nothing is near enough to be a reference, take that branch in
   `ui-consistency:decisions`, *With nothing near enough to be a reference*.
 
@@ -88,10 +87,10 @@ Read in this order:
    it.
 5. **Down into the children.** A page often only arranges child components; open
    them.
-6. **What the user sees happen** — how a form is validated, how a field shows its
-   error, when the submit is enabled, how a failure is caught and shown, loading
-   and empty, how a dialog opens. Where it lives in shared code the page calls,
-   follow it there.
+6. **What the user sees happen** — how a form is validated (a library, or the
+   platform's own form attributes), how a field shows its error, when the submit
+   is enabled, how a failure is caught and shown, loading and empty, how a
+   dialog opens. Where it lives in shared code the page calls, follow it there.
 
 Write it as a tree of roles, each with the project's own component, what that
 component comes out as, and how it is written. Where a design gave the tree, fill
@@ -123,19 +122,17 @@ Before anything is counted, find both:
 
 In this order; the rules are in `ui-consistency:conventions`:
 
-1. **The kind** — decide it before anything is counted, and name it in the
-   project's own word.
-2. **The family** — remove non-members first, and write both numbers down. If the
-   reference is the only member, run the branch for it — nothing is a
-   convention: `ui-consistency:conventions`, *A kind whose family has only the
-   reference*.
+1. **The kind**, decided before anything is counted.
+2. **The family** — non-members removed first, both numbers written down.
+   - If the reference is the only member, run the branch for it — nothing is a
+     convention: `ui-consistency:conventions`, *A kind whose family has only the
+     reference*.
    - **If the members span more than one area, or are more than can be read in
      full**, it is a large project: follow `ui-consistency:conventions`, *Which
-     pages are the family*, before counting.
-   - A shared piece's reach search crossing areas does not make a project large.
-   - If you read only a sample, **say so and how large**.
-3. **The proof** that the search can see — run every search on the reference
-   first. A zero for something it writes is a broken search.
+     pages are the family*, before counting. A shared piece's reach search
+     crossing areas does not make a project large.
+3. **The proof** that the search can see — every search run on the reference
+   first.
 4. **The counts** — per position, with their file spread, by exact name.
 
 **How to count, and how little:**
@@ -162,23 +159,18 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **By import** — use a shared component, helper or piece of logic; never rewrite
   it. The project's loading indicator, not the library's; its shared error
   helper, not a new message box.
-- Search for it across everything the page can import from, not the family alone
-  (`ui-consistency:decisions`, level 4).
-- A page that bypasses a shared piece is the drift this phase exists to catch —
-  a named reference included (`ui-consistency:decisions`, *A named reference
-  does not carry its own drift*).
+- Search for it across everything the page can import from, not the family
+  alone. A page that bypasses it is the drift this phase exists to catch — a
+  named reference included (`ui-consistency:decisions`, level 4).
 - **By copy** — the same snippet pasted into many files is **worth extracting**.
   Ask whether to make it reusable, in the form this project can use: in the
   shared layer if other areas paste it too, in the page's own area if only it
-  does — as `ui-consistency:decisions`, *When to ask anyway*, says.
-- On a no, write it the way the other pages do.
-- **A piece with no instance yet** — if the task needs a control the project has
-  none of, ask before creating it (`ui-consistency:decisions`, *When to ask
-  anyway*).
-- Say where it would live: beside the pieces that fill that position on the other
-  pages — the shared layer, the page's own area, or the page's own files.
-- While the question is open, build it nowhere: the answer decides where it
-  goes.
+  does. On a no, write it the way the other pages do.
+- **A piece with no instance yet** — the task needs a control the project has
+  none of: ask before creating it.
+- Ask about an extraction or a new piece as `ui-consistency:decisions`, *When
+  to ask anyway*, says, with where the piece would live. While it is unanswered,
+  build the piece nowhere: the answer decides where it goes.
 
 ## 6. Values, spacing, type, and what can be read and used
 
@@ -203,9 +195,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 - Where the reference and the rest of the project agree, **take the answer, say
   what you took, and move on.**
 - Where they disagree, **the order decides** — `ui-consistency:decisions`, *The
-  order*.
-- Report each decision with the level and the numbers that settled it, in the
-  form *Say what settled it* shows.
+  order*. Report each decision with the level and the numbers that settled it,
+  as *Say what settled it* there shows.
 - Ask the questions that wait on a person, and report proposals, as
   `ui-consistency:decisions`, *When to ask anyway*, says.
 
@@ -242,7 +233,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 ## Say what you read, what it cost, and what you could not read
 
 - Say when the technology could not be read with confidence, only a sample was
-  read, no theme was found, or the reference has no counterparts to compare with.
+  read — and how large — no theme was found, or the reference has no
+  counterparts to compare with.
 - **If a gap outside this subject blocks the work** — the page needs an action
   with nothing to call, data with no source — put it at the top of the result as
   blocking, with what was searched and where.
