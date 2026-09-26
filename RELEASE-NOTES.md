@@ -5,6 +5,16 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.56.0 (2026-09-26)
+
+### Changes
+
+- **One checker per work and kind of page**, as the current Opus guidance asks:
+  the same agent checks each page of that kind as it is written, each fix after,
+  and the whole set at the end. It is still neither the agent that wrote the
+  pages nor the one that was calibrated. Where the harness cannot continue an
+  agent, a new one gets the same brief and what was already found (#310).
+
 ## v0.55.1 (2026-09-26)
 
 ### Small changes
