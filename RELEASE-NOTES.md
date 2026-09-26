@@ -5,6 +5,20 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.54.3 (2026-09-26)
+
+### Small changes
+
+- A new page loads 8,254 words where it loaded 8,655, and no rule is removed.
+  - `words.md` keeps only the plugin's own terms. Component, element and the
+    theme are defined in `values`, where they are used.
+  - `finding-patterns` step 1 says itself that a named page settles what the
+    page is and that nothing opens with a question, so it no longer calls
+    `decisions` for them. Step 4 no longer repeats `conventions`.
+  - `checklist.md` drops what `implementing` and `verifying` already say about
+    who walks it.
+- The skills ask the same things as before (#294).
+
 ## v0.54.2 (2026-09-26)
 
 ### Small changes

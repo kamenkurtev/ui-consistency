@@ -141,8 +141,8 @@ not one.
   role: *4 of 4*, *3 of 4 and one other way*, *3, 3 and 2 across three ways*. A
   plurality is not a majority.
 - **There is a convention only if the commonest way outnumbers the others put
-  together.** Otherwise say the family has none here, and give every way with
-  its numbers.
+  together** — a majority. Otherwise say the family has none here, and give
+  every way with its numbers.
 - **Say which kind of majority it is.** One exception is written *7 of 8 except
   `<page>`*. Several different ones make a family drifting: still the majority,
   written *the commonest way, 5 of 8, against three others*.
