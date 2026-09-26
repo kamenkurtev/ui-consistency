@@ -1,7 +1,7 @@
 # ui-consistency
 
 > [!NOTE]
-> ui-consistency is in its early stages and under active development. It is
+> **ui-consistency** is in its early stages and under active development. It is
 > built entirely using Claude Code. If you run into a problem, please
 > [open an issue](https://github.com/kamenkurtev/ui-consistency/issues). Thank you
 > for your understanding.
