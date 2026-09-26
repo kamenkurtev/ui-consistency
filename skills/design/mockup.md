@@ -5,7 +5,7 @@ written, or asks for alternatives. Never otherwise.
 
 It shows **whether the page hangs together**, drawn with the project's values:
 the checklist's, where one exists; otherwise read from the theme as
-[values](../values/SKILL.md) says. Nothing new is measured.
+`ui-consistency:values` says. Nothing new is measured.
 
 ## What it is
 

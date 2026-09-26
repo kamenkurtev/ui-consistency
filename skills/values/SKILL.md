@@ -51,16 +51,14 @@ is particular to each.
   threshold is a standard, and only `ui-consistency:accessibility` measures one,
   when it is asked for or the project requires it.
 - **If the family disagrees with itself**, the order settles it —
-  [decisions](../decisions/SKILL.md). No consistent pattern is a finding too:
-  [conventions](../conventions/SKILL.md) says how to tell.
+  `ui-consistency:decisions`. No consistent pattern is a finding too:
+  `ui-consistency:conventions` says how to tell.
 
 ## The theme
 
-- **The bound** is the application the page belongs to and the libraries it
-  uses — not the whole workspace, and never the library the reference lives in
-  ([conventions](../conventions/SKILL.md), *The bound the family is counted in*).
-- Count inside the bound what the theme does not define: which component fills a
-  role, what it is passed that names no theme entry, what the page reuses.
+- **Count inside the bound** (`ui-consistency:conventions`, *The bound the
+  family is counted in*) what the theme does not define: which component fills
+  a role, what it is passed that names no theme entry, what the page reuses.
 - **A theme's applications** are every application that selects it, each with
   the libraries it uses. Count a value that names a theme entry — a palette
   colour, a variant, a size or spacing token — across all of them, and only
@@ -84,7 +82,7 @@ is particular to each.
   it read as a unanimous 131 of 131.
 - **Never write a value a theme does not define as a convention.** Adding the
   entry changes code outside the task, so it is a proposal
-  ([decisions](../decisions/SKILL.md)): report the theme it is missing from, the
+  (`ui-consistency:decisions`): report the theme it is missing from, the
   files that write it, and the choice between adding the entry and changing the
   usages.
 - If the theme that applies could not be resolved, say the values are
@@ -129,8 +127,10 @@ is particular to each.
 
 ## Elements
 
-Role, position, component and element are as
-[words.md](../finding-patterns/words.md) defines them.
+A **role** is what the page needs at a place in its tree — the page holder, a
+field, the submit button — and a **position** is a role where it stands. A
+**component** is whatever the project builds as a unit; its **element** is what
+it comes out as at a position.
 
 - **Record the element per role**: what the family writes at that position — the
   tag, the native widget, the primitive the framework renders.

@@ -10,7 +10,7 @@
       "name": "ui-consistency",
       "source": "./",
       "description": "An AI-aware design system, read from the code you already have: your coding agent writes each page the way your other pages are built",
-      "version": "0.54.1",
+      "version": "0.54.2",
       "author": {
         "name": "Kamen Kurtev"
       },

@@ -11,9 +11,10 @@ Builds each page from its checklist, one page per task. The checklist is re-read
 every time: across a batch, the work drifts toward the last page written instead
 of the one agreed.
 
-**Open a linked file when you reach the part that names it, never before** —
-whatever the request that handed you this skill says about its links. A part you
-reach without having opened its file is not done.
+**Open a linked file, or invoke a named skill, when you reach the part that
+names it, never before** — whatever the request that handed you this skill says
+about its links. A part you reach without having opened its file or invoked its
+skill is not done.
 
 ## One page per task, in a fresh context
 
@@ -38,13 +39,13 @@ reach without having opened its file is not done.
    the components in each, then what each comes out as, then how each is
    written, as the counts say.
    - **Write the element the checklist records at a position** — the heading
-     level included ([values](../values/SKILL.md), *Elements*).
+     level included (`ui-consistency:values`, *Elements*).
    - If it records none for a position, say so rather than choosing one.
 3. **Use what the project reuses**: the shared component, helper or class the
    checklist names — never a new one beside it.
    - If the checklist names a new component to create — shared or kept with the
      page — it is a question that waits on a person
-     ([decisions](../decisions/SKILL.md), *When to ask anyway*).
+     (`ui-consistency:decisions`, *When to ask anyway*).
    - Build it only on a yes. On a no, write the page the way the project writes
      it now.
    - Never write it privately into the page while the question is open.
@@ -52,7 +53,7 @@ reach without having opened its file is not done.
    errors, when the submit is enabled, how a failure is caught and shown, loading
    and empty.
 5. **Values through the theme that applies**, and only entries that exist in it
-   ([values](../values/SKILL.md), *The theme*).
+   (`ui-consistency:values`, *The theme*).
    - For a file in a shared layer, only entries that exist in every theme that
      renders it.
    - Never a value read off a design, however plainly it shows one
@@ -60,7 +61,7 @@ reach without having opened its file is not done.
    - A named constant where the theme has none.
    - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
-   ([values](../values/SKILL.md), *Spacing*):
+   (`ui-consistency:values`, *Spacing*):
    - every value a whole multiple of that base;
    - the gaps between roles as the family spaces them, owned by the side the
      checklist names;
@@ -68,7 +69,7 @@ reach without having opened its file is not done.
      the family writes them.
    - A multiple the family has not written yet is allowed — say you used one.
 7. **Text as the checklist records it**
-   ([values](../values/SKILL.md), *Type*):
+   (`ui-consistency:values`, *Type*):
    - the type role the family writes at that position;
    - the whole bundle for it — size, weight, line height, letter spacing,
      typeface, case;
@@ -88,13 +89,13 @@ reach without having opened its file is not done.
    - text for what has none;
    - targets the size the family's are.
    - Against a standard only where the checklist says one applies —
-     `ui-consistency:accessibility` ([accessibility](../accessibility/SKILL.md)).
+     `ui-consistency:accessibility`.
 10. **Do not copy what is particular to the reference.**
 11. **Where the checklist is silent, the order settles it** —
-    [decisions](../decisions/SKILL.md). Say which level settled it.
+    `ui-consistency:decisions`. Say which level settled it.
     - Do not invent, and do not stop.
     - Park a page only while a question that waits on a person is open —
-      [decisions](../decisions/SKILL.md), *When to ask anyway*.
+      `ui-consistency:decisions`, *When to ask anyway*.
     - Put those to the user together, once, not page by page.
 12. **A task's prose does not narrow its checklist.** If it says *change nothing
     else* and a line of its own checklist names a deviation, the line stands —

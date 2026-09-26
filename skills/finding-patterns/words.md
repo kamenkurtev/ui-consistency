@@ -33,25 +33,24 @@ steps.
 - **Area** — one app, library or package of the workspace.
 - **Shared layer** — the area whose pieces the other areas import: a shared or
   core library.
-- **Bound** — the application that mounts the page and every library it uses:
-  where the family is counted ([conventions](../conventions/SKILL.md), *The bound the family
-  is counted in*).
+- **Bound** — defined in `ui-consistency:conventions`, *The bound the family is
+  counted in*.
 - **Shape** — which roles a page has, in what order, and what each shows.
 - **Design** — where a page's shape comes from when it is not a page already
   built: a picture, a described screen, a prototype, or a tree a person agreed
   (`ui-consistency:design`). Its values never count.
 - **Kind** — what the page the task builds or changes is, decided before
   counting: a list, a detail view, a form. A named reference settles it
-  ([conventions](../conventions/SKILL.md), *Which kind of page this is*).
+  (`ui-consistency:conventions`, *Which kind of page this is*).
 - **Family** — the pages of that kind, the reference among them; the counts are
   taken over it. Where members differ below a shared holder, a region has its own family:
-  the members that render it ([rare.md](../conventions/rare.md), *A family that
+  the members that render it (`ui-consistency:conventions`, *A family that
   differs by region*).
 - **Member**, **candidate** — a page of the family; a page considered before
-  non-members are removed ([conventions](../conventions/SKILL.md), *Which pages are the
+  non-members are removed (`ui-consistency:conventions`, *Which pages are the
   family*).
 - **Convention** — what the family writes at a position, by a majority with its
-  spread ([conventions](../conventions/SKILL.md), *When a count is not a convention at
+  spread (`ui-consistency:conventions`, *When a count is not a convention at
   all*).
 - **The theme** — wherever shared values live: a theme object, custom
   properties, preprocessor variables, a shared stylesheet, a config file.
