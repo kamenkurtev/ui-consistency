@@ -49,8 +49,8 @@ rule encodes the same assumption as the rule. So:
 - a fix comes with a test that **fails against the unfixed code** — run it both
   ways;
 - a change to a skill comes from **real work** — a page built with the plugin
-  that came out wrong — and is checked the next time the plugin is used, not in
-  a test run;
+  that came out wrong — and is checked by feedback the next time the plugin is
+  used, not in a test run. Its issue closes on the merge;
 - anything user-facing is tried with the **shipped artifact**, installed, not
   from the clone.
 

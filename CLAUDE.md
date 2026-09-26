@@ -104,8 +104,10 @@ to this repository only — both trackers start at 1.
 ## Working here
 
 - A skill change comes from real work: a page built with the plugin that came
-  out wrong becomes an issue, and the change is checked the next time the plugin
-  is used. There are no dedicated test runs.
+  out wrong becomes an issue. The issue closes when its pull request merges.
+  Whether the change works comes from feedback the next time the plugin is
+  used, and whether that becomes a new issue is decided then. There are no
+  dedicated test runs.
 - Designs and plans go on the issue, not into `docs/`.
 - The tests check the code, the manifests and the skills' structure — never
   their wording, which real work checks. `tests/skills.test.ts` fails on a skill

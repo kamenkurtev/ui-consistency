@@ -49,8 +49,9 @@ Link the issue: `Closes #<number>`, and one `Closes` per issue — `Closes #6 an
 
 ## Acceptance criteria
 
-Copy the issue's criteria and tick the ones this pull request meets. One left
-unticked means the issue does not go to `Done`.
+Copy the issue's criteria and tick each one. A criterion this pull request cannot
+meet is changed or dropped on the issue before the merge; the issue closes when
+this merges.
 
 ## Environment tested
 

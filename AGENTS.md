@@ -156,7 +156,9 @@ Skills shape what an agent does. A change to a skill:
   it fixes: a contradiction, a reference to nothing, a rule the current guidance
   says is wrong;
 - says **what the agent must now do** differently;
-- is checked **the next time the plugin is used for real work**.
+- is checked **by feedback the next time the plugin is used for real work**.
+  Its issue has closed on the merge; whether the feedback becomes a new issue is
+  decided when it arrives.
 
 **There are no dedicated test runs**: no before/after runs, no sessions to check
 a description, no run as an acceptance criterion. One run cannot tell a change

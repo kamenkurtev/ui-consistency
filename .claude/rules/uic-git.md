@@ -13,8 +13,15 @@
   or only touched it.
   - They say **what** to verify, never where or on which projects it is tested:
     the repository is public.
-  - The PR says which criteria it meets. An issue whose criteria are not all met
-    is not moved to `Done` — see *Project board* below.
+  - **They name only what the pull request itself can meet.** None waits on
+    later work, a later run, or feedback that has not come yet.
+  - The PR says which criteria it meets. A criterion the work cannot meet is
+    changed or dropped on the issue, visibly, before the merge.
+- **An issue closes, and goes to `Done`, when its PR merges.** It never stays
+  open waiting on anything after that.
+- **Whether a change works in practice comes from feedback** — the owner's or
+  another user's. Whether that feedback becomes a new issue is decided when it
+  arrives, never in advance.
 - **No issue needed** for a change made *inside* an issue already in progress and
   covered by its scope — a typo in the code you just wrote does not need its own
   number.
@@ -70,13 +77,13 @@
 - **Keep the local branch** — never run `git branch -d` locally for cleanup.
 
 ## Project board
-Work is tracked on GitHub Project #3 (`Todo` / `In Progress` / `Test` / `Done`).
+Work is tracked on GitHub Project #3 (`Todo` / `In Progress` / `Done`). Its
+`Test` column is not used: nothing waits there after a merge.
 
 - **When you start working on an issue, move it to `In Progress`.** Do this before the first commit, not after.
-- **When its PR is merged, close the issue and move it to `Done`.** Both — a closed issue left in `Todo` is as misleading as an open one sitting in `Done`.
+- **When its PR is merged, close the issue and move it to `Done`**, with the criteria as they stand on it. Both — a closed issue left in `Todo` is as misleading as an open one sitting in `Done`.
 - Every issue you open goes on the board, in `Todo`.
 - **Look an item up by repository as well as number.** The board also holds the
   archive repository's issues, and their numbers overlap with this one's.
 - The board is GraphQL only. When the limit is exhausted, note the moves owed and
   make them when it resets.
-- If only part of an issue shipped — an acceptance criterion is not met — don't move it to `Done`. Either leave it where it is, or split the remainder into a new issue and close the original — whichever the user prefers.
