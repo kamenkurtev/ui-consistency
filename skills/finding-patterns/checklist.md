@@ -24,11 +24,10 @@ of <m> candidates in <the bound>, read <date>
 ````
 
 - One line per position, in the order the page is read: the outermost holder
-  first, then inward and left to right, then what the user sees happen —
-  [SKILL.md](SKILL.md) step 2.
-- The first line's *<n> members of <m> candidates*: n is the family counted, m the
-  pages considered before non-members were removed
-  (`ui-consistency:conventions`, *Which pages are the family*).
+  first, then inward and left to right, then what the user sees happen.
+- In the first line, *n* is the family counted and *m* the pages considered
+  before non-members were removed (`ui-consistency:conventions`, *Which pages
+  are the family*).
 - A line's own count is over that position in the members — *4 of 4* pages, or
   *8 of 8* fields where each page has two. **A line whose region has a family of
   its own carries that count instead** — `ui-consistency:conventions`,
@@ -87,16 +86,10 @@ it is written, and what settled it** cannot be ticked without opening the page.
   convention with a count behind it, and what must not be copied.
 - **If it will not fit, leave out** anything the technology gives for free,
   anything identical in every page of every kind, and any position where the
-  family has no convention.
-- If a position with no convention is left out for room, say so out loud.
+  family has no convention — and say out loud that such a position was left
+  out.
 - **Keep every position the task changes**: a position the work exists to settle
   stays on the checklist, as *no convention*, whatever else is left out.
-
-## Walked by somebody else
-
-- The agent that wrote the page does not tick its own checklist.
-- `ui-consistency:verifying` walks it, and names what it cannot judge rather than
-  ticking it.
 
 ## A snapshot, and the code wins
 

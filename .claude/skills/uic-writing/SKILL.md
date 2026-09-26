@@ -55,7 +55,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 
 **Terms and rules**
 
-- One term per meaning. In a shipped skill, use the terms as `skills/finding-patterns/words.md` defines them.
+- One term per meaning. In a shipped skill, use the plugin's own terms as `skills/finding-patterns/words.md` defines them; a word a model already knows is not defined there.
 - Say a rule once inside a skill, where it is first needed, and link it everywhere else in that skill.
 - Keep a rule repeated across skills: each skill can be loaded alone.
 - Name another skill for the agent to invoke as `ui-consistency:<name>`, with the section. Reach `values`, `conventions` and `decisions` only that way, their own files included: an invoked skill is re-attached after compaction, a file read with a tool is not.
@@ -71,7 +71,7 @@ Before the change is done:
 4. **One fresh read, once — if a skill changed.** Hand a subagent with no other context the diff of the changed skill files, and those files in full as context only — with `skills/finding-patterns/words.md` if a shipped skill changed. Ask it about the **changed lines only**:
    - a changed line that can be read two ways;
    - a changed line that disagrees with any line of the full files;
-   - a word a changed line uses in a sense different from its other uses in the full files — or, in a shipped skill, a term `words.md` does not define.
+   - a word a changed line uses in a sense different from its other uses in the full files — or, in a shipped skill, a term of the plugin's own that `words.md` does not define.
 
    Ask for at most five items, ranked by how much each changes what an agent does. Then:
 
