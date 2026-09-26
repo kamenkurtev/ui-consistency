@@ -1,6 +1,6 @@
 ---
 name: conventions
-description: For what the end user sees — counts what a project's pages do, so a convention is told from one page's habit. Use when a count of how the other pages write something is about to be recorded, or when a checker recounts a line of a checklist.
+description: For what the end user sees — counts what a project's pages do, so a convention is told apart from one page's habit. Use when a count of how the other pages write something is about to be recorded, or when a checker recounts a line of a checklist.
 ---
 
 # Conventions: the kind, the family, the proof, the counts

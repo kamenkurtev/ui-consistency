@@ -3,13 +3,6 @@
 **Read when:** writing the checklist (`finding-patterns` step 8), building
 against it (`implementing`) or walking it (`verifying`).
 
-## Contents
-
-- The shape
-- Every item carries how, not whether
-- Eight to twelve items
-- A snapshot, and the code wins
-
 A checklist is **the page's own tree turned into questions, in the order the
 page is read.**
 
@@ -17,6 +10,13 @@ page is read.**
   the process already running keeps.
 - Where there is neither, it lives in the turn and goes with it.
 - **Write nothing measured to a file that outlives the work.**
+
+## Contents
+
+- The shape
+- Every item carries how, not whether
+- Eight to twelve items
+- A snapshot, and the code wins
 
 ## The shape
 

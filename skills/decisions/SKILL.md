@@ -1,6 +1,6 @@
 ---
 name: decisions
-description: For what the end user sees — the order that settles how a page is written when the project disagrees with itself, and what waits on a person. Use when a count alone does not settle a choice on a page, or before anything is put to a person.
+description: For what the end user sees — the order that settles how a page is written when the project disagrees with itself, and what waits on a person. Use when the request, a named page, a shared piece and the other pages do not all agree on how a page is written, or before anything is put to a person.
 ---
 
 # Decisions: the order, and what waits on a person
