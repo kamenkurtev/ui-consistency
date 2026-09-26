@@ -26,8 +26,8 @@ the skill invoked.
 4. It compares region by region and reports only what differs, judged as
    *Reading a difference* says — *Compare region by region*.
 5. It names what it could not check, and the cost — *Say what was not checked*.
-6. After the last page, it compares all the pages together — *The whole set, at
-   the end*.
+6. After the last page of a kind, it compares all the pages of that kind together
+   — *The whole set, at the end*.
 
 ## Never the author
 
@@ -39,11 +39,15 @@ the skill invoked.
 - If no separate agent is available, **say plainly that the author checked its
   own work**, and treat the result as that.
 - **One checker per work and kind of page.** It checks each page of that kind as
-  the page is written, each fix after, and the whole set at the end.
+  the page is written, each fix after, and all the pages of that kind at the
+  end. It is started at the first page of the kind and kept for the rest.
   - Where the harness can continue an agent, send that checker every page and
-    every check again.
-  - Where it cannot, a new agent gets the same brief, with what was found on the
-    pages already checked.
+    every check after a fix.
+  - Where it cannot, a new agent gets the same brief, the pages already checked,
+    and the earlier checker's reports on them.
+  - Where the running process already has each task reviewed, that reviewer
+    checks each page ([calibration.md](calibration.md)); one checker of the kind
+    compares all its pages at the end.
 
 Give the checker:
 
@@ -75,7 +79,8 @@ for two things only:
   correction of the checklist, never as a deviation of the page.
 
 Read no further than that: the checklist and the page stay the thing checked.
-Read no process's own state — its plan, its ledger, its progress files.
+Read no process's own state — its plan, its ledger, its progress files — beyond
+the reports of this kind's earlier checker.
 
 ## First, prove it can see
 
@@ -212,8 +217,8 @@ page that deviates.
 
 ## The whole set, at the end
 
-- After the last page, the same checker compares **all the pages together**
-  against the same checklist. A page can pass on its own and still be the one that differs from
+- After the last page of a kind, its checker compares **all the pages of that
+  kind together** against their checklist. A page can pass on its own and still be the one that differs from
   the rest.
 - Report how many pages, how many match, which differ and how, which are parked
   and why.

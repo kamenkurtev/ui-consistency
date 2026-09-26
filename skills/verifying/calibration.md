@@ -32,8 +32,8 @@ helper.
   ([plan-file.md](../planning/plan-file.md)).
 - **The checker of the pages is a new agent**, given the same checklist and the
   same instructions — not the one that was calibrated: that one knows a plant
-  exists, and reads the page expecting one. It is the one checker of that kind
-  for the work.
+  exists, and reads the page expecting one. That new agent is the one checker of
+  that kind for the work.
 - **A change without a plan** owes the proof once, and cheaply: one plant, at the
   position the change touches, in a copy of that one file.
 - **Once for the change**: the second round of checking, and any later checker of
@@ -59,7 +59,8 @@ as unproven.
 
 - Where the running process sends each task to a reviewer that did not write it,
   put the checklist and `ui-consistency:verifying` into that reviewer's brief,
-  and dispatch no second checker.
+  and dispatch no second checker for the tasks. One checker of the kind still
+  compares all its pages at the end.
 - Calibrate with the same brief. Plant a type role with only part of its bundle
   set — the weight changed, the typeface left as it was: the kind of difference
   a general review passes.

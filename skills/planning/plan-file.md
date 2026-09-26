@@ -60,7 +60,7 @@ with the result, since nothing else keeps it.
 
 ## Tasks
 
-- [ ] **Calibrate the checker.** Make a copy of `<reference>` with one role
+- [ ] **Calibrate the check.** Make a copy of `<reference>` with one role
       deliberately written differently — a temporary worktree outside the
       checkout where the project is a git repository — and hand it to a
       separate agent with `ui-consistency:verifying` and the checklist below,
@@ -80,9 +80,10 @@ with the result, since nothing else keeps it.
       nothing.
       1. Re-read the checklist before writing — do not work from memory.
       2. Report the page ready for its check. Whoever dispatched this task
-         sends it to the checker of its kind — one agent with
-         `ui-consistency:verifying`, not the one that wrote it — and sends back
-         what it reports; fix that.
+         sends it to the checker of its kind — the one agent with
+         `ui-consistency:verifying` kept for every page of this kind, started at
+         the first, never the one that wrote it or the one calibrated — and
+         sends back what it reports; fix that.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`

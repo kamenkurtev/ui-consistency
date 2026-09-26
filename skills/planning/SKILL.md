@@ -34,12 +34,13 @@ the skill invoked.
 
 ## The order of the tasks
 
-1. **Calibrate the checker**, once per work and kind of page, before anything
+1. **Calibrate the check**, once per work and kind of page, before anything
    is built: `ui-consistency:verifying` on a scratch copy of the reference with
    one role deliberately written differently, kept outside the repository
    ([calibration.md](../verifying/calibration.md)).
    - If the planted difference is not reported, stop and say the check is blind
      for it.
+   - The agent calibrated is not the one that then checks the pages.
 2. **Extractions the user accepted.** Build a shared component, partial or class
    before any page that uses it.
 3. **One task per page.**
@@ -54,8 +55,10 @@ the skill invoked.
 - two steps, written out:
   1. *Re-read the checklist before writing — do not work from memory.*
   2. *Report the page ready for its check. Whoever dispatched this task sends
-     it to the checker of its kind — one agent with `ui-consistency:verifying`,
-     not the one that wrote it — and sends back what it reports; fix that.*
+     it to the checker of its kind — the one agent with
+     `ui-consistency:verifying` kept for every page of this kind, started at the
+     first, never the one that wrote it — and sends back what it reports; fix
+     that.*
 
 Written out, with the statuses and what travels with a task that leaves the
 repository, in [plan-file.md](plan-file.md).

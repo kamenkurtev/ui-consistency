@@ -106,12 +106,12 @@ the skill invoked.
     - Report in one line what it goes against: *"as asked, like <page>; the other
       3 of 4 write the submit button full-width."*
     - Do not quietly build it the other way.
-14. **Report the page ready for its check.** The check —
-    `ui-consistency:verifying`, run by the one checker of this kind of page, an
-    agent that did not write it — is sent by whoever dispatched this task, who
-    sends back what it reports.
-    - If nobody dispatched this task, send the page to that checker yourself,
-      starting it with the first page.
+14. **Report the page ready for its check.** Whoever dispatched this task sends
+    the page to the checker of its kind — `ui-consistency:verifying`, one agent
+    kept for every page of this kind, never the one that wrote it — and sends
+    back what it reports.
+    - If nobody dispatched this task, send the page to that checker yourself;
+      start it if this is the first page of its kind.
     - Where the process already sends each task to a reviewer, whoever dispatches
       that reviewer puts the checklist and `ui-consistency:verifying` into its
       brief ([calibration.md](../verifying/calibration.md)).
@@ -145,8 +145,9 @@ one owns what the end user sees.
 
 ## Then
 
-When every page is `done` or `parked`: the same checker compares the whole set
-(`ui-consistency:verifying`, *The whole set, at the end*).
+When every page of a kind is `done` or `parked`: that kind's checker compares
+all its pages together (`ui-consistency:verifying`, *The whole set, at the
+end*).
 
 ## Red flags
 
