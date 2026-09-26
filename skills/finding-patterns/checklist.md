@@ -11,6 +11,13 @@ page is read.**
 - Where there is neither, it lives in the turn and goes with it.
 - **Write nothing measured to a file that outlives the work.**
 
+## Contents
+
+- The shape
+- Every item carries how, not whether
+- Eight to twelve items
+- A snapshot, and the code wins
+
 ## The shape
 
 ````markdown

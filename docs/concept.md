@@ -153,7 +153,8 @@ reported, with the plan where there is one.
 
 What failed before was a plan with nothing closing the loop. Here every page task
 carries its checklist, what not to copy, and a check by an agent that did not
-write the page — and that checker first proves it can see, on a copy of the
+write the page. Before any of those checks is trusted, whoever hands out the
+tasks proves the check can see, once per work and kind of page, on a copy of the
 reference with one difference planted.
 
 ### Silence is never success

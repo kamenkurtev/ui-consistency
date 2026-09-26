@@ -5,6 +5,14 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.55.1 (2026-09-26)
+
+### Small changes
+
+- The descriptions of `decisions`, `conventions` and `values` no longer list
+  their contents, so every session carries about 300 fewer characters.
+- `checklist.md` opens with a table of contents (#308).
+
 ## v0.55.0 (2026-09-26)
 
 ### Changes
