@@ -11,9 +11,10 @@ A separate agent answers one question: **which of these pages do not look and
 behave like the reference and the rest of the project.** It reports only what
 differs, and names what it could not check.
 
-**Open a linked file when you reach the part that names it, never before** —
-whatever the request that handed you this skill says about its links. A part you
-reach without having opened its file is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## Steps
 
@@ -58,10 +59,11 @@ A checklist is eight to twelve lines on purpose, and the regions below are more
 than any checklist carries. Read the repository the way `finding-patterns` does,
 for two things only:
 
-- **A region the checklist does not carry**: re-derive it from the code — its own
-  search, run on the reference first, in the bound the checklist names
-  ([conventions](../conventions/SKILL.md)) — or name it unevaluated.
-  Never pass it because the checklist was silent.
+- **A region the checklist does not carry**: re-derive it from the code — its
+  own search, run on the reference first, in the bound the checklist names
+  (`ui-consistency:conventions`, *Prove the search can see before trusting a
+  count*) — or name it unevaluated. Never pass it because the checklist was
+  silent.
 - **A line of the checklist you have reason to doubt** — a count that does not
   match what you see: recount it the same way. Report a wrong line as a
   correction of the checklist, never as a deviation of the page.
@@ -117,7 +119,7 @@ Beyond the items, compare the same regions:
 - the holders and their order;
 - the component in each role;
 - **the element it comes out as**, and the heading level where the position is a
-  heading ([values](../values/SKILL.md), *Elements*). Report one that
+  heading (`ui-consistency:values`, *Elements*). Report one that
   differs from what the family writes there, with what the others use. Name an
   element that could not be read as unevaluated;
 - how each is written, against the counts in the checklist;
@@ -128,9 +130,9 @@ Beyond the items, compare the same regions:
   design showed included ([reading.md](../design/reading.md));
 - **every value that names a theme entry exists in the theme that applies** —
   for a shared layer, in every theme that renders it
-  ([values](../values/SKILL.md), *The theme*). Report one that is missing, naming
+  (`ui-consistency:values`, *The theme*). Report one that is missing, naming
   the theme;
-- **spacing** ([values](../values/SKILL.md), *Spacing*), against the base
+- **spacing** (`ui-consistency:values`, *Spacing*), against the base
   the checklist carries and the gaps, line heights and heights it names:
   - report a value **off the base** as a deviation, with the base and the
     nearest multiples;
@@ -139,7 +141,7 @@ Beyond the items, compare the same regions:
   - report a gap that differs with what the neighbouring pages use instead;
   - if the checklist says the project has no base or no consistent rhythm,
     report nothing about it and say so;
-- **typography** ([values](../values/SKILL.md), *Type*), against
+- **typography** (`ui-consistency:values`, *Type*), against
   what the checklist records — the whole bundle at each position, not the size
   alone, and how the style is applied:
   - report a style written by hand where the family uses the shared one, **even
@@ -156,12 +158,12 @@ Beyond the items, compare the same regions:
   separately, never as one verdict: focus, reach and order without a mouse, a
   field and its label, text for what has no words, target size. Check against
   what the family does, and against a standard only where the checklist says one
-  applies — `ui-consistency:accessibility`
-  ([accessibility](../accessibility/SKILL.md)). The rules are there; this section
+  applies — `ui-consistency:accessibility`. The rules are there; this section
   does not repeat them;
 - nothing the checklist marks *not copied* was copied from the reference — a
   shared piece the reference itself bypasses included, the one most easily
-  copied in good faith ([decisions](../decisions/SKILL.md)).
+  copied in good faith (`ui-consistency:decisions`, *A named reference does not
+  carry its own drift*).
 
 Report **only what differs**, where, and what the reference and the rest of the
 project do instead. Say nothing about regions that match.
@@ -185,14 +187,15 @@ page that deviates.
 - **Against a count that is not a convention** — where the checklist says the
   family has no convention at that position — a page cannot deviate from it.
   Report nothing, and say the project has none there
-  ([conventions](../conventions/SKILL.md)).
+  (`ui-consistency:conventions`, *When a count is not a convention at all*).
 - **Count in the bound the checklist names.** Its first line says which pages
   were counted; take a count of your own over the same ones.
 - If you count in another bound, say which and why — two bounds give two answers
-  from the same code ([conventions](../conventions/SKILL.md)).
+  from the same code (`ui-consistency:conventions`, *The bound the family is
+  counted in*).
 - **Against a count alone**, say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge by the same order the page was built from
-  ([decisions](../decisions/SKILL.md)), naming the level.
+  (`ui-consistency:decisions`, *The order*), naming the level.
 - A page can differ on purpose: say why, rather than changing working code to
   quiet a report.
 - **Against something the request asked for**, it is not a deviation at all. The

@@ -10,9 +10,10 @@ description: For what the end user sees — counts what a project's pages do, so
 Counts what the project's pages do, in the order of the work: the kind, the
 family, the proof that a search can see, then the counts.
 
-**Open a linked file when you reach the part that names it, never before** —
-whatever the request that handed you this skill says about its links. A part you
-reach without having opened its file is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## Which kind of page this is
 
@@ -41,7 +42,7 @@ Then:
 - If the project does not answer, decide by what the pages render and report it:
   *these six render the same holders and regions; these two do not, and are
   counted as a second kind.* A tie inside what this task touches is not a
-  question ([decisions](../decisions/SKILL.md)).
+  question (`ui-consistency:decisions`, *When to ask anyway*).
 - Say in the checklist's first line the kind, what decided it, and how many
   members of how many candidates were counted
   ([checklist.md](../finding-patterns/checklist.md)).
@@ -78,6 +79,9 @@ what is not a member **before** counting:
   kind.** Report it so; never count it as a member that lacks them.
 - **State both numbers** — candidates considered, members counted — and what was
   left out and why.
+- **If the members span more than one area** — app, library or package — **or
+  are more than can be read in full**, it is a large project: follow
+  [large-project.md](large-project.md) before counting.
 
 *Why:* a dispatcher counted as a page once turned 8 of 8 on every role into 8 of
 9 — a unanimous convention reported as one drifting page.
@@ -101,15 +105,15 @@ must find what the reference writes.
 
 ## Counting honestly
 
-- **Count per position** ([words.md](../finding-patterns/words.md)), never per
-  component alone: 10 of 18 buttons full-width reads as no rule, and was 10 of 10
-  in the content area and 0 of 4 in toolbars.
+- **Count per position** — a role where it stands — never per component alone:
+  10 of 18 buttons full-width reads as no rule, and was 10 of 10 in the content
+  area and 0 of 4 in toolbars.
 - **Count *whether* apart from *which way*.** First how many members have the
   role at all; then, over those, which way each writes it. *None* answers
   *whether* and is never a way: *14 of 21 filter; of those 14, 10 through the
   shared toggle and 4 by hand* — not *10, 4 and 7 across three ways*.
 - **Count what the component comes out as too**, and the heading level where the
-  position is a heading — [values](../values/SKILL.md), *Elements*.
+  position is a heading — `ui-consistency:values`, *Elements*.
 - **A count carries its file spread.** Four identical buttons in one file are
   one page's habit; 10 of 10 across 8 files is a convention. A page and the files
   only it imports count as one file of the spread, however many they are; say so
@@ -123,7 +127,8 @@ must find what the reference writes.
   says.
 - **A family of one is never a convention.** Write what the page does as the
   reference's own way — never as a count, and never as what the project does —
-  and say the family has no other members.
+  and say the family has no other members: [rare.md](rare.md), *A kind whose
+  family has only the reference*.
 
 ## When a count is not a convention at all
 
@@ -142,5 +147,5 @@ not one.
   `<page>`*. Several different ones make a family drifting: still the majority,
   written *the commonest way, 5 of 8, against three others*.
 - **The order still decides**, and nothing stalls or is asked: with no majority,
-  the newest members settle it ([decisions](../decisions/SKILL.md)). The line
+  the newest members settle it (`ui-consistency:decisions`, level 5). The line
   says *no convention here; the two newest write it this way*.

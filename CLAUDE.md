@@ -29,12 +29,13 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 - `skills/` — five phases, `finding-patterns`, `adjusting`, `planning`,
   `implementing`, `verifying`, and five subjects: `design` and `accessibility`,
   each asked on its own or reached from a phase, and `values`, `conventions`
-  and `decisions`, reached from the phases when a step needs them. Each is reached by its `description`, in any language. **A phase
-  is a gerund with no object, a subject skill is a noun** — that is how the two
-  kinds are told apart in a listing. The plugin's own name carries the domain,
-  so no skill name repeats it; where a harness shows no namespace the
-  description carries the whole weight, so it says in its first words that the
-  work is what an end user sees.
+  and `decisions`, reached from the phases: a step that needs one names it as a
+  skill to invoke, never as a link. Each is reached by its `description`, in any
+  language. **A phase is a gerund with no object, a subject skill is a noun** —
+  that is how the two kinds are told apart in a listing. The plugin's own name
+  carries the domain, so no skill name repeats it; where a harness shows no
+  namespace the description carries the whole weight, so it says in its first
+  words that the work is what an end user sees.
 - `USING.md` — what the plugin tells a user's agent: which skills a job takes,
   in what order. The session hook says the same, and a harness with no hook
   loads this file instead — Gemini CLI through `GEMINI.md`, which includes it.
@@ -108,7 +109,8 @@ to this repository only — both trackers start at 1.
 - The tests check the code, the manifests and the skills' structure — never
   their wording, which real work checks. `tests/skills.test.ts` fails on a skill
   outside the platform's limits or over 16,000 characters, a link or skill name
-  that points at nothing, or a library component name in the skills or
+  that points at nothing, a link from another skill into `values`,
+  `conventions` or `decisions`, or a library component name in the skills or
   `USING.md`.
   `tests/private-names.test.ts` fails on private names (see `uic-docs.md`).
 - Commands:

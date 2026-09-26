@@ -11,9 +11,10 @@ Turns what `finding-patterns` found into a plan of one task per page. Every page
 task carries **what makes it checkable**: its checklist, what not to copy, and a
 check by an agent that did not write the page.
 
-**Open a linked file when you reach the part that names it, never before** —
-whatever the request that handed you this skill says about its links. A part you
-reach without having opened its file is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## Joining a process, or running alone
 
@@ -58,13 +59,13 @@ repository, in [plan-file.md](plan-file.md).
 - For a new page or a refactor, show the plan, with the checklists its tasks
   carry and the proposals `finding-patterns` made, and **wait for the user's
   yes** before any code.
-- Show a drawing only if a person asked for one ([design](../design/SKILL.md),
+- Show a drawing only if a person asked for one (`ui-consistency:design`,
   step 4).
 - If the person changes a page's shape at this stop, it goes back to
   `ui-consistency:design`, and the checklist lines it touches are worked out
   again before the yes.
 - Ask nothing new here: the questions were asked while `finding-patterns` ran
-  ([decisions](../decisions/SKILL.md)).
+  (`ui-consistency:decisions`, *When to ask anyway*).
 - A new component, or code extracted into one, is not part of this yes: it was asked on its
   own while `finding-patterns` ran, with what it touches (*When to ask
   anyway*).
@@ -72,7 +73,7 @@ repository, in [plan-file.md](plan-file.md).
   `parked — waiting on <what>` in the plan, with its counts
   ([plan-file.md](plan-file.md)).
 - **An answer given now is an override**
-  ([rare.md](../decisions/rare.md), *An override*). Record it in the person's own
+  (`ui-consistency:decisions`, *An override*). Record it in the person's own
   words, with what it overrules: in the document the running process keeps, or
   under `## Decided` in this plan where this is the process, reported with the
   result when the plan closes.

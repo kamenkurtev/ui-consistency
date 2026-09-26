@@ -1,8 +1,7 @@
 # A large project: split, sample, group
 
-**Read when:** `finding-patterns` step 4, once the family is known, on a large
-project only — its members span more than one area, or are more than can be
-read in full.
+**Read when:** the family is known, on a large project only — its members span
+more than one area, or are more than can be read in full.
 
 ## Split by area, across subagents
 
@@ -41,7 +40,8 @@ read in full.
   its own piece for a role, never over a sample of the family: a piece most
   members bypass can still be used in a hundred other files, and a sample would
   count its bypass as the convention.
-- How wide that search goes is the order's to say ([decisions](../decisions/SKILL.md)).
+- How wide that search goes is the order's to say (`ui-consistency:decisions`,
+  level 4).
 
 ## Group the searches
 

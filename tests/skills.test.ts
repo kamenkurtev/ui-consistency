@@ -77,6 +77,21 @@ describe('what the skills point at', () => {
     expect(broken).toEqual([]);
   });
 
+  // An invoked skill is re-attached after compaction; a file read with a tool is
+  // not. The skills a phase calls are reached by name, their own files included.
+  it('no other skill links into values, conventions or decisions', () => {
+    const called = ['values', 'conventions', 'decisions'];
+    const linked: string[] = [];
+    for (const file of files) {
+      const from = where(dirname(file)).split('/').pop()!;
+      for (const link of read(file).matchAll(/\]\(([^)#\s]+)(?:#[^)]*)?\)/g)) {
+        const to = where(resolve(dirname(file), link[1]!)).split('/')[1];
+        if (to !== undefined && to !== from && called.includes(to)) linked.push(`${where(file)}: ${link[1]}`);
+      }
+    }
+    expect(linked).toEqual([]);
+  });
+
   it('every named section exists in the template that defines it', () => {
     // A section is named as `## <heading>` and defined inside a ````markdown
     // template; a reference can wrap across lines, the heading cannot.

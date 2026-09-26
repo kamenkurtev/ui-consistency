@@ -55,15 +55,15 @@ states a size, a colour or a gap the project decides differently:
 - Report the disagreement with both sides' numbers: what the design says, and
   what the family does in how many files.
 - Settling it for good changes the design or many pages: report it as a proposal
-  for a person, and do not wait on it
-  ([decisions](../decisions/SKILL.md)).
+  for a person, and do not wait on it (`ui-consistency:decisions`, *When to ask
+  anyway*).
 
 ## What it cannot answer
 
 - **A design you cannot open** — a link to a tool you have no access to, a file
   you cannot read: say so plainly, and do not guess at it.
 - **A role it shows that the project has no piece for**: ask whether to create
-  one, and where it belongs ([decisions](../decisions/SKILL.md),
+  one, and where it belongs (`ui-consistency:decisions`,
   *When to ask anyway*).
 - **What the design does not show** is not decided by it. Fall back to the family
   and say which lines came from where.

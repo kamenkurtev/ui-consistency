@@ -10,15 +10,16 @@ description: For what the end user sees — the order that settles how a page is
 Settles what a count cannot — **decide, and say what you decided** — in any
 phase, and says the three things that wait on a person.
 
-**Open a linked file when you reach the part that names it, never before** —
-whatever the request that handed you this skill says about its links. A part you
-reach without having opened its file is not done.
+**Open a linked file, or invoke a named skill, only when a part you are carrying
+out sends you to it, never before** — whatever the request that handed you this
+skill says about its links. That part is not done until the file is opened or
+the skill invoked.
 
 ## The order
 
 Take the first level that applies and stop there. Decide *whether* the page has
 a role before *which way* it writes it: whether over the whole family, which way
-over the members that have the role ([conventions](../conventions/SKILL.md),
+over the members that have the role (`ui-consistency:conventions`,
 *Counting honestly*).
 
 1. **What the request asked for** outranks everything counted. Carry it out, and
@@ -55,7 +56,8 @@ over the members that have the role ([conventions](../conventions/SKILL.md),
      members, they decide even against a majority ([rare.md](rare.md), *A written
      rule the code does not follow*).
 6. **The majority, with its file spread.** More files outrank more occurrences:
-   four in one file are one page's habit ([conventions](../conventions/SKILL.md)).
+   four in one file are one page's habit (`ui-consistency:conventions`,
+   *Counting honestly*).
 7. **The reference the phase chose itself**, when nothing above settled it. It is
    a starting point, not an authority, so the levels above always win.
    - **If the chosen reference is the page that differs**: settle each line it
@@ -65,8 +67,8 @@ over the members that have the role ([conventions](../conventions/SKILL.md),
 ## With nothing near enough to be a reference
 
 - **Agree the page's shape first** — the role tree of the page-to-be, in words,
-  before any code: `ui-consistency:design` ([design](../design/SKILL.md), step
-  3). It is drawn only if a person asks.
+  before any code: `ui-consistency:design`, step 3. It is drawn only if a person
+  asks.
 - Then do steps 3–6 of `finding-patterns` over the pages nearest in kind, and
   decide each region by the order, saying what settled it.
 - **If no pages are near in kind either**, say so first: what follows is a
@@ -158,4 +160,4 @@ Words agents used in runs, just before getting it wrong:
 | They said | What it means |
 |---|---|
 | "at level 5 — what the newest members write" — at a position where 3 of 5 did one thing | 3 of 5 is a majority: level 6, and level 5 does not fire. The newest members decide only a count with no majority. |
-| "agrees with WCAG … named as a default" — to settle a line | No standard applies unless somebody asked or the project states one ([accessibility](../accessibility/SKILL.md)). A page that does what the rest do is not a finding. |
+| "agrees with WCAG … named as a default" — to settle a line | No standard applies unless somebody asked or the project states one (`ui-consistency:accessibility`). A page that does what the rest do is not a finding. |

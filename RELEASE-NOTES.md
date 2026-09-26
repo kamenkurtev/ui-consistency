@@ -5,6 +5,26 @@ An installed copy updates when `.claude-plugin/plugin.json` names a new version;
 each version below is one of those. Numbers in brackets are pull requests in
 this repository.
 
+## v0.54.2 (2026-09-26)
+
+### Small changes
+
+- The phases name `values`, `conventions` and `decisions` as skills to invoke,
+  with the section, where they linked to their files. An invoked skill is
+  re-attached after compaction; a file read with a tool is not. Their own rare
+  cases and `large-project.md` are reached through them.
+- The bound is defined once, in `conventions`. `values` and `words.md` point
+  there, and `values` and `conventions` carry the few terms they use instead of
+  opening a `finding-patterns` file.
+- `adjusting`'s budget holds files and searches to it apart, and says one thing
+  at each crossing: past ten in the phase and past twenty-five for the change,
+  say so and go on; past fifty, end the phase and run the whole of
+  `finding-patterns`. `finding-patterns` step 0 says the same.
+- A named skill, like a linked file, is invoked only when the step being
+  carried out sends the agent to it.
+- A harness with no skill mechanism is told where a named skill's file is
+  (`USING.md`). The skills ask the same things as before (#298).
+
 ## v0.54.1 (2026-09-25)
 
 ### Small changes

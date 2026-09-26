@@ -56,5 +56,5 @@ second control where every member has one, a control nobody has here.
 - If there is nowhere to read that from, the existing control keeps its place and
   the new one follows it in reading order; say that is what decided it.
 - **If there is nothing anywhere**, the order's last line applies: build it the
-  plainest way the technology allows, and say so ([decisions](../decisions/SKILL.md),
+  plainest way the technology allows, and say so (`ui-consistency:decisions`,
   *What this does not decide*).
