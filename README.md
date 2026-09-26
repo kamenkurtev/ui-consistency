@@ -1,9 +1,8 @@
 # ui-consistency
 
 > [!NOTE]
-> **Early and under active development.** The skills change often, and a page
-> can still come out wrong. The plugin is written by Claude, in Claude Code, and
-> being written by an AI, it may contain mistakes. If something goes wrong,
+> ui-consistency is at an early stage and under active development. It is
+> developed entirely with Claude Code. If something does not work as it should,
 > please [open an issue](https://github.com/kamenkurtev/ui-consistency/issues).
 
 **An AI-aware design system, read from the code you already have.**
