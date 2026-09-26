@@ -9,7 +9,7 @@ this repository.
 
 ### Small changes
 
-- A new page loads 8,254 words where it loaded 8,655, and no rule is removed.
+- A new page loads 8,374 words where it loaded 8,655, and no rule is removed.
   - `words.md` keeps only the plugin's own terms. Component, element and the
     theme are defined in `values`, where they are used.
   - `finding-patterns` step 1 says itself that a named page settles what the

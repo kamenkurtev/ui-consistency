@@ -124,6 +124,13 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 1. **The kind**, decided before anything is counted.
 2. **The family** — non-members removed first, both numbers written down.
+   - If the reference is the only member, run the branch for it — nothing is a
+     convention: `ui-consistency:conventions`, *A kind whose family has only the
+     reference*.
+   - **If the members span more than one area, or are more than can be read in
+     full**, it is a large project: follow `ui-consistency:conventions`, *Which
+     pages are the family*, before counting. A shared piece's reach search
+     crossing areas does not make a project large.
 3. **The proof** that the search can see — every search run on the reference
    first.
 4. **The counts** — per position, with their file spread, by exact name.
@@ -133,8 +140,7 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **Count yourself**, and write each count down once instead of re-opening the
   files behind it. Only if the family's members sit in more than one area
   ([words.md](words.md)) does the counting go to one subagent per area
-  (`ui-consistency:conventions`, *Which pages are the family*). A shared piece's
-  reach search crossing areas does not make a project large.
+  (`ui-consistency:conventions`, *Which pages are the family*).
 - **Measure a shared piece's reach yourself**, whatever it crosses, with one
   grouped search: that it exists, and how many files use it. Do not open those
   files.
@@ -162,9 +168,9 @@ In this order; the rules are in `ui-consistency:conventions`:
   does. On a no, write it the way the other pages do.
 - **A piece with no instance yet** — the task needs a control the project has
   none of: ask before creating it.
-- Both questions are asked as `ui-consistency:decisions`, *When to ask anyway*,
-  says, with where the piece would live. While a question is open, build the
-  piece nowhere: the answer decides where it goes.
+- Ask about an extraction or a new piece as `ui-consistency:decisions`, *When
+  to ask anyway*, says, with where the piece would live. While it is unanswered,
+  build the piece nowhere: the answer decides where it goes.
 
 ## 6. Values, spacing, type, and what can be read and used
 

@@ -133,8 +133,8 @@ properties, preprocessor variables, a shared stylesheet, a config file.
 A **role** is what the page needs at a place in its tree — the page holder, a
 field, the submit button — and a **position** is a role where it stands. A
 **component** is whatever the project builds as a unit, reused or not: a
-framework component, a custom element, a partial, a block of markup with a
-shared class. Its **element** is what it comes out as at a position: the tag,
+framework component, a custom element, a partial or include, a block of markup
+with a shared class. Its **element** is what it comes out as at a position: the tag,
 the native widget, the primitive the framework renders.
 
 - **Record the element per role**: what the family writes at that position.

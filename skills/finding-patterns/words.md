@@ -5,6 +5,8 @@ words needs its meaning.
 
 Every technology builds a page with different pieces, plain HTML and CSS
 included, so the skills name roles and read what fills each from the project.
+Component, element and the theme are defined in `ui-consistency:values`,
+*Elements* and *The theme*.
 
 - **Role** — what the page needs at a place in its tree: page holder, header,
   toolbar, content area, field, submit button, the project's shared error
@@ -15,10 +17,13 @@ included, so the skills name roles and read what fills each from the project.
   taken per position.
 - **Holder** — a region that frames other roles: the page holder, a header, a
   toolbar, a sidebar, the content area, a footer, a dialog frame.
+- **Region** — a part of the page that holds roles: a holder, a form, a dialog.
+  A small change touches one region of one page.
 - **Shared piece** — anything the project reuses across pages for one concern:
   a component, a helper, a class. *The project's own piece* for a role is the
   shared piece its pages reach for there.
-- **Area** — one app, library or package of the repository.
+- **Workspace** — the whole repository. In a monorepo it holds several areas.
+- **Area** — one app, library or package of the workspace.
 - **Shared layer** — the area whose pieces the other areas import: a shared or
   core library.
 - **Bound** — defined in `ui-consistency:conventions`, *The bound the family is

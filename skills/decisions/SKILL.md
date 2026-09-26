@@ -50,10 +50,11 @@ a role over the whole family, then *which way* over the members that have it
      the region was last changed. **Where the two disagree, the region's history
      decides**; use the page's date only where the region's cannot be read. Say
      which pages, and which history.
-   - A count with a majority is level 6, and this level does not override it.
-   - If the project's own written rule agrees with the newest members, they
-     decide even against a majority ([rare.md](rare.md), *A written rule the
-     code does not follow*).
+   - A count with a majority is level 6, and this level does not override it —
+     with one exception:
+     - If the project's own written rule agrees with the newest members, they
+       decide even against a majority ([rare.md](rare.md), *A written rule the
+       code does not follow*).
 6. **The majority, with its file spread.** More files outrank more occurrences:
    four in one file are one page's habit (`ui-consistency:conventions`,
    *Counting honestly*).
