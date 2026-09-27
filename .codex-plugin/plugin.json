@@ -9,11 +9,21 @@
   "repository": "https://github.com/kamenkurtev/ui-consistency",
   "license": "MIT",
   "keywords": [
-    "ui",
     "design-system",
+    "ui",
+    "ux",
+    "frontend",
+    "components",
+    "theme",
+    "design-tokens",
+    "css",
+    "ui-design",
+    "accessibility",
+    "code-quality",
     "consistency",
-    "screens",
-    "frontend"
+    "react",
+    "vue",
+    "angular"
   ],
   "skills": "./skills/",
   "hooks": {}
