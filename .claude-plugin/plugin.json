@@ -8,6 +8,10 @@
   },
   "homepage": "https://github.com/kamenkurtev/ui-consistency",
   "repository": "https://github.com/kamenkurtev/ui-consistency",
+  "documentationUrl": "https://github.com/kamenkurtev/ui-consistency#readme",
+  "supportUrl": "https://github.com/kamenkurtev/ui-consistency/issues",
+  "privacyPolicyUrl": "https://github.com/kamenkurtev/ui-consistency/blob/main/PRIVACY.md",
+  "termsOfServiceUrl": "https://github.com/kamenkurtev/ui-consistency/blob/main/LICENSE",
   "license": "MIT",
   "keywords": [
     "design-system",

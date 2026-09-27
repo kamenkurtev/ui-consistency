@@ -8,6 +8,9 @@ in this repository.
 
 ## Unreleased
 
+- The plugin names its documentation, support, privacy policy and terms, for the
+  directory listing (#351).
+
 ## v0.57.4 (2026-09-27)
 
 - Sixteen discovery keywords, chosen by how often each is used on GitHub, and the
