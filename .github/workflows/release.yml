@@ -1,9 +1,10 @@
 name: release
 
-# A version merged to main is a release: this tags it v<version> and publishes
-# its section of RELEASE-NOTES.md as a GitHub Release, so nobody does it by
-# hand. A merge that does not move the version finds its release already there
-# and does nothing.
+# A version merged to main is a release: this tags it v<version>, publishes its
+# section of RELEASE-NOTES.md as a GitHub Release, and moves the `release`
+# branch to it, so nobody does any of it by hand. Anthropic's directory follows
+# `release`, and so sees releases, not every merge. A merge that does not move
+# the version finds its release already there and does nothing.
 on:
   push:
     branches: [main]
@@ -16,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Tag and publish the version, once
         env:
@@ -33,3 +36,5 @@ jobs:
           ' RELEASE-NOTES.md > notes.md
           [ -s notes.md ] || { echo "no section for v$version in RELEASE-NOTES.md" >&2; exit 1; }
           gh release create "v$version" --target "$GITHUB_SHA" --title "v$version" --notes-file notes.md
+          # Nobody commits to `release`: it only ever points at the last release.
+          git push --force origin "$GITHUB_SHA:refs/heads/release"

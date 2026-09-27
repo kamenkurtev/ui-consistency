@@ -3,8 +3,9 @@
 Two workflows.
 
 - **`release.yml`**, on a push to `main`: tags the version in `plugin.json` as
-  `v<version>` and publishes its section of `RELEASE-NOTES.md` as a GitHub
-  Release, the first time that version reaches `main`.
+  `v<version>`, publishes its section of `RELEASE-NOTES.md` as a GitHub
+  Release, and moves the `release` branch to it — the first time that version
+  reaches `main`. Anthropic's directory follows `release`.
 - **`gate.yml`**, on every pull request and push: one job, `scripts/gate.sh`, the
   same script the rules require before opening a PR. The checks of the skills,
   the manifests, the hook and private names, the release note under *Unreleased*

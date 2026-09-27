@@ -66,9 +66,12 @@
   updates, so the other four drift with nothing to complain — which is why the
   script exists.
 - **Merging a release tags it.** `.github/workflows/release.yml` tags
-  `v<version>` and publishes its section as a GitHub Release. An installed copy
-  updates when `plugin.json` names a new version, so users receive releases,
-  not every merge.
+  `v<version>`, publishes its section as a GitHub Release, and moves the
+  `release` branch to it. An installed copy updates when `plugin.json` names a
+  new version, so users receive releases, not every merge.
+- **Nobody commits to `release`.** Development stays trunk-based on `main`;
+  `release` only ever points at the last release, and Anthropic's directory
+  follows it.
 - **To work on the latest**, add the local clone as the marketplace
   (`CONTRIBUTING.md`): every change applies at the next session, with no
   release.
