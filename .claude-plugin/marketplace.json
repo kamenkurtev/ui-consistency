@@ -14,13 +14,23 @@
       "author": {
         "name": "Kamen Kurtev"
       },
-      "category": "code-quality",
+      "category": "design",
       "tags": [
-        "ui",
         "design-system",
+        "ui",
+        "ux",
+        "frontend",
+        "components",
+        "theme",
+        "design-tokens",
+        "css",
+        "ui-design",
+        "accessibility",
+        "code-quality",
         "consistency",
-        "screens",
-        "frontend"
+        "react",
+        "vue",
+        "angular"
       ]
     }
   ]

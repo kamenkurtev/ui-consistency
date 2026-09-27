@@ -8,6 +8,9 @@ in this repository.
 
 ## Unreleased
 
+- Fifteen discovery keywords, chosen by how often each is used on GitHub, and the category
+  "design" (#343).
+
 ## v0.57.3 (2026-09-27)
 
 - The plugin is shown as "UI Consistency" (#339).
