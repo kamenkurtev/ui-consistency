@@ -41,6 +41,8 @@ c=$(copy); edit "$c" skills/values/SKILL.md 's/Use when/Invoke if/'
 expect fail "a description that does not say when to use it" check-skills.sh "$c"
 c=$(copy); edit "$c" skills/values/SKILL.md 's/^description: .*$/"description: " . ("x" x 1030) . " Use when"/me'
 expect fail "a description over 1,024 characters" check-skills.sh "$c"
+c=$(copy); edit "$c" skills/values/SKILL.md 's/^(description: For what the end user sees) — /$1: /m'
+expect fail "front matter YAML would not parse" check-skills.sh "$c"
 c=$(copy); edit "$c" skills/design/SKILL.md 's/^name: design$/name: drawing/m'
 expect fail "a name that is not its directory" check-skills.sh "$c"
 c=$(copy); printf '%s\n' "$(printf 'x%.0s' $(seq 1 16001))" >> "$c/skills/planning/SKILL.md"
