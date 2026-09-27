@@ -126,15 +126,28 @@ vexpect() {
     failed=$((failed + 1))
   fi
 }
-notes='# Release Notes\n\n## v1.0.1 (2026-01-02)\n\n### Fixes\n\n- a fix\n\n## v1.0.0 (2026-01-01)\n\n- first\n'
+unreleased='# Release Notes\n\n## Unreleased\n\n- a fix\n\n## v1.0.0 (2026-01-01)\n\n- first\n'
+empty='# Release Notes\n\n## Unreleased\n\n## v1.0.0 (2026-01-01)\n\n- first\n'
+released='# Release Notes\n\n## Unreleased\n\n## v1.0.1 (2026-01-02)\n\n### Fixes\n\n- a fix\n\n## v1.0.0 (2026-01-01)\n\n- first\n'
 
+# A change: it says so under Unreleased and leaves the version alone.
+r=$(vrepo); echo 'b' > "$r/skills/one.md"; printf "$empty" > "$r/RELEASE-NOTES.md"
+vexpect fail "a shipped change not committed yet, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
+r=$(vrepo); echo 'b' > "$r/skills/one.md"; printf "$empty" > "$r/RELEASE-NOTES.md"
+(cd "$r" && git checkout -qb branch && git add -A && git -c user.email=t@t -c user.name=t commit -qm change)
+vexpect fail "a shipped change that is committed, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
 r=$(vrepo); echo 'b' > "$r/skills/one.md"
-vexpect fail "a shipped change not committed yet" "$r" "leaves the version at"
-r=$(vrepo); echo 'b' > "$r/skills/one.md"; (cd "$r" && git checkout -qb branch && git -c user.email=t@t -c user.name=t commit -qam change)
-vexpect fail "a shipped change that is committed" "$r" "leaves the version at"
+vexpect fail "a shipped change with no release notes at all" "$r" "says nothing under '## Unreleased'"
+r=$(vrepo); echo 'b' > "$r/skills/one.md"; printf "$unreleased" > "$r/RELEASE-NOTES.md"
+vexpect pass "a shipped change with its line under Unreleased" "$r" "under '## Unreleased'"
+
+# A release: the version moves once, with its section, and Unreleased emptied.
 r=$(vrepo); echo 'b' > "$r/skills/one.md"; echo '{ "name": "uic", "version": "1.0.1" }' > "$r/.claude-plugin/plugin.json"
-printf "$notes" > "$r/RELEASE-NOTES.md"
-vexpect pass "the version moved, with its notes, before the bump is committed" "$r" "version moved"
+printf "$released" > "$r/RELEASE-NOTES.md"
+vexpect pass "a release with its section, before it is committed" "$r" "a release"
+r=$(vrepo); echo '{ "name": "uic", "version": "1.0.1" }' > "$r/.claude-plugin/plugin.json"
+printf '# Release Notes\n\n## Unreleased\n\n- left behind\n\n## v1.0.1 (2026-01-02)\n\n- a fix\n\n## v1.0.0 (2026-01-01)\n\n- first\n' > "$r/RELEASE-NOTES.md"
+vexpect fail "a release that leaves lines under Unreleased" "$r" "still has lines"
 for changelog in '' '## v1.0.10 (2026-01-02)\n\n- another\n' '## v1.0.1 (2026-01-02)\n\n## v1.0.0 (2026-01-01)\n\n- first\n' \
   '## v1.0.1 (2026-01-02)\n\n### Fixes\n\n## v1.0.0 (2026-01-01)\n\n- first\n'; do
   r=$(vrepo); echo 'b' > "$r/skills/one.md"; echo '{ "name": "uic", "version": "1.0.1" }' > "$r/.claude-plugin/plugin.json"
@@ -142,9 +155,23 @@ for changelog in '' '## v1.0.10 (2026-01-02)\n\n- another\n' '## v1.0.1 (2026-01
   vexpect fail "a moved version whose notes say nothing: [${changelog:0:24}]" "$r" "no entry in RELEASE-NOTES.md"
 done
 r=$(vrepo); echo 'docs only' > "$r/README.md"
-vexpect pass "only unshipped files changed" "$r" "no bump needed"
+vexpect pass "only unshipped files changed" "$r" "no release note needed"
 r=$(vrepo); (cd "$r" && git update-ref -d refs/remotes/origin/main); echo 'b' > "$r/skills/one.md"
 vexpect pass "no origin/main to compare against" "$r" "skipping the version check"
+
+# --- bump.sh -----------------------------------------------------------------
+# Cutting a release moves every manifest and takes what waited under Unreleased.
+c=$(copy); edit "$c" RELEASE-NOTES.md 's/^## Unreleased\n/## Unreleased\n\n- a line waiting for the release\n/m'
+before=$(perl -MJSON::PP -e 'local $/; open my $h, "<", "'"$c"'/.claude-plugin/plugin.json"; print JSON::PP->new->decode(<$h>)->{version}')
+if UIC_ROOT="$c" bash "$here/scripts/bump.sh" minor >/dev/null 2>&1 \
+  && UIC_ROOT="$c" bash "$here/scripts/check-packaging.sh" >/dev/null 2>&1 \
+  && perl -0777 -ne 'exit !(/^## Unreleased\n\n## v\d+\.\d+\.0 \(\d{4}-\d\d-\d\d\)\n\n- a line waiting for the release\n/m)' "$c/RELEASE-NOTES.md" \
+  && [ "$(perl -MJSON::PP -e 'local $/; open my $h, "<", "'"$c"'/.claude-plugin/plugin.json"; print JSON::PP->new->decode(<$h>)->{version}')" != "$before" ]; then
+  passed=$((passed + 1))
+else
+  echo "  bump.sh should move every manifest and turn Unreleased into the new version's section" >&2
+  failed=$((failed + 1))
+fi
 
 echo "checks proved: $passed of $((passed + failed)) plants caught or passed as they should"
 [ "$failed" = 0 ]

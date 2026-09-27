@@ -96,7 +96,7 @@ paste the complete transcript here
 ## Verification
 
 - [ ] `scripts/gate.sh` passes
-- [ ] Version bumped with `scripts/bump.sh` and a `RELEASE-NOTES.md` entry written, or nothing that ships changed
+- [ ] A line under `## Unreleased` in `RELEASE-NOTES.md`, or nothing that ships changed (a release: `scripts/bump.sh`, and its own pull request)
 - [ ] **A changed check fails against the unfixed version** — a plant in `scripts/test-checks.sh`, run both ways — or no check changed
 - [ ] A change to the hook was run the way a harness runs it: `hooks/run-hook.cmd session-start`
 - [ ] No name from a private repository in the diff — numbers survive, names do

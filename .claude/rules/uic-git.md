@@ -44,22 +44,35 @@
   except through a merged PR.
 
 ## Versions
-- **A change that ships bumps the version, in the same PR.** An installed plugin
-  updates when `plugin.json` names a new version, not when the code changes — so
-  a merge without a bump reaches nobody who already installed it, and nothing
-  fails to say so.
-- `scripts/bump.sh` (`minor` / `major` when it is more than a fix) moves every
-  file that carries the version. Do not edit them by hand.
+- **Semantic versioning, for a plugin made of text:**
+  - **patch** — a fix or clearer wording; the agent does the same;
+  - **minor** — the agent does something new or different;
+  - **major** — something a user depends on breaks: a skill renamed or removed,
+    a different way to install.
+  - While the version is 0.x, a breaking change moves the minor.
+- **A PR that changes what ships adds its line under `## Unreleased`** in
+  `RELEASE-NOTES.md`, saying what somebody who installed the plugin will
+  notice, and leaves the version alone.
+  - The gate fails on a branch touching `hooks/`, `skills/` or a manifest with
+    nothing under *Unreleased*. Docs, scripts and rules alone need no line.
+- **A release is cut when the owner decides**, as a PR of its own.
+  - `scripts/bump.sh` (`minor` / `major` as above) moves the version in every
+    file that carries it, and turns *Unreleased* into the new version's section.
+    Do not edit the version by hand.
+  - The gate fails on a moved version with no section, or with lines left under
+    *Unreleased*.
 - Five files carry the version: the manifest of each harness and the
   marketplace entry. Only `.claude-plugin/plugin.json` is read when a plugin
   updates, so the other four drift with nothing to complain — which is why the
   script exists.
-- The gate enforces this: a branch touching `hooks/`, `skills/` or a manifest
-  while leaving the version where `main` has it fails. Docs, scripts and rules
-  alone need no bump.
-- **A new version gets an entry in `RELEASE-NOTES.md`**, saying what somebody who
-  already installed the plugin will notice. The gate fails on a moved version
-  with no `## v<version> (<date>)` section, or one with nothing under it.
+- **Merging a release tags it.** `.github/workflows/release.yml` tags
+  `v<version>` and publishes its section as a GitHub Release. An installed copy
+  updates when `plugin.json` names a new version, so users receive releases,
+  not every merge.
+- **To work on the latest**, add the local clone as the marketplace
+  (`CONTRIBUTING.md`): every change applies at the next session, with no
+  release.
+- **1.0.0** is cut when the plugin is listed in Anthropic's directory.
 
 ## Pull requests
 - What happens before a PR is opened, and in what order, is `uic-pr.md`.

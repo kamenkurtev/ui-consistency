@@ -17,10 +17,9 @@ bash scripts/check-hook.sh
 echo "==> private names"
 bash scripts/check-private-names.sh
 
-# An installed plugin updates when plugin.json names a new version, not when
-# its files change. Shipping without a bump reaches nobody who already
-# installed it, and nothing fails to say so — which is why this is a gate and
-# not a note in the rules. It happened twice in one day before it was.
+# A change that ships waits under Unreleased for the next release, and a
+# release says what it releases. Without a gate, both were forgotten — twice in
+# one day before it existed.
 echo "==> version"
 bash scripts/version-check.sh
 

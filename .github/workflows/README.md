@@ -1,10 +1,16 @@
-# What runs on a pull request
+# What runs on GitHub
 
-One job: `scripts/gate.sh`, the same script the rules require before opening a
-PR. The checks of the skills, the manifests, the hook and private names, the
-version bump, the proof that each check fires, and `claude plugin validate`
-where the CLI is available. Nothing is installed: bash and perl are on the
-runner.
+Two workflows.
+
+- **`release.yml`**, on a push to `main`: tags the version in `plugin.json` as
+  `v<version>` and publishes its section of `RELEASE-NOTES.md` as a GitHub
+  Release, the first time that version reaches `main`.
+- **`gate.yml`**, on every pull request and push: one job, `scripts/gate.sh`, the
+  same script the rules require before opening a PR. The checks of the skills,
+  the manifests, the hook and private names, the release note under *Unreleased*
+  or the release's own section, the proof that each check fires, and `claude
+  plugin validate` where the CLI is available. Nothing is installed: bash and
+  perl are on the runner.
 
 Three parts of the gate cannot run here and are stated rather than pretended:
 
