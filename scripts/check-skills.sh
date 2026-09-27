@@ -3,8 +3,7 @@
 # skill points at exists. Their wording is not checked — it changes as real work
 # shows what to change, and real work is what checks it.
 #
-# Anthropic's limits for a skill:
-# https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
+# Anthropic's limits for a skill, from its skill authoring best practices.
 
 set -euo pipefail
 cd "${UIC_ROOT:-$(dirname "$0")/..}"
@@ -58,18 +57,18 @@ for my $skill (@skills) {
     for my $line (split /\n/, $front) {
       my $at = index $line, ':';
       next unless $at > 0;
-      my ($key, $value) = (substr($line, 0, $at), substr($line, $at + 1));
-      s/^\s+|\s+$//g for $key, $value;
-      $field{$key} = $value;
+      my ($field_name, $value) = (substr($line, 0, $at), substr($line, $at + 1));
+      s/^\s+|\s+$//g for $field_name, $value;
+      $field{$field_name} = $value;
     }
   }
   # Claude Code loads a skill whose front matter does not parse as YAML with no
   # fields set, and says nothing; Anthropic's directory blocks it. A plain value
   # carrying `: ` or ` #`, or starting with an indicator, is where that happens.
-  for my $key (sort keys %field) {
-    my $value = $field{$key};
+  for my $field_name (sort keys %field) {
+    my $value = $field{$field_name};
     next if $value eq '' || $value =~ /^"(?:[^"\\]|\\.)*"$/ || $value =~ /^'(?:[^']|'')*'$/;
-    push @fail, "$file: front matter '$key' is not valid YAML as written (': ' or ' #' in it, or an indicator first); quote it or reword it"
+    push @fail, "$file: front matter '$field_name' is not valid YAML as written (': ' or ' #' in it, or an indicator first); quote it or reword it"
       if $value =~ /: | #|:$/ || $value =~ /^[\[\]{}>|*&!%@`'",?#]/ || $value =~ /^[-?:](?: |$)/;
   }
   my $name = $field{name} // '';
@@ -87,7 +86,7 @@ for my $skill (@skills) {
   push @fail, "$file: body is $lines lines, not under 500" if $lines >= 500;
 
   # After compaction Claude Code re-attaches only the first 5,000 tokens of a
-  # skill: https://code.claude.com/docs/en/skills. 16,000 characters is 5,000
+  # skill (Claude Code's documentation on skills). 16,000 characters is 5,000
   # tokens at 3.2 characters a token, a low rate for English prose.
   push @fail, "$file: " . length($text) . " characters, over 16,000" if length $text > 16000;
 }
