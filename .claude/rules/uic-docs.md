@@ -42,7 +42,7 @@ happens.
 
 ## The documents this applies to
 
-`CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `USING.md`,
+`.claude/CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `USING.md`,
 `docs/concept.md`, `.claude/rules/*.md`, and every skill with its supporting
 files.
 

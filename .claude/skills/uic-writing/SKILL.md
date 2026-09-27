@@ -1,11 +1,11 @@
 ---
 name: uic-writing
-description: Writes and edits this plugin's skills and documents to Anthropic's skill authoring practices, then finds and fixes the stale references and contradictions the edit left. Use when changing a skill, USING.md, README.md, CLAUDE.md, AGENTS.md, CONTRIBUTING.md, docs/ or .claude/rules/ in this repository.
+description: Writes and edits this plugin's skills and documents to Anthropic's skill authoring practices, then finds and fixes the stale references and contradictions the edit left. Use when changing a skill, USING.md, README.md, .claude/CLAUDE.md, AGENTS.md, CONTRIBUTING.md, docs/ or .claude/rules/ in this repository.
 paths:
   - skills/**
   - USING.md
   - README.md
-  - CLAUDE.md
+  - .claude/CLAUDE.md
   - AGENTS.md
   - CONTRIBUTING.md
   - docs/**
@@ -66,7 +66,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 Before the change is done:
 
 1. **Stale references.** Search for every file, section, skill, test and command the changed text names; each must still exist.
-2. **Contradictions.** For every rule the change touched, search for its other copies — in other words as well as the same ones — in `skills/`, `USING.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/` and `.claude/skills/`.
+2. **Contradictions.** For every rule the change touched, search for its other copies — in other words as well as the same ones — in `skills/`, `USING.md`, `README.md`, `.claude/CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/` and `.claude/skills/`.
    - Each copy now says the same thing, or the change is not done.
 3. **Fix every stale reference and every contradiction in the same change**, and say in the pull request which copies were found.
 4. **One fresh read, once — if a skill changed.** Hand a subagent with no other context the diff of the changed skill files, and those files in full as context only — with `skills/finding-patterns/words.md` if a shipped skill changed. Ask it about the **changed lines only**:

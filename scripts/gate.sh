@@ -29,9 +29,13 @@ bash scripts/version-check.sh
 echo "==> the checks catch what they are for"
 bash scripts/test-checks.sh
 
+# Strict, as Anthropic's directory asks before a submission: a warning fails.
+# The repository as a marketplace, and the plugin's own manifest, which the
+# marketplace check does not look inside.
 echo "==> plugin validate"
 if command -v claude >/dev/null 2>&1; then
-  claude plugin validate .
+  claude plugin validate . --strict
+  claude plugin validate .claude-plugin/plugin.json --strict
 else
   echo "claude CLI not found; skipping plugin validate"
 fi

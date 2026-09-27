@@ -69,7 +69,7 @@ this merges.
          Add a returns page like the orders page
 
      A working integration starts `finding-patterns` before any page code is
-     written. `CLAUDE.md` says which harnesses have never been run end to end; a
+     written. `.claude/CLAUDE.md` says which harnesses have never been run end to end; a
      change to one of them is the first evidence it works, or it is not. -->
 
 <details>
@@ -113,7 +113,7 @@ result** and belongs here.
 
 ## Documents
 
-Which of `CLAUDE.md`, `docs/concept.md`, `README.md`,
+Which of `.claude/CLAUDE.md`, `docs/concept.md`, `README.md`,
 `AGENTS.md`, `USING.md` and `skills/*/SKILL.md` you read against this change, and what you
 found. **"Read, nothing false" is a result.**
 
