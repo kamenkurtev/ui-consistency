@@ -16,6 +16,6 @@
     "frontend"
   ],
   "skills": "./skills/",
-  "displayName": "UI consistency",
+  "displayName": "UI Consistency",
   "hooks": "./hooks/hooks-cursor.json"
 }

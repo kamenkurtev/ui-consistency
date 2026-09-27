@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+- The plugin is shown as "UI Consistency" (#339).
+
 ## v0.57.2 (2026-09-27)
 
 - The plugin has an icon, for the directory and the plugin lists
