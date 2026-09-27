@@ -3,18 +3,19 @@
 What happens before a PR is merged, in this order. Each step either edits the
 input of the next or judges its output.
 
-1. **`npm run gate`.** Typecheck, build, stale-bundle check, version check,
-   tests, plugin validate. Nothing below is worth doing on a red gate.
+1. **`scripts/gate.sh`.** The checks of the skills, the manifests, the hook and
+   private names, the version check, the proof that each check fires, plugin
+   validate. Nothing below is worth doing on a red gate.
 2. **Simplification review** — reuse, simplification, efficiency. First, because
    it is the only review that edits.
-3. **`npm run gate` again**, if the simplification changed anything.
+3. **`scripts/gate.sh` again**, if the simplification changed anything.
 4. **Correctness review.** Scoped: say what the change touches and what it
    claims, then check those. Fix what it finds; a finding judged wrong gets one
    sentence of why.
 5. **Security review.** Last, so it judges what actually ships.
 6. **The documents**, per `uic-docs.md`: read against the change, and fix what is
    false together with its copies.
-7. **`npm run gate` again**, if anything above changed code.
+7. **`scripts/gate.sh` again**, if anything above changed a file.
 8. **Open the PR and merge it** — how is in `uic-git.md`.
 
 ## How the reviews are done
@@ -58,5 +59,4 @@ The template is `.github/pull_request_template.md`; every section is filled.
   loads the plugin;
 - what was **not** validated.
 
-A review nobody ran has no wording that fits here, and a stale bundle is not
-reviewed: the gate builds `bin/` before anything else looks at it.
+A review nobody ran has no wording that fits here.

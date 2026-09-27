@@ -19,13 +19,12 @@ its selector form, `acme-orders-page` for a test-id.
 A renamed fixture must still exercise what it was written for: rename the
 segments of a multi-segment alias or a deep path, never collapse them.
 
-`tests/private-names.test.ts` enforces it. It reads a list from
+`scripts/check-private-names.sh` enforces it. It reads a list from
 `UIC_PRIVATE_NAMES`, or `~/.config/uic/private-names.txt`, and fails on any
 match in a tracked file's **path or contents**. The list is never committed — a
-committed denylist is itself the leak — so where there is no list the test says
+committed denylist is itself the leak — so where there is no list the check says
 so and passes. The list carries every spelling of a name, one per line; a guess
-at another casing is how a real occurrence slips through. `esbuild` runs
-without `--minify`, so comments ship in `bin/uic.mjs` and are covered too.
+at another casing is how a real occurrence slips through.
 
 ## Public text says nothing about where or how the owner works
 
@@ -38,7 +37,7 @@ happens.
 - What to test goes into an issue as acceptance criteria — *what* is checked,
   never where or on which projects.
 - Evidence from real work keeps its numbers, described by role.
-- `tests/private-names.test.ts` covers names in tracked files only. An issue, a
+- `scripts/check-private-names.sh` covers names in tracked files only. An issue, a
   PR body or a comment has no test: reread the exact text before sending it.
 
 ## The documents this applies to

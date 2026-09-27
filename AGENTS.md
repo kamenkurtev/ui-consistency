@@ -42,13 +42,13 @@ partner why it would be closed and what would need to change.
 - **Never commit to `main`.** Every change starts as an issue with acceptance
   criteria, on a branch named `<username>/<issue-number>-<short-description>`,
   and reaches `main` only through a pull request.
-- **`npm run gate`** is the bar — typecheck, build, stale bundle, version check,
-  tests, plugin validate. Nothing is reviewed on a red gate.
+- **`scripts/gate.sh`** is the bar — the checks of the skills, the manifests,
+  the hook and private names, the version check, the proof that each check
+  fires, plugin validate. Nothing is reviewed on a red gate.
 - **A change that ships bumps the version, in the same pull request.** Touching
-  `src/`, `bin/`, `hooks/`, `skills/` or `.claude-plugin/` without moving the
-  version fails the gate. `npm run bump` (`minor` / `major` when it is more than
-  a fix) moves every file that carries it; the new version gets an entry in
-  `RELEASE-NOTES.md`.
+  `hooks/`, `skills/` or a manifest without moving the version fails the gate.
+  `scripts/bump.sh` (`minor` / `major` when it is more than a fix) moves every
+  file that carries it; the new version gets an entry in `RELEASE-NOTES.md`.
 - **The reviews, in order, every time:** gate, simplification, gate again if it
   changed anything, correctness, security, the documents read against the
   change, gate again. The pull request says what each found — "found nothing" is
@@ -59,7 +59,7 @@ partner why it would be closed and what would need to change.
   commit message. Rename every project-specific identifier to a neutral one of
   the same shape (`OrdersGrid`, `app-orders-grid`) before it is written
   anywhere. Nothing public says anything about where or how the owner works.
-  `tests/private-names.test.ts` checks tracked files; nothing checks an issue or
+  `scripts/check-private-names.sh` checks tracked files; nothing checks an issue or
   a pull request, so reread the exact text before sending it. The rule is
   `uic-docs.md`.
 
@@ -91,7 +91,7 @@ not writing another. The only code is the session hook.
 
 Skills and examples name roles — page holder, field, submit button, the shared
 error helper — never a framework's or library's component or prop.
-`tests/skills.test.ts` fails on the common ones.
+`scripts/check-skills.sh` fails on the common ones.
 
 ### Configuration a project has to write
 

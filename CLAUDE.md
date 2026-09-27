@@ -47,16 +47,16 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   what is checked after — loaded when one of those files is being changed; and
   `uic-auditing`, run by hand with `/uic-auditing`, which checks everything
   against the current guidance and proposes issues.
-- `src/` → `bin/uic.mjs` — one command, `uic session`, run by the `SessionStart`
-  hook (`hooks/hooks.json`). It tells the session which skills a job takes and in
-  what order. It has no off switch of its own: a harness disables a plugin its
-  own way, and a switch in the hook could silence only the hook, never the
-  skills.
+- `hooks/session-start` — a short bash script, run by the `SessionStart` hook
+  (`hooks/hooks.json`, through `hooks/run-hook.cmd`, which finds bash on
+  Windows). It prints `hooks/session-context.md`, which tells the session which
+  skills a job takes and in what order. It needs no Node and installs nothing.
+  It has no off switch of its own: a harness disables a plugin its own way, and
+  a switch in the hook could silence only the hook, never the skills.
 - **Nothing is written into a project's repository.** A plan lives in the
   session, in a scratch file outside the working copy, attached to a story, or
   inside another process's plan — the three endings of `planning` — and goes
-  with the work. `.ui-consistency/` and `.claude/ui-consistency/` are what older
-  versions wrote; the session hook says so when it finds either.
+  with the work.
 
 **Nothing may assume a hook is running.** Claude Code runs the session hook, and
 is the only harness run end to end. Cursor has a session-hook manifest that has
@@ -109,19 +109,23 @@ to this repository only — both trackers start at 1.
   used, and whether that becomes a new issue is decided then. There are no
   dedicated test runs.
 - Designs and plans go on the issue, not into `docs/`.
-- The tests check the code, the manifests and the skills' structure — never
-  their wording, which real work checks. `tests/skills.test.ts` fails on a skill
-  outside the platform's limits or over 16,000 characters, a link or skill name
-  that points at nothing, a link from another skill into `values`,
-  `conventions` or `decisions`, or a library component name in the skills or
-  `USING.md`.
-  `tests/private-names.test.ts` fails on private names (see `uic-docs.md`).
+- The checks cover the hook, the manifests and the skills' structure — never
+  the skills' wording, which real work checks. They are bash and perl, which
+  come with git; nothing to install.
+  - `scripts/check-skills.sh` fails on a skill outside the platform's limits or
+    over 16,000 characters, a link or skill name that points at nothing, a link
+    from another skill into `values`, `conventions` or `decisions`, or a library
+    component name in the skills or `USING.md`.
+  - `scripts/check-packaging.sh` fails on manifests that disagree, a hook other
+    than the one, or a file an install would run npm on.
+  - `scripts/check-hook.sh` runs the hook as each harness does.
+  - `scripts/check-private-names.sh` fails on private names (see `uic-docs.md`).
+  - `scripts/test-checks.sh` plants a defect for each check and proves it fails.
 - Commands:
-  - `npm run gate` — everything a PR needs: typecheck, build, stale bundle,
-    version check, tests, plugin validate.
-  - `npm test`, or `npx vitest run tests/<file>.test.ts` for one file.
-  - `npm run bump` — patch; `npm run bump minor` or `major` when it is more than
-    a fix. Moves the version in all seven files.
+  - `scripts/gate.sh` — everything a PR needs: the checks, the version check,
+    the proof of the checks, plugin validate.
+  - `scripts/bump.sh` — patch; `scripts/bump.sh minor` or `major` when it is
+    more than a fix. Moves the version in all five manifests.
 
 ## Rules
 
