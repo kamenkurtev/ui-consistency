@@ -63,6 +63,15 @@ for my $skill (@skills) {
       $field{$key} = $value;
     }
   }
+  # Claude Code loads a skill whose front matter does not parse as YAML with no
+  # fields set, and says nothing; Anthropic's directory blocks it. A plain value
+  # carrying `: ` or ` #`, or starting with an indicator, is where that happens.
+  for my $key (sort keys %field) {
+    my $value = $field{$key};
+    next if $value eq '' || $value =~ /^"(?:[^"\\]|\\.)*"$/ || $value =~ /^'(?:[^']|'')*'$/;
+    push @fail, "$file: front matter '$key' is not valid YAML as written (': ' or ' #' in it, or an indicator first); quote it or reword it"
+      if $value =~ /: | #|:$/ || $value =~ /^[\[\]{}>|*&!%@`'",?#]/ || $value =~ /^[-?:](?: |$)/;
+  }
   my $name = $field{name} // '';
   push @fail, "$file: name '$name' is not its directory" if $name ne $skill;
   push @fail, "$file: name is not 1-64 lowercase letters, digits and hyphens" if $name !~ /^[a-z0-9-]{1,64}$/;

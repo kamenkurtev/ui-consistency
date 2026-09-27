@@ -1,6 +1,6 @@
 ---
 name: adjusting
-description: For what the end user sees — prepares a change to one region of one existing page: reads only that position across the project's other pages and writes the checklist for it, which implementing builds from. Use when changing a label, a value, a field, a button or what a control does on one page, when no new page and no change across pages is asked for.
+description: For what the end user sees — prepares a change to one region of one existing page. It reads only that position across the project's other pages and writes the checklist for it, which implementing builds from. Use when changing a label, a value, a field, a button or what a control does on one page, when no new page and no change across pages is asked for.
 ---
 
 # Adjusting one region of one page
