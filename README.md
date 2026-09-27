@@ -67,8 +67,9 @@ It works on its own, and it works inside another process: where
 [superpowers](https://github.com/obra/superpowers) or another process has already
 written a spec or plan, the phases add to it instead of running a second one.
 
-The agent you already use does all the reading. There is no script, no parser, no
-API key and nothing to configure.
+The agent you already use does all the reading. There is no parser, no API key
+and nothing to configure. The one thing the plugin runs is a short session hook
+that prints which skills a job takes; it needs no Node and installs nothing.
 
 ## Installation
 

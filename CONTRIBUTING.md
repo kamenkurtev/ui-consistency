@@ -13,41 +13,38 @@ Conduct is `CODE_OF_CONDUCT.md`. A vulnerability is reported privately, as
 ## Setup
 
 ```sh
-npm install
-npm run gate
+scripts/gate.sh
 ```
 
-`npm run gate` is the whole bar: typecheck, build, stale-bundle check, version
-check, tests, plugin validate. The same script runs on every pull request
-(`.github/workflows/gate.yml`).
+Nothing to install: the gate is bash and perl, which come with git. It is the
+whole bar — the checks of the skills, the manifests, the hook and private names,
+the version check, the proof that each check fires, plugin validate. The same
+script runs on every pull request (`.github/workflows/gate.yml`).
+
+To work on the plugin while you use it, add your clone as the marketplace —
+`claude plugin marketplace add <path to your clone>` — and every change applies
+at the next session.
 
 The plugin is Markdown — `skills/`. A change to how the agent behaves is a
-change to a skill, not to `src/`, which holds only the session hook.
+change to a skill, not to `hooks/`, which holds only the session hook.
 
 ## Things that will bite a first contribution
 
-**The gate fails on a fresh clone until `npm install` has run.** The error is
-`Cannot find type definition file for 'node'`.
-
 **A change that ships must move the version, in the same pull request.** A
-branch touching `src/`, `bin/`, `hooks/`, `skills/` or `.claude-plugin/` without
-a version bump fails the gate, because an installed plugin only updates when the
-manifest names a new version. Run `npm run bump` (`minor` / `major` when it is
-more than a fix); it moves all seven files that carry the version.
+branch touching `hooks/`, `skills/` or a manifest without a version bump fails
+the gate, because an installed plugin only updates when the manifest names a new
+version. Run `scripts/bump.sh` (`minor` / `major` when it is more than a fix);
+it moves all five files that carry the version.
 
 **The new version gets an entry in `RELEASE-NOTES.md`**, saying what somebody who
 already installed the plugin will notice. The gate fails on a version with no
 entry.
 
-**The build artifact is committed.** `bin/uic.mjs` ships from the repository,
-since installing the plugin is a clone with no build step. The gate rebuilds it;
-commit what it produces.
-
 **A test that passes is not evidence.** A fixture written by whoever wrote the
 rule encodes the same assumption as the rule. So:
 
-- a fix comes with a test that **fails against the unfixed code** — run it both
-  ways;
+- a fix to a check comes with a plant in `scripts/test-checks.sh` that **fails
+  against the unfixed check** — run it both ways;
 - a change to a skill comes from **real work** — a page built with the plugin
   that came out wrong — and is checked by feedback the next time the plugin is
   used, not in a test run. Its issue closes on the merge;
@@ -57,7 +54,7 @@ rule encodes the same assumption as the rule. So:
 **Measurements keep their numbers and lose their names.** If you record what a
 run on a private codebase found, rename every project-specific identifier to a
 neutral one of the same shape first (`OrdersGrid`, `app-orders-grid`).
-`tests/private-names.test.ts` checks against a list you keep outside the
+`scripts/check-private-names.sh` checks against a list you keep outside the
 repository — `UIC_PRIVATE_NAMES` or `~/.config/uic/private-names.txt`. The rule
 is `.claude/rules/uic-docs.md`.
 
@@ -73,7 +70,7 @@ say so, and say what the agent reported it could not read.
 
 `.claude/rules/uic-pr.md` is the full order. The short form:
 
-1. `npm run gate`.
+1. `scripts/gate.sh`.
 2. Simplify what you wrote, then run the gate again if it changed anything.
 3. A correctness review and a security review, both of them, every time.
 4. Read `CLAUDE.md`, `README.md`, `AGENTS.md`, `USING.md`, `docs/concept.md`

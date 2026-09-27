@@ -9,7 +9,7 @@ set -euo pipefail
 # It does not skip when HEAD is origin/main: that is every branch with nothing
 # committed yet, which is exactly when the gate is run.
 
-SHIPPED='src/ bin/ hooks/ skills/ .claude-plugin/'
+SHIPPED='hooks/ skills/ .claude-plugin/ .codex-plugin/ .cursor-plugin/ gemini-extension.json'
 
 if ! git rev-parse --verify --quiet origin/main >/dev/null; then
   # No network, a fresh clone, a detached head. A gate that cannot run offline
@@ -31,8 +31,8 @@ THERE=$(git show origin/main:.claude-plugin/plugin.json 2>/dev/null | grep -o '"
 if [ "$HERE" = "$THERE" ]; then
   echo "this branch changes what ships but leaves the version at $THERE." >&2
   echo "Anyone who has already installed the plugin will not receive it." >&2
-  echo "  npm run bump          # patch" >&2
-  echo "  npm run bump minor    # new capability" >&2
+  echo "  scripts/bump.sh          # patch" >&2
+  echo "  scripts/bump.sh minor    # new capability" >&2
   exit 1
 fi
 

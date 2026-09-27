@@ -95,12 +95,10 @@ paste the complete transcript here
 
 ## Verification
 
-- [ ] `npm run gate` passes
-- [ ] Version bumped with `npm run bump` and a `RELEASE-NOTES.md` entry written, or nothing that ships changed
-- [ ] `bin/uic.mjs` rebuilt and committed, or `src/` untouched
-- [ ] **The test fails against the unfixed code** — run both ways, and say so
-- [ ] Anything user-facing was run from the **shipped artifact**: `bin/uic.mjs`
-      copied alone into an empty directory
+- [ ] `scripts/gate.sh` passes
+- [ ] Version bumped with `scripts/bump.sh` and a `RELEASE-NOTES.md` entry written, or nothing that ships changed
+- [ ] **A changed check fails against the unfixed version** — a plant in `scripts/test-checks.sh`, run both ways — or no check changed
+- [ ] A change to the hook was run the way a harness runs it: `hooks/run-hook.cmd session-start`
 - [ ] No name from a private repository in the diff — numbers survive, names do
       not (`.claude/rules/uic-docs.md`)
 

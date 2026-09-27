@@ -1,36 +1,34 @@
 #!/usr/bin/env bash
+# Everything a pull request needs. Bash and perl, both of which come with git;
+# nothing to install.
+
 set -euo pipefail
+cd "$(dirname "$0")/.."
 
-echo "==> typecheck"
-npm run typecheck
+echo "==> skills"
+bash scripts/check-skills.sh
 
-# The build comes before the tests, not after: the check below compares the
-# bundle with its source, and part of the suite reads the bundle — reading
-# yesterday's would pass while today's is broken.
-echo "==> build"
-npm run build
+echo "==> packaging"
+bash scripts/check-packaging.sh
 
-# The bundle ships in git, so a stale one is shipped code that does not match
-# the source it was built from.
-if [ -n "$(git status --porcelain bin/ 2>/dev/null)" ]; then
-  echo "bin/ is stale — the build changed it. Commit the rebuilt bundle:" >&2
-  git status --short bin/ >&2
-  exit 1
-fi
+echo "==> hook"
+bash scripts/check-hook.sh
+
+echo "==> private names"
+bash scripts/check-private-names.sh
 
 # An installed plugin updates when plugin.json names a new version, not when
-# the code changes. Shipping behaviour without a bump reaches nobody who
-# already installed it, and nothing fails to say so — which is why this is a
-# gate and not a note in the rules. It happened twice in one day before it was.
-#
-# Its own script so a test can drive it. Every guard in this repository that was
-# written without one has since been found not to fire, and this one was found
-# not to fire the day it mattered.
+# its files change. Shipping without a bump reaches nobody who already
+# installed it, and nothing fails to say so — which is why this is a gate and
+# not a note in the rules. It happened twice in one day before it was.
 echo "==> version"
-bash "$(dirname "$0")/version-check.sh"
+bash scripts/version-check.sh
 
-echo "==> tests"
-npm run test
+# Every guard in this repository written without a proof that it fires has
+# since been found not to. Each check above is run here on a copy with a
+# planted defect, and on one without.
+echo "==> the checks catch what they are for"
+bash scripts/test-checks.sh
 
 echo "==> plugin validate"
 if command -v claude >/dev/null 2>&1; then

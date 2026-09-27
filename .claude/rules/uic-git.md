@@ -48,14 +48,15 @@
   updates when `plugin.json` names a new version, not when the code changes — so
   a merge without a bump reaches nobody who already installed it, and nothing
   fails to say so.
-- `npm run bump` (`minor` / `major` when it is more than a fix) moves every file
-  that carries the version. Do not edit them by hand.
-- Seven files carry the version. Only `.claude-plugin/plugin.json` is read when
-  a plugin updates, so the other six drift with nothing to complain — which is
-  why the script exists.
-- The gate enforces this: a branch touching `src/`, `bin/`, `hooks/`, `skills/`
-  or `.claude-plugin/` while leaving the version where `main` has it fails. Docs,
-  tests and rules alone need no bump.
+- `scripts/bump.sh` (`minor` / `major` when it is more than a fix) moves every
+  file that carries the version. Do not edit them by hand.
+- Five files carry the version: the manifest of each harness and the
+  marketplace entry. Only `.claude-plugin/plugin.json` is read when a plugin
+  updates, so the other four drift with nothing to complain — which is why the
+  script exists.
+- The gate enforces this: a branch touching `hooks/`, `skills/` or a manifest
+  while leaving the version where `main` has it fails. Docs, scripts and rules
+  alone need no bump.
 - **A new version gets an entry in `RELEASE-NOTES.md`**, saying what somebody who
   already installed the plugin will notice. The gate fails on a moved version
   with no `## v<version> (<date>)` section, or one with nothing under it.
@@ -63,7 +64,7 @@
 ## Pull requests
 - What happens before a PR is opened, and in what order, is `uic-pr.md`.
 - Open the PR against `main` with the template filled in.
-- **Merge it once `npm run gate` and the GitHub `gate` check pass** and the body
+- **Merge it once `scripts/gate.sh` and the GitHub `gate` check pass** and the body
   names the three reviews. The owner reads that as the review; do not stop to ask
   for permission to merge. Squash, with the PR number in the subject.
 - `gh pr create` and `gh pr merge` go through GitHub's GraphQL API, whose limit is
