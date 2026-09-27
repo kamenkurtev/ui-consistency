@@ -8,6 +8,9 @@ in this repository.
 
 ## Unreleased
 
+- The plugin has an icon, for the directory and the plugin lists
+  (`.claude-plugin/icon.svg`) (#333).
+
 ## v0.57.1 (2026-09-27)
 
 - `adjusting` and `values` load with their descriptions again. Their front
