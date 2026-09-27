@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v0.57.4 (2026-09-27)
+
 - Sixteen discovery keywords, chosen by how often each is used on GitHub, and the
   category "design" (#343, #345).
 
