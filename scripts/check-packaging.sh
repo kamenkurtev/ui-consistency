@@ -87,6 +87,10 @@ push @fail, "gemini-extension.json: what it loads does not name ui-consistency:f
 for my $path ('package.json', 'package-lock.json', 'bin') {
   push @fail, "$path: an installed copy would carry it" if -e $path;
 }
+# A CLAUDE.md at the plugin root is not loaded as the plugin's context, and a
+# strict validation fails on it. The instructions for working on the plugin
+# live in .claude/CLAUDE.md, which Claude Code reads for this repository.
+push @fail, "CLAUDE.md: at the plugin root, where a strict validation fails on it; keep it in .claude/" if -e 'CLAUDE.md';
 
 if (@fail) {
   print STDERR "$_\n" for @fail;

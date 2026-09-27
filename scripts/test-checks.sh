@@ -74,6 +74,8 @@ c=$(copy); echo '{}' > "$c/package.json"
 expect fail "a package.json an install would run npm on" check-packaging.sh "$c"
 c=$(copy); mkdir "$c/bin"
 expect fail "a top-level bin/" check-packaging.sh "$c"
+c=$(copy); cp "$c/.claude/CLAUDE.md" "$c/CLAUDE.md"
+expect fail "a CLAUDE.md at the plugin root" check-packaging.sh "$c"
 
 # --- check-hook.sh -----------------------------------------------------------
 c=$(copy); expect pass "the repository as it is" check-hook.sh "$c"

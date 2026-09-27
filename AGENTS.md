@@ -15,7 +15,7 @@ closed anyway.
 
 Before you open a pull request against this repository, you MUST:
 
-1. **Read `CLAUDE.md` and the three rule files it imports** —
+1. **Read `.claude/CLAUDE.md` and the three rule files it imports** —
    `.claude/rules/uic-docs.md`, `uic-git.md`, `uic-pr.md` — and
    `docs/concept.md`. They are how a change is made here.
 2. **Read the entire pull request template** at
@@ -145,7 +145,7 @@ Paste the complete transcript.
 
 **Not real integrations**: copying skill files into the harness by hand,
 anything that needs the user to opt in per session, anything where
-`finding-patterns` does not start on the test above. `CLAUDE.md` says which
+`finding-patterns` does not start on the test above. `.claude/CLAUDE.md` says which
 harnesses have been run end to end.
 
 ## Skill Changes Come From Real Work

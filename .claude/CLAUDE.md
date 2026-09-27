@@ -136,10 +136,10 @@ The contributor guidelines — what every agent working here does before a pull
 request, and what is not accepted — are `AGENTS.md`, the file harnesses other
 than Claude Code read. One copy, included here:
 
-@AGENTS.md
+@../AGENTS.md
 
 Detailed rules live in `.claude/rules/`, each prefixed `uic-`:
 
-@.claude/rules/uic-docs.md
-@.claude/rules/uic-git.md
-@.claude/rules/uic-pr.md
+@rules/uic-docs.md
+@rules/uic-git.md
+@rules/uic-pr.md
