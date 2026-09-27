@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v0.57.5 (2026-09-27)
+
 - The plugin names its documentation, support, privacy policy and terms, for the
   directory listing (#351).
 
