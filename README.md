@@ -28,10 +28,10 @@ code is the source.
 
 The way of working behind it is **Design-Driven Development**. What the user
 will see drives the code, the way tests drive it in test-driven development, so
-the page comes out right the first time instead of being fixed afterwards. When
-a page has a design of its own, a picture or a described screen, the agent
-follows its structure and takes every value from your theme. When it has none,
-the pages you have already shipped are the design.
+the page is meant to come out right the first time instead of being fixed
+afterwards. When a page has a design of its own, a picture or a described
+screen, the agent follows its structure and takes every value from your theme.
+When it has none, the pages you have already shipped are the design.
 
 It names roles rather than components, so React, Vue, Angular, Svelte and plain
 HTML and CSS all go through the same steps. There is nothing to configure and no
@@ -225,8 +225,8 @@ the values stay your theme's.
 - **A page you name outranks a count**, and an override outranks that — above.
   Counts come with where they were found and in how many files, because four
   identical buttons in one file are one page's habit.
-- **Before, not after.** An agent that reads the pattern first writes the right
-  page once.
+- **Before, not after.** An agent that reads the pattern first sets out to write
+  the right page once, rather than fix it afterwards.
 - **It decides, you are not interrogated.** A written order settles what a count
   alone cannot, and every decision is reported with what settled it. Three
   things wait on you: the plan, before any code; a tie whose answer changes code
@@ -255,4 +255,4 @@ changed is in [RELEASE-NOTES.md](RELEASE-NOTES.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). Provided as is, without warranty of any kind.
