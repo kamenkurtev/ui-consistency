@@ -256,3 +256,5 @@ changed is in [RELEASE-NOTES.md](RELEASE-NOTES.md).
 ## License
 
 MIT — see [LICENSE](LICENSE). Provided as is, without warranty of any kind.
+
+The plugin collects, stores and sends no data — see [PRIVACY.md](PRIVACY.md).
