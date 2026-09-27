@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v0.57.1 (2026-09-27)
+
 - `adjusting` and `values` load with their descriptions again. Their front
   matter was not valid YAML, so Claude Code loaded them with none, and said
   nothing (#329).
