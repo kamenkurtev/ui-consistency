@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v0.57.2 (2026-09-27)
+
 - The plugin has an icon, for the directory and the plugin lists
   (`.claude-plugin/icon.svg`) (#333).
 
