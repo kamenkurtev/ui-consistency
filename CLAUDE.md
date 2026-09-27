@@ -124,8 +124,11 @@ to this repository only — both trackers start at 1.
 - Commands:
   - `scripts/gate.sh` — everything a PR needs: the checks, the version check,
     the proof of the checks, plugin validate.
-  - `scripts/bump.sh` — patch; `scripts/bump.sh minor` or `major` when it is
-    more than a fix. Moves the version in all five manifests.
+  - `scripts/bump.sh` — cuts a release, when the owner decides: patch, or
+    `minor` / `major` by semver (`uic-git.md`, *Versions*). It moves the version
+    in all five manifests and turns *Unreleased* into its section; merging it
+    tags the release. A pull request that is not a release adds its line under
+    `## Unreleased` instead.
 
 ## Rules
 

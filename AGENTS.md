@@ -45,10 +45,11 @@ partner why it would be closed and what would need to change.
 - **`scripts/gate.sh`** is the bar — the checks of the skills, the manifests,
   the hook and private names, the version check, the proof that each check
   fires, plugin validate. Nothing is reviewed on a red gate.
-- **A change that ships bumps the version, in the same pull request.** Touching
-  `hooks/`, `skills/` or a manifest without moving the version fails the gate.
-  `scripts/bump.sh` (`minor` / `major` when it is more than a fix) moves every
-  file that carries it; the new version gets an entry in `RELEASE-NOTES.md`.
+- **A change that ships says so under `## Unreleased`** in `RELEASE-NOTES.md`,
+  in the same pull request, and leaves the version alone. Touching `hooks/`,
+  `skills/` or a manifest with nothing there fails the gate. A release is a
+  pull request of its own, cut with `scripts/bump.sh` when the owner decides
+  (`.claude/rules/uic-git.md`, *Versions*).
 - **The reviews, in order, every time:** gate, simplification, gate again if it
   changed anything, correctness, security, the documents read against the
   change, gate again. The pull request says what each found — "found nothing" is

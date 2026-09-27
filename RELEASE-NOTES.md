@@ -2,8 +2,11 @@
 
 What changed for somebody who already has the plugin installed, newest first.
 An installed copy updates when `.claude-plugin/plugin.json` names a new version;
-each version below is one of those. Numbers in brackets are pull requests in
-this repository.
+each version below is one of those, and is tagged `v<version>`. What is merged
+waits under *Unreleased* until the next release. Numbers in brackets are issues
+in this repository.
+
+## Unreleased
 
 ## v0.57.0 (2026-09-26)
 

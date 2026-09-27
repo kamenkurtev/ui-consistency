@@ -30,15 +30,10 @@ change to a skill, not to `hooks/`, which holds only the session hook.
 
 ## Things that will bite a first contribution
 
-**A change that ships must move the version, in the same pull request.** A
-branch touching `hooks/`, `skills/` or a manifest without a version bump fails
-the gate, because an installed plugin only updates when the manifest names a new
-version. Run `scripts/bump.sh` (`minor` / `major` when it is more than a fix);
-it moves all five files that carry the version.
-
-**The new version gets an entry in `RELEASE-NOTES.md`**, saying what somebody who
-already installed the plugin will notice. The gate fails on a version with no
-entry.
+**A change that ships adds a line under `## Unreleased` in `RELEASE-NOTES.md`**,
+saying what somebody who installed the plugin will notice. A branch touching
+`hooks/`, `skills/` or a manifest with nothing there fails the gate. Leave the
+version alone: the owner cuts releases (`.claude/rules/uic-git.md`, *Versions*).
 
 **A test that passes is not evidence.** A fixture written by whoever wrote the
 rule encodes the same assumption as the rule. So:

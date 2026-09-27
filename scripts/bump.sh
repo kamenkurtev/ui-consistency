@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
-# Move the shipped version, in every file that carries it.
+# Cut a release: move the shipped version in every file that carries it, and
+# turn what waited under `## Unreleased` into the new version's section.
 #
 # The version lives in every manifest a harness reads, and only plugin.json is
 # read when a plugin updates — so the others drift with nothing to complain.
 #
 # Usage: scripts/bump.sh [patch|minor|major]     (patch by default)
+#   patch — a fix or clearer wording; the agent does the same
+#   minor — the agent does something new or different; while the version is
+#           0.x, also a change that breaks something a user depends on
+#   major — something a user depends on breaks, from 1.0.0 on
 
 set -euo pipefail
 cd "${UIC_ROOT:-$(dirname "$0")/..}"
@@ -48,5 +53,15 @@ for file in "${FILES[@]}"; do
   echo "  $file"
 done
 
+# The release takes what waited under Unreleased: the heading stays, empty, for
+# the next one.
+if ! grep -q '^## Unreleased$' RELEASE-NOTES.md; then
+  echo "RELEASE-NOTES.md has no '## Unreleased' section to release." >&2
+  exit 1
+fi
+NEXT="$next" DATE="$(date +%Y-%m-%d)" perl -0777 -i -pe 's/^## Unreleased\n/## Unreleased\n\n## v$ENV{NEXT} ($ENV{DATE})\n/m' RELEASE-NOTES.md
+echo "  RELEASE-NOTES.md"
+
 echo
-echo "$current → $next. Add a \"## v$next (<date>)\" entry to RELEASE-NOTES.md, and commit both with the change they ship."
+echo "$current → $next. Read the v$next section in RELEASE-NOTES.md, and open the release as its own pull request;"
+echo "merging it tags v$next."
