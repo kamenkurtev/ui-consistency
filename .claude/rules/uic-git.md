@@ -49,7 +49,6 @@
   - **minor** — the agent does something new or different;
   - **major** — something a user depends on breaks: a skill renamed or removed,
     a different way to install.
-  - While the version is 0.x, a breaking change moves the minor.
 - **A PR that changes what ships adds its line under `## Unreleased`** in
   `RELEASE-NOTES.md`, saying what somebody who installed the plugin will
   notice, and leaves the version alone.
@@ -75,7 +74,6 @@
 - **To work on the latest**, add the local clone as the marketplace
   (`CONTRIBUTING.md`): every change applies at the next session, with no
   release.
-- **1.0.0** is cut when the plugin is listed in Anthropic's directory.
 
 ## Pull requests
 - What happens before a PR is opened, and in what order, is `uic-pr.md`.
