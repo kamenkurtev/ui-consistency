@@ -2,8 +2,8 @@
 # The manifests every harness reads, and what an installed copy carries.
 #
 # The version is carried by every file `scripts/bump.sh` moves, and only one of
-# them is the one that matters: an installed copy updates when `plugin.json`
-# says a new version exists. The others drift because nothing reads them at
+# them is the one that matters: an installed copy updates when
+# `.claude-plugin/plugin.json` says a new version exists. The others drift because nothing reads them at
 # install time, so nothing complains.
 
 set -euo pipefail
@@ -21,24 +21,24 @@ my @fail;
 my $plugin = json('.claude-plugin/plugin.json');
 my $market = json('.claude-plugin/marketplace.json');
 my ($entry) = grep { $_->{name} eq $plugin->{name} } @{ $market->{plugins} };
-my @others = ('.codex-plugin/plugin.json', '.cursor-plugin/plugin.json', 'gemini-extension.json');
+my @others = ('.codex-plugin/plugin.json', '.cursor-plugin/plugin.json', 'gemini-extension.json', 'plugin.json');
 
 # The shipped version, the same everywhere.
 my $version = $plugin->{version} // '';
 push @fail, ".claude-plugin/plugin.json: version '$version' is not x.y.z" if $version !~ /^\d+\.\d+\.\d+$/;
-push @fail, "marketplace.json: the entry carries " . ($entry->{version} // 'no version') . ", plugin.json $version"
+push @fail, "marketplace.json: the entry carries " . ($entry->{version} // 'no version') . ", .claude-plugin/plugin.json $version"
   if ($entry->{version} // '') ne $version;
 for my $file (@others) {
   my $v = json($file)->{version} // '';
-  push @fail, "$file: version '$v', plugin.json $version" if $v ne $version;
+  push @fail, "$file: version '$v', .claude-plugin/plugin.json $version" if $v ne $version;
 }
 
 # The plugin described the same way wherever it is listed: each place is read
 # by a different harness's installer, and nothing reads more than one of them.
 my $described = $plugin->{description} // '';
-push @fail, "marketplace.json: the entry's description differs from plugin.json's" if ($entry->{description} // '') ne $described;
+push @fail, "marketplace.json: the entry's description differs from .claude-plugin/plugin.json's" if ($entry->{description} // '') ne $described;
 for my $file (@others, 'hooks/hooks.json') {
-  push @fail, "$file: description differs from plugin.json's" if (json($file)->{description} // '') ne $described;
+  push @fail, "$file: description differs from .claude-plugin/plugin.json's" if (json($file)->{description} // '') ne $described;
 }
 
 # One hook, at session start, through the wrapper that finds bash.
@@ -63,6 +63,12 @@ push @fail, "LICENSE: does not start 'MIT License'" if raw('LICENSE') !~ /\AMIT 
 for my $file ('.claude-plugin/plugin.json', @others) {
   push @fail, "$file: licence is not MIT" if (json($file)->{license} // '') ne 'MIT';
 }
+
+# Copilot CLI reads plugin.json as a legacy plugin, which loads skills/ and
+# hooks/hooks.json. The Agent Plugins $schema would move its hooks to
+# com.github.copilot/hooks/, where there are none.
+push @fail, "plugin.json: declares a \$schema; Copilot CLI would stop running the session hook"
+  if exists json('plugin.json')->{'$schema'};
 
 # Every harness pointed at the same skills.
 for my $file ('.codex-plugin/plugin.json', '.cursor-plugin/plugin.json') {

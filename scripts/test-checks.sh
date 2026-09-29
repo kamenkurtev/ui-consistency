@@ -78,6 +78,14 @@ c=$(copy); edit "$c" hooks/hooks.json 's/"timeout": \d+/"timeout": 30/'
 expect fail "a hook allowed more than 5 seconds" check-packaging.sh "$c"
 c=$(copy); edit "$c" .cursor-plugin/plugin.json 's/"license": "MIT"/"license": "ISC"/'
 expect fail "a manifest with another licence" check-packaging.sh "$c"
+c=$(copy); edit "$c" plugin.json 's/"version": "[^"]*"/"version": "9.9.9"/'
+expect fail "Copilot CLI's manifest behind the version" check-packaging.sh "$c"
+c=$(copy); edit "$c" plugin.json 's{^\{}{\{\n  "\$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",}'
+expect fail "Copilot CLI's manifest opted into Agent Plugins" check-packaging.sh "$c"
+c=$(copy); edit "$c" plugin.json 's/"description": "/"description": "Other: /'
+expect fail "Copilot CLI's manifest describing the plugin another way" check-packaging.sh "$c"
+c=$(copy); edit "$c" plugin.json 's/"license": "MIT"/"license": "ISC"/'
+expect fail "Copilot CLI's manifest with another licence" check-packaging.sh "$c"
 c=$(copy); echo '{}' > "$c/package.json"
 expect fail "a package.json an install would run npm on" check-packaging.sh "$c"
 c=$(copy); mkdir "$c/bin"
@@ -148,6 +156,10 @@ r=$(vrepo); echo 'b' > "$r/skills/one.md"; printf "$empty" > "$r/RELEASE-NOTES.m
 vexpect fail "a shipped change that is committed, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
 r=$(vrepo); echo 'b' > "$r/skills/one.md"
 vexpect fail "a shipped change with no release notes at all" "$r" "says nothing under '## Unreleased'"
+r=$(vrepo); echo '{ "name": "uic", "version": "1.0.0" }' > "$r/plugin.json"
+(cd "$r" && git add -A && git -c user.email=t@t -c user.name=t commit -qm copilot && git update-ref refs/remotes/origin/main "$(git rev-parse HEAD)")
+echo '{ "name": "uic", "version": "1.0.0", "keywords": ["a"] }' > "$r/plugin.json"; printf "$empty" > "$r/RELEASE-NOTES.md"
+vexpect fail "Copilot CLI's manifest changed, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
 r=$(vrepo); echo 'b' > "$r/skills/one.md"; printf "$unreleased" > "$r/RELEASE-NOTES.md"
 vexpect pass "a shipped change with its line under Unreleased" "$r" "under '## Unreleased'"
 

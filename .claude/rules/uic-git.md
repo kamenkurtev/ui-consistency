@@ -60,9 +60,9 @@
     Do not edit the version by hand.
   - The gate fails on a moved version with no section, or with lines left under
     *Unreleased*.
-- Five files carry the version: the manifest of each harness and the
+- Six files carry the version: the manifest of each harness and the
   marketplace entry. Only `.claude-plugin/plugin.json` is read when a plugin
-  updates, so the other four drift with nothing to complain — which is why the
+  updates, so the other five drift with nothing to complain — which is why the
   script exists.
 - **Merging a release tags it.** `.github/workflows/release.yml` tags
   `v<version>`, publishes its section as a GitHub Release, and moves the

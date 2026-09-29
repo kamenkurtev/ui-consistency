@@ -19,6 +19,7 @@ FILES=(
   .codex-plugin/plugin.json
   .cursor-plugin/plugin.json
   gemini-extension.json
+  plugin.json
 )
 
 kind="${1:-patch}"
