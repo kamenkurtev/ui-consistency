@@ -22,7 +22,7 @@ unreadable together. Check **pairs**, never single values.
 - **The threshold is the project's where it states one** — a contrast setting in
   the theme, a linter rule, a written rule. Report it with the decision it
   settles, and carry it on the task's checklist
-  ([checklist.md](../finding-patterns/checklist.md)), which goes when the task
+  (`../finding-patterns/checklist.md`), which goes when the task
   does.
 - **If the project states none and accessibility was not asked for**, measure no
   threshold: record the pairings with their ratios and report none as failing.

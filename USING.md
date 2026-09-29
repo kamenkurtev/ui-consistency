@@ -62,7 +62,7 @@ If your harness has no skill mechanism, hand a phase to the agent in these
 words, with the path filled in:
 
 > Read and follow `<path to the plugin>/skills/<skill>/SKILL.md`. Open a file it
-> links, or a skill it names as `ui-consistency:<name>` — that is
+> links or gives the path of, or a skill it names as `ui-consistency:<name>` — that is
 > `<path to the plugin>/skills/<name>/SKILL.md` — only when a step you are
 > carrying out sends you to it.
 

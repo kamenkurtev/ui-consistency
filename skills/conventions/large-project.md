@@ -10,7 +10,7 @@ more than one area, or are more than can be read in full.
 - Hand the reading of the members to one subagent per area, where the harness
   has them.
 - **A grouped search is never split**: it is one search over every area, run by
-  the phase — [finding-patterns](../finding-patterns/SKILL.md) step 4. A shared
+  the phase — `../finding-patterns/SKILL.md` step 4. A shared
   piece's reach search included.
 - **Do not split a single area.** One agent reads a family inside one app: the
   handover costs more than it saves.
@@ -47,7 +47,7 @@ more than one area, or are more than can be read in full.
 
 ## Group the searches
 
-As [finding-patterns](../finding-patterns/SKILL.md) step 4 says: one search per
+As `../finding-patterns/SKILL.md` step 4 says: one search per
 position, over every area at once, run by the phase.
 
 ## What the report carries

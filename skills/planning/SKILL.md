@@ -11,7 +11,7 @@ Turns what `finding-patterns` found into a plan of one task per page. Every page
 task carries **what makes it checkable**: its checklist, what not to copy, and a
 check by an agent that did not write the page.
 
-**Open a linked file, or invoke a named skill, only when a part you are carrying
+**Open a file linked or given by its path, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
 skill says about its links. That part is not done until the file is opened or
 the skill invoked.
@@ -26,18 +26,18 @@ the skill invoked.
 - **If that process already sends each task to a reviewer that did not write
   it**, the checklist and `ui-consistency:verifying` go into that reviewer's
   brief, and no second checker is added
-  ([calibration.md](../verifying/calibration.md)).
+  (`../verifying/calibration.md`).
 - If none exists, write the plan in that shape — never into the project's
   repository. Where it goes is how the phase ends, below.
 - The checklist each task carries is
-  [checklist.md](../finding-patterns/checklist.md).
+  `../finding-patterns/checklist.md`.
 
 ## The order of the tasks
 
 1. **Calibrate the check**, once per work and kind of page, before anything
    is built: `ui-consistency:verifying` on a scratch copy of the reference with
    one role deliberately written differently, kept outside the repository
-   ([calibration.md](../verifying/calibration.md)).
+   (`../verifying/calibration.md`).
    - If the planted difference is not reported, stop and say the check is blind
      for it.
    - The agent calibrated is not the one that then checks the pages.

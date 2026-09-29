@@ -8,6 +8,10 @@ in this repository.
 
 ## Unreleased
 
+- A skill reaches another skill's file by its path written out instead of a link, so
+  the skills pass awesome-copilot's linter; the agent reads the same files. The
+  README says how to install in GitHub Copilot CLI (#355).
+
 ## v0.57.5 (2026-09-27)
 
 - The plugin names its documentation, support, privacy policy and terms, for the

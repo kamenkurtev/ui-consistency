@@ -91,13 +91,13 @@ for my $skill (@skills) {
   push @fail, "$file: " . length($text) . " characters, over 16,000" if length $text > 16000;
 }
 
-# Every linked file exists.
+# Every linked file exists, and every path to another skill's file written out.
 for my $file (@files) {
   my $text = slurp($file);
-  while ($text =~ /\]\(([^)#\s]+\.md)(?:#[^)]*)?\)/g) {
-    my $link = $1;
+  while ($text =~ /\]\(([^)#\s]+\.md)(?:#[^)]*)?\)|`(\.\.\/[^`\s]+\.md)`/g) {
+    my $link = $1 // $2;
     next if $link =~ /^[a-z]+:/;
-    push @fail, "$file: links $link, which does not exist" unless -e dirname($file) . "/$link";
+    push @fail, "$file: points at $link, which does not exist" unless -e dirname($file) . "/$link";
   }
 }
 
@@ -135,17 +135,23 @@ $said{$1} = 1 while $session =~ /\bui-consistency:([a-z][\w-]*)/g;
 my ($said, $all) = (join(', ', sort keys %said), join(', ', @skills));
 push @fail, "hooks/session-context.md names [$said]; the skills are [$all]" if $said ne $all;
 
+# A link stays inside its own skill: a catalog's linter fails a skill whose link
+# leaves it (the Agent Skills specification: paths from the skill root). Another
+# skill's file is written out as a path instead.
 # An invoked skill is re-attached after compaction; a file read with a tool is
 # not. The skills a phase calls are reached by name, their own files included.
 my %called = map { $_ => 1 } qw(values conventions decisions);
 for my $file (@files) {
   my $from = (split m{/}, $file)[1];
   my $text = slurp($file);
-  while ($text =~ /\]\(([^)#\s]+)(?:#[^)]*)?\)/g) {
-    my $link = $1;
-    my @to = split m{/}, norm(dirname($file) . "/$link");
-    next unless @to > 1 && $to[0] eq 'skills';
-    push @fail, "$file: links into $to[1] ($link); name it as a skill to invoke" if $to[1] ne $from && $called{$to[1]};
+  while ($text =~ /\]\(([^)#\s]+)(?:#[^)]*)?\)|`(\.\.\/[^`\s]+)`/g) {
+    my ($link, $written) = ($1 // $2, defined $2);
+    next if $link =~ /^[a-z]+:/;
+    my $to = norm(dirname($file) . "/$link");
+    next if $to =~ m{^skills/\Q$from\E/};
+    my $into = $to =~ m{^skills/([^/]+)/} ? $1 : '';
+    if ($called{$into}) { push @fail, "$file: points into $into ($link); name it as a skill to invoke" }
+    elsif (!$written) { push @fail, "$file: links $link, outside its skill; write the path out" }
   }
 }
 

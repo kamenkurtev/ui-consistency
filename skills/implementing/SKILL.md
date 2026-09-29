@@ -11,7 +11,7 @@ Builds each page from its checklist, one page per task. The checklist is re-read
 every time: across a batch, the work drifts toward the last page written instead
 of the one agreed.
 
-**Open a linked file, or invoke a named skill, only when a part you are carrying
+**Open a file linked or given by its path, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
 skill says about its links. That part is not done until the file is opened or
 the skill invoked.
@@ -26,14 +26,14 @@ the skill invoked.
   file outside the working copy, or in another process's plan. Never work from
   memory of it.
 - Execute a task from itself, not from what the plan says around it: every task
-  carries what it needs ([plan-file.md](../planning/plan-file.md)).
+  carries what it needs (`../planning/plan-file.md`).
 - If another process is executing the plan, follow its loop; the steps below are
   what each page task does inside it.
 
 ## For each page
 
 1. **Re-read the checklist.** Every time; never from memory. Its shape is
-   [checklist.md](../finding-patterns/checklist.md), and its order is the order
+   `../finding-patterns/checklist.md`, and its order is the order
    you write the page in.
 2. **Write the page region by region**, in the order of the tree: holders, then
    the components in each, then what each comes out as, then how each is
@@ -57,7 +57,7 @@ the skill invoked.
    - For a file in a shared layer, only entries that exist in every theme that
      renders it.
    - Never a value read off a design, however plainly it shows one
-     ([reading.md](../design/reading.md)).
+     (`../design/reading.md`).
    - A named constant where the theme has none.
    - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
@@ -79,7 +79,7 @@ the skill invoked.
    pairing the family already uses, in every scheme the project has.
    - If the checklist names a contrast threshold — the project states one, or the
      task asked for accessibility — meet it
-     ([contrast.md](../accessibility/contrast.md)).
+     (`../accessibility/contrast.md`).
 9. **The rest of what a person has to be able to read and use**, as the checklist
    records it:
    - focus shown the way the family shows it, and landing where the family puts
@@ -114,7 +114,7 @@ the skill invoked.
       start it if this is the first page of its kind.
     - Where the process already sends each task to a reviewer, whoever dispatches
       that reviewer puts the checklist and `ui-consistency:verifying` into its
-      brief ([calibration.md](../verifying/calibration.md)).
+      brief (`../verifying/calibration.md`).
 15. **Fix what the check reports**, then have it checked again — **twice at
     most.**
     - List what the second check still reports as open, with the checker's
@@ -122,7 +122,7 @@ the skill invoked.
     - Say a report that keeps changing is a problem with the checklist or the
       checker.
 16. **Mark it** in the plan: ticked for `done`, or left unticked with
-    `parked — <why>` ([plan-file.md](../planning/plan-file.md)).
+    `parked — <why>` (`../planning/plan-file.md`).
     - If you were handed the task without the plan, report the same status to
       whoever handed it over.
 
@@ -133,14 +133,14 @@ one owns what the end user sees.
 
 ## A small change without a plan
 
-- `ui-consistency:adjusting` prepares it ([adjusting](../adjusting/SKILL.md)):
+- `ui-consistency:adjusting` prepares it (`../adjusting/SKILL.md`):
   what is read, and what is deliberately skipped.
 - Take the checklist for one region it produced, re-read it, and make the change.
 - Before calling it done, hand the page to `ui-consistency:verifying`, run by an
   agent that did not write it. The check is not the part that gets dropped
   because the change was small.
 - Its proof is one plant at the changed position, once for the change and not
-  per round ([calibration.md](../verifying/calibration.md)).
+  per round (`../verifying/calibration.md`).
 - Fix and check again twice at most, as in step 15.
 
 ## Then

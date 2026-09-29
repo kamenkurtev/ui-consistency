@@ -29,7 +29,7 @@ same frame, and a form region only the reference has.
   counts.
 - **Each checklist line carries the count that applies to it**, not the page's:
   *8 of 8* on the holder, *only the reference* on the form
-  ([checklist.md](../finding-patterns/checklist.md)).
+  (`../finding-patterns/checklist.md`).
 
 ## A kind whose family has only the reference
 

@@ -53,7 +53,7 @@ not."*
   plan, the design document that process is writing, the story it is attached
   to.
 - Where this plugin writes the plan itself, that is `## Decided` in it
-  ([plan-file.md](../planning/plan-file.md)). That plan is not in the repository
+  (`../planning/plan-file.md`). That plan is not in the repository
   and goes with the work, so report the override with the result.
 - **Introduce no document of this plugin's own for it.**
 - **If no process is running and there is nothing to write to**, report the

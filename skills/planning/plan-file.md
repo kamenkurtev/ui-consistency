@@ -68,7 +68,7 @@ with the result, since nothing else keeps it.
       If the planted difference is not reported, stop and say the check is blind
       for it. Once passed, record it here — for which kind, and what the plant
       tested and what no plant tested; page tasks of this kind do not repeat it
-      ([calibration.md](../verifying/calibration.md)).
+      (`../verifying/calibration.md`).
       <the checklist the page tasks carry>
 - [ ] **<the extraction the user accepted>** — build `<the shared piece>` in
       `<where it belongs>`, before any page that uses it.
@@ -158,5 +158,5 @@ What that test forces:
 carry when it does.
 
 **The code stays authoritative**
-([checklist.md](../finding-patterns/checklist.md), *A snapshot, and the code
+(`../finding-patterns/checklist.md`, *A snapshot, and the code
 wins*).

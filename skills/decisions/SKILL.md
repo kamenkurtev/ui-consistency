@@ -10,7 +10,7 @@ description: For what the end user sees — the order that settles how a page is
 Settles what a count cannot, in any phase — **decide, and say what you
 decided** — and names the three things that wait on a person.
 
-**Open a linked file, or invoke a named skill, only when a part you are carrying
+**Open a file linked or given by its path, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
 skill says about its links. That part is not done until the file is opened or
 the skill invoked.
@@ -146,7 +146,7 @@ own error box, because it was built before the shared helper existed.
 
 - **It settles** which roles the page has, their order, what each shows and how
   it behaves — what *like that one* means. The same split as a design
-  ([reading.md](../design/reading.md)).
+  (`../design/reading.md`).
 - **It does not settle** whether to reach for a shared piece. Where it
   hand-writes what the project has a piece for, use the piece, and add its own
   way to *not copied*.

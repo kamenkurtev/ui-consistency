@@ -156,7 +156,7 @@ the native widget, the primitive the framework renders.
 
 A foreground on its surface: record the pairing the family uses. Measure it
 against a standard only when accessibility is asked for or the project requires
-it — [contrast.md](../accessibility/contrast.md).
+it — `../accessibility/contrast.md`.
 
 ## Then
 

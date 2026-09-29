@@ -121,4 +121,4 @@ it is written, and what settled it** cannot be ticked without opening the page.
   out again from the code, never argue with the copy in hand.
 - That first line and the short body make it **the extract a task carries out of
   the repository**. What a task takes with it, and who decides that it goes, is
-  [plan-file.md](../planning/plan-file.md).
+  `../planning/plan-file.md`.
