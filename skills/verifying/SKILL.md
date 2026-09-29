@@ -11,9 +11,9 @@ A separate agent answers one question: **which of these pages do not look and
 behave like the reference and the rest of the project.** It reports only what
 differs, and names what it could not check.
 
-**Open a linked file, or invoke a named skill, only when a part you are carrying
+**Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
-skill says about its links. That part is not done until the file is opened or
+skill says about its links and paths. That part is not done until the file is opened or
 the skill invoked.
 
 ## Steps
@@ -52,7 +52,7 @@ the skill invoked.
 Give the checker:
 
 - the checklist for the page — its shape is
-  [checklist.md](../finding-patterns/checklist.md);
+  `../finding-patterns/checklist.md`;
 - the page, or the list of pages that changed.
 
 Then:
@@ -114,7 +114,7 @@ Beyond the items, compare the same regions:
 - **the words the user reads**: the project's string wherever one already says
   the same thing, and one name for one thing across the page;
 - **values through the theme**, not literals — a literal that matches what a
-  design showed included ([reading.md](../design/reading.md));
+  design showed included (`../design/reading.md`);
 - **every value that names a theme entry exists in the theme that applies** —
   for a shared layer, in every theme that renders it
   (`ui-consistency:values`, *The theme*). Report one that is missing, naming
@@ -136,7 +136,7 @@ Beyond the items, compare the same regions:
   - report a size off the scale, with the nearest steps;
   - a size on the scale that no page writes yet is not wrong — say so;
 - **contrast, as pairs** in every scheme the project has
-  ([contrast.md](../accessibility/contrast.md)):
+  (`../accessibility/contrast.md`):
   - report a pairing the family does not use, with its ratio;
   - report a pairing below a threshold only where the checklist names one — the
     project states it, or the task asked for accessibility;

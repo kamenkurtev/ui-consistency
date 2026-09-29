@@ -30,10 +30,12 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   `implementing`, `verifying`, and five subjects: `design` and `accessibility`,
   each asked on its own or reached from a phase, and `values`, `conventions`
   and `decisions`, reached from the phases: a step that needs one names it as a
-  skill to invoke, never as a link. Each is reached by its `description`, in any
-  language. **A phase is a gerund with no object, a subject skill is a noun** —
-  that is how the two kinds are told apart in a listing. The plugin's own name
-  carries the domain, so no skill name repeats it; where a harness shows no
+  skill to invoke, never as a link. A file of any other skill that a step reads
+  is its path written out, never a link: a catalog's linter fails a skill whose
+  link leaves its folder. Each is reached by its `description`, in any language.
+  **A phase is a gerund with no object, a subject skill is a noun** — that is
+  how the two kinds are told apart in a listing. The plugin's own name carries
+  the domain, so no skill name repeats it; where a harness shows no
   namespace the description carries the whole weight, so it says in its first
   words that the work is what an end user sees.
 - `USING.md` — what the plugin tells a user's agent: which skills a job takes,
@@ -63,6 +65,8 @@ is the only harness run end to end. Cursor has a session-hook manifest that has
 not been. Gemini CLI loads `USING.md` through `GEMINI.md`, not run end to end.
 Codex gets the skills from its manifest, and nothing puts `USING.md` where it
 reads instructions — the README tells a user to copy it; not run end to end.
+Copilot CLI reads Claude Code's manifest and gets the skills, the same way, with
+no hook; not run end to end.
 
 The private `kamenkurtev/ui-consistency-archive` holds the history before this
 repository's single root commit, and the old tracker. Issue numbers here point
@@ -113,9 +117,10 @@ to this repository only — both trackers start at 1.
   the skills' wording, which real work checks. They are bash and perl, which
   come with git; nothing to install.
   - `scripts/check-skills.sh` fails on a skill outside the platform's limits or
-    over 16,000 characters, a link or skill name that points at nothing, a link
-    from another skill into `values`, `conventions` or `decisions`, or a library
-    component name in the skills or `USING.md`.
+    over 16,000 characters, a link, written-out path or skill name that points at
+    nothing, a link that leaves its skill, a link or path from another skill into
+    `values`, `conventions` or `decisions`, or a library component name in the
+    skills or `USING.md`.
   - `scripts/check-packaging.sh` fails on manifests that disagree, a hook other
     than the one, or a file an install would run npm on.
   - `scripts/check-hook.sh` runs the hook as each harness does.

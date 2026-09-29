@@ -29,7 +29,7 @@ helper.
 - A later task in the same work, checking a page of the same kind, does not
   repeat it; a new kind owes a new one. A shared piece built for those pages is
   of their kind. The plan's first task is that calibration
-  ([plan-file.md](../planning/plan-file.md)).
+  (`../planning/plan-file.md`).
 - **The checker of the pages is a new agent**, given the same checklist and the
   same instructions — not the one that was calibrated: that one knows a plant
   exists, and reads the page expecting one. That new agent is the one checker of

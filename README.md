@@ -95,6 +95,18 @@ Codex has no session hook here, and nothing places `USING.md` where Codex reads
 instructions — `AGENTS.md` in your own project. Copy its contents there to give
 a session the order the skills run in. This path has not been run end to end.
 
+### GitHub Copilot CLI
+
+```
+copilot plugin install kamenkurtev/ui-consistency
+```
+
+Reads `.claude-plugin/plugin.json` and loads the skills from `skills/`. The
+session hook does not run there, and nothing places `USING.md` where Copilot
+CLI reads instructions — `AGENTS.md` or `.github/copilot-instructions.md` in
+your own project. Copy its contents there to give a session the order the skills
+run in. This path has not been run end to end.
+
 ### Cursor
 
 Reads `.cursor-plugin/plugin.json`. Install per Cursor's plugin instructions,

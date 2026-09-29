@@ -10,9 +10,9 @@ description: For what the end user sees — counts what a project's pages do, so
 Counts what the project's pages do, in the order of the work: the kind, the
 family, the proof that a search can see, then the counts.
 
-**Open a linked file, or invoke a named skill, only when a part you are carrying
+**Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
-skill says about its links. That part is not done until the file is opened or
+skill says about its links and paths. That part is not done until the file is opened or
 the skill invoked.
 
 ## Which kind of page this is
@@ -40,7 +40,7 @@ Then:
   form above it*, and say the name is yours.
 - Say in the checklist's first line the kind, what decided it, and how many
   members of how many candidates were counted
-  ([checklist.md](../finding-patterns/checklist.md)).
+  (`../finding-patterns/checklist.md`).
 
 ## The bound the family is counted in
 

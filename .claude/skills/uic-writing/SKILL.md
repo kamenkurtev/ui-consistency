@@ -45,7 +45,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 **A reference file**
 
 - Title, then one line `**Read when:** …`, then `## Contents` when it runs over 100 lines.
-- Link it directly from the `SKILL.md` that needs it, never only from another reference file.
+- Link it directly from the `SKILL.md` of its own skill that needs it, never only from another reference file. Another skill that needs it gives its path, below.
 
 **A description**
 
@@ -60,6 +60,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 - Say a rule once inside a skill, where it is first needed, and link it everywhere else in that skill.
 - Keep a rule repeated across skills: each skill can be loaded alone.
 - Name another skill for the agent to invoke as `ui-consistency:<name>`, with the section. Reach `values`, `conventions` and `decisions` only that way, their own files included: an invoked skill is re-attached after compaction, a file read with a tool is not.
+- Where a step reads a file of another skill rather than invoking the skill, write the file as its path from the skill's folder, `` `../<skill>/<file>.md` ``, never as a link: a catalog's linter fails a skill whose link leaves its folder.
 
 ## After writing
 
