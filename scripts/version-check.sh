@@ -14,7 +14,7 @@ set -euo pipefail
 # HEAD is origin/main: that is every branch with nothing committed yet, which is
 # exactly when the gate is run.
 
-SHIPPED='hooks/ skills/ .claude-plugin/ .codex-plugin/ .cursor-plugin/ gemini-extension.json'
+SHIPPED='hooks/ skills/ .claude-plugin/ .codex-plugin/ .cursor-plugin/ gemini-extension.json plugin.json'
 
 if ! git rev-parse --verify --quiet origin/main >/dev/null; then
   # No network, a fresh clone, a detached head. A gate that cannot run offline

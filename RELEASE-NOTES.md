@@ -8,6 +8,10 @@ in this repository.
 
 ## Unreleased
 
+- GitHub Copilot CLI gets a manifest of its own, `plugin.json`, which
+  awesome-copilot's intake reads; Copilot CLI loads the skills and the session
+  hook as before, and the README says the hook runs there (#357).
+
 ## v1.0.0 (2026-09-29)
 
 - A skill reaches another skill's file by its path written out instead of a

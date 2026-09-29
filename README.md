@@ -101,11 +101,8 @@ a session the order the skills run in. This path has not been run end to end.
 copilot plugin install kamenkurtev/ui-consistency
 ```
 
-Reads `.claude-plugin/plugin.json` and loads the skills from `skills/`. The
-session hook does not run there, and nothing places `USING.md` where Copilot
-CLI reads instructions — `AGENTS.md` or `.github/copilot-instructions.md` in
-your own project. Copy its contents there to give a session the order the skills
-run in. This path has not been run end to end.
+Reads `plugin.json` and loads the skills from `skills/` and the session hook
+from `hooks/hooks.json`. This path has not been run end to end.
 
 ### Cursor
 

@@ -1,0 +1,29 @@
+{
+  "name": "ui-consistency",
+  "version": "1.0.0",
+  "description": "An AI-aware design system, read from the code you already have: your coding agent writes each page the way your other pages are built",
+  "author": {
+    "name": "Kamen Kurtev"
+  },
+  "homepage": "https://github.com/kamenkurtev/ui-consistency",
+  "repository": "https://github.com/kamenkurtev/ui-consistency",
+  "license": "MIT",
+  "keywords": [
+    "design-system",
+    "design",
+    "ui",
+    "ux",
+    "frontend",
+    "components",
+    "theme",
+    "design-tokens",
+    "css",
+    "ui-design",
+    "accessibility",
+    "code-quality",
+    "consistency",
+    "react",
+    "vue",
+    "angular"
+  ]
+}

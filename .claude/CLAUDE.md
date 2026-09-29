@@ -2,7 +2,8 @@
 
 ## What this is
 
-A plugin, Claude Code first with manifests for Codex, Cursor and Gemini CLI, that
+A plugin, Claude Code first with manifests for Codex, Cursor, Copilot CLI and
+Gemini CLI, that
 makes a project's own design system **AI-aware, read from the code it already
 has**. Before an agent writes UI, it reads how the pages are built and writes
 the new one the same way: the right component written the way the other pages
@@ -65,8 +66,8 @@ is the only harness run end to end. Cursor has a session-hook manifest that has
 not been. Gemini CLI loads `USING.md` through `GEMINI.md`, not run end to end.
 Codex gets the skills from its manifest, and nothing puts `USING.md` where it
 reads instructions — the README tells a user to copy it; not run end to end.
-Copilot CLI reads Claude Code's manifest and gets the skills, the same way, with
-no hook; not run end to end.
+Copilot CLI reads its own `plugin.json`, a legacy plugin with no `$schema`, and
+gets the skills and the session hook; not run end to end.
 
 The private `kamenkurtev/ui-consistency-archive` holds the history before this
 repository's single root commit, and the old tracker. Issue numbers here point
@@ -121,8 +122,9 @@ to this repository only — both trackers start at 1.
     nothing, a link that leaves its skill, a link or path from another skill into
     `values`, `conventions` or `decisions`, or a library component name in the
     skills or `USING.md`.
-  - `scripts/check-packaging.sh` fails on manifests that disagree, a hook other
-    than the one, or a file an install would run npm on.
+  - `scripts/check-packaging.sh` fails on manifests that disagree, a Copilot CLI
+    manifest that opts into Agent Plugins, a hook other than the one, or a file
+    an install would run npm on.
   - `scripts/check-hook.sh` runs the hook as each harness does.
   - `scripts/check-private-names.sh` fails on private names (see `uic-docs.md`).
   - `scripts/test-checks.sh` plants a defect for each check and proves it fails.
@@ -131,7 +133,7 @@ to this repository only — both trackers start at 1.
     the proof of the checks, plugin validate.
   - `scripts/bump.sh` — cuts a release, when the owner decides: patch, or
     `minor` / `major` by semver (`uic-git.md`, *Versions*). It moves the version
-    in all five manifests and turns *Unreleased* into its section; merging it
+    in all six manifests and turns *Unreleased* into its section; merging it
     tags the release. A pull request that is not a release adds its line under
     `## Unreleased` instead.
 
