@@ -64,7 +64,8 @@ words, with the path filled in:
 > Read and follow `<path to the plugin>/skills/<skill>/SKILL.md`. Open a file it
 > links or gives the path of, or a skill it names as `ui-consistency:<name>` — that is
 > `<path to the plugin>/skills/<name>/SKILL.md` — only when a step you are
-> carrying out sends you to it.
+> carrying out sends you to it. A path it gives starts from
+> `<path to the plugin>/skills/<skill>/`.
 
 Not *"and the files it links"*: that loads every linked file before the first
 file of the project is opened.

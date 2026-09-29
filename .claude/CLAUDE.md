@@ -30,12 +30,12 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   `implementing`, `verifying`, and five subjects: `design` and `accessibility`,
   each asked on its own or reached from a phase, and `values`, `conventions`
   and `decisions`, reached from the phases: a step that needs one names it as a
-  skill to invoke, never as a link. Any other file of another skill is its path
-  written out, never a link: a catalog's linter fails a skill whose link leaves
-  its folder. Each is reached by its `description`, in any
-  language. **A phase is a gerund with no object, a subject skill is a noun** —
-  that is how the two kinds are told apart in a listing. The plugin's own name
-  carries the domain, so no skill name repeats it; where a harness shows no
+  skill to invoke, never as a link. A file of any other skill that a step reads
+  is its path written out, never a link: a catalog's linter fails a skill whose
+  link leaves its folder. Each is reached by its `description`, in any language.
+  **A phase is a gerund with no object, a subject skill is a noun** — that is
+  how the two kinds are told apart in a listing. The plugin's own name carries
+  the domain, so no skill name repeats it; where a harness shows no
   namespace the description carries the whole weight, so it says in its first
   words that the work is what an end user sees.
 - `USING.md` — what the plugin tells a user's agent: which skills a job takes,

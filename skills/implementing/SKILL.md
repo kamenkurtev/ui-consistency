@@ -11,9 +11,9 @@ Builds each page from its checklist, one page per task. The checklist is re-read
 every time: across a batch, the work drifts toward the last page written instead
 of the one agreed.
 
-**Open a file linked or given by its path, or invoke a named skill, only when a part you are carrying
+**Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
-skill says about its links. That part is not done until the file is opened or
+skill says about its links and paths. That part is not done until the file is opened or
 the skill invoked.
 
 ## One page per task, in a fresh context

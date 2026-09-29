@@ -10,9 +10,9 @@ description: For what the end user sees — the order that settles how a page is
 Settles what a count cannot, in any phase — **decide, and say what you
 decided** — and names the three things that wait on a person.
 
-**Open a file linked or given by its path, or invoke a named skill, only when a part you are carrying
+**Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
-skill says about its links. That part is not done until the file is opened or
+skill says about its links and paths. That part is not done until the file is opened or
 the skill invoked.
 
 ## The order
