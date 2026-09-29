@@ -7,9 +7,8 @@
 #
 # Usage: scripts/bump.sh [patch|minor|major]     (patch by default)
 #   patch — a fix or clearer wording; the agent does the same
-#   minor — the agent does something new or different; while the version is
-#           0.x, also a change that breaks something a user depends on
-#   major — something a user depends on breaks, from 1.0.0 on
+#   minor — the agent does something new or different
+#   major — something a user depends on breaks
 
 set -euo pipefail
 cd "${UIC_ROOT:-$(dirname "$0")/..}"
