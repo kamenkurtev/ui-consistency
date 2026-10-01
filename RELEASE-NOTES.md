@@ -8,6 +8,11 @@ in this repository.
 
 ## Unreleased
 
+- When you say a page came out wrong, or fix one by hand, the agent offers once
+  to draft a report for the new issue form, *A page came out wrong*, with every
+  name from your project made neutral. You read it and post it; the agent never
+  does (#363).
+
 ## v1.0.1 (2026-09-29)
 
 - GitHub Copilot CLI gets a manifest of its own, `plugin.json`, which

@@ -96,7 +96,7 @@ expect fail "a CLAUDE.md at the plugin root" check-packaging.sh "$c"
 # --- check-hook.sh -----------------------------------------------------------
 c=$(copy); expect pass "the repository as it is" check-hook.sh "$c"
 c=$(copy); printf '%s\n' "$(printf 'y%.0s' $(seq 1 60))" >> "$c/hooks/session-context.md"
-expect fail "session text of 1,400 characters or more" check-hook.sh "$c"
+expect fail "session text of 1,750 characters or more" check-hook.sh "$c"
 c=$(copy); edit "$c" hooks/session-start 's/\{"additional_context": "%s"\}/{"additional_context": "%s", "additionalContext": "%s"}/'
 expect fail "an answer in two shapes at once" check-hook.sh "$c"
 c=$(copy); edit "$c" hooks/session-start 's/\[ -z "\$\{COPILOT_CLI:-\}" \]/true/'

@@ -91,3 +91,15 @@ and a count nobody notices has gone stale is worse than no count.
 
 Nothing has to be configured. Everything is read from the project, and no
 component name is assumed — every technology and every team names its own.
+
+## When a page came out wrong
+
+If the person says a page came out wrong, or fixes one by hand, offer once to
+draft a report for the form at
+https://github.com/kamenkurtev/ui-consistency/issues/new?template=page_came_out_wrong.yml.
+
+- Put in what was asked, what was decided and what settled it, and what came out
+  wrong beside what the other pages do.
+- Rename every name from the project — component, file, path, route — to a
+  neutral one of the same shape.
+- Show the draft. The person reads it and posts it; never post it yourself.
