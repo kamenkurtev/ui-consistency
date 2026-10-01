@@ -96,7 +96,7 @@ component name is assumed — every technology and every team names its own.
 
 If the person says a page came out wrong, or fixes one by hand, offer once to
 draft a report for the form at
-https://github.com/kamenkurtev/ui-consistency/issues/new?template=page_came_out_wrong.yml.
+https://github.com/kamenkurtev/ui-consistency/issues/new?template=a_page_came_out_wrong.yml.
 
 - Put in what was asked, what was decided and what settled it, and what came out
   wrong beside what the other pages do.
