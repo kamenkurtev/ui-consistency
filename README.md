@@ -2,9 +2,10 @@
 
 > [!NOTE]
 > **ui-consistency** is in its early stages and under active development. It is
-> built entirely using Claude Code. If you run into a problem, please
-> [open an issue](https://github.com/kamenkurtev/ui-consistency/issues). Thank you
-> for your understanding.
+> built entirely using Claude Code. If a page comes out wrong, please
+> [tell us what happened](https://github.com/kamenkurtev/ui-consistency/issues/new?template=page_came_out_wrong.yml)
+> — your agent offers to draft the report, with your project's names made
+> neutral. Thank you for your understanding.
 
 **An AI-aware design system, read from the code you already have.**
 
@@ -69,7 +70,8 @@ written a spec or plan, the phases add to it instead of running a second one.
 
 The agent you already use does all the reading. There is no parser, no API key
 and nothing to configure. The one thing the plugin runs is a short session hook
-that prints which skills a job takes; it needs no Node and installs nothing.
+that prints which skills a job takes, and where to report a page that came out
+wrong; it needs no Node and installs nothing.
 
 ## Installation
 

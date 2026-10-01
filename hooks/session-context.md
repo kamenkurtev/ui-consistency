@@ -22,3 +22,9 @@ to anyone, whichever process wrote it. Decide by the order the skills carry and
 report what settled each decision; ask only where it ties and the change reaches
 outside the task, or before a component the request did not name with its place
 is created or code is extracted into one.
+
+If the person says a page came out wrong, or fixes one by hand, offer once to
+draft a report for
+https://github.com/kamenkurtev/ui-consistency/issues/new?template=page_came_out_wrong.yml:
+what was asked, what was decided and what settled it, what came out wrong, with
+every project name renamed to a neutral one. The person posts it, never you.

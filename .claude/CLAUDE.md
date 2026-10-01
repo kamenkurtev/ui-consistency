@@ -40,7 +40,8 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   namespace the description carries the whole weight, so it says in its first
   words that the work is what an end user sees.
 - `USING.md` — what the plugin tells a user's agent: which skills a job takes,
-  in what order. The session hook says the same, and a harness with no hook
+  in what order, and where to report a page that came out wrong. The session
+  hook says the same, and a harness with no hook
   loads this file instead — Gemini CLI through `GEMINI.md`, which includes it.
 - `AGENTS.md` — the contributor guidelines for an agent working **in this
   repository**, in `superpowers`' shape; included below, and read on its own by
@@ -53,7 +54,8 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 - `hooks/session-start` — a short bash script, run by the `SessionStart` hook
   (`hooks/hooks.json`, through `hooks/run-hook.cmd`, which finds bash on
   Windows). It prints `hooks/session-context.md`, which tells the session which
-  skills a job takes and in what order. It needs no Node and installs nothing.
+  skills a job takes and in what order, and where to report a page that came out
+  wrong. It needs no Node and installs nothing.
   It has no off switch of its own: a harness disables a plugin its own way, and
   a switch in the hook could silence only the hook, never the skills.
 - **Nothing is written into a project's repository.** A plan lives in the
