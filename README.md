@@ -3,7 +3,7 @@
 > [!NOTE]
 > **ui-consistency** is in its early stages and under active development. It is
 > built entirely using Claude Code. If a page comes out wrong, please
-> [tell us what happened](https://github.com/kamenkurtev/ui-consistency/issues/new?template=page_came_out_wrong.yml)
+> [tell us what happened](https://github.com/kamenkurtev/ui-consistency/issues/new?template=a_page_came_out_wrong.yml)
 > — your agent offers to draft the report, with your project's names made
 > neutral. Thank you for your understanding.
 
