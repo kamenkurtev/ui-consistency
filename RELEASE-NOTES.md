@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.1.0 (2026-10-01)
+
 - When you say a page came out wrong, or fix one by hand, the agent offers once
   to draft a report for the new issue form, *A page came out wrong*, with every
   name from your project made neutral. You read it and post it; the agent never
