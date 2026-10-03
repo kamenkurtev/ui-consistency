@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.2.0 (2026-10-03)
+
 - OpenAI's plugin directory gets the listing it needs: the Codex manifest carries
   the plugin's name, descriptions, category, starter prompts and icon (#369).
 - Codex runs the session hook: once you trust it in `/hooks`, every session is
