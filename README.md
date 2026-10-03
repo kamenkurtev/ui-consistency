@@ -91,7 +91,7 @@ gemini extensions install https://github.com/kamenkurtev/ui-consistency
 ### Codex
 
 ```
-codex plugin marketplace add kamenkurtev/ui-consistency
+codex plugin marketplace add kamenkurtev/ui-consistency --ref release
 codex plugin add ui-consistency@kkurtev-plugins
 ```
 
