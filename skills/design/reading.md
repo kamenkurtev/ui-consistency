@@ -46,15 +46,18 @@ each other:
 - **Match each value the design shows to the theme that applies**
   (`ui-consistency:values`, *The theme*), in any notation: a hex and its rgb, a
   size in px and in rem.
-- **The theme has the value**: the page takes that entry, never the literal.
-  - If the family writes another entry at that position, report both, with what
-    the family does in how many files.
+- **The theme has the value, and the family writes no other entry at that
+  position**: the page takes that entry, never the literal.
+- **The theme has the value, but the family writes another entry there**: it is
+  a proposal to use the design's entry at that position, with what the family
+  writes in how many files.
 - **The theme lacks the value**: it is a proposal for a new theme entry, with
   the design's value, the nearest entries the theme has, and where the design
-  uses it (`ui-consistency:decisions`, *When to ask anyway*).
-  - Show the proposal with the plan.
-  - On the plan's yes, the entry is added to the theme before any page that uses
-    it, and the page takes the value through it.
+  uses it.
+- Every proposal is shown with the plan (`ui-consistency:decisions`, *When to
+  ask anyway*).
+  - On the plan's yes, a new entry is added to the theme before any page that
+    uses it, and the page takes the design's value through its entry.
   - Declined, or with no plan, write that position the way the family writes it,
     and report the design's value beside it.
 - **Never write a design's value into a page as a literal**, however plainly the

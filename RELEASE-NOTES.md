@@ -9,9 +9,9 @@ in this repository.
 ## Unreleased
 
 - A design's values are matched to your theme instead of being set aside. A
-  value your theme already has is used through its entry; one it lacks is
-  proposed as a new theme entry with the plan, and on your yes the entry is
-  added and the page uses it. A `DESIGN.md` at your project's root is read as
+  value your theme already has is used through its entry. One it lacks, or one
+  your pages write differently at that place, is proposed with the plan, and on
+  your yes the page uses it, through a new theme entry where one is needed. A `DESIGN.md` at your project's root is read as
   your design system, its values matched the same way (#376).
 
 ## v1.2.0 (2026-10-03)
