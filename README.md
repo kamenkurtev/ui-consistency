@@ -32,7 +32,8 @@ The way of working behind it is **Design-Driven Development**. What the user
 will see drives the code, the way tests drive it in test-driven development, so
 the page is meant to come out right the first time instead of being fixed
 afterwards. When a page has a design of its own, a picture or a described
-screen, the agent follows its structure and takes every value from your theme.
+screen, the agent follows its structure and matches its values to your theme,
+proposing a new theme entry for one your theme lacks.
 When it has none, the pages you have already shipped are the design.
 
 It names roles rather than components, so React, Vue, Angular, Svelte and plain

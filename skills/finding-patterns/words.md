@@ -32,7 +32,8 @@ Component, element and the theme are defined in `ui-consistency:values`,
 - **Shape** — which roles a page has, in what order, and what each shows.
 - **Design** — where a page's shape comes from when it is not a page already
   built: a picture, a described screen, a prototype, or a tree a person agreed
-  (`ui-consistency:design`). Its values never count.
+  (`ui-consistency:design`). Its values are matched to the theme, never counted.
+  A `DESIGN.md` at the project root is a design for the whole project.
 - **Kind** — what the page the task builds or changes is — a list, a detail
   view, a form — decided before counting (`ui-consistency:conventions`, *Which
   kind of page this is*). A shared piece built for those pages is of their kind.

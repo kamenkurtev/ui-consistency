@@ -72,6 +72,8 @@ with the result, since nothing else keeps it.
       <the checklist the page tasks carry>
 - [ ] **<the extraction the user accepted>** — build `<the shared piece>` in
       `<where it belongs>`, before any page that uses it.
+- [ ] **<the theme entry the plan's yes agreed>** — add `<entry>` with
+      `<the design's value>` to `<the theme>`, before any page that uses it.
 - [ ] **<page>** — write `<path>`, following `<path to the reference>`, against
       the checklist below.
       <the checklist's lines, one per position — checklist.md>

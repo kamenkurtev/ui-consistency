@@ -20,8 +20,11 @@ there is none — in words, drawn only when asked.
 - **Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a step you are
   carrying out sends you to it, never before** — whatever the request that
   handed you the skill says about its links and paths.
-- Values — colour, spacing, size, type — always come from the project's theme,
-  never from a design or a drawing.
+- A design's values — colour, spacing, size, type — reach a page only through
+  the project's theme, never as a literal or a named constant: matched to it, and
+  one the theme lacks proposed as a new entry ([reading.md](reading.md), *A
+  design's values*).
+- A drawing this plugin made is never read back for a value.
 
 ## 1. Look for a design
 
@@ -35,8 +38,8 @@ there is none — in words, drawn only when asked.
 
 ## 2. A design exists: read it for the tree
 
-Read it for which roles the page has, in what order, and what each shows — never
-for a value: [reading.md](reading.md).
+Read it for which roles the page has, in what order, and what each shows, and
+match its values to the theme: [reading.md](reading.md).
 
 ## 3. No design: agree the shape in words
 

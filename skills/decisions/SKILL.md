@@ -131,10 +131,10 @@ something other work uses. Ask once, with the numbers and a proposal.
 
 **Everything else is not a question:**
 
-- **A proposal** — a theme entry a value needs, a single place for shared values
-  — is reported with its numbers, shown with the plan, and answered by the
-  plan's yes. Declined, or with no plan, write the pages the way the project
-  writes them now.
+- **A proposal** — a theme entry a value needs, a design's value where the
+  family writes another, a single place for shared values — is reported with
+  its numbers, shown with the plan, and answered by the plan's yes. Declined,
+  or with no plan, write the pages the way the project writes them now.
 - **A tie inside what this task touches** is settled by level 7: say so, and
   move on.
 - Never a question per region, per prop, per pixel.

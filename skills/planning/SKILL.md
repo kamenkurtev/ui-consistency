@@ -43,6 +43,8 @@ the skill invoked.
    - The agent calibrated is not the one that then checks the pages.
 2. **Extractions the user accepted.** Build a shared component, partial or class
    before any page that uses it.
+   - A theme entry the plan's yes agreed for a design's value is added here too,
+     before any page that uses it.
 3. **One task per page.**
 
 ## What every page task carries
@@ -84,6 +86,8 @@ repository, in [plan-file.md](plan-file.md).
 - Mark a task waiting on the little that did reach a person
   `parked — waiting on <what>` in the plan, with its counts
   ([plan-file.md](plan-file.md)).
+- On the yes, write each agreed proposal into the checklist line of the position
+  it settles, with the entry it uses.
 - **An answer given now is an override**
   (`ui-consistency:decisions`, *An override*). Record it in the person's own
   words, with what it overrules: in the document the running process keeps, or
