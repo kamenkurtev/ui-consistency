@@ -20,8 +20,11 @@ there is none — in words, drawn only when asked.
 - **Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a step you are
   carrying out sends you to it, never before** — whatever the request that
   handed you the skill says about its links and paths.
-- Values — colour, spacing, size, type — always come from the project's theme,
-  never from a design or a drawing.
+- Values — colour, spacing, size, type — reach a page only through the
+  project's theme.
+- A design's value is matched to the theme, and one the theme lacks is proposed
+  as a new entry ([reading.md](reading.md), *A design's values*).
+- A drawing this plugin made is never read back for a value.
 
 ## 1. Look for a design
 

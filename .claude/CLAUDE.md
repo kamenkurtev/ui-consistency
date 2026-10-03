@@ -14,7 +14,7 @@ comes out consistent and right while it is being written rather than corrected
 afterwards.
 
 **The design is read wherever it lives** — a design for the page, the theme and
-its tokens, or the pages already built, which is the usual case.
+its tokens, a `DESIGN.md`, or the pages already built, which is the usual case.
 
 It is **skills and nothing else**. The only code is the session hook.
 

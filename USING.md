@@ -7,8 +7,8 @@ other pages write it, the project's own validation and error handling, values
 from the theme. For any UI technology, including plain HTML and CSS.
 
 Design first, and the design is read wherever it lives: a design for the page
-where there is one, the theme and its tokens where there is one, otherwise the
-pages already built.
+where there is one, the theme and its tokens and a `DESIGN.md` where there is
+one, otherwise the pages already built.
 
 ## Which skills a job takes
 
@@ -46,8 +46,10 @@ with its place is created or code is extracted into one.
   by region, with a check first proved to catch a planted difference.
 - **design** — reads the design for a page where there is one; where there is
   none and no page is near enough to follow, agrees the page's shape in words, as
-  a tree of the project's own pieces. Draws it with the project's values only
-  when asked, and never reads a value back out of a design.
+  a tree of the project's own pieces. Matches a design's values to the theme,
+  and proposes a new entry for one the theme lacks. Draws a page only when
+  asked, with the project's values, and never reads a value back out of its own
+  drawing.
 - **values**, **conventions**, **decisions** — what the phases call when a step
   needs them: the project's theme, spacing, type and elements; how to count what
   its pages do and tell a convention from a habit; and the order that settles a

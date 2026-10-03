@@ -56,7 +56,8 @@ the skill invoked.
    (`ui-consistency:values`, *The theme*).
    - For a file in a shared layer, only entries that exist in every theme that
      renders it.
-   - Never a value read off a design, however plainly it shows one
+   - A design's value only through the theme entry it matched, or the one the
+     plan's yes added; never as a literal, however plainly the design shows it
      (`../design/reading.md`).
    - A named constant where the theme has none.
    - No literal copied from the reference.

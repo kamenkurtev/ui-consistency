@@ -19,8 +19,9 @@ instead of being corrected in review.
 
 The design is read wherever it actually lives. Where a page has a design of its
 own, a picture or a described screen, its structure is followed and its values
-come from the theme. Where there is none, the pages already built are the
-design. That is the usual case. Tools that make a design system AI-ready
+are matched to the theme; one the theme lacks is proposed as a new entry. A
+`DESIGN.md` that describes the design system in words is read with the theme.
+Where there is no design, the pages already built are the design. That is the usual case. Tools that make a design system AI-ready
 usually do it by exporting it for the agent; this one reads it where it already
 is.
 
@@ -79,7 +80,8 @@ phases when a step needs them: the project's values — theme, spacing, type,
 elements — how to count what its pages do, and the order that settles a choice.
 
 The design has a skill of its own. Where one comes with the work it is read for
-the page's structure, never for its values. Where there is none and no page is
+the page's structure, and its values are matched to the theme, never written
+into a page as they stand. Where there is none and no page is
 near enough to follow, the shape is agreed with the person in words, as a tree
 of the project's own pieces — and drawn, with the project's values, only when
 somebody asks to see it.

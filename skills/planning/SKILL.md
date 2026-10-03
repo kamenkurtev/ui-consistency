@@ -43,6 +43,8 @@ the skill invoked.
    - The agent calibrated is not the one that then checks the pages.
 2. **Extractions the user accepted.** Build a shared component, partial or class
    before any page that uses it.
+   - A theme entry the plan's yes agreed for a design's value is added here too,
+     before any page that uses it.
 3. **One task per page.**
 
 ## What every page task carries

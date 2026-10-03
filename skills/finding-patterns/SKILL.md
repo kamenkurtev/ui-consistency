@@ -196,6 +196,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **Do not copy the reference's literals.**
 - If the project has **no theme at all**, make one proposal: a single place for
   shared values, in the form the project can use.
+  - If it has a `DESIGN.md` at its root, propose that place with the values it
+    names (`ui-consistency:values`, *The theme*).
 
 ## 7. Decide, and say what you decided
 

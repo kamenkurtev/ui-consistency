@@ -35,7 +35,7 @@ the checklist's, where one exists; otherwise read from the theme as
 - **Nothing invented.** Draw a value that could not be resolved as unresolved —
   marked, with what was missing. Never fill it with something plausible.
 - **Never read back.** Values go into it from the theme; nothing is ever taken
-  out of it ([reading.md](reading.md), *Never a value*).
+  out of it ([reading.md](reading.md), *A design's values*).
 
 ## Three levels, and the question each answers
 
