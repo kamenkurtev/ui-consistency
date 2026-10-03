@@ -68,6 +68,13 @@
   `v<version>`, publishes its section as a GitHub Release, and moves the
   `release` branch to it. An installed copy updates when `plugin.json` names a
   new version, so users receive releases, not every merge.
+- **OpenAI's plugin directory takes a ZIP, not the repository.**
+  - Every version uploaded is a new package version, which OpenAI reviews
+    again before it is published.
+  - Upload one when the skills change in substance, as with cursor.directory.
+  - It refuses lifecycle hooks, so the package leaves `hooks/` out. It carries
+    only the Codex manifest, the skills, the icon and the licence:
+    `git archive --format=zip -o ui-consistency-<version>.zip v<version> -- .codex-plugin skills .claude-plugin/icon.svg LICENSE README.md`
 - **Nobody commits to `release`.** Development stays trunk-based on `main`;
   `release` only ever points at the last release, and Anthropic's directory
   follows it.

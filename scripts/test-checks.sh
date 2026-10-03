@@ -88,6 +88,10 @@ c=$(copy); edit "$c" plugin.json 's/"license": "MIT"/"license": "ISC"/'
 expect fail "Copilot CLI's manifest with another licence" check-packaging.sh "$c"
 c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"skills": "\.\/skills\/"/"skills": ".\/skills\/",\n  "hooks": {}/'
 expect fail "a Codex manifest with a hooks entry" check-packaging.sh "$c"
+c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"shortDescription": "/"shortDescription": "Much longer than thirty characters: /'
+expect fail "a listing subtitle over OpenAI's 30 characters" check-packaging.sh "$c"
+c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"logo": "[^"]*"/"logo": ".\/assets\/gone.svg"/'
+expect fail "a listing logo that is not in the repository" check-packaging.sh "$c"
 c=$(copy); echo '{}' > "$c/package.json"
 expect fail "a package.json an install would run npm on" check-packaging.sh "$c"
 c=$(copy); mkdir "$c/bin"
