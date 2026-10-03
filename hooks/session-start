@@ -27,7 +27,8 @@ escaped=$(escape_for_json "$context")
 # One shape only, the one this harness reads. Claude Code reads both
 # additional_context and hookSpecificOutput without deduplicating, so printing
 # both says everything twice. Cursor sets CURSOR_PLUGIN_ROOT, and may also set
-# CLAUDE_PLUGIN_ROOT; Copilot CLI sets CLAUDE_PLUGIN_ROOT and COPILOT_CLI.
+# CLAUDE_PLUGIN_ROOT; Copilot CLI sets CLAUDE_PLUGIN_ROOT and COPILOT_CLI. Codex
+# sets PLUGIN_ROOT and CLAUDE_PLUGIN_ROOT, and reads Claude Code's shape.
 # printf, not a heredoc: a heredoc can hang under bash 5.3.
 if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
   printf '{"additional_context": "%s"}\n' "$escaped"

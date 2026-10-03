@@ -39,6 +39,7 @@ CLAUDE_PLUGIN_ROOT=/plugin hookSpecificOutput
 CURSOR_PLUGIN_ROOT=/plugin additional_context
 CURSOR_PLUGIN_ROOT=/plugin CLAUDE_PLUGIN_ROOT=/plugin additional_context
 CLAUDE_PLUGIN_ROOT=/plugin COPILOT_CLI=1 additionalContext
+PLUGIN_ROOT=/plugin CLAUDE_PLUGIN_ROOT=/plugin hookSpecificOutput
 - additionalContext
 CASES
 

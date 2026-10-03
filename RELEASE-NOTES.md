@@ -8,6 +8,10 @@ in this repository.
 
 ## Unreleased
 
+- Codex runs the session hook: once you trust it in `/hooks`, every session is
+  told which skills a job takes and in what order, with no copy of `USING.md`
+  in your own `AGENTS.md` (#368).
+
 ## v1.1.0 (2026-10-01)
 
 - When you say a page came out wrong, or fix one by hand, the agent offers once
