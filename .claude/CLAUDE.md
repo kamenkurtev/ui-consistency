@@ -64,10 +64,11 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   with the work.
 
 **Nothing may assume a hook is running.** Claude Code runs the session hook, and
-is the only harness run end to end. Cursor has a session-hook manifest that has
+has been run end to end. Cursor has a session-hook manifest that has
 not been. Gemini CLI loads `USING.md` through `GEMINI.md`, not run end to end.
 Codex gets the skills from its manifest and runs the session hook from
-`hooks/hooks.json` once the user trusts it in `/hooks`; not run end to end.
+`hooks/hooks.json` once the user trusts it in `/hooks`; run end to end on the
+acceptance test (#368).
 Copilot CLI reads its own `plugin.json`, a legacy plugin with no `$schema`, and
 gets the skills and the session hook; not run end to end.
 
