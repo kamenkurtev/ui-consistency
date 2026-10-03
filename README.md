@@ -5,7 +5,8 @@
 > built entirely using Claude Code. If a page comes out wrong, please
 > [tell us what happened](https://github.com/kamenkurtev/ui-consistency/issues/new?template=a_page_came_out_wrong.yml)
 > — your agent offers to draft the report, with your project's names made
-> neutral. Thank you for your understanding.
+> neutral. If it helps you, please star the repository: that is how other people
+> find it. Thank you for your understanding.
 
 **An AI-aware design system, read from the code you already have.**
 
