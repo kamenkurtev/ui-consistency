@@ -90,12 +90,14 @@ gemini extensions install https://github.com/kamenkurtev/ui-consistency
 
 ### Codex
 
-Reads `.codex-plugin/plugin.json`, which gives it the skills. Install per Codex's
-plugin instructions, pointed at this repository.
+Reads `.codex-plugin/plugin.json`, which gives it the skills, and runs the
+session hook from `hooks/hooks.json`. Install per Codex's plugin instructions,
+pointed at this repository.
 
-Codex has no session hook here, and nothing places `USING.md` where Codex reads
-instructions — `AGENTS.md` in your own project. Copy its contents there to give
-a session the order the skills run in. This path has not been run end to end.
+Codex runs a plugin's hook only once you have trusted it. At the first start it
+warns that a hook needs review: open `/hooks`, review the plugin's
+`SessionStart` hook and trust it. From then on every session gets the order the
+skills run in. This path has not been run end to end.
 
 ### GitHub Copilot CLI
 

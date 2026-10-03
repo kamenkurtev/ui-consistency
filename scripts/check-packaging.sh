@@ -75,6 +75,13 @@ for my $file ('.codex-plugin/plugin.json', '.cursor-plugin/plugin.json') {
   push @fail, "$file: skills is not ./skills/" if (json($file)->{skills} // '') ne './skills/';
 }
 
+# Codex reads a manifest's hooks entry instead of the plugin's hooks/hooks.json,
+# so any entry, an empty one included, keeps the session hook from it. Without
+# one, a package that leaves hooks/ out, as OpenAI's directory requires, stays
+# valid.
+push @fail, ".codex-plugin/plugin.json: has a hooks entry; Codex would not read hooks/hooks.json"
+  if exists json('.codex-plugin/plugin.json')->{hooks};
+
 # The context file the harnesses without a hook read: the one Gemini's
 # manifest names, and every file it includes with a line `@./<path>`. Not
 # AGENTS.md: that is where an agent working in this repository looks for the

@@ -86,6 +86,8 @@ c=$(copy); edit "$c" plugin.json 's/"description": "/"description": "Other: /'
 expect fail "Copilot CLI's manifest describing the plugin another way" check-packaging.sh "$c"
 c=$(copy); edit "$c" plugin.json 's/"license": "MIT"/"license": "ISC"/'
 expect fail "Copilot CLI's manifest with another licence" check-packaging.sh "$c"
+c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"skills": "\.\/skills\/"/"skills": ".\/skills\/",\n  "hooks": {}/'
+expect fail "a Codex manifest with a hooks entry" check-packaging.sh "$c"
 c=$(copy); echo '{}' > "$c/package.json"
 expect fail "a package.json an install would run npm on" check-packaging.sh "$c"
 c=$(copy); mkdir "$c/bin"
@@ -101,6 +103,8 @@ c=$(copy); edit "$c" hooks/session-start 's/\{"additional_context": "%s"\}/{"add
 expect fail "an answer in two shapes at once" check-hook.sh "$c"
 c=$(copy); edit "$c" hooks/session-start 's/\[ -z "\$\{COPILOT_CLI:-\}" \]/true/'
 expect fail "Copilot answered in Claude Code's shape" check-hook.sh "$c"
+c=$(copy); edit "$c" hooks/session-start 's/\[ -z "\$\{COPILOT_CLI:-\}" \]/[ -z "\${COPILOT_CLI:-}" ] \&\& [ -z "\${PLUGIN_ROOT:-}" ]/'
+expect fail "Codex answered in another shape" check-hook.sh "$c"
 c=$(copy); edit "$c" hooks/session-start 's/^escaped=.*$/escaped=\$context/m'
 echo 'A "quoted" word.' >> "$c/hooks/session-context.md"
 expect fail "text that is not escaped for JSON" check-hook.sh "$c"
