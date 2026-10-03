@@ -126,8 +126,9 @@ to this repository only — both trackers start at 1.
     `values`, `conventions` or `decisions`, or a library component name in the
     skills or `USING.md`.
   - `scripts/check-packaging.sh` fails on manifests that disagree, a Copilot CLI
-    manifest that opts into Agent Plugins, a hook other than the one, or a file
-    an install would run npm on.
+    manifest that opts into Agent Plugins, a Codex manifest with a `hooks` entry
+    or a listing field missing or over OpenAI's limits, a hook other than the
+    one, or a file an install would run npm on.
   - `scripts/check-hook.sh` runs the hook as each harness does.
   - `scripts/check-private-names.sh` fails on private names (see `uic-docs.md`).
   - `scripts/test-checks.sh` plants a defect for each check and proves it fails.
