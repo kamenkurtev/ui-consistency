@@ -82,6 +82,27 @@ for my $file ('.codex-plugin/plugin.json', '.cursor-plugin/plugin.json') {
 push @fail, ".codex-plugin/plugin.json: has a hooks entry; Codex would not read hooks/hooks.json"
   if exists json('.codex-plugin/plugin.json')->{hooks};
 
+# OpenAI's directory fills the listing from the Codex manifest's interface, and
+# refuses a submission whose fields are missing or over its limits.
+my $interface = json('.codex-plugin/plugin.json')->{interface} // {};
+my %limit = (displayName => 30, shortDescription => 30, longDescription => 4000, developerName => 80);
+for my $field (sort keys %limit) {
+  my $value = $interface->{$field} // '';
+  push @fail, ".codex-plugin/plugin.json: interface.$field is missing" if $value eq '';
+  push @fail, ".codex-plugin/plugin.json: interface.$field is over $limit{$field} characters" if length $value > $limit{$field};
+}
+push @fail, ".codex-plugin/plugin.json: interface.category is missing" if ($interface->{category} // '') eq '';
+my @capabilities = @{ $interface->{capabilities} // [] };
+push @fail, ".codex-plugin/plugin.json: interface has over 20 capabilities" if @capabilities > 20;
+push @fail, ".codex-plugin/plugin.json: an interface capability is over 120 characters" if grep { length > 120 } @capabilities;
+my @prompts = @{ $interface->{defaultPrompt} // [] };
+push @fail, ".codex-plugin/plugin.json: interface has over 3 starter prompts" if @prompts > 3;
+push @fail, ".codex-plugin/plugin.json: an interface starter prompt is over 128 characters" if grep { length > 128 } @prompts;
+for my $icon ('logo', 'composerIcon') {
+  my $path = $interface->{$icon} // '';
+  push @fail, ".codex-plugin/plugin.json: interface.$icon is not a file in the repository" unless $path =~ m{^\./} && -f $path;
+}
+
 # The context file the harnesses without a hook read: the one Gemini's
 # manifest names, and every file it includes with a line `@./<path>`. Not
 # AGENTS.md: that is where an agent working in this repository looks for the

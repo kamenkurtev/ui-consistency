@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+- OpenAI's plugin directory gets the listing it needs: the Codex manifest carries
+  the plugin's name, descriptions, category, starter prompts and icon (#369).
 - Codex runs the session hook: once you trust it in `/hooks`, every session is
   told which skills a job takes and in what order, with no copy of `USING.md`
   in your own `AGENTS.md` (#368).
