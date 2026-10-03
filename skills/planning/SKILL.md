@@ -86,6 +86,8 @@ repository, in [plan-file.md](plan-file.md).
 - Mark a task waiting on the little that did reach a person
   `parked — waiting on <what>` in the plan, with its counts
   ([plan-file.md](plan-file.md)).
+- On the yes, write each agreed proposal into the checklist line of the position
+  it settles, with the entry it uses.
 - **An answer given now is an override**
   (`ui-consistency:decisions`, *An override*). Record it in the person's own
   words, with what it overrules: in the document the running process keeps, or

@@ -77,7 +77,9 @@ Decide the branch **from the request alone, before any project file is opened**.
   first, in this same order, for **which roles the page has and what each
   shows** (`../design/reading.md`).
 - The family answers what fills each role and how it is written, and its values
-  are the ones written. Never take a value off a design.
+  are the ones written.
+- A design's values are matched to the theme, never written as they stand
+  (`../design/reading.md`, *A design's values*).
 
 Read in this order:
 

@@ -115,9 +115,8 @@ Beyond the items, compare the same regions:
   the same thing, and one name for one thing across the page;
 - **values through the theme**, not literals — a literal that matches what a
   design showed included (`../design/reading.md`);
-- **a design's value the plan's yes agreed** — a new entry, or another entry at
-  a position — is not a deviation, on the base or off it: say which proposal
-  agreed it;
+- **a design's value its checklist line records as agreed** — a new entry, or
+  another entry at a position — is not a deviation, on the base or off it;
 - **every value that names a theme entry exists in the theme that applies** —
   for a shared layer, in every theme that renders it
   (`ui-consistency:values`, *The theme*). Report one that is missing, naming

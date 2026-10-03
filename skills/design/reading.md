@@ -41,16 +41,16 @@ each other:
 
 ## A design's values
 
-- **A value reaches a page only through the theme**: colour, spacing, size,
-  weight, radius, typeface.
+- **A design's value reaches a page only through the theme**, never as a literal
+  or a named constant: colour, spacing, size, weight, radius, typeface.
 - **Match each value the design shows to the theme that applies**
   (`ui-consistency:values`, *The theme*), in any notation: a hex and its rgb, a
   size in px and in rem.
-- **The theme has the value, and the family writes no other entry at that
-  position**: the page takes that entry, never the literal.
-- **The theme has the value, but the family writes another entry there**: it is
-  a proposal to use the design's entry at that position, with what the family
-  writes in how many files.
+- **The theme has the value, and the family writes that entry at that position,
+  or nothing there**: the page takes that entry, never the literal.
+- **The theme has the value, but the family writes something else there**,
+  another entry or a literal: it is a proposal to use the design's entry at that
+  position, with what the family writes in how many files.
 - **The theme lacks the value**: it is a proposal for a new theme entry, with
   the design's value, the nearest entries the theme has, and where the design
   uses it.
@@ -58,10 +58,11 @@ each other:
   ask anyway*).
   - On the plan's yes, a new entry is added to the theme before any page that
     uses it, and the page takes the design's value through its entry.
+  - The yes settles this task only; it is not an override.
   - Declined, or with no plan, write that position the way the family writes it,
     and report the design's value beside it.
-- **Never write a design's value into a page as a literal**, however plainly the
-  design shows it.
+- **Never write a design's value into a page as a literal or a named constant**,
+  however plainly the design shows it.
 - **A mockup this plugin drew is never read back** ([mockup.md](mockup.md)):
   values go into it from the theme, and nothing is taken out of it.
 

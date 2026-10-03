@@ -56,9 +56,9 @@ the skill invoked.
    (`ui-consistency:values`, *The theme*).
    - For a file in a shared layer, only entries that exist in every theme that
      renders it.
-   - A design's value only through a theme entry, as the checklist and the
-     plan's yes settled it; never as a literal, however plainly the design shows
-     it (`../design/reading.md`).
+   - A design's value only through the theme entry its checklist line names;
+     never as a literal or a named constant, however plainly the design shows it
+     (`../design/reading.md`).
    - A named constant where the theme has none.
    - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
