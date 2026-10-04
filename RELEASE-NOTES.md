@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.3.0 (2026-10-04)
+
 - A design's values are matched to your theme instead of being set aside. A
   value your theme already has is used through its entry. One it lacks, or one
   your pages write differently at that place, is proposed with the plan, and on
