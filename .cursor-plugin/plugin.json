@@ -27,6 +27,6 @@
     "angular"
   ],
   "skills": "./skills/",
-  "displayName": "UI Consistency",
+  "displayName": "ui-consistency",
   "hooks": "./hooks/hooks-cursor.json"
 }

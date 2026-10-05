@@ -8,6 +8,9 @@ in this repository.
 
 ## Unreleased
 
+- `/plugin` lists the plugin as `ui-consistency`, the name its skills are called
+  by, like the plugins around it (#381).
+
 ## v1.3.0 (2026-10-04)
 
 - A design's values are matched to your theme instead of being set aside. A
