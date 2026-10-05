@@ -28,9 +28,9 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "UI Consistency",
+    "displayName": "ui-consistency",
     "shortDescription": "Pages built like your others",
-    "longDescription": "UI Consistency makes your project's own design system something the coding agent reads before it writes UI. Ask for a page, a form or a change to one, and the agent first reads how the pages you already have are built: which shared components they use and how, the theme and its tokens, how they validate input and show errors. Then it writes the new page the same way, from a checklist, and has a separate agent compare the result with the page it follows. It works with any UI technology, including plain HTML and CSS, in a single app or a monorepo, and needs no configuration. It reads only your project; it has no server, no network access and no telemetry, and writes nothing into your repository besides the pages you asked for. It needs a project with code to read: in a conversation without one there is nothing for it to follow.",
+    "longDescription": "ui-consistency makes your project's own design system something the coding agent reads before it writes UI. Ask for a page, a form or a change to one, and the agent first reads how the pages you already have are built: which shared components they use and how, the theme and its tokens, how they validate input and show errors. Then it writes the new page the same way, from a checklist, and has a separate agent compare the result with the page it follows. It works with any UI technology, including plain HTML and CSS, in a single app or a monorepo, and needs no configuration. It reads only your project; it has no server, no network access and no telemetry, and writes nothing into your repository besides the pages you asked for. It needs a project with code to read: in a conversation without one there is nothing for it to follow.",
     "developerName": "Kamen Kurtev",
     "category": "Developer Tools",
     "capabilities": [
