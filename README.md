@@ -77,11 +77,26 @@ wrong; it needs no Node and installs nothing.
 
 ## Installation
 
+### Anthropic's directory
+
+The plugin is listed in Anthropic's directory. Add it there from claude.ai,
+Cowork or the desktop app; Claude Code then loads it as `ui-consistency@synced`,
+with no marketplace to add.
+
 ### Claude Code
+
+In a session:
 
 ```
 /plugin marketplace add kamenkurtev/ui-consistency
 /plugin install ui-consistency@kkurtev-plugins
+```
+
+From a terminal:
+
+```
+claude plugin marketplace add kamenkurtev/ui-consistency
+claude plugin install ui-consistency@kkurtev-plugins
 ```
 
 ### Gemini CLI
