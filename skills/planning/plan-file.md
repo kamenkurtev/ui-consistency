@@ -44,7 +44,8 @@ Status of a task: unticked is `todo`, ticked is `done`, and `parked — <why>`
 stays unticked with its reason on the line. A page that genuinely should not follow
 the checklist is parked with its reason, never forced and never silently skipped.
 A task waiting on a question that waits on a person — a new component, code
-extracted into one, or a tie whose answer changes code outside this work — is
+extracted into one, a tie whose answer changes code outside this work, or a
+request that says two things at one of its positions — is
 `parked — waiting on <what>`; there is no list of open questions beside the
 tasks.
 

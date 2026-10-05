@@ -11,6 +11,10 @@ in this repository.
 - `/plugin` lists the plugin as `ui-consistency`, the name its skills are called
   by, like the plugins around it (#381).
 - Codex and OpenAI's directory show the plugin as `ui-consistency` too (#383).
+- The skills agree with each other and with the current guidance: a request that
+  says two things holds up only the positions it touches, a `DESIGN.md` is never
+  taken for a page's design, and no step reads another skill's whole file for
+  something it can say itself (#386).
 
 ## v1.3.0 (2026-10-04)
 

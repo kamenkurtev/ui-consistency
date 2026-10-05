@@ -149,7 +149,9 @@ whose answer changes code outside the task; and a new component the request did
 not name with its place, or code extracted into one, asked on its own with what
 it touches, since it adds a piece the project did not have. A proposal — a theme entry, a
 single place for shared values — and a contradiction the project carries are
-reported, with the plan where there is one.
+reported, with the plan where there is one. A request that says two things at one
+position, or leaves open what the page must show, is reported as blocking, and
+only the positions it touches wait on the answer.
 
 ### A plan carries its check
 

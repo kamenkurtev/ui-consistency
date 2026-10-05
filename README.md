@@ -33,8 +33,9 @@ will see drives the code, the way tests drive it in test-driven development, so
 the page is meant to come out right the first time instead of being fixed
 afterwards. When a page has a design of its own, a picture or a described
 screen, the agent follows its structure and matches its values to your theme,
-proposing a new theme entry for one your theme lacks.
-When it has none, the pages you have already shipped are the design.
+proposing a new theme entry for one your theme lacks. A `DESIGN.md` at your
+project's root is read with your theme, and its values are matched the same way.
+When a page has no design, the pages you have already shipped are the design.
 
 It names roles rather than components, so React, Vue, Angular, Svelte and plain
 HTML and CSS all go through the same steps. There is nothing to configure and no
@@ -266,7 +267,9 @@ the values stay your theme's.
   alone cannot, and every decision is reported with what settled it. Three
   things wait on you: the plan, before any code; a tie whose answer changes code
   outside the task; and a new component the request did not name with its
-  place, or code extracted into one, asked with what it touches.
+  place, or code extracted into one, asked with what it touches. A request that
+  says two things in one place, or leaves open what a page shows, holds up only
+  that part until you answer.
 - **Silence is never success.** Where it could not read something, it says so.
 
 Read [docs/concept.md](docs/concept.md) for the reasoning.
