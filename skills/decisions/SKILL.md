@@ -99,10 +99,14 @@ Report every decision with the level that settled it and the numbers under it:
 
 ## When to ask anyway
 
-Three things wait on a person: the plan's yes (`planning`), and the two questions
-below. Everything else is decided and reported. A gap in the request itself is
-not one of them: it is reported as blocking ([rare.md](rare.md), *A request that
-says two things*).
+Three things wait on a person: the plan's yes (`planning`), and the two
+questions below. Everything else is decided by the order and reported.
+
+- If the request itself says two things at one position, or leaves open what
+  the page must show, report it first, as blocking. The positions it touches
+  wait on the answer and the rest goes on; if nobody can answer, the order below
+  the request settles them ([rare.md](rare.md), *A request that says two
+  things*).
 
 **A new component, or code extracted into one — asked**, shared or kept with the
 page, whether or not the order ties.

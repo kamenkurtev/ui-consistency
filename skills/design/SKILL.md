@@ -32,6 +32,9 @@ there is none — in words, drawn only when asked.
   task or ticket carries, what the request points at.
 - Say which it was, or say there was no design — otherwise an agent that never
   looked and an agent that found nothing report the same thing.
+- A `DESIGN.md` at the project root is not this page's design: its values are
+  matched to the theme the way a design's are (`ui-consistency:values`, *The
+  theme*).
 - If there is none and a page near enough to follow exists, that page gives the
   shape: `ui-consistency:finding-patterns` reads it, and this skill has nothing
   to do.
@@ -46,8 +49,8 @@ match its values to the theme: [reading.md](reading.md).
 Only for a new page with no design and no page near enough to follow, or when a
 person asks to agree or see a page's shape.
 
-- Propose the page as a tree of roles, in the order a page is read — the form of
-  `finding-patterns` step 2 (`../finding-patterns/SKILL.md`) — with the
+- Propose the page as a tree of roles, in the order a page is read
+  ([reading.md](reading.md), *Read it the way a page is read*), with the
   project's own piece at each role where it has one.
 - Take the pieces in this order: the components of the page's own area, then the
   shared layer, then the UI library.

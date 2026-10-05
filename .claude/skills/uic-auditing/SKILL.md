@@ -16,6 +16,7 @@ Reads the current guidance from its source, checks every skill against it and ev
    - Anthropic's skill authoring guide — https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
    - Claude Code's documentation on skills — https://code.claude.com/docs/en/skills
    - the prompting guide for the current Claude models — https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+   - the page for each current model that guide lists under *Model-specific guidance*, which it says to read first
 
    - If a page has moved, search for it from https://platform.claude.com/docs.
    - If a page cannot be reached, name it in the report, and check nothing against it from memory.

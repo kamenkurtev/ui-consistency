@@ -54,13 +54,15 @@ the skill invoked.
 - the path of the reference;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;
-- two steps, written out:
+- three steps, written out:
   1. *Re-read the checklist before writing — do not work from memory.*
   2. *Report the page ready for its check. Whoever dispatched this task sends
      it to the checker of its kind — the one agent with
      `ui-consistency:verifying` kept for every page of this kind, started at the
      first, never the one that wrote it — and sends back what it reports; fix
      that.*
+  3. *Report the status — to this plan, or to whoever handed the task over:
+     `done` once the check has passed, or `parked — <why>`.*
 
 Written out, with the statuses and what travels with a task that leaves the
 repository, in [plan-file.md](plan-file.md).

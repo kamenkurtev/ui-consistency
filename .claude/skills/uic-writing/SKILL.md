@@ -34,6 +34,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 **How a line is written**
 
 - One instruction to a line, in the imperative: what to do, not how it was arrived at.
+- Write what holds through a task as a standing instruction — *re-read the checklist before every page*, not *re-read the checklist*: Claude Code does not load a skill again on later turns (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
 - Write an exception as its own line, its condition first — *If …, …* — never as a clause inside the rule it limits.
 
 **A `SKILL.md`**
