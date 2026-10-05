@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.3.1 (2026-10-05)
+
 - `/plugin` lists the plugin as `ui-consistency`, the name its skills are called
   by, like the plugins around it (#381).
 - Codex and OpenAI's directory show the plugin as `ui-consistency` too (#383).
