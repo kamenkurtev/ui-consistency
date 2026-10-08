@@ -8,6 +8,11 @@ in this repository.
 
 ## Unreleased
 
+- The description the directories and `/plugin` show says the plugin works from
+  a project's existing pages: "Keeps new UI consistent with a project's existing
+  pages. Your coding agent reads how they are built and writes new ones the same
+  way." (#390).
+
 ## v1.3.1 (2026-10-05)
 
 - `/plugin` lists the plugin as `ui-consistency`, the name its skills are called
