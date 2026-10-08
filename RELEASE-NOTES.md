@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.3.2 (2026-10-08)
+
 - The description the directories and `/plugin` show says the plugin works from
   a project's existing pages: "Keeps new UI consistent with a project's existing
   pages. Your coding agent reads how they are built and writes new ones the same
