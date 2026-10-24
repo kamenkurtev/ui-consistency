@@ -15,8 +15,10 @@ input of the next or judges its output.
 5. **Security review.** Last, so it judges what actually ships.
 6. **The documents**, per `uic-docs.md`: read against the change, and fix what is
    false together with its copies.
-7. **`scripts/gate.sh` again**, if anything above changed a file.
-8. **Open the PR and merge it** — how is in `uic-git.md`.
+7. **The one fresh read**, if a skill changed
+   (`.claude/skills/uic-writing/SKILL.md`, *After writing*), and its fixes.
+8. **`scripts/gate.sh` again**, if anything above changed a file.
+9. **Open the PR and merge it** — how is in `uic-git.md`.
 
 ## How the reviews are done
 

@@ -168,6 +168,10 @@ r=$(vrepo); echo '{ "name": "uic", "version": "1.0.0" }' > "$r/plugin.json"
 (cd "$r" && git add -A && git -c user.email=t@t -c user.name=t commit -qm copilot && git update-ref refs/remotes/origin/main "$(git rev-parse HEAD)")
 echo '{ "name": "uic", "version": "1.0.0", "keywords": ["a"] }' > "$r/plugin.json"; printf "$empty" > "$r/RELEASE-NOTES.md"
 vexpect fail "Copilot CLI's manifest changed, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
+r=$(vrepo); echo 'a' > "$r/USING.md"
+(cd "$r" && git add -A && git -c user.email=t@t -c user.name=t commit -qm using && git update-ref refs/remotes/origin/main "$(git rev-parse HEAD)")
+echo 'b' > "$r/USING.md"; printf "$empty" > "$r/RELEASE-NOTES.md"
+vexpect fail "USING.md changed, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
 r=$(vrepo); echo 'b' > "$r/skills/one.md"; printf "$unreleased" > "$r/RELEASE-NOTES.md"
 vexpect pass "a shipped change with its line under Unreleased" "$r" "under '## Unreleased'"
 

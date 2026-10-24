@@ -40,7 +40,8 @@ the skill invoked.
    written, as the counts say.
    - **Write the element the checklist records at a position** — the heading
      level included (`ui-consistency:values`, *Elements*).
-   - If it records none for a position, say so rather than choosing one.
+   - If it records none for a position, the order settles it (step 11): say
+     which level did.
    - **Change a role the page already has where it stands**, when the work
      gives it a new source or new contents. Add a second instance only when the
      request asks for one.
@@ -101,6 +102,8 @@ the skill invoked.
     - Park a page only while a question that waits on a person is open —
       `ui-consistency:decisions`, *When to ask anyway*.
     - Put those to the user together, once, not page by page.
+    - If nobody can answer — the work runs where no person is asked — write
+      the page the way the project writes it now, and report the question.
 12. **A task's prose does not narrow its checklist.** If it says *change nothing
     else* and a line of its own checklist names a deviation, the line stands —
     unless the task names it under *Not in this task*.

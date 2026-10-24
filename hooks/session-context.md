@@ -10,7 +10,6 @@ Use them without being asked.
 - Checking code already written: verifying — after finding-patterns where no
   checklist exists yet.
 - A page's design, or one to agree before building: ui-consistency:design.
-  It draws only when asked.
 - Called by the phases when a step needs them: ui-consistency:values,
   ui-consistency:conventions, ui-consistency:decisions.
 - An accessibility standard, only when asked or required by the project:
@@ -19,9 +18,10 @@ Use them without being asked.
 If a process running this work has a spec or plan, add to it, and run
 finding-patterns before its first task that changes what the user sees is handed
 to anyone, whichever process wrote it. Decide by the order the skills carry and
-report what settled each decision; ask only where it ties and the change reaches
-outside the task, or before a component the request did not name with its place
-is created or code is extracted into one.
+report what settled each decision. Ask only about a request that says two things
+or leaves open what the page must show; a tie whose change reaches outside the
+task; and a component the request did not name with its place, or code extracted
+into one.
 
 If the person says a page came out wrong, or fixes one by hand, offer once to
 draft a report for

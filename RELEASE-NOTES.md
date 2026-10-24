@@ -26,6 +26,13 @@ in this repository.
 - An accessibility check reports a shortfall the page shares with your other
   pages of its kind as theirs, with the count and the standard's number for you
   to decide, never as a fault of that page alone (#402).
+- The skills agree with each other (#406):
+  - a position the checklist leaves open is settled by the decision order;
+  - an override decides between two shared pieces;
+  - with nobody to answer, a page is written the way the project writes it
+    instead of waiting;
+  - a request that says two things is something to ask about from the first
+    message of the session.
 
 ## v1.3.2 (2026-10-08)
 

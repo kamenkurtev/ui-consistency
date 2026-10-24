@@ -43,8 +43,9 @@ rule encodes the same assumption as the rule. So:
 - a change to a skill comes from **real work** — a page built with the plugin
   that came out wrong — and is checked by feedback the next time the plugin is
   used, not in a test run. Its issue closes on the merge;
-- anything user-facing is tried with the **shipped artifact**, installed, not
-  from the clone.
+- a change to how a harness loads the plugin is run with the **shipped
+  artifact**, installed, not from the clone (`AGENTS.md`, *New Harness
+  Support*).
 
 **Measurements keep their numbers and lose their names.** If you record what a
 run on a private codebase found, rename every project-specific identifier to a
@@ -68,11 +69,13 @@ say so, and say what the agent reported it could not read.
 1. `scripts/gate.sh`.
 2. Simplify what you wrote, then run the gate again if it changed anything.
 3. A correctness review and a security review, both of them, every time.
-4. Read `.claude/CLAUDE.md`, `README.md`, `AGENTS.md`, `USING.md`, `docs/concept.md`
-   and the skills against your change, and say in the pull request body which you read and
-   what you found. **"Read, nothing false" is a result.** Fix what is wrong, and
-   wherever it was copied.
-5. Fill every section of the pull request template — who produced the change
+4. Read the documents `.claude/rules/uic-docs.md` lists against your change,
+   and say in the pull request body which you read and what you found. **"Read,
+   nothing false" is a result.** Fix what is wrong, and wherever it was copied.
+5. If a skill changed, the one fresh read of its changed lines
+   (`.claude/skills/uic-writing/SKILL.md`, *After writing*).
+6. `scripts/gate.sh` again, if anything above changed a file.
+7. Fill every section of the pull request template — who produced the change
    and with what, that you searched open and closed pull requests, and how it
    stays inside what `docs/concept.md` says this is not. **A person reads the
    complete diff before it is opened**, and a pull request carrying unrelated

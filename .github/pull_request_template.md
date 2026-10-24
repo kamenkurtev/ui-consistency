@@ -62,7 +62,7 @@ this merges.
 ## Harness support (required if this changes how a harness loads the plugin)
 <!-- The one session this project asks for: it proves the plugin loads, not how
      a skill behaves (AGENTS.md, *Skill Changes Come From Real Work*).
-     A manifest, the hook, `USING.md`, `GEMINI.md`, `AGENTS.md`: attach a
+     A manifest, the hook, `USING.md`, `GEMINI.md`: attach a
      **transcript** of a clean session in that harness, in a project with pages
      already built, sending exactly
 
@@ -113,9 +113,8 @@ result** and belongs here.
 
 ## Documents
 
-Which of `.claude/CLAUDE.md`, `docs/concept.md`, `README.md`,
-`AGENTS.md`, `USING.md` and `skills/*/SKILL.md` you read against this change, and what you
-found. **"Read, nothing false" is a result.**
+Which of the documents `.claude/rules/uic-docs.md` lists you read against this
+change, and what you found. **"Read, nothing false" is a result.**
 
 ## Human review
 - [ ] A person read the complete diff before submission — not a summary of it.

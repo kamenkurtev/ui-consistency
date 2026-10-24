@@ -78,6 +78,9 @@ A change to one region of one page takes a shorter phase of its own, which reads
 only that position across the pages. Three more skills are called from the
 phases when a step needs them: the project's values — theme, spacing, type,
 elements — how to count what its pages do, and the order that settles a choice.
+Two are asked for on their own or reached from a phase: a page's design, agreed
+in words before it is built, and an accessibility standard, measured only when
+somebody asks for it or the project states one.
 
 The design has a skill of its own. Where one comes with the work it is read for
 the page's structure, and its values are matched to the theme, never written

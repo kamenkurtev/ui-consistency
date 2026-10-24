@@ -90,11 +90,12 @@ repository, in [plan-file.md](plan-file.md).
   ([plan-file.md](plan-file.md)).
 - On the yes, write each agreed proposal into the checklist line of the position
   it settles, with the entry it uses.
-- **An answer given now is an override**
-  (`ui-consistency:decisions`, *An override*). Record it in the person's own
-  words, with what it overrules: in the document the running process keeps, or
-  under `## Decided` in this plan where this is the process, reported with the
-  result when the plan closes.
+- **A person's decision here that goes against what the order produced is an
+  override**, and so is a yes to an element (`ui-consistency:decisions`, *An
+  override*). A yes to any other proposal settles this task only.
+- Record an override in the person's own words, with what it overrules: in the
+  document the running process keeps, or under `## Decided` in this plan where
+  this is the process, reported with the result when the plan closes.
 - Move each task it was holding up from `parked` back to `todo`.
 - Never write an override nobody gave.
 - A small change to one page has no plan and does not stop.
