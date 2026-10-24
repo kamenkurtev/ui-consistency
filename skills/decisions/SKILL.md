@@ -136,9 +136,14 @@ something other work uses. Ask once, with the numbers and a proposal.
 **Everything else is not a question:**
 
 - **A proposal** — a theme entry a value needs, a design's value where the
-  family writes another, a single place for shared values — is reported with
-  its numbers, shown with the plan, and answered by the plan's yes. Declined,
-  or with no plan, write the pages the way the project writes them now.
+  family writes another, a single place for shared values, the element whose
+  meaning a role has where the family writes a generic one
+  (`ui-consistency:values`, *Elements*) — is reported with its numbers, shown
+  with the plan, and answered by the plan's yes. Declined, or with no plan,
+  write the pages the way the project writes them now.
+- If the yes is to an element, record it as an override as well
+  ([rare.md](rare.md), *An override*): the family still writes the generic one,
+  and the next task would count it again.
 - **A tie inside what this task touches** is settled by level 7: say so, and
   move on.
 - Never a question per region, per prop, per pixel.

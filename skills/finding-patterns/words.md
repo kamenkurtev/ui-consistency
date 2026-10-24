@@ -5,8 +5,8 @@ words needs its meaning.
 
 Every technology builds a page with different pieces, plain HTML and CSS
 included, so the skills name roles and read what fills each from the project.
-Component, element and the theme are defined in `ui-consistency:values`,
-*Elements* and *The theme*.
+Component, element — a generic one, and the one whose meaning a role has — and
+the theme are defined in `ui-consistency:values`, *Elements* and *The theme*.
 
 - **Role** — what the page needs at a place in its tree: page holder, header,
   toolbar, content area, field, submit button, the project's shared error

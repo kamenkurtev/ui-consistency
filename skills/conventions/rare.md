@@ -66,9 +66,10 @@ second control where every member has one, a control nobody has here.
   wherever it has them — the same kind of position elsewhere in the bound.
 - If there is nowhere to read that from, the existing control keeps its place and
   the new one follows it in reading order; say that is what decided it.
-- **If there is nothing anywhere**, the order's last line applies: build it the
-  plainest way the technology allows, and say so (`ui-consistency:decisions`,
-  *What this does not decide*).
+- **If there is nothing anywhere**, the order's last line applies: write it as
+  the element whose meaning the role has, the technology's own before a generic
+  one, and say that is what decided it (`ui-consistency:decisions`, *What this
+  does not decide*).
 
 ## A shared piece the work creates
 
