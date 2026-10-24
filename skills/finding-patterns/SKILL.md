@@ -210,6 +210,11 @@ In this order; the rules are in `ui-consistency:conventions`:
   as *Say what settled it* there shows.
 - Ask the questions that wait on a person, and report proposals, as
   `ui-consistency:decisions`, *When to ask anyway*, says.
+- **If the family writes a generic element for a role the technology has its
+  own element for** — a clickable block for a button, a block of links for
+  navigation — propose the element whose meaning the role has, with the counts,
+  shown with the plan (`ui-consistency:values`, *Elements*). Write the page the
+  project's way until a person agrees to it.
 
 ## 8. Write the checklist
 

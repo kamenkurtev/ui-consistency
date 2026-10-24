@@ -8,6 +8,12 @@ in this repository.
 
 ## Unreleased
 
+- Where nothing in the project settles a role, it is written as the element
+  whose meaning it has — the technology's own button, navigation or heading —
+  instead of a generic block. Where your pages write a generic element for such
+  a role, the new page still follows them, and the element with meaning is
+  proposed with the plan (#395).
+
 ## v1.3.2 (2026-10-08)
 
 - The description the directories and `/plugin` show says the plugin works from

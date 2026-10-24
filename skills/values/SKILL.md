@@ -144,6 +144,13 @@ with a shared class. Its **element** is what it comes out as at a position: the 
 the native widget, the primitive the framework renders.
 
 - **Record the element per role**: what the family writes at that position.
+- **The element whose meaning a role has** is the technology's own element for
+  it: its button for a button, its navigation region for a trail of links, its
+  heading for a heading. A **generic element** says nothing about what it is: a
+  plain block or a run of text that only looks like its role.
+- If the family writes a generic element where the technology has its own,
+  record it as written, and report the other as a proposal
+  (`ui-consistency:decisions`, *When to ask anyway*).
 - If a shared component fills the role, read its element there once, and record
   it against the component, not against every page that uses it.
 - **If one piece is both** — the project writes the markup directly, or reuses

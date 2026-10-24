@@ -104,6 +104,9 @@ Beyond the items, compare the same regions:
   heading (`ui-consistency:values`, *Elements*). Report one that
   differs from what the family writes there, with what the others use. Name an
   element that could not be read as unevaluated;
+- **the element whose meaning a role has, where its checklist line records it
+  as agreed**, is not a deviation; neither is a generic element the family
+  writes too, where no proposal was agreed;
 - how each is written, against the counts in the checklist;
 - the reused pieces: the shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
