@@ -80,7 +80,7 @@ Before the change is done:
 
    - Fix every item that changes what an agent does. If a changed line disagrees with older wording, fix the pair, as step 2 asks.
    - Say in the pull request what was fixed and name any other item; "nothing" is a result.
-   - Leave older wording that no changed line touches or contradicts: reviewing whole files is `uic-auditing`'s, run when somebody asks for it.
+   - Leave older wording that no changed line touches or contradicts: reviewing whole files is `uic-auditing`'s, which runs only when somebody asks for an audit.
    - Do the read once. Do not repeat it after the fixes, and never run the skill on a project for it.
    - If the harness has no subagents, skip it and say so.
 
