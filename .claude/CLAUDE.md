@@ -157,3 +157,4 @@ Detailed rules live in `.claude/rules/`, each prefixed `uic-`:
 @rules/uic-docs.md
 @rules/uic-git.md
 @rules/uic-pr.md
+@rules/uic-subagents.md
