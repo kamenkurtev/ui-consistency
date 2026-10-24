@@ -147,11 +147,13 @@ arithmetic are in [contrast.md](contrast.md).
 - **Report**: a heading, list, table or region written as a generic element
   that only looks like one; no way past what repeats on every page; a page with
   no title, or one that does not say what it is; a link whose text does not say
-  where it goes; a heading or label that does not say what it heads; a page, or
-  a part in another language, that does not state its language; a control the
-  project builds itself that does not say what it is.
-- If the family writes the generic element too, report it as the family's, with
-  the count, not as the page's.
+  where it goes; a heading or label that does not describe what it heads or
+  labels; a page, or a part in another language, that does not state its
+  language; a control the project builds itself whose role is not stated. Its
+  name is subject 4's.
+- If the family writes the generic element too, it is still a finding against
+  the standard: report it as the family's, with the count and the shared
+  component that writes it, if one does — not as a difference of the page.
 - **Where the project states no rule**, the standard used is WCAG 2.2 AA:
   1.3.1, 2.4.1, 2.4.2, 2.4.4, 2.4.6, 3.1.1, 3.1.2 and 4.1.2.
 - **Unevaluated**: a title or a language set where you could not read it.
@@ -163,18 +165,17 @@ arithmetic are in [contrast.md](contrast.md).
   minimum sizes an external standard sets belong here.
 - **Which element fills a role** is read from the project as a convention, in
   `ui-consistency:finding-patterns`, which proposes the element whose meaning a
-  role has where the family writes a generic one. Here, structure reports a
-  generic element against the standard, where it asks for the element whose
-  meaning the role has.
+  role has where the family writes a generic one. Only when a standard is used
+  does structure, here, report a generic element against it.
 
 ## Say what you could not evaluate
 
 - End with it, every time, per subject: the pairs whose surface could not be
   resolved, the stylesheets you could not read, the behaviour you could not judge
   from the code, the technology you could not read with confidence.
-- **Say in one sentence, every time a standard was used, that its other
-  criteria were not checked**, so the report never reads as conformance with
-  it. Do not list them.
+- **Where a standard was used, end the report with one sentence saying that its
+  other criteria were not checked**, so the report never reads as conformance
+  with it. Do not list them.
 - Asked on its own, end with the cost as well: how many project files were
   opened and how many searches run.
 - Inside a task, what the family does becomes items on the checklist —
