@@ -48,6 +48,11 @@ the skill invoked.
 Where the project's own rule differs from the standard, the project's rule
 stands: report the number and whose rule it is.
 
+**A shortfall the family shares.** Where the page falls short of the standard
+used the way the family does at that position, report it as the family's
+shortfall, not the page's: the count, the shared component that writes it
+where one does, and the standard's number, so a person decides.
+
 ## 1. Contrast — pairs, in every scheme
 
 Check **pairs**, never single values — the rules, the thresholds and the
@@ -151,9 +156,8 @@ arithmetic are in [contrast.md](contrast.md).
   labels; a page, or a part in another language, that does not state its
   language; a control the project builds itself whose role is not stated. Its
   name is subject 4's.
-- If the family writes the generic element too, it is still a finding against
-  the standard: report it as the family's, with the count and the shared
-  component that writes it, if one does — not as a difference of the page.
+- If the family writes the generic element too, report it as *A shortfall the
+  family shares*, under *The order of every check*, says.
 - **Where the project states no rule**, the standard used is WCAG 2.2 AA:
   1.3.1, 2.4.1, 2.4.2, 2.4.4, 2.4.6, 3.1.1, 3.1.2 and 4.1.2.
 - **Unevaluated**: a title or a language set where you could not read it.
