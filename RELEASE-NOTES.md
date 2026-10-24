@@ -23,6 +23,9 @@ in this repository.
   follows a new menu — the existing one is changed where it stands, not joined
   by a second. The check reports a role a page has more often than the
   reference and the other pages do (#394).
+- An accessibility check reports a shortfall all your pages share as what the
+  project does, with the count and the standard's number for you to decide,
+  never as a fault of the page it was checking (#402).
 
 ## v1.3.2 (2026-10-08)
 
