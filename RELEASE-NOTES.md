@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.4.0 (2026-10-24)
+
 - Where nothing in the project settles a role, it is written as the element
   whose meaning it has — the technology's own button, navigation or heading —
   instead of a generic block. Where your pages write a generic element for such
