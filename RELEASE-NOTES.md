@@ -13,6 +13,12 @@ in this repository.
   instead of a generic block. Where your pages write a generic element for such
   a role, the new page still follows them, and the element with meaning is
   proposed with the plan (#395).
+- When you ask for an accessibility check, it also checks structure: headings,
+  lists, tables and regions written as what they are, the page's title and
+  language, link text, and a way past what repeats on every page. Every report
+  says that the standard's other criteria were not checked, so it never reads
+  as conformance. Nothing is checked unless you ask or your project requires it
+  (#396).
 
 ## v1.3.2 (2026-10-08)
 
