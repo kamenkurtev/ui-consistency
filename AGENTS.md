@@ -15,9 +15,10 @@ closed anyway.
 
 Before you open a pull request against this repository, you MUST:
 
-1. **Read `.claude/CLAUDE.md` and the three rule files it imports** —
-   `.claude/rules/uic-docs.md`, `uic-git.md`, `uic-pr.md` — and
-   `docs/concept.md`. They are how a change is made here.
+1. **Read `.claude/CLAUDE.md` and the four rule files it imports** —
+   `.claude/rules/uic-docs.md`, `uic-git.md`, `uic-pr.md`,
+   `uic-subagents.md` — and `docs/concept.md`. They are how a change is made
+   here.
 2. **Read the entire pull request template** at
    `.github/pull_request_template.md` and fill in every section with real,
    specific answers. Not summaries. Not placeholders.
