@@ -57,6 +57,12 @@ conventions.** Say so, and run this branch:
 The task adds something the family has never written at this position — a
 second control where every member has one, a control nobody has here.
 
+- **First, look for the role on the page.** If the work gives a role the page
+  already has a new source or new contents — a trail of links that now follows
+  a menu made a tree — it is not a new position: change that instance where it
+  stands, and this section does not apply.
+- Add a second instance of a role the page has only when the request asks for
+  one.
 - **Widen in steps, and keep each count apart**: first the neighbouring position
   in the family — what fills the positions beside it — then the same control at
   other positions across the bound.
@@ -79,6 +85,9 @@ default share.
 
 - **Count each role it takes over over the pages that will use it**, their own
   stores and state included — never over the shared layer's other pieces.
+- **The page's own instance of each role it takes over goes**: the shared piece
+  fills that role where the page's instance stood. Keep both only when the
+  request asks for both.
 - **It takes their kind**: it is counted, checked and calibrated as one of those
   pages.
 - **Its checklist carries what the user sees of that role on the page** — *the
