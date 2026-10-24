@@ -149,8 +149,10 @@ the native widget, the primitive the framework renders.
   heading for a heading. A **generic element** says nothing about what it is: a
   plain block or a run of text that only looks like its role.
 - If the family writes a generic element where the technology has its own,
-  record it as written, and report the other as a proposal
+  record it as written, and propose the element whose meaning the role has
   (`ui-consistency:decisions`, *When to ask anyway*).
+- If a shared component writes the generic element, propose the change in the
+  component, with how many files use it. Never write the role around it.
 - If a shared component fills the role, read its element there once, and record
   it against the component, not against every page that uses it.
 - **If one piece is both** — the project writes the markup directly, or reuses
