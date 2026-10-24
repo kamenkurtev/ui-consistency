@@ -49,8 +49,8 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
 - `.claude/skills/` — skills for working **on** the plugin, which an installed
   plugin never loads: `uic-writing`, how a skill or document here is written and
   what is checked after — loaded when one of those files is being changed; and
-  `uic-auditing`, run by hand with `/uic-auditing`, which checks everything
-  against the current guidance and proposes issues.
+  `uic-auditing`, run when somebody asks for an audit or runs `/uic-auditing`,
+  which checks everything against the current guidance and proposes issues.
 - `hooks/session-start` — a short bash script, run by the `SessionStart` hook
   (`hooks/hooks.json`, through `hooks/run-hook.cmd`, which finds bash on
   Windows). It prints `hooks/session-context.md`, which tells the session which
