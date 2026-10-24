@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: A phase did something unlike what the skill says, or unlike the project
+about: A skill did something unlike what it says, or the plugin failed to load or run. For a page unlike the rest of your project, use A page came out wrong.
 labels: bug
 ---
 

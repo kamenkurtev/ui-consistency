@@ -72,6 +72,8 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 ## 2. Read the reference: top to bottom, then left to right
 
+- Open [words.md](words.md) first: what role, position, holder and family mean
+  here.
 - **If the work has a design for the page** — a picture, a screen described in
   the request, a tree a person agreed with `ui-consistency:design` — read it
   first, in this same order, for **which roles the page has and what each

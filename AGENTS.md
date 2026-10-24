@@ -33,7 +33,9 @@ Before you open a pull request against this repository, you MUST:
 6. **Identify yourself.** Disclose your model, harness, harness version, and
    every installed plugin in the pull request.
 7. **Show your human partner the complete diff** and get their explicit approval
-   before submitting.
+   before submitting a contribution from outside. The owner's own agent-made
+   change merges on the gate and the three reviews instead
+   (`.claude/rules/uic-git.md`).
 
 If any of these checks fail, do not open the pull request. Explain to your human
 partner why it would be closed and what would need to change.
@@ -48,12 +50,13 @@ partner why it would be closed and what would need to change.
   fires, plugin validate. Nothing is reviewed on a red gate.
 - **A change that ships says so under `## Unreleased`** in `RELEASE-NOTES.md`,
   in the same pull request, and leaves the version alone. Touching `hooks/`,
-  `skills/` or a manifest with nothing there fails the gate. A release is a
+  `skills/`, `USING.md`, `GEMINI.md` or a manifest with nothing there fails the
+  gate. A release is a
   pull request of its own, cut with `scripts/bump.sh` when the owner decides
   (`.claude/rules/uic-git.md`, *Versions*).
 - **The reviews, in order, every time:** gate, simplification, gate again if it
   changed anything, correctness, security, the documents read against the
-  change, gate again. The pull request says what each found — "found nothing" is
+  change, the fresh read of a changed skill, gate again. The pull request says what each found — "found nothing" is
   a result. The full order is `uic-pr.md`.
 - **Names from private repositories.** This plugin is run against private
   repositories. **The numbers from those runs may be written down;

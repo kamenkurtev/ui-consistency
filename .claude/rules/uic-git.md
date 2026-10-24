@@ -52,8 +52,10 @@
 - **A PR that changes what ships adds its line under `## Unreleased`** in
   `RELEASE-NOTES.md`, saying what somebody who installed the plugin will
   notice, and leaves the version alone.
-  - The gate fails on a branch touching `hooks/`, `skills/` or a manifest with
-    nothing under *Unreleased*. Docs, scripts and rules alone need no line.
+  - The gate fails on a branch touching `hooks/`, `skills/`, `USING.md`,
+    `GEMINI.md` or a manifest with nothing under *Unreleased*. `USING.md` and
+    `GEMINI.md` are what a harness with no hook loads. Docs, scripts and rules
+    alone need no line.
 - **A release is cut when the owner decides**, as a PR of its own.
   - `scripts/bump.sh` (`minor` / `major` as above) moves the version in every
     file that carries it, and turns *Unreleased* into the new version's section.

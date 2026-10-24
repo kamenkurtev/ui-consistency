@@ -23,15 +23,16 @@ being asked.
 | a small change to one page | `ui-consistency:adjusting` → implementing → verifying. The check is never the part that gets dropped. |
 | checking code already written | verifying — after finding-patterns where no checklist exists yet |
 | a design for the page, a new page with no page near enough to follow, or a wish to see a page before it is built | `ui-consistency:design`, on its own or from finding-patterns and planning. It agrees the shape in words, and draws it only when asked. |
-| a step that needs the project's values, a count of what its pages do, or a decision between them | `ui-consistency:values`, `ui-consistency:conventions`, `ui-consistency:decisions` — reached from the phases, not started on their own |
+| a step that needs the project's values, a count of what its pages do, or a decision between them | `ui-consistency:values`, `ui-consistency:conventions`, `ui-consistency:decisions` — reached from the phases; `values` also when somebody asks what the project's theme or scale is |
 | measuring against an accessibility standard — only when asked for, or when the project states a requirement | `ui-consistency:accessibility`, on its own or from any phase |
 
 If a process running this work has a spec or plan, add to it, and run
 finding-patterns before its first task that changes what the user sees is
 handed to anyone, whichever process wrote it. Decide by the order the skills
-carry and report what settled each decision; ask only where it ties and the
-change reaches outside the task, or before a component the request did not name
-with its place is created or code is extracted into one.
+carry and report what settled each decision. Ask only about a request that says
+two things or leaves open what the page must show, a tie whose change reaches
+outside the task, or a component the request did not name with its place, or
+code extracted into one.
 
 - **finding-patterns** — reads the reference page top to bottom and left to
   right, searches what the other pages reuse and how, takes values from the

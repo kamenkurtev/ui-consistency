@@ -42,7 +42,7 @@ the skill invoked.
    reported with its number so a person decides. The one used here is WCAG 2.2
    AA.
 4. **Where nobody asked and the project states none**, say in one line that no
-   standard is measured, and stop at step 1.
+   standard is measured, and stop at step 1 of this order.
 5. **What could not be evaluated is named.**
 
 Where the project's own rule differs from the standard, the project's rule
@@ -155,7 +155,7 @@ arithmetic are in [contrast.md](contrast.md).
   where it goes; a heading or label that does not describe what it heads or
   labels; a page, or a part in another language, that does not state its
   language; a control the project builds itself whose role is not stated. Its
-  name is subject 4's.
+  name is checked under *4. How a field is tied to its label*.
 - If the family writes the generic element too, report it as *A shortfall the
   family shares*, under *The order of every check*, says.
 - **Where the project states no rule**, the standard used is WCAG 2.2 AA:

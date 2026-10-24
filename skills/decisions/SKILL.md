@@ -56,8 +56,8 @@ a role over the whole family, then *which way* over the members that have it
    - The piece's own documentation naming a variant for a position is a written
      rule ([rare.md](rare.md), *A written rule the code does not follow*).
    - **Two shared pieces for one role**: decide between them by the order from
-     the top, the request first, then levels 5 and 6 over the members that use
-     either. If no member uses either, take the one used in
+     the top: the request first, then an override, then levels 5 and 6 over the
+     members that use either. If no member uses either, take the one used in
      more files across what the page can import from. Report both, with where
      and how often each is used.
 5. **What the newest members write** — only where a count has no majority. The

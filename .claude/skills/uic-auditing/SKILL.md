@@ -24,9 +24,9 @@ Reads the current guidance from its source, checks every skill against it and ev
    - Check them also against anything the guidance now says that the list does not: that is a finding about `uic-writing` itself.
 3. **Check the documents** — `USING.md`, `README.md`, `.claude/CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/` — for anything they say about the skills that is no longer true.
 4. **Look for stale references and contradictions** across all of them: every name of a file, section, skill, test or command that points at nothing, and every rule whose copies disagree.
-5. **Use the built-in skills that are installed**, where they fit:
+5. **Use the built-in skills that are installed**, where they fit, read for their rules only — never their workflow, which edits:
    - `claude-md-management:claude-md-improver` for `.claude/CLAUDE.md` and `AGENTS.md`;
-   - `skill-creator` for the skills and their descriptions, read for its rules only.
+   - `skill-creator` for the skills and their descriptions.
    - Start no agent sessions — no evaluation run, no description-triggering loop: a skill change is checked in real work (`AGENTS.md`).
 6. **Report**, in the shape below.
 
