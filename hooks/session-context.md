@@ -19,8 +19,8 @@ If a process running this work has a spec or plan, add to it, and run
 finding-patterns before its first task that changes what the user sees is handed
 to anyone, whichever process wrote it. Decide by the order the skills carry and
 report what settled each decision. Ask only about a request that says two things
-or leaves open what the page must show, a tie whose change reaches outside the
-task, or a component the request did not name with its place, or code extracted
+or leaves open what the page must show; a tie whose change reaches outside the
+task; and a component the request did not name with its place, or code extracted
 into one.
 
 If the person says a page came out wrong, or fixes one by hand, offer once to
