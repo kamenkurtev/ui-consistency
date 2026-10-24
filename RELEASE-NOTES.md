@@ -19,6 +19,10 @@ in this repository.
   says that the standard's other criteria were not checked, so it never reads
   as conformance. Nothing is checked unless you ask or your project requires it
   (#396).
+- When the work changes a role a page already has — a trail of links that now
+  follows a new menu — the existing one is changed where it stands, not joined
+  by a second. The check reports a role a page has more often than the
+  reference and the other pages do (#394).
 
 ## v1.3.2 (2026-10-08)
 

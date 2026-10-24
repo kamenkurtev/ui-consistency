@@ -100,6 +100,10 @@ Beyond the items, compare the same regions:
 
 - the holders and their order;
 - the component in each role;
+- **a role the reference and the family have once on the page, that the page
+  has more than once**, at any positions: report it with the counts, unless the
+  request asked for both — *trail of links ×2, one in the header and one beside
+  the menu; the reference and the other 4 pages have one, in the header*;
 - **the element it comes out as**, and the heading level where the position is a
   heading (`ui-consistency:values`, *Elements*). Report one that
   differs from what the family writes there, with what the others use. Name an

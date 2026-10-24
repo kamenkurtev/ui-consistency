@@ -41,6 +41,9 @@ the skill invoked.
    - **Write the element the checklist records at a position** — the heading
      level included (`ui-consistency:values`, *Elements*).
    - If it records none for a position, say so rather than choosing one.
+   - **Change a role the page already has where it stands**, when the work
+     gives it a new source or new contents. Add a second instance only when the
+     request asks for one.
 3. **Use what the project reuses**: the shared component, helper or class the
    checklist names — never a new one beside it.
    - If the checklist names a new component to create — shared or kept with the

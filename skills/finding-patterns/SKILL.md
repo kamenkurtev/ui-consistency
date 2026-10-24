@@ -220,6 +220,10 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 - Turn the page's tree into the checklist — its shape, and where it goes, are
   [checklist.md](checklist.md).
+- **A role the page already has that the work changes** keeps its line, as the
+  position the task changes: *trail of links — the one in the header, now
+  following the tree; no second one* (`ui-consistency:conventions`, *A position
+  no member has*).
 - If a person asks to see the page-to-be, it is drawn by `ui-consistency:design`,
   step 4 — never unasked.
 - **Write nothing into the project's repository.** A plan this plugin writes
