@@ -1,7 +1,6 @@
 ---
 name: uic-auditing
-description: Audits this plugin's skills and documents against the current guidance for writing skills and for prompting the current Claude models, and reports what to change as a table of findings and proposed issues. Use when somebody runs /uic-auditing in this repository.
-disable-model-invocation: true
+description: Audits this plugin's skills and documents against the current guidance for writing skills and for prompting the current Claude models, and reports what to change as a table of findings and proposed issues. Use only when somebody asks for an audit of this repository's skills, rules or documents, or runs /uic-auditing.
 ---
 
 # Auditing the plugin
