@@ -1,6 +1,6 @@
 ---
 name: accessibility
-description: For what the end user sees — checks whether it can be read and used without a mouse (contrast, focus, keyboard reach, labels, text alternatives, target size) against a standard. Use when asked whether a page meets an accessibility standard, or when the project states an accessibility requirement.
+description: For what the end user sees — checks whether it can be read and used without a mouse (contrast, focus, keyboard reach, labels, text alternatives, target size, structure) against a standard. Use when asked whether a page meets an accessibility standard, or when the project states an accessibility requirement.
 ---
 
 # Accessibility: can it be read, can it be used without a mouse
@@ -8,7 +8,7 @@ description: For what the end user sees — checks whether it can be read and us
 ## Overview
 
 Checks whether what the end user sees can be read, and used without a mouse, in
-six subjects **reported separately** — a page can be perfect on contrast and
+seven subjects **reported separately** — a page can be perfect on contrast and
 unusable without a mouse.
 
 ## When it runs
@@ -139,20 +139,42 @@ arithmetic are in [contrast.md](contrast.md).
 - **Unevaluated**: a size set by a stylesheet you could not read, or one that
   only exists once rendered.
 
+## 7. Structure — what the elements say
+
+- **The family first.** How do the other pages mark a heading, a list, a table,
+  the regions of the page, its title and its language? The shared page holder
+  usually does most of it, so a page that writes its own is where it breaks.
+- **Report**: a heading, list, table or region written as a generic element
+  that only looks like one; no way past what repeats on every page; a page with
+  no title, or one that does not say what it is; a link whose text does not say
+  where it goes; a heading or label that does not say what it heads; a page, or
+  a part in another language, that does not state its language; a control the
+  project builds itself that does not say what it is.
+- If the family writes the generic element too, report it as the family's, with
+  the count, not as the page's.
+- **Where the project states no rule**, the standard used is WCAG 2.2 AA:
+  1.3.1, 2.4.1, 2.4.2, 2.4.4, 2.4.6, 3.1.1, 3.1.2 and 4.1.2.
+- **Unevaluated**: a title or a language set where you could not read it.
+
 ## What it lives beside
 
 - **Spacing** is a separate subject — the scale, the rhythm between roles, which
   side owns a gap: `ui-consistency:values`, *Spacing*. Only the
   minimum sizes an external standard sets belong here.
 - **Which element fills a role** is read from the project as a convention, in
-  `ui-consistency:finding-patterns`. This skill never judges which element a
-  role should be; it reports what a person cannot read, reach or use.
+  `ui-consistency:finding-patterns`, which proposes the element whose meaning a
+  role has where the family writes a generic one. Here, structure reports a
+  generic element against the standard, where it asks for the element whose
+  meaning the role has.
 
 ## Say what you could not evaluate
 
 - End with it, every time, per subject: the pairs whose surface could not be
   resolved, the stylesheets you could not read, the behaviour you could not judge
   from the code, the technology you could not read with confidence.
+- **Say in one sentence, every time a standard was used, that its other
+  criteria were not checked**, so the report never reads as conformance with
+  it. Do not list them.
 - Asked on its own, end with the cost as well: how many project files were
   opened and how many searches run.
 - Inside a task, what the family does becomes items on the checklist —

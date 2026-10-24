@@ -148,10 +148,10 @@ Beyond the items, compare the same regions:
   - name a pair whose surface cannot be resolved as unevaluated;
 - **the rest of what a person has to be able to read and use**, each reported
   separately, never as one verdict: focus, reach and order without a mouse, a
-  field and its label, text for what has no words, target size. Check against
-  what the family does, and against a standard only where the checklist says one
-  applies — `ui-consistency:accessibility`. The rules are there; this section
-  does not repeat them;
+  field and its label, text for what has no words, target size, structure.
+  Check against what the family does, and against a standard only where the
+  checklist says one applies — `ui-consistency:accessibility`. The rules are
+  there; this section does not repeat them;
 - nothing the checklist marks *not copied* was copied from the reference — a
   shared piece the reference itself bypasses included, the one most easily
   copied in good faith (`ui-consistency:decisions`, *A named reference does not

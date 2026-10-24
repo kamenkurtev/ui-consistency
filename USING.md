@@ -55,10 +55,10 @@ with its place is created or code is extracted into one.
   its pages do and tell a convention from a habit; and the order that settles a
   choice, with the three things that wait on a person.
 - **accessibility** — optional: contrast, focus, reach without a mouse, a field
-  and its label, text alternatives and target size, each reported separately,
-  measured against a standard only when somebody asks for it or the project
-  states a requirement. Without either, the phases follow what the family
-  already does, and nothing is reported as failing a standard.
+  and its label, text alternatives, target size and structure, each reported
+  separately, measured against a standard only when somebody asks for it or the
+  project states a requirement. Without either, the phases follow what the
+  family already does, and nothing is reported as failing a standard.
 
 If your harness has no skill mechanism, hand a phase to the agent in these
 words, with the path filled in:
