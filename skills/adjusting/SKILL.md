@@ -46,9 +46,9 @@ on the reference — and the theme entries it uses.
   `implementing`.
 - **About twenty-five of each for the whole change**, `implementing`, the
   checkers and every other subagent counted in.
-- **Each named page past the first is not counted, nor its check**: opening,
-  writing and checking it is the work. The budget counts what is read around
-  the pages.
+- **Each named page past the first is not counted, nor its check**, in any count
+  below: opening, writing and checking it is the work. The counts hold what is
+  read around the pages.
 - **Keep two running counts as you go**, files opened and searches run, every
   subagent's included — what the cost line counts. Each is held to the budget
   on its own.

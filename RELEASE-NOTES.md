@@ -24,16 +24,16 @@ in this repository.
   - A live iteration is checked when you ask to commit or push it, or move on to
     another region, as well as when you say it is done.
   - A page is checked, and written, in every state it renders in: who is
-    signed in, a flag, a mode, empty, loading, text longer than its place. A
-    check names the states it did not compare.
+    signed in, a flag, a mode, empty, loading. The writer names the states it
+    did not write, and a check the ones it did not compare.
   - A value is recorded only where it takes effect. A style the installed
     piece ignores is reported, and so is a limit set inside a shared piece.
-  - A piece set beside another in the same role on the same screen is written
+  - A piece set beside another in the same role on the same page is written
     the way that one is: row height, type, hover, selected state, indent.
   - An older screen the work ports or restores is read as the page's design.
   - Tasks added to another process's plan take its own headings and status
     marks, and are checked by its reviewer where it has one. "The code" a
-    checklist yields to is the project's other pages, never the page under
+    checklist yields to is the project as it stands, never the change under
     check.
 
 ## v1.4.0 (2026-10-24)

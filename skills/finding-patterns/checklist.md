@@ -118,7 +118,7 @@ it is written, and what settled it** cannot be ticked without opening the page.
 
 - The first line says when it was read.
 - If the checklist and the code disagree, the code is right — the project's
-  other pages and shared code as they stand, never the page under check. Work
+  pages and shared code as they stand, never the change under check. Work
   the checklist out again from them; never argue with the copy in hand.
 - That first line and the short body make it **the extract a task carries out of
   the repository**. What a task takes with it, and who decides that it goes, is

@@ -56,9 +56,9 @@ the skill invoked.
 4. **What the user sees happen, as the checklist says**: validation, field
    errors, when the submit is enabled, how a failure is caught and shown, loading
    and empty.
-   - **Write each region in every state the code renders it in** — who is
-     signed in, a flag, a mode, empty, loading, a text longer than its
-     place — not only the state in front of you.
+   - **Write each region in every state its own code branches on** — who is
+     signed in, a flag, a mode — not only the state in front of you. Name any
+     state you did not write.
 5. **Values through the theme that applies**, and only entries that exist in it
    (`ui-consistency:values`, *The theme*).
    - For a file in a shared layer, only entries that exist in every theme that

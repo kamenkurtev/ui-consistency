@@ -96,9 +96,9 @@ copy with one planted difference, once per work and kind of page:
 bottom, then left to right, down into its children. Tick nothing you did not
 open.
 
-**Compare each region in every state the code renders it in** — who is
-signed in, a flag, a mode, empty, loading, a text longer than its place — or
-name the states you did not compare. A pass covers only the states compared.
+**Compare each region in every state its own code branches on** — who is
+signed in, a flag, a mode, empty, loading — or name the states you did not
+compare. A pass covers only the states compared.
 
 Beyond the items, compare the same regions:
 
@@ -116,7 +116,7 @@ Beyond the items, compare the same regions:
   as agreed**, is not a deviation. Nor is a generic element the family writes
   at that position, where nobody agreed to the element whose meaning it has;
 - how each is written, against the counts in the checklist;
-- **a piece beside another in the same role on the same screen**, against that
+- **a piece beside another in the same role on the same page**, against that
   one: row height, type, hover, the selected state, indent;
 - **a value written that does not take effect** — one the installed piece does
   not read, one a flag or a wrapper overrides — and a limit set inside a shared

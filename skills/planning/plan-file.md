@@ -26,9 +26,11 @@ three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
 3. **Inside another process's plan**, in its own task headings and status marks.
 
 **Where a plan already exists**, this is what is *added into it* — the tasks,
-with everything each one carries, and a decision a person made against the
-order — written in that plan's own task headings and status marks. Put no
-checkbox into a heading its tooling reads. Never a second document.
+with everything each one carries, and a decision a person made against the order
+— written in that plan's own task headings and status marks. Leave its
+headings as it writes them, with no checkbox added. Where its marks have no
+`parked`, use its nearest open mark and put `parked — <why>` on the task's
+line. Never a second document.
 
 ## The shape
 
@@ -163,6 +165,6 @@ What that test forces:
 **Whoever sends the story decides that it goes** — this says only what it must
 carry when it does.
 
-**The code stays authoritative** — the project's other pages and shared code
-as they stand, never the page under check (`../finding-patterns/checklist.md`,
+**The code stays authoritative** — the project's pages and shared code as they
+stand, never the change under check (`../finding-patterns/checklist.md`,
 *A snapshot, and the code wins*).

@@ -5,9 +5,9 @@ Use them without being asked.
 - A new page or feature, or a refactor across pages:
   ui-consistency:finding-patterns → ui-consistency:planning
   → ui-consistency:implementing → ui-consistency:verifying
-- A fix or a small change to existing pages — QA or review findings, a gap,
-  size, colour, border: ui-consistency:adjusting → implementing → verifying.
-  The check is never dropped.
+- A fix or a small change to existing pages — QA, review or screenshot notes,
+  gap, size, colour, border: ui-consistency:adjusting → implementing
+  → verifying. The check is never dropped.
 - Checking code already written: verifying — after finding-patterns where no
   checklist exists yet.
 - A page's design, or one to agree before building: ui-consistency:design.
@@ -20,9 +20,9 @@ If a process running this work has a spec or plan, add to it, and run
 finding-patterns before its first task that changes what the user sees is handed
 on, whichever process wrote it. Decide by the order the skills carry and report
 what settled each decision. Ask only about a request that says two things or
-leaves open what the page must show; a tie whose change reaches outside the task;
-and a component the request did not name with its place, or code extracted into
-one.
+leaves open what the page must show; a tie whose change reaches outside the
+task; and a component the request did not name with its place, or code extracted
+into one.
 
 If the person says a page came out wrong, or fixes one by hand, offer once to
 draft a report for
