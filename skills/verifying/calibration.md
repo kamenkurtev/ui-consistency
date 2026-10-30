@@ -46,6 +46,8 @@ helper.
   original, or reported as something the reference does too, it does not count.
 - If the planted difference is not reported, the check is blind for that kind of
   difference. **Say so before anything is built or passed.**
+- From then on, every report for that kind of page names that kind of difference
+  as unchecked.
 - **Report what the plant tested, and what no plant tested**: *the plant was a
   heading's weight; nothing tested sizes, scrolling or the words.*
 

@@ -28,8 +28,9 @@ the skill invoked.
   it**, the checklist and `ui-consistency:verifying` go into that reviewer's
   brief, and no second checker is added
   (`../verifying/calibration.md`).
-- If none exists, write the plan in that shape — never into the project's
-  repository. Where it goes is how the phase ends, below.
+- If none exists, write the plan in the shape of [plan-file.md](plan-file.md),
+  never into the project's repository. Where it goes is how the phase ends,
+  below.
 - The checklist each task carries is the one
   `../finding-patterns/checklist.md` defines.
 

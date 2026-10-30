@@ -13,8 +13,9 @@ change from it.
 
 - **The positions a request names** — a label, a value, a gap, a border, a field
   added, what a button does — **on one page, or on the pages it names.**
-- **The pages it writes are the ones the request names.** Find the pages of an
-  area it names by their folder or route, never by measuring pages.
+- **The pages it writes are the ones the request names.** Find the pages of a
+  part of the workspace it names — a section, an app — by their folder or
+  route, never by measuring pages.
 - A new page, or a refactor that changes which pieces pages are built from, is
   not this phase: size it in `ui-consistency:finding-patterns`, step 0.
 - Read with your own search and read tools. No script, no parser.

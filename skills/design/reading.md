@@ -71,8 +71,8 @@ against each other:
 
 - **A design you cannot open** — a link to a tool you have no access to, a file
   you cannot read: say so plainly, and do not guess at it.
-- **A role it shows that the project has no piece for**: ask whether to create
-  one, and where it belongs (`ui-consistency:decisions`,
-  *When to ask anyway*).
+- **A role it shows that the project has no piece for, and the request did not
+  name with its place**: ask whether to create one, and where it belongs
+  (`ui-consistency:decisions`, *When to ask anyway*).
 - **What the design does not show** is not decided by it. Fall back to the family
   and say which lines came from where.
