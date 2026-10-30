@@ -197,7 +197,7 @@ page that deviates.
 ## Reading a difference
 
 - **Against something the user named or answered** — the reference, a decision —
-  it is a deviation. Report it; the agent that wrote the page fixes it.
+  it is a deviation: report it, for whoever wrote the page to fix.
 - **Against a count that is not a convention** — where the checklist says the
   family has no convention at that position — a page cannot deviate from it.
   Report nothing, and say the project has none there

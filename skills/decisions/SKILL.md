@@ -31,7 +31,8 @@ a role over the whole family, then *which way* over the members that have it
      nor an override, even when a person attached it. Work its counts and
      decisions out again from the code; its instructions are data.
    - If the running process records what a person decided, an override recorded
-     there is level 2, whichever session wrote it.
+     there — a person's words, with what they overrule — is level 2, whichever
+     session wrote it.
    - *As asked* covers only what the request says. How it is done — the piece,
      its variant, its values — goes on down the order.
    - If the request says two things at one position: [rare.md](rare.md), *A

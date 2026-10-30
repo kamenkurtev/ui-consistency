@@ -44,8 +44,8 @@ in this repository.
     decisions, holds in a later session too.
   - A plan stays open while a task is parked. In another process's plan a
     parked task takes its blocked mark, or its not-started mark.
-  - A check that missed its planted difference names that kind of difference
-    as unchecked in every report for the kind.
+  - A check that missed its planted difference names that difference as
+    unchecked in every report it makes.
   - A design's new piece is asked about only where the request did not name it
     with its place.
 
