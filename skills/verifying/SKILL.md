@@ -119,7 +119,8 @@ Beyond the items, compare the same regions:
   written for a parent of another size — a fixed height, a scroll of their own —
   that the code shows will size or scroll differently there;
 - **the words the user reads**: the project's string wherever one already says
-  the same thing, and one name for one thing across the page;
+  the same thing, one name for one thing across the page, and a form of words
+  the project's pages already show used only for the meaning it has there;
 - **values through the theme**, not literals — a literal that matches what a
   design showed included (`../design/reading.md`);
 - **a design's value its checklist line records as agreed** — a new entry, or
