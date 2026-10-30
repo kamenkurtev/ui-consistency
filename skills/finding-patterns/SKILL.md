@@ -197,9 +197,10 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **New words the user reads**: reuse the project's string where one already says
   the same thing. Phrase a new one the way the family phrases that kind of string
   — its length, case and tone — and report it as new copy for a person to read.
-- **Give a form of words the family already shows only the meaning it has
-  there.** Where a counter reads *3 of 124* for how far the user has got, a
-  result is not written *109 of 124*: a new meaning gets words of its own.
+  - **Use a form of words the project's pages already show only for the
+    meaning it has there** — a counter, a label, a status. A counter that reads
+    *3 of 124* for how far the user has got is not reused as *109 of 124* for
+    how many were right: a new meaning gets words of its own.
 - **Do not copy the reference's literals.**
 - If the project has **no theme at all**, make one proposal: a single place for
   shared values, in the form the project can use.
