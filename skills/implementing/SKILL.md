@@ -1,6 +1,6 @@
 ---
 name: implementing
-description: For what the end user sees — builds each page from its checklist, one page per task. Use when writing or changing UI and a checklist or UI plan exists, whether executing that plan page by page, refactoring a set of pages, or making a small change to one page.
+description: For what the end user sees — builds each page from its checklist, one page per task. Use when writing or changing UI and a checklist or UI plan exists, whether executing that plan page by page, refactoring a set of pages, or making a fix or a small change to pages that exist.
 ---
 
 # Implementing from the checklist
@@ -56,6 +56,9 @@ the skill invoked.
 4. **What the user sees happen, as the checklist says**: validation, field
    errors, when the submit is enabled, how a failure is caught and shown, loading
    and empty.
+   - **Write each region in every state the code renders it in** — who is
+     signed in, a flag, a mode, empty, loading, a text longer than its
+     place — not only the state in front of you.
 5. **Values through the theme that applies**, and only entries that exist in it
    (`ui-consistency:values`, *The theme*).
    - For a file in a shared layer, only entries that exist in every theme that
@@ -142,7 +145,7 @@ one owns what the end user sees.
 
 - `ui-consistency:adjusting` prepares it: what is read, and what is
   deliberately skipped.
-- Take the checklist for one region it produced, re-read it, and make the change.
+- Take the checklist it produced, re-read it, and make the change.
 - Before calling it done, hand the page to `ui-consistency:verifying`, run by an
   agent that did not write it. The check is not the part that gets dropped
   because the change was small.

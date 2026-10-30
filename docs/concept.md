@@ -74,10 +74,11 @@ superpowers is running or not:
 4. **Verify** — a separate agent compares each page with the reference, region by
    region, and then the whole set.
 
-A change to one region of one page takes a shorter phase of its own, which reads
-only that position across the pages. Three more skills are called from the
-phases when a step needs them: the project's values — theme, spacing, type,
-elements — how to count what its pages do, and the order that settles a choice.
+A fix or a small change to pages that exist takes a shorter phase of its own,
+which reads only the positions it touches across the pages. Three more skills
+are called from the phases when a step needs them: the project's values —
+theme, spacing, type, elements — how to count what its pages do, and the order
+that settles a choice.
 Two are asked for on their own or reached from a phase: a page's design, agreed
 in words before it is built, and an accessibility standard, measured only when
 somebody asks for it or the project states one.

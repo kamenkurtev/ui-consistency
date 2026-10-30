@@ -15,6 +15,26 @@ in this repository.
 - New words on a page no longer take a form the other pages use with another
   meaning, such as a progress counter reused for a result. A new meaning gets
   words of its own (#411).
+- Fix work runs the plugin, and the check, the checklist and the plan fit the
+  work as it runs (#414):
+  - A QA finding, a review comment, a screenshot with a note, or a gap, size,
+    colour or border to change starts `adjusting`. It covers the positions the
+    request names, on one page or on every page it names, without measuring
+    the rest. It names the pages it leaves writing that position the old way.
+  - A live iteration is checked when you ask to commit or push it, or move on to
+    another region, as well as when you say it is done.
+  - A page is checked, and written, in every state it renders in: who is
+    signed in, a flag, a mode, empty, loading, text longer than its place. A
+    check names the states it did not compare.
+  - A value is recorded only where it takes effect. A style the installed
+    piece ignores is reported, and so is a limit set inside a shared piece.
+  - A piece set beside another in the same role on the same screen is written
+    the way that one is: row height, type, hover, selected state, indent.
+  - An older screen the work ports or restores is read as the page's design.
+  - Tasks added to another process's plan take its own headings and status
+    marks, and are checked by its reviewer where it has one. "The code" a
+    checklist yields to is the project's other pages, never the page under
+    check.
 
 ## v1.4.0 (2026-10-24)
 

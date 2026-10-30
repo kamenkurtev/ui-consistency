@@ -96,6 +96,10 @@ copy with one planted difference, once per work and kind of page:
 bottom, then left to right, down into its children. Tick nothing you did not
 open.
 
+**Compare each region in every state the code renders it in** — who is
+signed in, a flag, a mode, empty, loading, a text longer than its place — or
+name the states you did not compare. A pass covers only the states compared.
+
 Beyond the items, compare the same regions:
 
 - the holders and their order;
@@ -112,6 +116,12 @@ Beyond the items, compare the same regions:
   as agreed**, is not a deviation. Nor is a generic element the family writes
   at that position, where nobody agreed to the element whose meaning it has;
 - how each is written, against the counts in the checklist;
+- **a piece beside another in the same role on the same screen**, against that
+  one: row height, type, hover, the selected state, indent;
+- **a value written that does not take effect** — one the installed piece does
+  not read, one a flag or a wrapper overrides — and a limit set inside a shared
+  piece that the checklist does not carry: report what renders, and where it is
+  set;
 - the reused pieces: the shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;

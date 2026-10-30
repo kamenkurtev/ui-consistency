@@ -1,6 +1,6 @@
 ---
 name: planning
-description: For what the end user sees — turns each page's checklist into a plan of one checkable task per page. Use when UI work spans several steps or pages (a new feature, a refactor of many pages, one change applied to every page), including when another planning skill is about to write that plan.
+description: For what the end user sees — turns each page's checklist into a plan of one checkable task per page. Use when UI work spans several steps or pages (a new feature, a refactor of many pages), including when another planning skill is about to write that plan.
 ---
 
 # Planning from the checklist
@@ -19,8 +19,9 @@ the skill invoked.
 ## Joining a process, or running alone
 
 - If a process running this work has a plan — another planning process wrote
-  it — add the tasks below **into that plan**, in the shape in
-  [plan-file.md](plan-file.md). Do not write a second one.
+  it — add the tasks below **into that plan**, in its own task headings and
+  status marks, each carrying what [plan-file.md](plan-file.md) puts in a task.
+  Do not write a second one.
 - A plan or pattern file written before this work began is not that plan: it is
   read as `ui-consistency:decisions`, level 1, says.
 - **If that process already sends each task to a reviewer that did not write
@@ -59,8 +60,10 @@ the skill invoked.
   2. *Report the page ready for its check. Whoever dispatched this task sends
      it to the checker of its kind — the one agent with
      `ui-consistency:verifying` kept for every page of this kind, started at the
-     first, never the one that wrote it — and sends back what it reports; fix
-     that.*
+     first, never the one that wrote it — or, where the running process has each
+     task reviewed, to that reviewer, with this checklist and
+     `ui-consistency:verifying` in its brief; and sends back what it reports.
+     Fix that.*
   3. *Report the status — to this plan, or to whoever handed the task over:
      `done` once the check has passed, or `parked — <why>`.*
 
@@ -98,7 +101,7 @@ repository, in [plan-file.md](plan-file.md).
   this is the process, reported with the result when the plan closes.
 - Move each task it was holding up from `parked` back to `todo`.
 - Never write an override nobody gave.
-- A small change to one page has no plan and does not stop.
+- A fix or a small change has no plan and does not stop.
 
 ## How the phase ends
 

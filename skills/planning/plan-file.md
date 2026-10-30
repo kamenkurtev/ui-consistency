@@ -23,11 +23,12 @@ three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
      **outside the working copy** — the scratch location the harness gives —
      deleted with the work.
 2. **Attached to a story** somebody else will implement — *The story*, below.
-3. **Inside another process's plan**, in its shape.
+3. **Inside another process's plan**, in its own task headings and status marks.
 
-**Where a plan already exists**, this is the shape of what is *added into it* —
-the tasks, with everything each one carries, and a decision a person made against
-the order. Never a second document.
+**Where a plan already exists**, this is what is *added into it* — the tasks,
+with everything each one carries, and a decision a person made against the
+order — written in that plan's own task headings and status marks. Put no
+checkbox into a heading its tooling reads. Never a second document.
 
 ## The shape
 
@@ -85,8 +86,10 @@ with the result, since nothing else keeps it.
       2. Report the page ready for its check. Whoever dispatched this task
          sends it to the checker of its kind — the one agent with
          `ui-consistency:verifying` kept for every page of this kind, started at
-         the first, never the one that wrote it or the one calibrated — and
-         sends back what it reports; fix that.
+         the first, never the one that wrote it or the one calibrated — or,
+         where the running process has each task reviewed, to that reviewer,
+         with this checklist and `ui-consistency:verifying` in its brief; and
+         sends back what it reports. Fix that.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
@@ -160,6 +163,6 @@ What that test forces:
 **Whoever sends the story decides that it goes** — this says only what it must
 carry when it does.
 
-**The code stays authoritative**
-(`../finding-patterns/checklist.md`, *A snapshot, and the code
-wins*).
+**The code stays authoritative** — the project's other pages and shared code
+as they stand, never the page under check (`../finding-patterns/checklist.md`,
+*A snapshot, and the code wins*).
