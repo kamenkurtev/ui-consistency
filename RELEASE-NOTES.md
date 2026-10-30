@@ -12,6 +12,9 @@ in this repository.
   set of screens, now have a bound and a theme: the pages that load a file the
   reference loads too, and the shared values they load, such as a tokens
   file (#410).
+- New words on a page no longer take a form the other pages use with another
+  meaning, such as a progress counter reused for a result. A new meaning gets
+  words of its own (#411).
 
 ## v1.4.0 (2026-10-24)
 
