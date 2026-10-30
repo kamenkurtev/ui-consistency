@@ -19,7 +19,8 @@ the theme are defined in `ui-consistency:values`, *Elements* and *The theme*.
 - **Holder** — a region that frames other roles: the page holder, a header, a
   toolbar, a sidebar, the content area, a footer, a dialog frame.
 - **Region** — a part of the page that holds roles: a holder, a form, a dialog.
-  A small change touches one region of one page.
+  A small change touches the positions a request names, on one page or on the
+  pages it names.
 - **Shared piece** — anything the project reuses across pages for one concern:
   a component, a helper, a class. *The project's own piece* for a role is the
   shared piece its pages reach for there.
@@ -30,12 +31,13 @@ the theme are defined in `ui-consistency:values`, *Elements* and *The theme*.
 - **Bound** — defined in `ui-consistency:conventions`, *The bound the family is
   counted in*.
 - **Shape** — which roles a page has, in what order, and what each shows.
-- **Design** — where a page's shape comes from when it is not a page already
-  built: a picture, a described screen, a prototype, or a tree a person agreed
-  (`ui-consistency:design`). Its values are matched to the theme, never counted.
-  A `DESIGN.md` at the project root is not a page's design: it is the project's
-  design system in words, its values matched to the theme the way a design's
-  are (`ui-consistency:values`, *The theme*).
+- **Design** — where a page's shape comes from when it is not a page the
+  project has now: a picture, a described screen, an older screen the work
+  ports, a prototype, or a tree a person agreed (`ui-consistency:design`). Its
+  values are matched to the theme, never counted. A `DESIGN.md` at the project
+  root is not a page's design: it is the project's design system in words, its
+  values matched to the theme the way a design's are (`ui-consistency:values`,
+  *The theme*).
 - **Kind** — what the page the task builds or changes is — a list, a detail
   view, a form — decided before counting (`ui-consistency:conventions`, *Which
   kind of page this is*). A shared piece built for those pages is of their kind.

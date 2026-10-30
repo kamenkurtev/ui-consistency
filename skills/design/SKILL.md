@@ -1,6 +1,6 @@
 ---
 name: design
-description: For what the end user sees — reads the design for a page where there is one, and where there is none agrees the page's shape with the person, as a tree of the project's own pieces, before any code; draws it only when asked. Use when a request comes with a design, a picture or a described screen, when a new page has no page near enough to follow, or when somebody wants to see how a page will look before it is built.
+description: For what the end user sees — reads the design for a page where there is one, and where there is none agrees the page's shape with the person, as a tree of the project's own pieces, before any code; draws it only when asked. Use when a request comes with a design, a picture, a described screen or an older screen to port, when a new page has no page near enough to follow, or when somebody wants to see how a page will look before it is built.
 ---
 
 # Design: the page's shape, read or agreed
@@ -30,6 +30,9 @@ there is none — in words, drawn only when asked.
 
 - **Look before deciding there is none**: what came with the request, what the
   task or ticket carries, what the request points at.
+- **An older screen the work ports or restores** — in the project's history or
+  beside it — is the page's design: read it for its roles, their order, what it
+  shows in each state, and where it splits the page.
 - Say which it was, or say there was no design — otherwise an agent that never
   looked and an agent that found nothing report the same thing.
 - A `DESIGN.md` at the project root is not this page's design: its values are

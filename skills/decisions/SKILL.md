@@ -80,6 +80,13 @@ a role over the whole family, then *which way* over the members that have it
      it, add its way to *not copied*, and report that it was the drifting page,
      so a refactor changes it too.
 
+**A piece beside another that fills the same role on the same page** — rows
+set next to the menu's rows — is written the way that one is: row height, the
+whole type bundle, hover, the selected state, indent. It settles how the role is
+written there after levels 1 to 3 and before every count, level 4's count of how
+the piece is written included; levels 3 and 4 still settle which piece fills the
+role. Report the count it goes against.
+
 **If nothing is near enough to be a reference**: [rare.md](rare.md), *With
 nothing near enough to be a reference*. **If nothing at all is written** — no
 shared piece, no majority, no reference: [rare.md](rare.md), *What this does not

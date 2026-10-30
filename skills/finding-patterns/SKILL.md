@@ -28,16 +28,16 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 | The work | Branch | May read | May write |
 |---|---|---|---|
-| a new page, a set of pages, a refactor across pages | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
-| one region of one page — a label, a value, a field, a button | `ui-consistency:adjusting` | the page, and that one position across the family — its budget | the page only — with the files only it uses |
+| a new page, a set of pages, a refactor of which pieces pages are built from | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
+| a fix or a small change to pages that exist — the positions a request names, on one page or on the pages it names | `ui-consistency:adjusting` | those pages, and those positions across the family — its budget | those pages only — with the files only they use |
 | checking code already written | `ui-consistency:verifying`, after this phase where no checklist exists | the checklist and the page | a report |
 
-- **Say it in one line** before anything else: *sized as one region of one page —
-  a button beside the existing one.*
+- **Say it in one line** before anything else: *sized as a small change — a
+  button beside the existing one, on one page.*
 - If what you read shows a small change is bigger than it was sized — it passes
   fifty files or fifty searches (`ui-consistency:adjusting`, *The budget*), or it
-  would write outside the page — **say so, and run the whole phase from step 1**
-  before anything more is written. Never widen silently.
+  would write outside the pages it names — **say so, and run the whole phase
+  from step 1** before anything more is written. Never widen silently.
 
 ## Joining a process, or running alone
 
@@ -75,9 +75,9 @@ Decide the branch **from the request alone, before any project file is opened**.
 - Open [words.md](words.md) first: what role, position, holder and family mean
   here.
 - **If the work has a design for the page** — a picture, a screen described in
-  the request, a tree a person agreed with `ui-consistency:design` — read it
-  first, in this same order, for **which roles the page has and what each
-  shows** (`../design/reading.md`).
+  the request, an older screen the work ports, a tree a person agreed with
+  `ui-consistency:design` — read it first, in this same order, for **which roles
+  the page has and what each shows** (`../design/reading.md`).
 - The family answers what fills each role and how it is written, and its values
   are the ones written.
 - A design's values are matched to the theme, never written as they stand
@@ -273,7 +273,7 @@ In this order; the rules are in `ui-consistency:conventions`:
 ## Then
 
 - For a new page or a refactor: `ui-consistency:planning`.
-- A small change to one page, sized so at step 0, goes to
+- A fix or a small change, sized so at step 0, goes to
   `ui-consistency:adjusting` in place of steps 1–8.
 
 ## Red flags

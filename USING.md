@@ -20,7 +20,7 @@ being asked.
 | --- | --- |
 | a new page or feature | `ui-consistency:finding-patterns` → `ui-consistency:planning` → `ui-consistency:implementing` → `ui-consistency:verifying` |
 | a refactor across pages | the same four |
-| a small change to one page | `ui-consistency:adjusting` → implementing → verifying. The check is never the part that gets dropped. |
+| a fix or a small change to pages that exist — a QA or review finding, a screenshot with a note, a gap, size, colour or border, a label | `ui-consistency:adjusting` → implementing → verifying. The check is never the part that gets dropped. |
 | checking code already written | verifying — after finding-patterns where no checklist exists yet |
 | a design for the page, a new page with no page near enough to follow, or a wish to see a page before it is built | `ui-consistency:design`, on its own or from finding-patterns and planning. It agrees the shape in words, and draws it only when asked. |
 | a step that needs the project's values, a count of what its pages do, or a decision between them | `ui-consistency:values`, `ui-consistency:conventions`, `ui-consistency:decisions` — reached from the phases; `values` also when somebody asks what the project's theme or scale is |
@@ -38,8 +38,8 @@ code extracted into one.
   right, searches what the other pages reuse and how, takes values from the
   theme, and writes the task's checklist. A named reference settles what the page
   is, not whether to use a piece the project shares.
-- **adjusting** — a change to one region of one page: reads that one position
-  across the family, skips the rest deliberately, and says so.
+- **adjusting** — a fix or a small change to pages that exist: reads the positions
+  it touches across the family, skips the rest deliberately, and says so.
 - **planning** — one task per page, each carrying its checklist, what not to
   copy, and a check by a separate agent; stops for a yes.
 - **implementing** — one page per task in a fresh context, from the checklist.

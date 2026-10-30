@@ -41,6 +41,12 @@ what is particular to each.
 - **What cannot be read** — a stylesheet you could not open, a piece whose
   insides are not in the repository — is unevaluated. Never assume the usual
   one.
+- **Record a value only where it takes effect.** A value passed to a piece that
+  the installed version does not read, or one a flag or a wrapper overrides, is
+  not what renders; a limit set inside a shared piece is, though no page writes
+  it.
+- Follow a value into the piece where its source is in the project. Where it is
+  not, name what renders as unevaluated.
 - **Carry no number the project did not produce.** A minimum size or a contrast
   threshold is a standard, and only `ui-consistency:accessibility` measures one,
   when it is asked for or the project requires it.

@@ -64,8 +64,9 @@ A new page with nothing close enough to follow gets its shape agreed with you
 first, in words, as a tree of your own components. It is drawn, with your
 project's values, only if you ask to see it.
 
-A small change to one page skips the plan. Checking code that is already written
-is the last phase, after the first one where no checklist exists yet.
+A fix or a small change to pages that exist skips the plan. Checking code that
+is already written is the last phase, after the first one where no checklist
+exists yet.
 
 It works on its own, and it works inside another process: where
 [superpowers](https://github.com/obra/superpowers) or another process has already
@@ -146,7 +147,7 @@ harness-specific. `USING.md` gives the words to hand a phase to an agent with.
 The agent picks them up on its own. You don't need to name them.
 
 - **finding-patterns** — how pages of this kind are built here
-- **adjusting** — a change to one region of one page, the way the others write it
+- **adjusting** — a fix or a small change to pages that exist, the way the others write it
 - **planning** — one checkable task per page
 - **implementing** — one page at a time, from the checklist
 - **verifying** — a separate agent compares each page with the reference
