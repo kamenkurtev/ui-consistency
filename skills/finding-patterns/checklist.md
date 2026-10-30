@@ -64,7 +64,7 @@ app, read 2026-09-17
       3 of 4 across 4 files
 - [ ] request failure — the shared error helper, not a new message box — 3 of 4
 - [ ] colour and spacing through the theme, on its base of 4; no literal — the
-      shared piece, 4 of 4, 4 files
+      majority, 4 of 4, 4 files
 - [ ] not copied from orders: its title text, the margin only it has, and its
       own error box — the project has a shared error helper
 ````

@@ -95,9 +95,9 @@ with the result, since nothing else keeps it.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
-- [ ] **Close the plan** — once every task above is done, never while one is
-      parked: report what is under `## Decided` with the result, and delete
-      the plan where it was a file.
+- [ ] **Close the plan** — once every task above is done or parked, and none
+      is waiting on a person: report what is under `## Decided` with the
+      result, and delete the plan where it was a file.
 ````
 
 ## Every task stands alone
@@ -125,7 +125,8 @@ does not travel with it.
 
 ## When the work is done
 
-Every task done, and the last check passed: **the plan is closed.**
+Every task done or parked, none waiting on a person, and the last check passed:
+**the plan is closed.**
 
 - **The tasks and their checklists go.**
 - **What a person decided is reported** with the result.
@@ -133,8 +134,8 @@ Every task done, and the last check passed: **the plan is closed.**
   (`ui-consistency:decisions`, *An override*); this plugin keeps none of its
   own.
 - **A file is deleted** where the plan was one.
-- **A parked task is not done.** While one is parked, the plan stays open and
-  says so in its status line.
+- **A task waiting on a person is not done.** While one waits, the plan stays
+  open and says so in its status line.
 
 ## The story
 

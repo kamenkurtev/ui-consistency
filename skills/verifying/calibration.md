@@ -45,9 +45,8 @@ helper.
   against the checklist or the family. Found by comparing the copy with its
   original, or reported as something the reference does too, it does not count.
 - If the planted difference is not reported, the check is blind for that kind of
-  difference. **Say so before anything is built or passed.**
-- From then on, every report of that check names the difference the plant
-  tested as unchecked.
+  difference. **Say so before anything is built or passed**, and name the
+  difference the plant tested as unchecked in every report that check makes.
 - **Report what the plant tested, and what no plant tested**: *the plant was a
   heading's weight; nothing tested sizes, scrolling or the words.*
 

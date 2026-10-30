@@ -42,8 +42,8 @@ in this repository.
     classes and shared pieces its comparisons need.
   - An override you gave, recorded where the running process keeps your
     decisions, holds in a later session too.
-  - A plan stays open while a task is parked. In another process's plan a
-    parked task takes its blocked mark, or its not-started mark.
+  - A plan stays open while a task waits on a person. In another process's
+    plan a parked task takes its blocked mark, or its not-started mark.
   - A check that missed its planted difference names that difference as
     unchecked in every report it makes.
   - A design's new piece is asked about only where the request did not name it
