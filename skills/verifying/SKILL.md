@@ -67,7 +67,7 @@ Then:
 **The checklist and the page first, then the project where they do not answer.**
 A checklist is eight to twelve lines on purpose, and the regions below are more
 than any checklist carries. Read the repository the way `finding-patterns` does,
-for two things only:
+for three things only:
 
 - **A region the checklist does not carry**: re-derive it from the code — its
   own search, run on the reference first, in the bound the checklist names
@@ -77,6 +77,9 @@ for two things only:
 - **A line of the checklist you have reason to doubt** — a count that does not
   match what you see: recount it the same way. Report a wrong line as a
   correction of the checklist, never as a deviation of the page.
+- **What a comparison below sends you to look up**: the theme that renders
+  each value, the stylesheets the page loads and the classes it uses, the shared
+  pieces it reuses.
 
 Read no further than that: the checklist and the page stay the thing checked.
 Read no process's own state — its plan, its ledger, its progress files — beyond
@@ -185,16 +188,16 @@ page that deviates.
 
 ```
 <path to the page> against <kind of page>
-  <page title>        two levels down — the other 4 pages write the page title one level down
+  <page title>        two levels down — the majority: the other 4 pages write the page title one level down
   <submit button>     a larger size and another style — the reference has neither, nor do the other 3 submit buttons
-  request failure     its own message box — the other 3 pages use <the shared error helper>
+  request failure     its own message box — the shared piece: the other 3 pages use <the shared error helper>
   <secondary button>  a literal margin — the theme has a spacing value for it
 ```
 
 ## Reading a difference
 
 - **Against something the user named or answered** — the reference, a decision —
-  it is a deviation. Fix it.
+  it is a deviation: report it, for whoever wrote the page to fix.
 - **Against a count that is not a convention** — where the checklist says the
   family has no convention at that position — a page cannot deviate from it.
   Report nothing, and say the project has none there

@@ -39,6 +39,8 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 - Name the scope a rule covers — *every page*, *each line of the checklist* — where it holds beyond the item in front of it: the current models read an instruction literally and do not carry it to the next item.
 - Write what holds through a task as a standing instruction — *re-read the checklist before every page*, not *re-read the checklist*: Claude Code does not load a skill again on later turns (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
 - Write an exception as its own line, its condition first — *If …, …* — never as a clause inside the rule it limits.
+- Ask for what was done and what settled it, never for the reasoning written out: the current models may decline a request to write out their reasoning (the Fable 5.1 and Opus 5 pages of the prompting guide).
+- Have a check note every finding, the uncertain ones included, and filter in a step of its own: a check told to report only what matters finds less (the Sonnet 5 and Opus 4.8 pages).
 
 **A `SKILL.md`**
 
@@ -80,7 +82,7 @@ Before the change is done:
    - a changed line that disagrees with any line of the full files;
    - a word a changed line uses in a sense different from its other uses in the full files — or, in a shipped skill, a term of the plugin's own that `words.md` does not define.
 
-   Ask for at most five items, ranked by how much each changes what an agent does. Then:
+   Ask it to find every such line first, then to name at most five, ranked by how much each changes what an agent does. Then:
 
    - Fix every item that changes what an agent does. If a changed line disagrees with older wording, fix the pair, as step 2 asks.
    - Say in the pull request what was fixed and name any other item; "nothing" is a result.

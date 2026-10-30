@@ -29,8 +29,8 @@ three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
 with everything each one carries, and a decision a person made against the order
 — written in that plan's own task headings and status marks. Leave its
 headings as it writes them, with no checkbox added. Where its marks have no
-`parked`, use its nearest open mark and put `parked — <why>` on the task's
-line. Never a second document.
+`parked`, mark the task the way it marks a blocked one — or, with no such mark,
+one not started — and put `parked — <why>` on its line. Never a second document.
 
 ## The shape
 
@@ -95,9 +95,9 @@ with the result, since nothing else keeps it.
       3. Report the status here — or, handed on without this plan, to whoever
          handed it over: `done` once the check has passed, or `parked — <why>`.
 - [ ] **<page>** — `parked — <why>`
-- [ ] **Close the plan** — once every task above is done or parked: report what
-      is under `## Decided` with the result, and delete the plan where it was a
-      file.
+- [ ] **Close the plan** — once every task above is done or parked, and none
+      is waiting on a person: report what is under `## Decided` with the
+      result, and delete the plan where it was a file.
 ````
 
 ## Every task stands alone
@@ -125,7 +125,8 @@ does not travel with it.
 
 ## When the work is done
 
-Every task done or parked, and the last check passed: **the plan is closed.**
+Every task done or parked, none waiting on a person, and the last check passed:
+**the plan is closed.**
 
 - **The tasks and their checklists go.**
 - **What a person decided is reported** with the result.
@@ -133,8 +134,8 @@ Every task done or parked, and the last check passed: **the plan is closed.**
   (`ui-consistency:decisions`, *An override*); this plugin keeps none of its
   own.
 - **A file is deleted** where the plan was one.
-- **A parked task is not done.** While one is parked, the plan stays open and
-  says so in its status line.
+- **A task waiting on a person is not done.** While one waits, the plan stays
+  open and says so in its status line.
 
 ## The story
 

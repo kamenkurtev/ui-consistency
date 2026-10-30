@@ -52,8 +52,9 @@ app, read 2026-09-17
 - [ ] rows — the shared table, row height on the base — 4 of 4, 4 files
       (the three above: the holder's, the toolbar's and the table's exact names,
       over the 4 members' page files)
-- [ ] open row — marked the way shipments marks it (the mechanism), with the
-      theme's pale tint the other 3 use (the values)
+- [ ] open row — marked the way shipments marks it (the mechanism), as asked;
+      with the theme's pale tint the other 3 use (the values), the majority,
+      3 of 4
 - [ ] filter control — the shared toggle, showing *on* while a filter applies —
       10 of 14
 - [ ] form — validated through the shared helper, not its own — the shared piece,
@@ -62,7 +63,8 @@ app, read 2026-09-17
 - [ ] submit — the shared button, full-width, in the content area — the majority,
       3 of 4 across 4 files
 - [ ] request failure — the shared error helper, not a new message box — 3 of 4
-- [ ] colour and spacing through the theme; no literal, nothing off the base
+- [ ] colour and spacing through the theme, on its base of 4; no literal — the
+      majority, 4 of 4, 4 files
 - [ ] not copied from orders: its title text, the margin only it has, and its
       own error box — the project has a shared error helper
 ````

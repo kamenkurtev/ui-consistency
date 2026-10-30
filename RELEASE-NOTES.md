@@ -35,6 +35,19 @@ in this repository.
     marks, and are checked by its reviewer where it has one. "The code" a
     checklist yields to is the project as it stands, never the change under
     check.
+- The skills agree with each other after an audit against the current guidance
+  (#416):
+  - A checker reports a deviation from what you named or answered, and the agent
+    that wrote the page fixes it. A checker also reads the theme, stylesheets,
+    classes and shared pieces its comparisons need.
+  - An override you gave, recorded where the running process keeps your
+    decisions, holds in a later session too.
+  - A plan stays open while a task waits on a person. In another process's
+    plan a parked task takes its blocked mark, or its not-started mark.
+  - A check that missed its planted difference names that difference as
+    unchecked in every report it makes.
+  - A design's new piece is asked about only where the request did not name it
+    with its place.
 
 ## v1.4.0 (2026-10-24)
 

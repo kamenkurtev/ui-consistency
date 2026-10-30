@@ -30,7 +30,8 @@ Reads the current guidance from its source, checks every skill against it and ev
    - Start no agent sessions — no evaluation run, no description-triggering loop: a skill change is checked in real work (`AGENTS.md`).
 6. **Report**, in the shape below.
 
-- Report a finding only when fixing it makes the plugin more effective.
+- Note every finding as you go, the uncertain ones included.
+- Then report as findings only those whose fix makes the plugin more effective, and name the rest under *Left out*, with why.
 - Earlier issues, commits and decisions are not arguments for or against one.
 
 ## The report
@@ -49,6 +50,9 @@ Reads the current guidance from its source, checks every skill against it and ev
 | Issue | Findings | One logical change |
 |---|---|---|
 | <title, as a statement of the end state> | 1, 4 | <what the pull request would do> |
+
+## Left out
+- <a finding, and why fixing it would not make the plugin more effective>
 
 ## Not checked
 - <what the audit could not judge, and why>

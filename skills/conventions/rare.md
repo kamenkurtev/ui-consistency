@@ -45,9 +45,9 @@ conventions.** Say so, and run this branch:
   page reuses, the spacing scale, how failures are caught and shown.
 - Say which bound produced each — those numbers are the real result of such a
   run.
-- **Say that `Particular to the reference` cannot be separated out**, because
-  nothing repeats, rather than leaving the section empty as if it had been
-  checked.
+- **On the checklist's *not copied* line, say that what is particular to the
+  reference cannot be separated out**, because nothing repeats, rather than
+  leaving the line empty as if it had been checked.
 - **If there is no nearest kind either** — nothing to count anywhere — the result
   is that the project has nothing to compare against yet. Say it, and ask
   nothing: there is no contradiction, only an empty project.
