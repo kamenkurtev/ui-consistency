@@ -133,6 +133,8 @@ the skill invoked.
       checker.
 16. **Mark it** in the plan: ticked for `done`, or left unticked with
     `parked — <why>` (`../planning/plan-file.md`).
+    - Where another process keeps the plan, mark it in that plan's own status
+      marks.
     - If you were handed the task without the plan, report the same status to
       whoever handed it over.
 

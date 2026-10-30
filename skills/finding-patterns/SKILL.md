@@ -28,7 +28,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 | The work | Branch | May read | May write |
 |---|---|---|---|
-| a new page, a set of pages, a refactor across pages | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
+| a new page, a set of pages, a refactor of which pieces pages are built from | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
 | a fix or a small change to pages that exist — the positions a request names, on one page or on the pages it names | `ui-consistency:adjusting` | those pages, and those positions across the family — its budget | those pages only — with the files only they use |
 | checking code already written | `ui-consistency:verifying`, after this phase where no checklist exists | the checklist and the page | a report |
 

@@ -82,9 +82,10 @@ a role over the whole family, then *which way* over the members that have it
 
 **A piece beside another that fills the same role on the same screen** — rows
 set next to the menu's rows — is written the way that one is: row height, the
-type bundle, hover, the selected state, indent. It settles how the role is
-written there after the request and an override, before any count; which piece
-fills the role is still levels 3 and 4. Report the count it goes against.
+type bundle, hover, the selected state, indent. Below the request and an
+override, and above every count, it settles how the role is written there;
+which piece fills the role is still levels 3 and 4. Report the count it goes
+against.
 
 **If nothing is near enough to be a reference**: [rare.md](rare.md), *With
 nothing near enough to be a reference*. **If nothing at all is written** — no

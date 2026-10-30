@@ -118,8 +118,8 @@ a story for another developer.*
    - It is finished when a developer who was not in the conversation, without the
      checkout open, could implement it from the attachment alone
      ([plan-file.md](plan-file.md), *The story*).
-3. **Another process is already running.** The tasks went into its plan, in its
-   shape; no second document. Its loop executes them.
+3. **Another process is already running.** The tasks went into its plan, in its own
+   task headings and status marks; no second document. Its loop executes them.
 
 **None of the three writes into the project's repository.**
 
