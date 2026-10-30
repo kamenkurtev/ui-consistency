@@ -9,9 +9,9 @@ in this repository.
 ## Unreleased
 
 - Pages that are each a document of their own, such as plain HTML pages or a
-  set of screens, now have a bound and a theme: the pages that load a shared
-  file the reference loads, and the shared values they load or reference, such
-  as a tokens file (#410).
+  set of screens, now have a bound and a theme: the pages that load a file the
+  reference loads too, and the shared values they load, such as a tokens
+  file (#410).
 
 ## v1.4.0 (2026-10-24)
 

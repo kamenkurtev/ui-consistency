@@ -80,10 +80,11 @@ properties, preprocessor variables, a shared stylesheet, a config file.
   themes. Treat presets as alternatives unless the code says one extends
   another. If it cannot be resolved: [rare.md](rare.md), *A theme that cannot
   be resolved*.
-- If no root selects a theme — each page is a document of its own — the theme
-  is the shared values those pages load or reference: a tokens file, a shared
-  stylesheet's custom properties. Count a value that names one of its entries
-  across the pages that load or reference it.
+- If no application mounts the pages — each page is a document of its own — the
+  theme is the shared values those pages load, such as a tokens file or a shared
+  stylesheet's custom properties.
+  - Count a value that names one of its entries across the pages that load it,
+    in place of the theme's applications.
 - **A file in a shared layer has no theme of its own.** Check its theme-defined
   values against every theme whose applications use it.
 - **A value that names a theme entry must exist in the theme that applies** — for

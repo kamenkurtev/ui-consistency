@@ -50,9 +50,11 @@ the same pages.
 - **The application that mounts the page** — whatever routes to it or renders it
   from its entry — **and every library it uses.** Not the library the reference
   sits in, not the whole workspace.
-- If nothing mounts the pages — each page is a document of its own — the bound
-  is **every page that loads one of the shared files the reference loads**, and
-  those files. If the reference loads none, it is the pages kept in its folder.
+- If no application mounts the pages — each page is a document of its own — the
+  bound is **every page that loads a file the reference loads too**, such as a
+  stylesheet, a script or a tokens file, and those files.
+- If no other page loads a file the reference loads, the bound is the pages in
+  the reference's folder, its subfolders included.
 - If the page's library is mounted by several applications, the bound is all of
   them together, and the checklist says which.
 - If the page's own library, counted alone, gives a different answer — *10 of 10*
