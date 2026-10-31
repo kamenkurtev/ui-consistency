@@ -121,7 +121,7 @@ must find what the reference writes.
 - **Search for the exact name.** A container whose name starts with the
   component's once turned 18 uses into 25.
 - **If the task adds a position no member has** — a second control, a control
-  nobody has here — count it as
+  nobody has here — or changes a role the page already has, count it as
   [*A position no member has*](position-no-member-has.md) says.
 - **A family of one is never a convention.** Write what the page does as the
   reference's own way — never as a count, and never as what the project does —

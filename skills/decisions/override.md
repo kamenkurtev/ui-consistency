@@ -1,7 +1,7 @@
 # An override, the one thing a task cannot work out again
 
-**Read when:** a person overrules the order, or an override is recorded for the
-concern.
+**Read when:** the order reaches level 2, or a person's answer is to be recorded
+as an override.
 
 A task keeps nothing it can work out again from the code. **One thing it cannot:
 a person overruling the order** — *"I know 3 of 4 write it that way; here we do
