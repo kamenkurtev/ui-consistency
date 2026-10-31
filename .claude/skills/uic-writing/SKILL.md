@@ -27,6 +27,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 
 - Only what the model does not already know: an instruction, a definition, a template or an example.
 - Remove an instruction the current models follow without being told: one written for an earlier model is often too prescriptive for a newer one (the model pages of the prompting guide, https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices).
+- When a change adds a line to a skill, remove what that line makes unnecessary in the same skill.
 - No story of an earlier run, no history of the plugin, no argument for its design, no maxim.
 - Keep a clause of why where it changes a judgment.
 - Keep a concrete failure where it shows a rule nobody would guess.
@@ -39,6 +40,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 - Name the scope a rule covers — *every page*, *each line of the checklist* — where it holds beyond the item in front of it: the current models read an instruction literally and do not carry it to the next item.
 - Write what holds through a task as a standing instruction — *re-read the checklist before every page*, not *re-read the checklist*: Claude Code does not load a skill again on later turns (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
 - Write an exception as its own line, its condition first — *If …, …* — never as a clause inside the rule it limits.
+- Fix a line that reads two ways by rewriting it, and two lines that disagree by rewriting the pair, rather than by adding a clause beside them.
 - Ask for what was done and what settled it, never for the reasoning written out: the current models may decline a request to write out their reasoning (the Fable 5.1 and Opus 5 pages of the prompting guide).
 - Have a check note every finding, the uncertain ones included, and filter in a step of its own: a check told to report only what matters finds less (the Sonnet 5 and Opus 4.8 pages).
 
@@ -47,6 +49,8 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 - Frontmatter, title, `## Overview` in one or two sentences, then the steps in order.
 - Under 500 lines and 16,000 characters: after compaction Claude Code re-attaches only the first 5,000 tokens of a skill (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
 - Put the instructions that matter most near the top, for the same reason.
+- Keep in it what every run of the skill needs.
+- Move what only one case of the work needs to a reference file, linked from that case's step: the file costs nothing until that step opens it.
 - The skills one piece of work invokes share 25,000 tokens after compaction, the most recently invoked first, and an older one past the budget is dropped whole. A new page invokes `finding-patterns`, `conventions`, `values`, `decisions`, `planning`, `implementing` and `verifying`: when one grows, add up their `SKILL.md` sizes, each counted up to 16,000 characters, and keep the total under 80,000 characters (25,000 tokens at 3.2 characters a token). Over it, shorten one.
 
 **A reference file**
