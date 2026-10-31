@@ -10,11 +10,13 @@ back.
   - the one fresh read of a changed skill
     (`.claude/skills/uic-writing/SKILL.md`, *After writing*);
   - a subagent the owner asks for.
-- **Pass `model` on every spawn**, chosen for the job.
-  - `haiku`: searching, reading, listing, summarising.
-  - `sonnet`: writing, reviewing and checking. This is most work, the fresh
-    read included.
-  - `opus`: only for hard reasoning. Say why.
+- **Pass `model` and `effort` on every spawn**, chosen for the job. A
+  subagent given no `effort`, whose definition names none, runs at the main
+  session's effort.
+  - `haiku` at `low`: searching, reading, listing, summarising.
+  - `sonnet` at `medium`: writing, reviewing and checking. This is most work,
+    the fresh read included.
+  - `opus` at `high`: only for hard reasoning. Say why.
 - `.claude/settings.json` sends a subagent with no model of its own to
   `sonnet`. It has none of its own when no model is passed and its definition
   names none.
