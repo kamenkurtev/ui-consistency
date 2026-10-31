@@ -43,7 +43,7 @@ the skill invoked.
    (`../verifying/calibration.md`).
    - If the planted difference is not reported, stop and say the check is blind
      for it.
-   - The agent calibrated is not the one that then checks the pages.
+   - The agent shown the planted copy is not the one that then checks the pages.
 2. **Extractions the user accepted.** Build a shared component, partial or class
    before any page that uses it.
    - A theme entry the plan's yes agreed for a design's value is added here too,
@@ -57,9 +57,9 @@ the skill invoked.
 - the path of the reference;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;
-- three steps, written out as [*The plan*](plan-file.md), *Tasks*, writes them:
-  re-read the checklist, report the page ready for its check, report the
-  status.
+- the three steps of a page task, written out as in [*The plan*](plan-file.md),
+  *The shape*: re-read the checklist, report the page ready for its check,
+  report the status.
 
 ## Stop for a yes
 

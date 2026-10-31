@@ -119,7 +119,7 @@ the skill invoked.
 14. **Report the page ready for its check.** Whoever dispatched this task sends
     the page to the checker of its kind — `ui-consistency:verifying`, one agent
     kept for every page of this kind, never the one that wrote it or the one
-    calibrated — and sends back what it reports.
+    shown the planted copy — and sends back what it reports.
     - If nobody dispatched this task, send the page to that checker yourself;
       start it if this is the first page of its kind.
     - Where the process already sends each task to a reviewer, whoever dispatches

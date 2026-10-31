@@ -184,8 +184,8 @@ In this order; the rules are in `ui-consistency:conventions`:
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — `ui-consistency:accessibility`.
 - Write a literal that has a theme equivalent **through the theme**.
-- If a literal that is not a design's has none, it becomes a **named constant**
-  where the project keeps them.
+- If a literal that is not a design's has no theme equivalent, it becomes a
+  **named constant** where the project keeps them.
 - Put translated text through the translation mechanism.
 - **New words the user reads**: reuse the project's string where one already says
   the same thing. Phrase a new one the way the family phrases that kind of string

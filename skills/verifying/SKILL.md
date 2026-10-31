@@ -39,9 +39,10 @@ the skill invoked.
   does not count.
 - If no separate agent is available, **say plainly that the author checked its
   own work**, and treat the result as that.
-- **One checker per work and kind of page.** It checks each page of that kind as
-  the page is written, each fix after, and all the pages of that kind at the
-  end. It is started at the first page of the kind and kept for the rest.
+- **One checker per work and kind of page**, never the agent shown the planted
+  copy. It checks each page of that kind as the page is written, each fix after,
+  and all the pages of that kind at the end. It is started at the first page of
+  the kind and kept for the rest.
   - Where the harness can continue an agent, send that checker every page and
     every check after a fix.
   - Where it cannot, a new agent gets the same brief, the pages already checked,
