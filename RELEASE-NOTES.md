@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.5.0 (2026-10-31)
+
 - Pages that are each a document of their own, such as plain HTML pages or a
   set of screens, now have a bound and a theme: the pages that load a file the
   reference loads too, and the shared values they load, such as a tokens
@@ -37,8 +39,8 @@ in this repository.
     check.
 - The skills agree with each other after an audit against the current guidance
   (#416):
-  - A checker reports a deviation from what you named or answered, and the agent
-    that wrote the page fixes it. A checker also reads the theme, stylesheets,
+  - A checker reports a deviation from what you named or answered, and whoever
+    wrote the page fixes it. A checker also reads the theme, stylesheets,
     classes and shared pieces its comparisons need.
   - An override you gave, recorded where the running process keeps your
     decisions, holds in a later session too.
