@@ -76,7 +76,7 @@ what is not a member **before** counting:
   left out and why.
 - **If the members span more than one area** — app, library or package — **or
   are more than can be read in full**, it is a large project: follow
-  [large-project.md](large-project.md) before counting.
+  [*A large project: split, sample, group*](large-project.md) before counting.
 - **If the work creates a shared piece that takes over a choice each page
   made itself** — where a state is kept, which side takes a default share —
   count those choices as

@@ -56,7 +56,7 @@ where one does, and the standard's number, so a person decides.
 ## 1. Contrast — pairs, in every scheme
 
 Check **pairs**, never single values — the rules, the thresholds and the
-arithmetic are in [contrast.md](contrast.md).
+arithmetic are in [*Contrast: pairs, schemes, thresholds*](contrast.md).
 
 ## 2. Focus — whether it is visible, and where it goes
 

@@ -66,7 +66,7 @@ the skill invoked.
    - A design's value only through the theme entry its checklist line names;
      never as a literal or a named constant, however plainly the design shows it
      (`../design/reading.md`).
-   - A named constant where the theme has none.
+   - If a value that is not a design's has no theme entry, a named constant.
    - No literal copied from the reference.
 6. **Spacing on the base the checklist names**
    (`ui-consistency:values`, *Spacing*):
@@ -118,8 +118,8 @@ the skill invoked.
     - Do not quietly build it the other way.
 14. **Report the page ready for its check.** Whoever dispatched this task sends
     the page to the checker of its kind — `ui-consistency:verifying`, one agent
-    kept for every page of this kind, never the one that wrote it — and sends
-    back what it reports.
+    kept for every page of this kind, never the one that wrote it or the one
+    calibrated — and sends back what it reports.
     - If nobody dispatched this task, send the page to that checker yourself;
       start it if this is the first page of its kind.
     - Where the process already sends each task to a reviewer, whoever dispatches
@@ -160,12 +160,3 @@ one owns what the end user sees.
 When every page of a kind is `done` or `parked`: that kind's checker compares
 all its pages together (`ui-consistency:verifying`, *The whole set, at the
 end*).
-
-## Red flags
-
-Words agents used in runs, just before getting it wrong:
-
-| They said | What it means |
-|---|---|
-| "Verified by diffing each new file against" a sibling — from the agent that wrote them | The author checked its own pages. Hand them to a separate agent, or say plainly that none was available. |
-| "the one legitimate mechanism shipments also reaches for" — taking a class from the page the user pointed at | Right outcome, silent reasoning. The request is the top of the order: do it, and report in one line what it goes against. |

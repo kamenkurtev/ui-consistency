@@ -1,4 +1,4 @@
-# The design: read it for the tree, and its values against the theme
+# Reading a design
 
 **Read when:** `design` step 2 found a design for the page — a picture, a
 screen described in the request, an older screen the work ports, a prototype
@@ -64,8 +64,6 @@ against each other:
     and report the design's value beside it.
 - **Never write a design's value into a page as a literal or a named constant**,
   however plainly the design shows it.
-- **A mockup this plugin drew is never read back** ([mockup.md](mockup.md)):
-  values go into it from the theme, and nothing is taken out of it.
 
 ## What it cannot answer
 

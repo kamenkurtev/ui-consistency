@@ -32,8 +32,9 @@ change to a skill, not to `hooks/`, which holds only the session hook.
 
 **A change that ships adds a line under `## Unreleased` in `RELEASE-NOTES.md`**,
 saying what somebody who installed the plugin will notice. A branch touching
-`hooks/`, `skills/` or a manifest with nothing there fails the gate. Leave the
-version alone: the owner cuts releases (`.claude/rules/uic-git.md`, *Versions*).
+`hooks/`, `skills/`, `USING.md`, `GEMINI.md` or a manifest with nothing there
+fails the gate. Leave the version alone: the owner cuts releases
+(`.claude/rules/uic-git.md`, *Versions*).
 
 **A test that passes is not evidence.** A fixture written by whoever wrote the
 rule encodes the same assumption as the rule. So:

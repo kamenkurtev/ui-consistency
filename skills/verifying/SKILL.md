@@ -47,8 +47,8 @@ the skill invoked.
   - Where it cannot, a new agent gets the same brief, the pages already checked,
     and the earlier checker's reports on them.
   - Where the running process already has each task reviewed, that reviewer
-    checks each page ([calibration.md](calibration.md)); one checker of the kind
-    compares all its pages at the end.
+    checks each page ([*Proving the check can see*](calibration.md)); one
+    checker of the kind compares all its pages at the end.
 
 Give the checker:
 
@@ -90,7 +90,7 @@ the reports of this kind's earlier checker.
 
 Before a checker's result is trusted, **the dispatcher** proves the check on a
 copy with one planted difference, once per work and kind of page:
-[calibration.md](calibration.md).
+[*Proving the check can see*](calibration.md).
 
 - A checker handed a page neither runs a calibration nor reasons about one.
 
@@ -246,12 +246,3 @@ page that deviates.
   the rest.
 - Report how many pages, how many match, which differ and how, which are parked
   and why.
-
-## Red flags
-
-Words agents used in runs, just before getting it wrong:
-
-| They said | What it means |
-|---|---|
-| "Consistency check, done by diffing against the reference" — from the agent that wrote the page | The author checked its own work. Hand it to a separate agent, or say plainly that none was available. |
-| "Not evaluated: nothing — every pair resolved" | Only true after every loaded stylesheet was found. A class with no rule in the project is unevaluated, not unstyled. |

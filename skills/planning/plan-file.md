@@ -15,15 +15,9 @@ The shape of the plan `planning` writes when no other process wrote one.
 **Nothing of it is written into the project's repository** — not committed, not
 left in the working copy, not a directory the project is asked to ignore.
 
-**It lives as long as the work, and no longer**, in one of three places — the
-three ways `planning` ends ([SKILL.md](SKILL.md), *How the phase ends*):
-
-1. **In the session**, while the work stays in one context.
-   - If the work outlives the context and the plan must survive on disk, a file
-     **outside the working copy** — the scratch location the harness gives —
-     deleted with the work.
-2. **Attached to a story** somebody else will implement — *The story*, below.
-3. **Inside another process's plan**, in its own task headings and status marks.
+**It lives as long as the work, and no longer**, in one of the three places
+`planning` ends in ([SKILL.md](SKILL.md), *How the phase ends*); attached to a
+story, it takes the shape of *The story*, below.
 
 **Where a plan already exists**, this is what is *added into it* — the tasks,
 with everything each one carries, and a decision a person made against the order

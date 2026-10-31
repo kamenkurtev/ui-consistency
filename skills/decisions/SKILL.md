@@ -165,13 +165,3 @@ own error box, because it was built before the shared helper existed.
 - If the named reference disagrees with the newest members, say that too, as a
   statement: *the page you named is the oldest of the five; the three most
   recent write it the other way.*
-
-## Red flags
-
-Words agents used in runs, just before getting it wrong:
-
-| They said | What it means |
-|---|---|
-| "at level 5 — what the newest members write" — at a position where 3 of 5 did one thing | 3 of 5 is a majority: level 6, and level 5 does not fire. |
-| "level 4 — the shared section piece" — for a heading inside a new pane, with no variant named | Level 4 settles which piece, not how it is written there. A heading in a nested region stands at a new position: count the piece's variants there, or count it as a position no member has. |
-| "agrees with WCAG … named as a default" — to settle a line | No standard applies unless somebody asked or the project states one (`ui-consistency:accessibility`). A page that does what the rest do is not a finding. |
