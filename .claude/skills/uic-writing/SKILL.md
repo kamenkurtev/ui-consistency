@@ -27,7 +27,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 
 - Only what the model does not already know: an instruction, a definition, a template or an example.
 - Remove an instruction the current models follow without being told: one written for an earlier model is often too prescriptive for a newer one (the model pages of the prompting guide, https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices).
-- When a change adds a line, remove what that line makes unnecessary.
+- When a change adds a line to a skill, remove what that line makes unnecessary in the same skill.
 - No story of an earlier run, no history of the plugin, no argument for its design, no maxim.
 - Keep a clause of why where it changes a judgment.
 - Keep a concrete failure where it shows a rule nobody would guess.
@@ -40,7 +40,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 - Name the scope a rule covers — *every page*, *each line of the checklist* — where it holds beyond the item in front of it: the current models read an instruction literally and do not carry it to the next item.
 - Write what holds through a task as a standing instruction — *re-read the checklist before every page*, not *re-read the checklist*: Claude Code does not load a skill again on later turns (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
 - Write an exception as its own line, its condition first — *If …, …* — never as a clause inside the rule it limits.
-- Fix a line that reads two ways, or disagrees with another, by rewriting it, rather than by adding a clause beside it.
+- Fix a line that reads two ways by rewriting it, and two lines that disagree by rewriting the pair, rather than by adding a clause beside them.
 - Ask for what was done and what settled it, never for the reasoning written out: the current models may decline a request to write out their reasoning (the Fable 5.1 and Opus 5 pages of the prompting guide).
 - Have a check note every finding, the uncertain ones included, and filter in a step of its own: a check told to report only what matters finds less (the Sonnet 5 and Opus 4.8 pages).
 

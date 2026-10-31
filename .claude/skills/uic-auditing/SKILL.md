@@ -25,7 +25,7 @@ Reads the current guidance from its source, checks every skill against it and ev
 3. **Weigh each skill in `skills/` as a whole**, its `SKILL.md` first, and note the characters each item frees:
    - what can go without changing what an agent does: two passages of one skill that say one thing, an explanation no step needs, a line the current models follow without being told;
    - what only one case of the work needs — a design, a small change, another process running — which can move to a reference file linked from that case's step.
-   - List an item step 2 found here, not among the findings.
+   - List an item step 2 also found under *What each skill can lose*, not among the findings.
 4. **Check the documents** — `USING.md`, `README.md`, `.claude/CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/`, `.claude/rules/` — for anything they say about the skills that is no longer true.
 5. **Look for stale references and contradictions** across all of them: every name of a file, section, skill, test or command that points at nothing, and every rule whose copies disagree.
 6. **Use the built-in skills that are installed**, where they fit, read for their rules only — never their workflow, which edits:
@@ -54,7 +54,7 @@ Reads the current guidance from its source, checks every skill against it and ev
 
 | # | Skill | What, at path:line | Cut or moved | Characters freed |
 |---|---|---|---|---|
-| 5 | <skill> | <what> | cut / to `<file>.md` | <n> |
+| 2 | <skill> | <what> | cut / to `<file>.md` | <n> |
 
 - `SKILL.md` sizes: <skill> <n>, …; the seven a new page invokes (`uic-writing`, *A `SKILL.md`*): <total> of 80,000.
 
