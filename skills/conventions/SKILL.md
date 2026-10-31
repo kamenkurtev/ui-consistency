@@ -77,9 +77,10 @@ what is not a member **before** counting:
 - **If the members span more than one area** — app, library or package — **or
   are more than can be read in full**, it is a large project: follow
   [large-project.md](large-project.md) before counting.
-- **If the work creates a shared piece that takes over roles the pages had** —
-  where a state is kept, which side takes a default share — count those roles
-  as [*A shared piece the work creates*](new-shared-piece.md) says.
+- **If the work creates a shared piece that takes over a choice each page
+  made itself** — where a state is kept, which side takes a default share —
+  count those choices as
+  [*A shared piece the work creates*](new-shared-piece.md) says.
 
 *Why:* a dispatcher counted as a page once turned 8 of 8 on every role into 8 of
 9 — a unanimous convention reported as one drifting page.
