@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.6.0 (2026-10-31)
+
 - A design's value no longer reaches a page as a named constant, and the agent
   shown the planted copy never checks the pages. `adjusting` is written as steps.
   The skills drop their *Red flags* tables and a few rules said twice, and link
