@@ -23,8 +23,9 @@ the skill invoked.
    not answer — *What the checker reads*.
 3. Before its result is trusted, the dispatcher — never the checker — proves
    the check on a copy with one planted difference — *First, prove it can see*.
-4. It compares region by region and reports only what differs, judged as
-   *Reading a difference* says — *Compare region by region*.
+4. It compares region by region and notes every difference, the uncertain ones
+   included; then it judges each as *Reading a difference* says, and reports
+   what that keeps — *Compare region by region*.
 5. It names what it could not check, and the cost — *Say what was not checked*.
 6. After the last page of a kind, it compares all the pages of that kind together
    — *The whole set, at the end*.
@@ -175,8 +176,10 @@ Beyond the items, compare the same regions:
   copied in good faith (`ui-consistency:decisions`, *A named reference does not
   carry its own drift*).
 
-Report **only what differs**, where, and what the reference and the rest of the
-project do instead. Say nothing about regions that match.
+**Note every difference first**, the uncertain ones included. Then judge each as
+*Reading a difference* says, and report what it keeps: where, and what the
+reference and the rest of the project do instead. Say nothing about regions
+that match.
 
 **True, but not this task's** — a difference the reference already has, or one
 a checklist line settled: report it apart, under that heading, never as a
@@ -202,11 +205,9 @@ page that deviates.
   family has no convention at that position — a page cannot deviate from it.
   Report nothing, and say the project has none there
   (`ui-consistency:conventions`, *When a count is not a convention at all*).
-- **Count in the bound the checklist names.** Its first line says which pages
-  were counted; take a count of your own over the same ones.
-- If you count in another bound, say which and why — two bounds give two answers
-  from the same code (`ui-consistency:conventions`, *The bound the family is
-  counted in*).
+- **Count in the bound the checklist's first line names.**
+- If you count in another, say which and why (`ui-consistency:conventions`,
+  *The bound the family is counted in*).
 - **Against a count alone**, say the numbers (*"the other 9 of 10 in the content
   area do not"*) and judge by the same order the page was built from
   (`ui-consistency:decisions`, *The order*), naming the level.

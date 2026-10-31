@@ -57,9 +57,9 @@ c=$(copy); echo 'Then `ui-consistency:nothing`.' >> "$c/skills/planning/SKILL.md
 expect fail "a skill name that points at nothing" check-skills.sh "$c"
 c=$(copy); edit "$c" hooks/session-context.md 's/ui-consistency:accessibility/accessibility/'
 expect fail "session text that leaves a skill out" check-skills.sh "$c"
-c=$(copy); echo '[rare](../decisions/rare.md)' >> "$c/skills/planning/SKILL.md"
+c=$(copy); echo '[override](../decisions/override.md)' >> "$c/skills/planning/SKILL.md"
 expect fail "a link from another skill into decisions" check-skills.sh "$c"
-c=$(copy); echo 'See `../decisions/rare.md`.' >> "$c/skills/planning/SKILL.md"
+c=$(copy); echo 'See `../decisions/override.md`.' >> "$c/skills/planning/SKILL.md"
 expect fail "a path from another skill into decisions, written out" check-skills.sh "$c"
 c=$(copy); echo '[calibration](../verifying/calibration.md)' >> "$c/skills/planning/SKILL.md"
 expect fail "a link that leaves its skill" check-skills.sh "$c"

@@ -32,9 +32,9 @@ answers:
 Then:
 
 - If a later signal disagrees, or the project does not answer:
-  [rare.md](rare.md), *When the signals do not settle the kind*.
-- If the trees differ below a shared outer holder: [rare.md](rare.md), *A family
-  that differs by region*.
+  [*When the signals do not settle the kind*](kind-unsettled.md).
+- If the trees differ below a shared outer holder:
+  [*A family that differs by region*](family-by-region.md).
 - **Name the kind in the project's own word** — folder, route, file name — never
   an invented one. If it has none, name it by what it renders, *a list with a
   form above it*, and say the name is yours.
@@ -55,13 +55,8 @@ the same pages.
   stylesheet, a script or a tokens file, and those files.
 - If no other page loads a file the reference loads, the bound is the pages in
   the reference's folder, its subfolders included.
-- If the page's library is mounted by several applications, the bound is all of
-  them together, and the checklist says which.
-- If the page's own library, counted alone, gives a different answer — *10 of 10*
-  inside it, *6 of 8* across the application — **put both numbers on the line**,
-  and decide by the order on the application's.
-- A library unanimous inside itself is that library's own way, never the
-  project's.
+- If the page sits in a library:
+  [*The bound for a page in a library*](library-bound.md).
 - **Name the bound in the checklist's first line.** A later phase counts in it,
   or says which other bound it used and why.
 
@@ -84,7 +79,7 @@ what is not a member **before** counting:
   [large-project.md](large-project.md) before counting.
 - **If the work creates a shared piece that takes over roles the pages had** —
   where a state is kept, which side takes a default share — count those roles
-  as [rare.md](rare.md), *A shared piece the work creates*, says.
+  as [*A shared piece the work creates*](new-shared-piece.md) says.
 
 *Why:* a dispatcher counted as a page once turned 8 of 8 on every role into 8 of
 9 — a unanimous convention reported as one drifting page.
@@ -126,12 +121,12 @@ must find what the reference writes.
 - **Search for the exact name.** A container whose name starts with the
   component's once turned 18 uses into 25.
 - **If the task adds a position no member has** — a second control, a control
-  nobody has here — count it as [rare.md](rare.md), *A position no member has*,
-  says.
+  nobody has here — or changes a role the page already has, count it as
+  [*A position no member has*](position-no-member-has.md) says.
 - **A family of one is never a convention.** Write what the page does as the
   reference's own way — never as a count, and never as what the project does —
-  and say the family has no other members: [rare.md](rare.md), *A kind whose
-  family has only the reference*.
+  and say the family has no other members:
+  [*A kind whose family has only the reference*](reference-only.md).
 
 ## When a count is not a convention at all
 

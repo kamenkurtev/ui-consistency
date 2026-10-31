@@ -45,11 +45,6 @@ more than one area, or are more than can be read in full.
 - How wide that search goes is the order's to say (`ui-consistency:decisions`,
   level 4).
 
-## Group the searches
-
-As `../finding-patterns/SKILL.md` step 4 says: one search per
-position, over every area at once, run by the phase.
-
 ## What the report carries
 
 The cost line the phase ends with — one total, and beside it each area where the
