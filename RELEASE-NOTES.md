@@ -9,8 +9,9 @@ in this repository.
 ## Unreleased
 
 - Three cases of `conventions` read one way: the signal that answered decides
-  the kind, a shared piece takes over what each page did itself, and the rule
-  for a position with nothing written cites what it means (#424).
+  the kind, a shared piece takes over the choices each page made itself, and a
+  new position falls back to the plain element only where no shared piece,
+  majority or reference is written (#424).
 - A skill now opens only the case a step meets: each rare case of `conventions`,
   `decisions` and `values` is a file of its own, and a few rules said twice are
   said once. The checker notes every difference, the uncertain ones included,

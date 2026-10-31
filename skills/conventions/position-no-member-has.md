@@ -21,6 +21,7 @@ when the request asks for one, and is then placed as below.
   wherever it has them — the same kind of position elsewhere in the bound.
 - If there is nowhere to read that from, the existing control keeps its place and
   the new one follows it in reading order; say that is what decided it.
-- **If there is nothing anywhere**, write it as the element whose meaning the
-  role has, the technology's own before a generic one, and say that is what
-  decided it (`ui-consistency:decisions`, *What this does not decide*).
+- **If nothing at all is written for the role** — no shared piece, no majority,
+  no reference — write it as the element whose meaning the role has, the
+  technology's own before a generic one, and say that is what decided it
+  (`ui-consistency:decisions`, *What this does not decide*).
