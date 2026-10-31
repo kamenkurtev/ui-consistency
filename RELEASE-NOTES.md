@@ -8,6 +8,11 @@ in this repository.
 
 ## Unreleased
 
+- A skill now opens only the case a step meets: each rare case of `conventions`,
+  `decisions` and `values` is a file of its own, and a few rules said twice are
+  said once. The checker notes every difference, the uncertain ones included,
+  before it judges which to report (#422).
+
 ## v1.5.0 (2026-10-31)
 
 - Pages that are each a document of their own, such as plain HTML pages or a

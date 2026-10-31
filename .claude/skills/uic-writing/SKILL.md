@@ -56,6 +56,9 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 **A reference file**
 
 - Title, then one line `**Read when:** …`, then `## Contents` when it runs over 100 lines.
+- One case to a file, named for it: a step opens only the case it meets (the authoring guide, *Domain-specific organization*).
+- Keep the files flat in the skill's folder: `scripts/check-skills.sh` reads no subfolder.
+- Link it with its title — `[*A position no member has*](position-no-member-has.md)` — so a case another skill names is found in the `SKILL.md`.
 - Link it directly from the `SKILL.md` of its own skill that needs it, never only from another reference file. Another skill that needs it gives its path, below.
 
 **A description**

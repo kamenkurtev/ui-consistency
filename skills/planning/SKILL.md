@@ -23,7 +23,8 @@ the skill invoked.
   status marks, each carrying what [plan-file.md](plan-file.md) puts in a task.
   Do not write a second one.
 - A plan or pattern file written before this work began is not that plan: it is
-  read as `ui-consistency:decisions`, level 1, says.
+  read as `ui-consistency:decisions`, *A plan written before this work began*,
+  says.
 - **If that process already sends each task to a reviewer that did not write
   it**, the checklist and `ui-consistency:verifying` go into that reviewer's
   brief, and no second checker is added
@@ -84,11 +85,9 @@ repository, in [plan-file.md](plan-file.md).
 - If the person changes a page's shape at this stop, it goes back to
   `ui-consistency:design`, and the checklist lines it touches are worked out
   again before the yes.
-- Ask nothing new here: the questions were asked while `finding-patterns` ran
-  (`ui-consistency:decisions`, *When to ask anyway*).
-- A new component, or code extracted into one, is not part of this yes: it was asked on its
-  own while `finding-patterns` ran, with what it touches (*When to ask
-  anyway*).
+- Ask nothing new here: the questions, a new component or an extraction among
+  them, were asked while `finding-patterns` ran, and this yes does not answer
+  them (`ui-consistency:decisions`, *When to ask anyway*).
 - Mark a task waiting on the little that did reach a person
   `parked — waiting on <what>` in the plan, with its counts
   ([plan-file.md](plan-file.md)).

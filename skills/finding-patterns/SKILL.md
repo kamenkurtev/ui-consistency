@@ -19,8 +19,7 @@ before anything is written.
 - **Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a step you are
   carrying out sends you to it, never before** — whatever the request that
   handed you the skill says about its links and paths.
-- That step is not done until the file is opened or the skill invoked. Nothing
-  for a step you never reach is opened or invoked.
+- That step is not done until the file is opened or the skill invoked.
 
 ## 0. Size the work first
 
@@ -45,7 +44,7 @@ Decide the branch **from the request alone, before any project file is opened**.
   into its document, questions into its questions. Never a second dialogue.
 - **A plan or pattern file written before this work began** is not a process to
   join, even when a person attached it: read it as `ui-consistency:decisions`,
-  level 1, says.
+  *A plan written before this work began*, says.
 - If nothing exists, run this phase yourself.
 
 ## 1. The reference
@@ -77,11 +76,8 @@ Decide the branch **from the request alone, before any project file is opened**.
 - **If the work has a design for the page** — a picture, a screen described in
   the request, an older screen the work ports, a tree a person agreed with
   `ui-consistency:design` — read it first, in this same order, for **which roles
-  the page has and what each shows** (`../design/reading.md`).
-- The family answers what fills each role and how it is written, and its values
-  are the ones written.
-- A design's values are matched to the theme, never written as they stand
-  (`../design/reading.md`, *A design's values*).
+  the page has and what each shows**; the family answers what fills them, and
+  the design's values are matched to the theme (`../design/reading.md`).
 
 Read in this order:
 
