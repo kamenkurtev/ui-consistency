@@ -76,8 +76,9 @@ Decide the branch **from the request alone, before any project file is opened**.
 - **If the work has a design for the page** — a picture, a screen described in
   the request, an older screen the work ports, a tree a person agreed with
   `ui-consistency:design` — read it first, in this same order, for **which roles
-  the page has and what each shows**; the family answers what fills them, and
-  the design's values are matched to the theme (`../design/reading.md`).
+  the page has and what each shows**; the family answers what fills them and
+  how each is written, and the design's values are matched to the theme
+  (`../design/reading.md`).
 
 Read in this order:
 
