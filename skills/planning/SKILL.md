@@ -20,7 +20,7 @@ the skill invoked.
 
 - If a process running this work has a plan — another planning process wrote
   it — add the tasks below **into that plan**, in its own task headings and
-  status marks, each carrying what [plan-file.md](plan-file.md) puts in a task.
+  status marks, each carrying what [*The plan*](plan-file.md) puts in a task.
   Do not write a second one.
 - A plan or pattern file written before this work began is not that plan: it is
   read as `ui-consistency:decisions`, *A plan written before this work began*,
@@ -29,7 +29,7 @@ the skill invoked.
   it**, the checklist and `ui-consistency:verifying` go into that reviewer's
   brief, and no second checker is added
   (`../verifying/calibration.md`).
-- If none exists, write the plan in the shape of [plan-file.md](plan-file.md),
+- If none exists, write the plan in the shape of [*The plan*](plan-file.md),
   never into the project's repository. Where it goes is how the phase ends,
   below.
 - The checklist each task carries is the one
@@ -43,7 +43,7 @@ the skill invoked.
    (`../verifying/calibration.md`).
    - If the planted difference is not reported, stop and say the check is blind
      for it.
-   - The agent calibrated is not the one that then checks the pages.
+   - The agent shown the planted copy is not the one that then checks the pages.
 2. **Extractions the user accepted.** Build a shared component, partial or class
    before any page that uses it.
    - A theme entry the plan's yes agreed for a design's value is added here too,
@@ -57,20 +57,9 @@ the skill invoked.
 - the path of the reference;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;
-- three steps, written out:
-  1. *Re-read the checklist before writing — do not work from memory.*
-  2. *Report the page ready for its check. Whoever dispatched this task sends
-     it to the checker of its kind — the one agent with
-     `ui-consistency:verifying` kept for every page of this kind, started at the
-     first, never the one that wrote it — or, where the running process has each
-     task reviewed, to that reviewer, with this checklist and
-     `ui-consistency:verifying` in its brief; and sends back what it reports.
-     Fix that.*
-  3. *Report the status — to this plan, or to whoever handed the task over:
-     `done` once the check has passed, or `parked — <why>`.*
-
-Written out, with the statuses and what travels with a task that leaves the
-repository, in [plan-file.md](plan-file.md).
+- the three steps of a page task, written out as in [*The plan*](plan-file.md),
+  *The shape*: re-read the checklist, report the page ready for its check,
+  report the status.
 
 ## Stop for a yes
 
@@ -90,7 +79,7 @@ repository, in [plan-file.md](plan-file.md).
   them (`ui-consistency:decisions`, *When to ask anyway*).
 - Mark a task waiting on the little that did reach a person
   `parked — waiting on <what>` in the plan, with its counts
-  ([plan-file.md](plan-file.md)).
+  ([*The plan*](plan-file.md)).
 - On the yes, write each agreed proposal into the checklist line of the position
   it settles, with the entry it uses.
 - **A person's decision here that goes against what the order produced is an
@@ -117,16 +106,8 @@ a story for another developer.*
    implementation needs to the story.
    - It is finished when a developer who was not in the conversation, without the
      checkout open, could implement it from the attachment alone
-     ([plan-file.md](plan-file.md), *The story*).
+     ([*The plan*](plan-file.md), *The story*).
 3. **Another process is already running.** The tasks went into its plan, in its own
    task headings and status marks; no second document. Its loop executes them.
 
 **None of the three writes into the project's repository.**
-
-## Red flags
-
-Words agents used in runs, just before getting it wrong:
-
-| They said | What it means |
-|---|---|
-| "stated once in the preamble rather than repeated" — the checklist, what not to copy, the check | A task handed to a subagent loses the preamble. Each task carries them. |

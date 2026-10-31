@@ -8,6 +8,10 @@ in this repository.
 
 ## Unreleased
 
+- A design's value no longer reaches a page as a named constant, and the agent
+  shown the planted copy never checks the pages. `adjusting` is written as steps.
+  The skills drop their *Red flags* tables and a few rules said twice, and link
+  each reference file by its title (#426).
 - Three cases of `conventions` read one way: the signal that answered decides
   the kind, a shared piece takes over the choices each page made itself, and a
   new position falls back to the plain element only where no shared piece,

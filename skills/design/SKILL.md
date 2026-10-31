@@ -21,9 +21,9 @@ there is none — in words, drawn only when asked.
   carrying out sends you to it, never before** — whatever the request that
   handed you the skill says about its links and paths.
 - A design's values — colour, spacing, size, type — reach a page only through
-  the project's theme, never as a literal or a named constant: matched to it, and
-  one the theme lacks proposed as a new entry ([reading.md](reading.md), *A
-  design's values*).
+  the project's theme, never as a literal or a named constant: matched to it,
+  and one the theme lacks proposed as a new entry ([*Reading a design*](reading.md),
+  *A design's values*).
 - A drawing this plugin made is never read back for a value.
 
 ## 1. Look for a design
@@ -45,7 +45,7 @@ there is none — in words, drawn only when asked.
 ## 2. A design exists: read it for the tree
 
 Read it for which roles the page has, in what order, and what each shows, and
-match its values to the theme: [reading.md](reading.md).
+match its values to the theme: [*Reading a design*](reading.md).
 
 ## 3. No design: agree the shape in words
 
@@ -53,7 +53,7 @@ Only for a new page with no design and no page near enough to follow, or when a
 person asks to agree or see a page's shape.
 
 - Propose the page as a tree of roles, in the order a page is read
-  ([reading.md](reading.md), *Read it the way a page is read*), with the
+  ([*Reading a design*](reading.md), *Read it the way a page is read*), with the
   project's own piece at each role where it has one.
 - Take the pieces in this order: the components of the page's own area, then the
   shared layer, then the UI library.
@@ -66,8 +66,8 @@ person asks to agree or see a page's shape.
 - With a plan, the proposed tree is shown with it and agreed by the plan's yes.
   Asked on its own, the person agrees it or changes it here.
 - The agreed tree is the page's design. The pieces it names stand where no family
-  answers them; where a family does, [reading.md](reading.md) says which half
-  comes from where.
+  answers them; where a family does, [*Reading a design*](reading.md) says
+  which half comes from where.
 - Offer a drawing in one line at most. Draw only if asked — step 4.
 
 ## 4. Draw it — only when asked
@@ -75,14 +75,15 @@ person asks to agree or see a page's shape.
 - Draw only when a person asks to see the page, or asks for alternatives.
 - Otherwise do not draw.
 - How it is drawn, what it must not do, and where it is shown:
-  [mockup.md](mockup.md).
+  [*A mockup of the page-to-be*](mockup.md).
 
 ## 5. A change to the shape later
 
 - If a person changes the shape after a checklist or a plan exists, agree the
   new tree here.
-- Then `finding-patterns` works out again only the checklist lines the change
-  touches, and `planning` updates the tasks that carry them.
+- Then `ui-consistency:finding-patterns` works out again only the checklist
+  lines the change touches, and `ui-consistency:planning` updates the tasks that
+  carry them.
 
 ## Say what you read and could not
 

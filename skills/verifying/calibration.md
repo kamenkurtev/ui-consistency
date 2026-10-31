@@ -31,7 +31,7 @@ helper.
   of their kind. The plan's first task is that calibration
   (`../planning/plan-file.md`).
 - **The checker of the pages is a new agent**, given the same checklist and the
-  same instructions — not the one that was calibrated: that one knows a plant
+  same instructions — not the one shown the planted copy: that one knows a plant
   exists, and reads the page expecting one. That new agent is the one checker of
   that kind for the work.
 - **A change without a plan** owes the proof once, and cheaply: one plant, at the
@@ -67,11 +67,3 @@ as unproven.
   a general review passes.
 - If the reviewer misses the plant, its check is blind to it: dispatch a
   separate checker again.
-
-## Red flags
-
-Words agents used in runs, just before getting it wrong:
-
-| They said | What it means |
-|---|---|
-| `mkdir -p /tmp/<name>-$$` for the planted copy | A name anyone can predict, reused if it already exists. Let the system create the directory new — `mktemp -d`, or your harness's own temporary directory. |

@@ -37,15 +37,9 @@ Decide the branch **from the request alone, before any project file is opened**.
   fifty files or fifty searches (`ui-consistency:adjusting`, *The budget*), or it
   would write outside the pages it names — **say so, and run the whole phase
   from step 1** before anything more is written. Never widen silently.
-
-## Joining a process, or running alone
-
-- If a process running this work has a spec or a plan, **add to it**: findings
-  into its document, questions into its questions. Never a second dialogue.
-- **A plan or pattern file written before this work began** is not a process to
-  join, even when a person attached it: read it as `ui-consistency:decisions`,
-  *A plan written before this work began*, says.
-- If nothing exists, run this phase yourself.
+- If a process running this work has a spec or a plan, or a plan or pattern
+  file written before this work began is at hand:
+  [*Joining a process*](joining-a-process.md).
 
 ## 1. The reference
 
@@ -71,8 +65,8 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 ## 2. Read the reference: top to bottom, then left to right
 
-- Open [words.md](words.md) first: what role, position, holder and family mean
-  here.
+- Open [*What the words mean*](words.md) first: what role, position, holder
+  and family mean here.
 - **If the work has a design for the page** — a picture, a screen described in
   the request, an older screen the work ports, a tree a person agreed with
   `ui-consistency:design` — read it first, in this same order, for **which roles
@@ -143,8 +137,9 @@ In this order; the rules are in `ui-consistency:conventions`:
 **How to count, and how little:**
 
 - **Count yourself**, and write each count down once instead of re-opening the
-  files behind it. Only if members in more than one area ([words.md](words.md))
-  must be read in full does the counting go to one subagent per area
+  files behind it. Only if members in more than one area
+  ([*What the words mean*](words.md)) must be read in full does the counting go
+  to one subagent per area
   (`ui-consistency:conventions`, *Which pages are the family*).
 - **Measure a shared piece's reach yourself**, whatever it crosses, with one
   grouped search: that it exists, and how many files use it. Do not open those
@@ -188,8 +183,9 @@ In this order; the rules are in `ui-consistency:conventions`:
 - Record the colour pairings, focus and labels the family uses as conventions.
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — `ui-consistency:accessibility`.
-- Write a literal that has a theme equivalent **through the theme**; one without
-  becomes a **named constant** where the project keeps them.
+- Write a literal that has a theme equivalent **through the theme**.
+- If a literal that is not a design's has no theme equivalent, it becomes a
+  **named constant** where the project keeps them.
 - Put translated text through the translation mechanism.
 - **New words the user reads**: reuse the project's string where one already says
   the same thing. Phrase a new one the way the family phrases that kind of string
@@ -222,7 +218,7 @@ In this order; the rules are in `ui-consistency:conventions`:
 ## 8. Write the checklist
 
 - Turn the page's tree into the checklist — its shape, and where it goes, are
-  [checklist.md](checklist.md).
+  [*The checklist*](checklist.md).
 - **A role the page already has that the work changes** keeps its line, as the
   position the task changes: *trail of links — the one in the header, now
   following the tree; no second one* (`ui-consistency:conventions`, *A position
@@ -251,7 +247,7 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **Step 7.** The filter row is there because orders has one, at level 3; it is
   written through the shared filter bar the other members use, at level 4.
 - **Step 8.** Each of these becomes a line with what settled it — the finished
-  checklist is the example in [checklist.md](checklist.md).
+  checklist is the example in [*The checklist*](checklist.md).
 
 ## Say what you read, what it cost, and what you could not read
 
@@ -272,11 +268,3 @@ In this order; the rules are in `ui-consistency:conventions`:
 - For a new page or a refactor: `ui-consistency:planning`.
 - A fix or a small change, sized so at step 0, goes to
   `ui-consistency:adjusting` in place of steps 1–8.
-
-## Red flags
-
-Words agents used in runs, just before getting it wrong:
-
-| They said | What it means |
-|---|---|
-| "recorded as excluded from the pattern" — about a page that disagrees with the rest | Settled silently. Disagreement is settled by the order and **reported** with the level and the numbers — never dropped, and never quietly excluded. |
