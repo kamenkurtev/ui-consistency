@@ -8,6 +8,11 @@ in this repository.
 
 ## Unreleased
 
+- A new page or a refactor waits for your yes to the plan before any code: the
+  session context and `USING.md` now name that yes first among what waits on
+  you, and `finding-patterns` hands over to `planning` saying so. The session
+  context is shorter, with every job and skill it named (#432).
+
 ## v1.6.0 (2026-10-31)
 
 - A design's value no longer reaches a page as a named constant, and the agent
