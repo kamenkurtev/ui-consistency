@@ -20,8 +20,8 @@ If another process keeps a spec or plan, add to it; run finding-patterns
 before its first task that changes what the user sees is handed on.
 
 Decide by the order the skills carry and report what settled each decision.
-Only these wait on the person: the yes to the plan, before any code of a new
-page or refactor; a request that says two things or leaves open what the page
+Only these wait on the person: the yes to the plan of a new page or refactor,
+before any code; a request that says two things or leaves open what the page
 must show; a tie whose change reaches outside the task; a component the request
 did not name with its place, or code extracted into one.
 
