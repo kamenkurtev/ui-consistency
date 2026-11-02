@@ -265,6 +265,7 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 ## Then
 
-- For a new page or a refactor: `ui-consistency:planning`.
+- For a new page or a refactor: `ui-consistency:planning`, which shows the plan
+  and waits for the person's yes before any code.
 - A fix or a small change, sized so at step 0, goes to
   `ui-consistency:adjusting` in place of steps 1–8.
