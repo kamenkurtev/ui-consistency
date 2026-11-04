@@ -265,7 +265,11 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 ## Then
 
-- For a new page or a refactor: `ui-consistency:planning`, which shows the plan
-  and waits for the person's yes before any code.
+- For a new page or a refactor: `ui-consistency:planning`, which writes the
+  tasks that carry each page's checklist and its check by a separate agent,
+  shows the plan, and waits for the person's yes before any code.
+- If the person gave the yes to the plan in advance, run
+  `ui-consistency:planning` all the same: it shows the plan and goes on without
+  waiting.
 - A fix or a small change, sized so at step 0, goes to
   `ui-consistency:adjusting` in place of steps 1–8.

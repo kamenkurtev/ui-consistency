@@ -12,6 +12,11 @@ in this repository.
   session context and `USING.md` now name that yes first among what waits on
   you, and `finding-patterns` hands over to `planning` saying so. The session
   context is shorter, with every job and skill it named (#432).
+- A yes you give in advance now skips only the wait: `finding-patterns` still
+  hands a new page or a refactor to `planning`, which writes each page's task
+  with its checklist and its separate check, shows the plan and goes on without
+  stopping. What that yes agrees settles that task only: it records no override
+  (#434).
 
 ## v1.6.0 (2026-10-31)
 
