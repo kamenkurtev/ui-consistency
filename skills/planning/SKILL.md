@@ -69,6 +69,8 @@ the skill invoked.
 - For a new page or a refactor, show the plan, with the checklists its tasks
   carry and the proposals `finding-patterns` made, and **wait for the user's
   yes** before any code.
+- If the person gave the yes in advance, before the plan was shown, it is the
+  plan's yes: show the plan and go on to *How the phase ends* without waiting.
 - Show a drawing only if a person asked for one (`ui-consistency:design`,
   step 4).
 - If the person changes a page's shape at this stop, it goes back to
@@ -85,6 +87,9 @@ the skill invoked.
 - **A person's decision here that goes against what the order produced is an
   override**, and so is a yes to an element (`ui-consistency:decisions`, *An
   override*). A yes to any other proposal settles this task only.
+- If the yes was given in advance, every proposal it agrees settles this task
+  only, an element's included: record no override, since nobody saw what it
+  would overrule.
 - Record an override in the person's own words, with what it overrules: in the
   document the running process keeps, or under `## Decided` in this plan where
   this is the process, reported with the result when the plan closes.

@@ -145,6 +145,8 @@ something other work uses. Ask once, with the numbers and a proposal.
 - If the yes is to an element, record it as an override as well
   ([*An override*](override.md)): the family still writes the generic one,
   and the next task would count it again.
+- If the yes was given in advance, before the plan was shown, record no
+  override: it settles this task only, since nobody saw what it would overrule.
 - **A tie inside what this task touches** is settled by level 7: say so, and
   move on.
 
