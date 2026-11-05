@@ -33,6 +33,12 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 - **Say it in one line** before anything else: *sized as a small change — a
   button beside the existing one, on one page.*
+- **Sized as the whole phase, write nothing but the checklist while this skill
+  runs.** The pages come after step 8, from the tasks `ui-consistency:planning`
+  writes.
+- If the person gave the yes to the plan in advance, nobody waits for the plan's
+  yes; every step here and `ui-consistency:planning` still run before any page is
+  written.
 - If what you read shows a small change is bigger than it was sized — it passes
   fifty files or fifty searches (`ui-consistency:adjusting`, *The budget*), or it
   would write outside the pages it names — **say so, and run the whole phase
@@ -212,8 +218,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **If the family writes a generic element for a role the technology has its
   own element for** — a clickable block for a button, a block of links for
   navigation — propose the element whose meaning the role has, with the counts,
-  shown with the plan (`ui-consistency:values`, *Elements*). Write the page the
-  project's way until a person agrees to it.
+  shown with the plan (`ui-consistency:values`, *Elements*). Until a person
+  agrees to it, the checklist keeps the project's way.
 
 ## 8. Write the checklist
 
@@ -268,8 +274,7 @@ In this order; the rules are in `ui-consistency:conventions`:
 - For a new page or a refactor: `ui-consistency:planning`, which writes the
   tasks that carry each page's checklist and its check by a separate agent,
   shows the plan, and waits for the person's yes before any code.
-- If the person gave the yes to the plan in advance, run
-  `ui-consistency:planning` all the same: it shows the plan and goes on without
-  waiting.
+- If the person gave the yes to the plan in advance, still run
+  `ui-consistency:planning` — *0. Size the work first*.
 - A fix or a small change, sized so at step 0, goes to
   `ui-consistency:adjusting` in place of steps 1–8.

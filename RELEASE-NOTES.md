@@ -17,6 +17,9 @@ in this repository.
   with its checklist and its separate check, shows the plan and goes on without
   stopping. What that yes agrees settles that task only: it records no override
   (#434).
+- A new page or a refactor is no longer written while `finding-patterns` runs,
+  even when you gave the yes in advance: that phase ends with the checklist, and
+  the pages come only from the tasks `planning` writes (#436).
 
 ## v1.6.0 (2026-10-31)
 
