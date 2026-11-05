@@ -38,6 +38,8 @@ the check on a copy with one planted difference, once per work and kind of page:
 [*Proving the check can see*](calibration.md).
 
 - A checker handed a page neither runs a calibration nor reasons about one.
+- **The final report of the work names the proof**: where the copy lived, what
+  was planted, whether it was caught, and what no plant tested.
 
 ## Never the author
 

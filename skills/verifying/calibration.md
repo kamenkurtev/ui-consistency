@@ -28,7 +28,6 @@ value, its own error message instead of the shared helper.
 - If that is refused too, put the planted copy's text into the brief of the
   agent shown it, in place of a file, with nothing of the original. It proves
   what one file shows.
-- **Say which**, and name what the calibration could not vouch for.
 - Never use a fixed, guessable path, and never a copy that could be committed.
 - **Calibrate once per work and kind of page.** The calibration proves the check
   — this checklist, this skill, a checker given them — not one agent.
@@ -53,8 +52,12 @@ value, its own error message instead of the shared helper.
 - If the planted difference is not reported, the check is blind for that kind of
   difference. **Say so before anything is built or passed**, and name the
   difference the plant tested as unchecked in every report that check makes.
-- **Report what the plant tested, and what no plant tested**: *the plant was a
-  heading's weight; nothing tested sizes, scrolling or the words.*
+- **Name the proof in the final report of the work**, even when every page
+  passed:
+  - where the copy lived, and what that left unproven;
+  - what was planted, and whether it counted;
+  - what no plant tested: *a copy in the brief, one file only; the plant was a
+    heading's weight, counted; nothing tested sizes, scrolling or the words.*
 
 ## A refactor
 
