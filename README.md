@@ -57,7 +57,7 @@ phases:
    from the reference. It shows you the plan and waits for a yes.
 3. **Implement.** One page at a time, from the checklist, in a fresh context.
 4. **Verify.** A separate agent compares each page with the reference, region by
-   region, and then all the pages together. Before its result counts, the check
+   region, and then all the pages together. Before it checks any page, the check
    is proved to catch a difference planted on purpose.
 
 A new page with nothing close enough to follow gets its shape agreed with you
