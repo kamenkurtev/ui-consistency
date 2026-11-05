@@ -121,7 +121,8 @@ the skill invoked.
     kept for every page of this kind, never the one that wrote it or the one
     shown the planted copy — and sends back what it reports.
     - If nobody dispatched this task, send the page to that checker yourself;
-      start it if this is the first page of its kind.
+      if this is the first page of its kind, prove the check yourself first
+      (`../verifying/calibration.md`), then start the checker.
     - Where the process already sends each task to a reviewer, whoever dispatches
       that reviewer puts the checklist and `ui-consistency:verifying` into its
       brief (`../verifying/calibration.md`).

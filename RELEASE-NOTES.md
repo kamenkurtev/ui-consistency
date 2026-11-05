@@ -20,6 +20,10 @@ in this repository.
 - A new page or a refactor is no longer written while `finding-patterns` runs,
   even when you gave the yes in advance: that phase ends with the checklist, and
   the pages come only from the tasks `planning` writes (#436).
+- The check is proved on a planted difference before any page is checked: that
+  is now `verifying`'s first step. When the planted copy cannot be written
+  outside the checkout, it goes in the scratch location the harness gives, or
+  into the brief of the agent shown it (#437).
 
 ## v1.6.0 (2026-10-31)
 

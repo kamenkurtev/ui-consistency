@@ -4,14 +4,14 @@
 a page task, or a small change. It is the dispatcher's: a checker handed a page
 does not read it.
 
-Before the checker's result is trusted, show it **a copy of the reference with
-one role deliberately written differently** — a different size on a button, a
-literal instead of a theme value, its own error message instead of the shared
-helper.
+Before the checker of a kind is given its first page, show another agent, given
+the same brief, **a copy of the reference with one role deliberately written
+differently** — a different size on a button, a literal instead of a theme
+value, its own error message instead of the shared helper.
 
 - **The one that plants is not the one that looks.** The dispatching agent — or
   the author — makes the copy.
-- Tell the checker only that the copy differs from the checklist somewhere —
+- Tell that agent only that the copy differs from the checklist somewhere —
   never what or where — and not to open the original the copy was made from. An
   agent that plants and checks in one context proves only that it can find what
   it just wrote.
@@ -22,6 +22,12 @@ helper.
 - Outside a git repository, copy the reference alone into a newly created
   temporary directory. It proves only what one file shows: a class, a literal,
   which helper is called.
+- If the harness refuses a write outside the checkout, copy the reference alone
+  into a newly created directory in the scratch location the harness gives. It
+  proves what one file shows.
+- If that is refused too, put the planted copy's text into the brief of the
+  agent shown it, in place of a file, with nothing of the original. It proves
+  what one file shows.
 - **Say which**, and name what the calibration could not vouch for.
 - Never use a fixed, guessable path, and never a copy that could be committed.
 - **Calibrate once per work and kind of page.** The calibration proves the check

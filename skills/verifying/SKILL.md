@@ -18,17 +18,26 @@ the skill invoked.
 
 ## Steps
 
-1. A separate agent checks, never the author — *Never the author*.
-2. It reads the checklist and the page first, and the project only where they do
+1. Before the checker of a kind is given its first page, the dispatcher — never
+   the checker — proves the check on a copy with one planted difference —
+   *First, prove it can see*.
+2. A separate agent checks, never the author — *Never the author*.
+3. It reads the checklist and the page first, and the project only where they do
    not answer — *What the checker reads*.
-3. Before its result is trusted, the dispatcher — never the checker — proves
-   the check on a copy with one planted difference — *First, prove it can see*.
 4. It compares region by region and notes every difference, the uncertain ones
    included; then it judges each as *Reading a difference* says, and reports
    what that keeps — *Compare region by region*.
 5. It names what it could not check, and the cost — *Say what was not checked*.
 6. After the last page of a kind, it compares all the pages of that kind together
    — *The whole set, at the end*.
+
+## First, prove it can see
+
+**Before the checker of a kind is given its first page**, the dispatcher proves
+the check on a copy with one planted difference, once per work and kind of page:
+[*Proving the check can see*](calibration.md).
+
+- A checker handed a page neither runs a calibration nor reasons about one.
 
 ## Never the author
 
@@ -86,14 +95,6 @@ for three things only:
 Read no further than that: the checklist and the page stay the thing checked.
 Read no process's own state — its plan, its ledger, its progress files — beyond
 the reports of this kind's earlier checker.
-
-## First, prove it can see
-
-Before a checker's result is trusted, **the dispatcher** proves the check on a
-copy with one planted difference, once per work and kind of page:
-[*Proving the check can see*](calibration.md).
-
-- A checker handed a page neither runs a calibration nor reasons about one.
 
 ## Compare region by region
 
