@@ -52,8 +52,8 @@ value, its own error message instead of the shared helper.
 - If the planted difference is not reported, the check is blind for that kind of
   difference. **Say so before anything is built or passed**, and name the
   difference the plant tested as unchecked in every report that check makes.
-- **Name the proof in the final report of the work**, even when every page
-  passed:
+- **Name the proof in the final report of the work, to the person**, even
+  when every page passed:
   - where the copy lived, and what that left unproven;
   - what was planted, and whether it counted;
   - what no plant tested: *a copy in the brief, one file only; the plant was a

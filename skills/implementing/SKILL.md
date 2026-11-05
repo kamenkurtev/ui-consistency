@@ -166,6 +166,7 @@ one owns what the end user sees.
 - When every page of a kind is `done` or `parked`: that kind's checker compares
   all its pages together (`ui-consistency:verifying`, *The whole set, at the
   end*).
-- **The final report of the work names the proof**: where the copy lived, what
-  was planted, whether it was caught, and what no plant tested
+- **The final report of the work, to the person, names the proof**: where the
+  copy lived and what that left unproven, what was planted and whether it
+  counted, and what no plant tested
   (`../verifying/calibration.md`).

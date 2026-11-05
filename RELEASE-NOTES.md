@@ -29,7 +29,7 @@ in this repository.
   start none, the author checks its own work and says so (#440).
 - The final report of the work names the proof, even when every page passed:
   where the planted copy lived, what was planted, whether it was caught, and
-  what no plant tested (#441).
+  what no plant tested. The checker's own report is unchanged (#441).
 
 ## v1.6.0 (2026-10-31)
 
