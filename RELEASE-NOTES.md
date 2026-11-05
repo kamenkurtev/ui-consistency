@@ -24,6 +24,9 @@ in this repository.
   is now `verifying`'s first step. When the planted copy cannot be written
   outside the checkout, it goes in the scratch location the harness gives, or
   into the brief of the agent shown it (#437).
+- The separate checker and each page's agent are started without waiting for
+  you to ask for them: asking for the work asks for its check. If you say to
+  start none, the author checks its own work and says so (#440).
 
 ## v1.6.0 (2026-10-31)
 

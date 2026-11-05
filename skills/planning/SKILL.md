@@ -102,11 +102,12 @@ the skill invoked.
 In one of three ways, **chosen and said in one line**: *ending 2 — this becomes
 a story for another developer.*
 
-1. **The work stays with us, in one context.** The tasks live in the session.
+1. **The work stays with us.** The tasks live in the session.
    - If the work outlives the context and the plan must survive on disk, write it
      to a file outside the working copy, in the scratch location the harness
      gives, and delete it with the work.
-   - Then `ui-consistency:implementing`.
+   - Then `ui-consistency:implementing`, and start the agents it names without
+     waiting to be asked: asking for the work asks for them.
 2. **The work becomes a story for somebody else.** Attach the plan and what the
    implementation needs to the story.
    - It is finished when a developer who was not in the conversation, without the

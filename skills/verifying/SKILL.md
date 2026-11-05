@@ -44,10 +44,12 @@ the check on a copy with one planted difference, once per work and kind of page:
 - **The agent that wrote a page does not verify it.** The checker is a separate
   agent: a subagent where the harness has them, otherwise a new session given
   only what is below.
+- **Start the checker, and the agent shown the planted copy, without waiting to
+  be asked for them**: asking for the work asks for them.
 - A fresh turn in the same session is the same agent with the same context, and
   does not count.
-- If no separate agent is available, **say plainly that the author checked its
-  own work**, and treat the result as that.
+- If no separate agent is available, or the person said to start no agent, **say
+  plainly that the author checked its own work**, and treat the result as that.
 - **One checker per work and kind of page**, never the agent shown the planted
   copy. It checks each page of that kind as the page is written, each fix after,
   and all the pages of that kind at the end. It is started at the first page of

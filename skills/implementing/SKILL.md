@@ -25,6 +25,11 @@ the skill invoked.
   it — wherever `ui-consistency:planning` left the plan: in the session, in a
   file outside the working copy, or in another process's plan. Never work from
   memory of it.
+- **Start every agent this skill names — a page's, the one shown the planted
+  copy, the checker — without waiting to be asked for it**: asking for the work
+  asks for them.
+- If the person said to start no agent, write one page per turn, and check each
+  yourself and say so (`ui-consistency:verifying`, *Never the author*).
 - Execute a task from itself, not from what the plan says around it: every task
   carries what it needs (`../planning/plan-file.md`).
 - If another process is executing the plan, follow its loop; the steps below are
