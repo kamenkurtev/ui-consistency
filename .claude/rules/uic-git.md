@@ -66,9 +66,10 @@
   updates, so the other five drift with nothing to complain — which is why the
   script exists.
 - **Merging a release tags it.** `.github/workflows/release.yml` tags
-  `v<version>`, publishes its section as a GitHub Release, and moves the
-  `release` branch to it. An installed copy updates when `plugin.json` names a
-  new version, so users receive releases, not every merge.
+  `v<version>`, publishes its section as a GitHub Release, and points the
+  `release` branch at the files an install uses from that tag. An installed
+  copy updates when `plugin.json` names a new version, so users receive
+  releases, not every merge.
 - **OpenAI's plugin directory takes a ZIP, not the repository.**
   - Every version uploaded is a new package version, which OpenAI reviews
     again before it is published.
@@ -77,8 +78,12 @@
     licence:
     `git archive --format=zip -o ui-consistency-<version>.zip v<version> -- .codex-plugin skills .claude-plugin/icon.svg LICENSE README.md`
 - **Nobody commits to `release`.** Development stays trunk-based on `main`;
-  `release` only ever points at the last release, and Anthropic's directory
+  `release` only ever carries the last release, and Anthropic's directory
   follows it.
+  - It holds what an install uses — the `SHIPPED` list in
+    `scripts/version-check.sh`, the readme and the licence — and nothing else:
+    from an organisation it has not verified, the directory accepts only
+    Markdown, text, JSON, YAML and images.
 - **To work on the latest**, add the local clone as the marketplace
   (`CONTRIBUTING.md`): every change applies at the next session, with no
   release.

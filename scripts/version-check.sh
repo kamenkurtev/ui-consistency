@@ -14,6 +14,8 @@ set -euo pipefail
 # HEAD is origin/main: that is every branch with nothing committed yet, which is
 # exactly when the gate is run.
 
+# What an install uses. The release workflow builds the `release` branch from
+# it, with the readme and the licence: keep it one quoted line.
 SHIPPED='skills/ USING.md GEMINI.md .claude-plugin/ .codex-plugin/ .cursor-plugin/ gemini-extension.json plugin.json'
 
 if ! git rev-parse --verify --quiet origin/main >/dev/null; then
