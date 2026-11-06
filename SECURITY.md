@@ -9,7 +9,7 @@ Only the maintainers can read what is sent there. **Do not open a public issue**
 for a vulnerability — an issue is public the moment it is filed, and GitHub keeps
 what was edited out of one.
 
-Say what an attacker controls, what the agent or the hook then does, and the
+Say what an attacker controls, what the agent then does, and the
 smallest repository or input that shows it. A report does not need a fix.
 
 ## What to expect
@@ -32,8 +32,7 @@ The skills send an agent to read a stranger's repository and act on what it
 finds, so the class that matters most here is **content from the project being
 read turning into an instruction the agent follows** — text in a file, a
 comment, a component's prop — and anything that lets that project's contents
-reach outside it. Also in scope: the session hook in `hooks/session-start` and what it
-puts into a session.
+reach outside it.
 
 Only the latest version is supported. A report against an older one is welcome
 if it still reproduces on the latest.
