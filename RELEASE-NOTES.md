@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.7.0 (2026-11-06)
+
 - A new page or a refactor waits for your yes to the plan before any code: the
   session context and `USING.md` now name that yes first among what waits on
   you, and `finding-patterns` hands over to `planning` saying so. The session
