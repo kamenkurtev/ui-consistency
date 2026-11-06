@@ -81,8 +81,8 @@ properties, preprocessor variables, a shared stylesheet, a config file.
   another.
 - If the theme that applies cannot be resolved, say the values are unchecked.
 - If no application mounts the pages — each page is a document of its own — the
-  theme is the shared values those pages load, such as a tokens file or a shared
-  stylesheet's custom properties.
+  theme is the shared values those pages load, such as a file of named values
+  or a shared stylesheet's custom properties.
   - Count a value that names one of its entries across the pages that load it,
     in place of the theme's applications.
 - **A file in a shared layer has no theme of its own.** Check its theme-defined
