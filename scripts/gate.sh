@@ -11,9 +11,6 @@ bash scripts/check-skills.sh
 echo "==> packaging"
 bash scripts/check-packaging.sh
 
-echo "==> hook"
-bash scripts/check-hook.sh
-
 echo "==> private names"
 bash scripts/check-private-names.sh
 

@@ -73,9 +73,8 @@ It works on its own, and it works inside another process: where
 written a spec or plan, the phases add to it instead of running a second one.
 
 The agent you already use does all the reading. There is no parser, no API key
-and nothing to configure. The one thing the plugin runs is a short session hook
-that prints which skills a job takes, and where to report a page that came out
-wrong; it needs no Node and installs nothing.
+and nothing to configure, and the plugin runs no code: it is skills, which the
+agent picks up by their descriptions.
 
 ## Installation
 
@@ -114,14 +113,7 @@ codex plugin marketplace add kamenkurtev/ui-consistency --ref release
 codex plugin add ui-consistency@kkurtev-plugins
 ```
 
-Reads `.codex-plugin/plugin.json`, which gives it the skills, and runs the
-session hook from `hooks/hooks.json`.
-
-Codex runs a plugin's hook only once you have trusted it. At the first start it
-warns that a hook needs review: open `/hooks`, review the plugin's
-`SessionStart` hook and trust it. From then on every session gets the order the
-skills run in. A clean Codex session has started `finding-patterns` on *Add a
-returns page like the orders page* before writing any page code.
+Reads `.codex-plugin/plugin.json`, which gives it the skills.
 
 ### GitHub Copilot CLI
 
@@ -129,8 +121,8 @@ returns page like the orders page* before writing any page code.
 copilot plugin install kamenkurtev/ui-consistency
 ```
 
-Reads `plugin.json` and loads the skills from `skills/` and the session hook
-from `hooks/hooks.json`. This path has not been run end to end.
+Reads `plugin.json` and loads the skills from `skills/`. This path has not been
+run end to end.
 
 ### Cursor
 

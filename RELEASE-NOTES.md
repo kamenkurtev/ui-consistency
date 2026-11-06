@@ -8,6 +8,12 @@ in this repository.
 
 ## Unreleased
 
+- The plugin no longer runs a hook at the start of a session, in any harness:
+  Anthropic's directory now accepts a command hook only from an organisation it
+  has verified. The skills start from their descriptions. A session is no longer
+  told the order of the skills, or where to report a page that came out wrong,
+  before its first request; Gemini CLI still reads both in `USING.md` (#448).
+
 ## v1.7.0 (2026-11-06)
 
 - A new page or a refactor waits for your yes to the plan before any code: the

@@ -121,19 +121,19 @@ for my $file (@files) {
   }
 }
 
-# Every skill named exists, and the session text names exactly these.
+# Every skill named exists, and USING.md, the order of the skills, names exactly
+# these.
 my %have = map { $_ => 1 } @skills;
+my %said;
 for my $file (@files, 'USING.md') {
   my $text = slurp($file);
   while ($text =~ /\bui-consistency:([a-z][\w-]*)/g) {
     push @fail, "$file: names ui-consistency:$1, which does not exist" unless $have{$1};
+    $said{$1} = 1 if $file eq 'USING.md';
   }
 }
-my %said;
-my $session = slurp('hooks/session-context.md');
-$said{$1} = 1 while $session =~ /\bui-consistency:([a-z][\w-]*)/g;
 my ($said, $all) = (join(', ', sort keys %said), join(', ', @skills));
-push @fail, "hooks/session-context.md names [$said]; the skills are [$all]" if $said ne $all;
+push @fail, "USING.md names [$said]; the skills are [$all]" if $said ne $all;
 
 # A link stays inside its own skill: a catalog's linter fails a skill whose link
 # leaves it (the Agent Skills specification: paths from the skill root). Another
