@@ -30,6 +30,8 @@ in this repository.
 - The final report of the work names the proof, even when every page passed:
   where the planted copy lived, what was planted, whether it was caught, and
   what no plant tested. The checker's own report is unchanged (#441).
+- Two lines of the skills name a file of design values in other words, for the
+  directory's review. What the agent does is unchanged (#444).
 
 ## v1.6.0 (2026-10-31)
 
@@ -50,8 +52,8 @@ in this repository.
 
 - Pages that are each a document of their own, such as plain HTML pages or a
   set of screens, now have a bound and a theme: the pages that load a file the
-  reference loads too, and the shared values they load, such as a tokens
-  file (#410).
+  reference loads too, and the shared values they load, such as a file of
+  colour, spacing and type values (#410).
 - New words on a page no longer take a form the other pages use with another
   meaning, such as a progress counter reused for a result. A new meaning gets
   words of its own (#411).

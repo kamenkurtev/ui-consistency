@@ -52,7 +52,8 @@ the same pages.
   sits in, not the whole workspace.
 - If no application mounts the pages — each page is a document of its own — the
   bound is **every page that loads a file the reference loads too**, such as a
-  stylesheet, a script or a tokens file, and those files.
+  stylesheet, a script or a file of colour, spacing and type values, and those
+  files.
 - If no other page loads a file the reference loads, the bound is the pages in
   the reference's folder, its subfolders included.
 - If the page sits in a library:
