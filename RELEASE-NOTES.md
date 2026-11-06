@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.8.0 (2026-11-06)
+
 - The plugin no longer runs a hook at the start of a session, in any harness:
   Anthropic's directory now accepts a command hook only from an organisation it
   has verified. The skills start from their descriptions. A session is no longer
