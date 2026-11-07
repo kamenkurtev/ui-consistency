@@ -8,6 +8,8 @@ in this repository.
 
 ## Unreleased
 
+## v1.8.1 (2026-11-07)
+
 - Anthropic's directory can take new versions again: one line of `verifying`
   that its scan read as using a credential from your machine says the same in
   other words. `conventions` and `values` say "a tokens file" again, which the
