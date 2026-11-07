@@ -1,6 +1,6 @@
 {
   "name": "ui-consistency",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "Keeps new UI consistent with a project's existing pages. Your coding agent reads how they are built and writes new ones the same way.",
   "author": {
     "name": "Kamen Kurtev"
@@ -27,5 +27,6 @@
     "angular"
   ],
   "skills": "./skills/",
-  "displayName": "ui-consistency"
+  "displayName": "ui-consistency",
+  "hooks": "./hooks/hooks-cursor.json"
 }
