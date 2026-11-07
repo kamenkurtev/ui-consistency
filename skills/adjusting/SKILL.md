@@ -131,3 +131,8 @@ reference — and the theme entries it uses.
 
 `ui-consistency:implementing` makes the change from the checklist, and
 `ui-consistency:verifying`, run by an agent that did not write it, checks it.
+
+- **Start the checker, and the agent shown the planted copy, without waiting to
+  be asked for them**: asking for the change asks for them.
+- If the person said to start no agent, check the change yourself and say so
+  (`ui-consistency:verifying`, *Never the author*).

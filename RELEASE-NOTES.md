@@ -8,6 +8,10 @@ in this repository.
 
 ## Unreleased
 
+- After a fix or a small change to a page, `adjusting` starts the separate check
+  without waiting to be asked, as `implementing` and `verifying` already do: the
+  check no longer stops at "I can run it if you want" (#462).
+
 ## v1.9.0 (2026-11-07)
 
 - The session hook is back for an install from the repository: Claude Code from
