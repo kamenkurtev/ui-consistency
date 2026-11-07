@@ -22,8 +22,10 @@ input of the next or judges its output.
    carries (`uic-git.md`, *Versions*). Push the branch, and validate the
    repository at that branch in Anthropic's directory portal
    (claude.ai/directory/manage), without submitting it. Fix a policy hold or a
-   block on a file `release` carries before the merge: the directory holds every
-   version that has one. The owner runs it for a contribution from outside.
+   block on a file `release` carries before the merge, then run the gate and this
+   step again: the directory holds every version that has one. One on a file
+   `release` does not carry never reaches the directory. The owner runs it for a
+   contribution from outside.
 10. **Open the PR and merge it** — how is in `uic-git.md`.
 
 ## How the reviews are done
