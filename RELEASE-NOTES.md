@@ -8,6 +8,12 @@ in this repository.
 
 ## Unreleased
 
+- The session hook is back for an install from the repository: Claude Code from
+  its marketplace, Copilot CLI, Cursor, and Codex from `main`. A session is told
+  again, before its first request, which skills a job takes and in what order,
+  and where to report a page that came out wrong. An install from Anthropic's
+  directory, or Codex's from `release`, still carries no hook (#458).
+
 ## v1.8.1 (2026-11-07)
 
 - Anthropic's directory can take new versions again: one line of `verifying`

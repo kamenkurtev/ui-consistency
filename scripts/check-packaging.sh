@@ -37,16 +37,23 @@ for my $file (@others) {
 # by a different harness's installer, and nothing reads more than one of them.
 my $described = $plugin->{description} // '';
 push @fail, "marketplace.json: the entry's description differs from .claude-plugin/plugin.json's" if ($entry->{description} // '') ne $described;
-for my $file (@others) {
+for my $file (@others, 'hooks/hooks.json') {
   push @fail, "$file: description differs from .claude-plugin/plugin.json's" if (json($file)->{description} // '') ne $described;
 }
 
-# No hook, for any harness: Anthropic's directory refuses a command hook from an
-# organisation it has not verified, and OpenAI's refuses lifecycle hooks.
-push @fail, "hooks/: an installed copy would carry a hook" if -e 'hooks';
-push @fail, "marketplace.json: the entry has a hooks entry" if exists $entry->{hooks};
-for my $file ('.claude-plugin/plugin.json', @others) {
-  push @fail, "$file: has a hooks entry" if exists json($file)->{hooks};
+# One hook, at session start, through the wrapper that finds bash.
+my $hooks = json('hooks/hooks.json')->{hooks};
+my @events = sort keys %$hooks;
+push @fail, "hooks/hooks.json: registers [@events]; only SessionStart" if "@events" ne 'SessionStart';
+my $session = $hooks->{SessionStart}[0]{hooks}[0] // {};
+push @fail, "hooks/hooks.json: SessionStart does not run run-hook.cmd session-start"
+  if index($session->{command} // '', 'run-hook.cmd" session-start') < 0;
+# Short on purpose: it prints a file, before anybody has asked for anything.
+push @fail, "hooks/hooks.json: SessionStart timeout is over 5 seconds" if ($session->{timeout} // 99) > 5;
+my $cursor = json('hooks/hooks-cursor.json')->{hooks}{sessionStart}[0]{command} // '';
+push @fail, "hooks/hooks-cursor.json: sessionStart does not run run-hook.cmd session-start" if index($cursor, 'run-hook.cmd session-start') < 0;
+for my $script ('hooks/run-hook.cmd', 'hooks/session-start') {
+  push @fail, "$script: missing or not executable" unless -x $script;
 }
 
 # The licence LICENSE grants, in every manifest: each installer reads only its
@@ -57,9 +64,35 @@ for my $file ('.claude-plugin/plugin.json', @others) {
   push @fail, "$file: licence is not MIT" if (json($file)->{license} // '') ne 'MIT';
 }
 
+# Copilot CLI reads plugin.json as a legacy plugin, which loads skills/ and
+# hooks/hooks.json. The Agent Plugins $schema would move its hooks to
+# com.github.copilot/hooks/, where there are none.
+push @fail, "plugin.json: declares a \$schema; Copilot CLI would stop running the session hook"
+  if exists json('plugin.json')->{'$schema'};
+
 # Every harness pointed at the same skills.
 for my $file ('.codex-plugin/plugin.json', '.cursor-plugin/plugin.json') {
   push @fail, "$file: skills is not ./skills/" if (json($file)->{skills} // '') ne './skills/';
+}
+
+# Codex reads a manifest's hooks entry instead of the plugin's hooks/hooks.json,
+# so any entry, an empty one included, keeps the session hook from it. Without
+# one, a package that leaves hooks/ out, as OpenAI's directory requires, stays
+# valid.
+push @fail, ".codex-plugin/plugin.json: has a hooks entry; Codex would not read hooks/hooks.json"
+  if exists json('.codex-plugin/plugin.json')->{hooks};
+
+# `release`, which Anthropic's directory reads, carries no hook: the directory
+# holds a command hook from an organisation it has not verified. hooks/ stays
+# out of the SHIPPED list it is built from, and no manifest it carries names a
+# hook, except Cursor's, which only an install from the repository reads.
+my ($shipped) = raw('scripts/version-check.sh') =~ /^SHIPPED='([^']*)'$/m;
+push @fail, "scripts/version-check.sh: no SHIPPED line" unless defined $shipped;
+push @fail, "scripts/version-check.sh: SHIPPED carries hooks/ into release"
+  if grep { m{^(?:\./)?hooks(?:/|$)} } split ' ', $shipped // '';
+push @fail, "marketplace.json: the entry has a hooks entry" if exists $entry->{hooks};
+for my $file ('.claude-plugin/plugin.json', 'gemini-extension.json', 'plugin.json') {
+  push @fail, "$file: has a hooks entry" if exists json($file)->{hooks};
 }
 
 # OpenAI's directory fills the listing from the Codex manifest's interface, and
@@ -83,10 +116,10 @@ for my $icon ('logo', 'composerIcon') {
   push @fail, ".codex-plugin/plugin.json: interface.$icon is not a file in the repository" unless $path =~ m{^\./} && -f $path;
 }
 
-# The context file Gemini CLI reads: the one its manifest names, and every file
-# it includes with a line `@./<path>`. Not AGENTS.md: that is where an agent
-# working in this repository looks for the repository's own rules. It must
-# carry the skills and the order they fire in.
+# The context file the harnesses without a hook read: the one Gemini's
+# manifest names, and every file it includes with a line `@./<path>`. Not
+# AGENTS.md: that is where an agent working in this repository looks for the
+# repository's own rules. It must carry the skills and the order they fire in.
 my $first = json('gemini-extension.json')->{contextFileName} // '';
 my @context = ($first);
 my $first_text = raw($first);
@@ -110,5 +143,5 @@ if (@fail) {
   print STDERR "$_\n" for @fail;
   exit 1;
 }
-print "packaging: version $version and one description in every manifest; no hook; nothing to install\n";
+print "packaging: version $version and one description in every manifest; one hook; nothing to install\n";
 PERL

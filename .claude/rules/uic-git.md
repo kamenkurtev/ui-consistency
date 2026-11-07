@@ -52,9 +52,10 @@
 - **A PR that changes what ships adds its line under `## Unreleased`** in
   `RELEASE-NOTES.md`, saying what somebody who installed the plugin will
   notice, and leaves the version alone.
-  - The gate fails on a branch touching `skills/`, `USING.md`, `GEMINI.md`
-    or a manifest with nothing under *Unreleased*. `USING.md` and `GEMINI.md`
-    are what Gemini CLI loads. Docs, scripts and rules alone need no line.
+  - The gate fails on a branch touching `hooks/`, `skills/`, `USING.md`,
+    `GEMINI.md` or a manifest with nothing under *Unreleased*. `USING.md` and
+    `GEMINI.md` are what Gemini CLI loads; `hooks/` is what an install from
+    the repository runs. Docs, scripts and rules alone need no line.
 - **A release is cut when the owner decides**, as a PR of its own.
   - `scripts/bump.sh` (`minor` / `major` as above) moves the version in every
     file that carries it, and turns *Unreleased* into the new version's section.
@@ -74,8 +75,8 @@
   - Every version uploaded is a new package version, which OpenAI reviews
     again before it is published.
   - Upload one when the skills change in substance, as with cursor.directory.
-  - The package carries only the Codex manifest, the skills, the icon and the
-    licence:
+  - It refuses lifecycle hooks, so the package leaves `hooks/` out. It carries
+    only the Codex manifest, the skills, the icon and the licence:
     `git archive --format=zip -o ui-consistency-<version>.zip v<version> -- .codex-plugin skills .claude-plugin/icon.svg LICENSE README.md`
 - **Nobody commits to `release`.** Development stays trunk-based on `main`;
   `release` only ever carries the last release, and Anthropic's directory
@@ -84,6 +85,10 @@
     `scripts/version-check.sh`, the readme and the licence — and nothing else:
     from an organisation it has not verified, the directory accepts only
     Markdown, text, JSON, YAML and images.
+  - It carries no hook: the directory holds a command hook from an organisation
+    it has not verified. `hooks/` stays out of `SHIPPED`, so an install from
+    `release` — the directory's, Codex's — runs none, and one from `main` runs
+    it. `scripts/check-packaging.sh` fails on a hook `release` would carry.
 - **To work on the latest**, add the local clone as the marketplace
   (`CONTRIBUTING.md`): every change applies at the next session, with no
   release.

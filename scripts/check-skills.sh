@@ -121,19 +121,23 @@ for my $file (@files) {
   }
 }
 
-# Every skill named exists, and USING.md, the order of the skills, names exactly
-# these.
+# Every skill named exists. USING.md, the order of the skills, and the session
+# text, which says it before the first request, each name exactly these.
 my %have = map { $_ => 1 } @skills;
 my %said;
-for my $file (@files, 'USING.md') {
+my @orders = ('USING.md', 'hooks/session-context.md');
+for my $file (@files, @orders) {
   my $text = slurp($file);
   while ($text =~ /\bui-consistency:([a-z][\w-]*)/g) {
     push @fail, "$file: names ui-consistency:$1, which does not exist" unless $have{$1};
-    $said{$1} = 1 if $file eq 'USING.md';
+    $said{$file}{$1} = 1;
   }
 }
-my ($said, $all) = (join(', ', sort keys %said), join(', ', @skills));
-push @fail, "USING.md names [$said]; the skills are [$all]" if $said ne $all;
+my $all = join(', ', @skills);
+for my $file (@orders) {
+  my $said = join(', ', sort keys %{ $said{$file} // {} });
+  push @fail, "$file names [$said]; the skills are [$all]" if $said ne $all;
+}
 
 # A link stays inside its own skill: a catalog's linter fails a skill whose link
 # leaves it (the Agent Skills specification: paths from the skill root). Another

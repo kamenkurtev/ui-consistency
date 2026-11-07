@@ -62,7 +62,7 @@ this merges.
 ## Harness support (required if this changes how a harness loads the plugin)
 <!-- The one session this project asks for: it proves the plugin loads, not how
      a skill behaves (AGENTS.md, *Skill Changes Come From Real Work*).
-     A manifest, `USING.md`, `GEMINI.md`: attach a
+     A manifest, the hook, `USING.md`, `GEMINI.md`: attach a
      **transcript** of a clean session in that harness, in a project with pages
      already built, sending exactly
 
@@ -99,6 +99,7 @@ paste the complete transcript here
 - [ ] A line under `## Unreleased` in `RELEASE-NOTES.md`, or nothing that ships changed (a release: `scripts/bump.sh`, and its own pull request)
 - [ ] Validated in Anthropic's directory portal with no policy hold or block on a file `release` carries, or nothing `release` carries changed (`.claude/rules/uic-pr.md`, step 9)
 - [ ] **A changed check fails against the unfixed version** — a plant in `scripts/test-checks.sh`, run both ways — or no check changed
+- [ ] A change to the hook was run the way a harness runs it: `hooks/run-hook.cmd session-start`
 - [ ] No name from a private repository in the diff — numbers survive, names do
       not (`.claude/rules/uic-docs.md`)
 
