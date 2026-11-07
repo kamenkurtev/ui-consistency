@@ -76,7 +76,9 @@ say so, and say what the agent reported it could not read.
 5. If a skill changed, the one fresh read of its changed lines
    (`.claude/skills/uic-writing/SKILL.md`, *After writing*).
 6. `scripts/gate.sh` again, if anything above changed a file.
-7. Fill every section of the pull request template — who produced the change
+7. If the change touches what the `release` branch carries, the owner validates
+   your branch in Anthropic's directory before the merge.
+8. Fill every section of the pull request template — who produced the change
    and with what, that you searched open and closed pull requests, and how it
    stays inside what `docs/concept.md` says this is not. **A person reads the
    complete diff before it is opened**, and a pull request carrying unrelated

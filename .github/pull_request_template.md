@@ -97,6 +97,7 @@ paste the complete transcript here
 
 - [ ] `scripts/gate.sh` passes
 - [ ] A line under `## Unreleased` in `RELEASE-NOTES.md`, or nothing that ships changed (a release: `scripts/bump.sh`, and its own pull request)
+- [ ] Validated in Anthropic's directory portal with no policy hold or block on a file `release` carries, or nothing `release` carries changed (`.claude/rules/uic-pr.md`, step 9)
 - [ ] **A changed check fails against the unfixed version** — a plant in `scripts/test-checks.sh`, run both ways — or no check changed
 - [ ] No name from a private repository in the diff — numbers survive, names do
       not (`.claude/rules/uic-docs.md`)

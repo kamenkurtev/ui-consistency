@@ -8,6 +8,11 @@ in this repository.
 
 ## Unreleased
 
+- Anthropic's directory can take new versions again: one line of `verifying`
+  that its scan read as using a credential from your machine says the same in
+  other words. `conventions` and `values` say "a tokens file" again, which the
+  scan never objected to. What the agent does is unchanged (#454).
+
 ## v1.8.0 (2026-11-06)
 
 - The plugin no longer runs a hook at the start of a session, in any harness:
@@ -62,8 +67,8 @@ in this repository.
 
 - Pages that are each a document of their own, such as plain HTML pages or a
   set of screens, now have a bound and a theme: the pages that load a file the
-  reference loads too, and the shared values they load, such as a file of
-  colour, spacing and type values (#410).
+  reference loads too, and the shared values they load, such as a tokens
+  file (#410).
 - New words on a page no longer take a form the other pages use with another
   meaning, such as a progress counter reused for a result. A new meaning gets
   words of its own (#411).
