@@ -129,10 +129,9 @@ Beyond the items, compare the same regions:
 - how each is written, against the counts in the checklist;
 - **a piece beside another in the same role on the same page**, against that
   one: row height, type, hover, the selected state, indent;
-- **a value written that does not take effect** — one the installed piece does
-  not read, one a flag or a wrapper overrides — and a limit set inside a shared
-  piece that the checklist does not carry: report what renders, and where it is
-  set;
+- **a value written that does not take effect** — one the piece in use ignores,
+  or one a flag or a wrapper replaces — and a limit inside a shared piece that the
+  checklist leaves out: name the value the page shows, and the file that gives it;
 - the reused pieces: the shared component, helper or class used, not rewritten;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;

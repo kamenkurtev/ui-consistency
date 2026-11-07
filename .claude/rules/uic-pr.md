@@ -18,7 +18,13 @@ input of the next or judges its output.
 7. **The one fresh read**, if a skill changed
    (`.claude/skills/uic-writing/SKILL.md`, *After writing*), and its fixes.
 8. **`scripts/gate.sh` again**, if anything above changed a file.
-9. **Open the PR and merge it** — how is in `uic-git.md`.
+9. **The directory's validation**, if the change touches a file `release`
+   carries (`uic-git.md`, *Versions*). Push the branch, and validate the
+   repository at that branch in Anthropic's directory portal
+   (claude.ai/directory/manage), without submitting it. Fix a policy hold or a
+   block on a file `release` carries before the merge: the directory holds every
+   version that has one. The owner runs it for a contribution from outside.
+10. **Open the PR and merge it** — how is in `uic-git.md`.
 
 ## How the reviews are done
 
@@ -56,6 +62,8 @@ The template is `.github/pull_request_template.md`; every section is filled.
   inside what `docs/concept.md` says this is not;
 - the issue's acceptance criteria, ticked where met;
 - each of the three reviews and what it found — "found nothing" is a result;
+- the directory's validation and what it held, or that nothing `release` carries
+  changed;
 - which documents were read against the change, and what was found;
 - where it was exercised, with a transcript when it changes how a harness
   loads the plugin;

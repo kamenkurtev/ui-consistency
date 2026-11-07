@@ -91,9 +91,11 @@
 ## Pull requests
 - What happens before a PR is opened, and in what order, is `uic-pr.md`.
 - Open the PR against `main` with the template filled in.
-- **Merge it once `scripts/gate.sh` and the GitHub `gate` check pass** and the body
-  names the three reviews. The owner reads that as the review; do not stop to ask
-  for permission to merge. Squash, with the PR number in the subject.
+- **Merge it once `scripts/gate.sh` and the GitHub `gate` check pass**, the body
+  names the three reviews, and the directory's validation of a change to what
+  `release` carries found no hold (`uic-pr.md`, step 9). The owner reads that as
+  the review; do not stop to ask for permission to merge. Squash, with the PR
+  number in the subject.
 - `gh pr create` and `gh pr merge` go through GitHub's GraphQL API, whose limit is
   shared by every tool on the account. When it is exhausted, the REST API
   (`gh api repos/<owner>/<repo>/pulls`, `…/pulls/<n>/merge`) still works.

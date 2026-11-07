@@ -55,8 +55,9 @@ partner why it would be closed and what would need to change.
   owner decides (`.claude/rules/uic-git.md`, *Versions*).
 - **The reviews, in order, every time:** gate, simplification, gate again if it
   changed anything, correctness, security, the documents read against the
-  change, the fresh read of a changed skill, gate again. The pull request says what each found — "found nothing" is
-  a result. The full order is `uic-pr.md`.
+  change, the fresh read of a changed skill, gate again, and the directory's
+  validation of a change to what `release` carries. The pull request says what
+  each found — "found nothing" is a result. The full order is `uic-pr.md`.
 - **Names from private repositories.** This plugin is run against private
   repositories. **The numbers from those runs may be written down;
   the names may not** — not in a file, an issue, a pull request, a comment or a
