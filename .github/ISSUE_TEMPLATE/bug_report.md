@@ -28,8 +28,8 @@ welcome; names are not.
 | OS + shell | |
 
 ## Is this a ui-consistency issue or a harness issue?
-<!-- If the skills never appeared, try another session without other
-     plugins first. -->
+<!-- If the session hook never ran, or the skills never appeared, try
+     another session without other plugins first. -->
 
 - [ ] I confirmed the skills were loaded in the session
 

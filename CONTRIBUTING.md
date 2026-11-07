@@ -17,8 +17,8 @@ scripts/gate.sh
 ```
 
 Nothing to install: the gate is bash and perl, which come with git. It is the
-whole bar — the checks of the skills, the manifests and private names, the
-version check, the proof that each check fires, plugin validate. The same
+whole bar — the checks of the skills, the manifests, the hook and private names,
+the version check, the proof that each check fires, plugin validate. The same
 script runs on every pull request (`.github/workflows/gate.yml`).
 
 To work on the plugin while you use it, add your clone as the marketplace —
@@ -26,14 +26,14 @@ To work on the plugin while you use it, add your clone as the marketplace —
 at the next session.
 
 The plugin is Markdown — `skills/`. A change to how the agent behaves is a
-change to a skill.
+change to a skill, not to `hooks/`, which holds only the session hook.
 
 ## Things that will bite a first contribution
 
 **A change that ships adds a line under `## Unreleased` in `RELEASE-NOTES.md`**,
 saying what somebody who installed the plugin will notice. A branch touching
-`skills/`, `USING.md`, `GEMINI.md` or a manifest with nothing there fails the
-gate. Leave the version alone: the owner cuts releases
+`hooks/`, `skills/`, `USING.md`, `GEMINI.md` or a manifest with nothing there
+fails the gate. Leave the version alone: the owner cuts releases
 (`.claude/rules/uic-git.md`, *Versions*).
 
 **A test that passes is not evidence.** A fixture written by whoever wrote the

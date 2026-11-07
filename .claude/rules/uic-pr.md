@@ -3,8 +3,8 @@
 What happens before a PR is merged, in this order. Each step either edits the
 input of the next or judges its output.
 
-1. **`scripts/gate.sh`.** The checks of the skills, the manifests and private
-   names, the version check, the proof that each check fires, plugin
+1. **`scripts/gate.sh`.** The checks of the skills, the manifests, the hook and
+   private names, the version check, the proof that each check fires, plugin
    validate. Nothing below is worth doing on a red gate.
 2. **Simplification review** — reuse, simplification, efficiency. First, because
    it is the only review that edits.

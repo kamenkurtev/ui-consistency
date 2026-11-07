@@ -17,6 +17,10 @@ set -euo pipefail
 # What an install uses. The release workflow builds the `release` branch from
 # it, with the readme and the licence: keep it one quoted line.
 SHIPPED='skills/ USING.md GEMINI.md .claude-plugin/ .codex-plugin/ .cursor-plugin/ gemini-extension.json plugin.json'
+# What a git install of the repository also reads, which `release` leaves out:
+# Anthropic's directory holds a command hook from an organisation it has not
+# verified. A change here still needs a line under *Unreleased*.
+MAIN_ONLY='hooks/'
 
 if ! git rev-parse --verify --quiet origin/main >/dev/null; then
   # No network, a fresh clone, a detached head. A gate that cannot run offline
@@ -26,7 +30,7 @@ if ! git rev-parse --verify --quiet origin/main >/dev/null; then
 fi
 
 # shellcheck disable=SC2086
-CHANGED=$(git diff --name-only origin/main -- $SHIPPED)
+CHANGED=$(git diff --name-only origin/main -- $SHIPPED $MAIN_ONLY)
 if [ -z "$CHANGED" ]; then
   echo "nothing shipped changed; no release note needed"
   exit 0

@@ -16,7 +16,7 @@ afterwards.
 **The design is read wherever it lives** — a design for the page, the theme and
 its tokens, a `DESIGN.md`, or the pages already built, which is the usual case.
 
-It is **skills and nothing else**: it runs no code.
+It is **skills and nothing else**. The only code is the session hook.
 
 It does one thing and joins whatever else is running. Another process keeps the
 plan, the tests and the logic; this one makes what the end user sees come out
@@ -40,9 +40,9 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   namespace the description carries the whole weight, so it says in its first
   words that the work is what an end user sees.
 - `USING.md` — what the plugin tells a user's agent: which skills a job takes,
-  in what order, and where to report a page that came out wrong. Gemini CLI
-  loads it through `GEMINI.md`, which includes it; every other harness reaches
-  the skills by their descriptions.
+  in what order, and where to report a page that came out wrong. The session
+  hook says the same; Gemini CLI loads this file through `GEMINI.md`, which
+  includes it.
 - `AGENTS.md` — the contributor guidelines for an agent working **in this
   repository**, in `superpowers`' shape; included below, and read on its own by
   harnesses that do not read this file.
@@ -51,17 +51,33 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   what is checked after — loaded when one of those files is being changed; and
   `uic-auditing`, run when somebody asks for an audit or runs `/uic-auditing`,
   which checks everything against the current guidance and proposes issues.
+- `hooks/session-start` — a short bash script, run by the `SessionStart` hook
+  (`hooks/hooks.json`, through `hooks/run-hook.cmd`, which finds bash on
+  Windows). It prints `hooks/session-context.md`, which tells the session which
+  skills a job takes and in what order, and where to report a page that came out
+  wrong. It needs no Node and installs nothing.
+  It has no off switch of its own: a harness disables a plugin its own way, and
+  a switch in the hook could silence only the hook, never the skills.
 - **Nothing is written into a project's repository.** A plan lives in the
   session, in a scratch file outside the working copy, attached to a story, or
   inside another process's plan — the three endings of `planning` — and goes
   with the work.
 
-**There is no hook, for any harness.** Anthropic's directory accepts a command
-hook only from an organisation it has verified, and
-`scripts/check-packaging.sh` fails on one. Claude Code, Codex and Cursor get the
-skills from their manifests, and Copilot CLI from its own `plugin.json`, a
-legacy plugin with no `$schema`. Gemini CLI loads `USING.md` through
-`GEMINI.md`. None has been run end to end on the acceptance test without a hook.
+**Nothing may assume a hook is running.** An install from this repository runs
+the session hook; an install from `release` runs none: `hooks/` is left out of
+it, because Anthropic's directory, which reads `release`, holds a command hook
+from an organisation it has not verified.
+
+- Claude Code runs the hook when installed from this repository's
+  marketplace, and has been run end to end; from Anthropic's directory it gets
+  the skills alone.
+- Codex is installed from `release` and gets the skills from its manifest.
+  Installed from `main`, it runs the hook from `hooks/hooks.json` once the user
+  trusts it in `/hooks`; run end to end on the acceptance test (#368).
+- Copilot CLI reads its own `plugin.json`, a legacy plugin with no `$schema`,
+  and gets the skills and the hook; not run end to end.
+- Cursor has a session-hook manifest; not run end to end.
+- Gemini CLI loads `USING.md` through `GEMINI.md`; not run end to end.
 
 The private `kamenkurtev/ui-consistency-archive` holds the history before this
 repository's single root commit, and the old tracker. Issue numbers here point
@@ -111,17 +127,21 @@ to this repository only — both trackers start at 1.
   used, and whether that becomes a new issue is decided then. There are no
   dedicated test runs.
 - Designs and plans go on the issue, not into `docs/`.
-- The checks cover the manifests and the skills' structure — never
+- The checks cover the hook, the manifests and the skills' structure — never
   the skills' wording, which real work checks. They are bash and perl, which
   come with git; nothing to install.
   - `scripts/check-skills.sh` fails on a skill outside the platform's limits or
     over 16,000 characters, a link, written-out path or skill name that points at
     nothing, a link that leaves its skill, a link or path from another skill into
     `values`, `conventions` or `decisions`, a library component name in the
-    skills or `USING.md`, or a skill `USING.md` does not name.
-  - `scripts/check-packaging.sh` fails on manifests that disagree, a hook in any
-    of them or a `hooks/` folder, a Codex listing field missing or over OpenAI's
-    limits, or a file an install would run npm on.
+    skills or `USING.md`, or a skill `USING.md` or the session text does not
+    name.
+  - `scripts/check-packaging.sh` fails on manifests that disagree, a Copilot CLI
+    manifest that opts into Agent Plugins, a Codex manifest with a `hooks` entry
+    or a listing field missing or over OpenAI's limits, a hook other than the
+    one, a hook in what `release` carries, or a file an install would run npm
+    on.
+  - `scripts/check-hook.sh` runs the hook as each harness does.
   - `scripts/check-private-names.sh` fails on private names (see `uic-docs.md`).
   - `scripts/test-checks.sh` plants a defect for each check and proves it fails.
 - Commands:

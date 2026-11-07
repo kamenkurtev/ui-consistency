@@ -10,6 +10,10 @@ data anywhere.
   and theme — to write a new page the way the others are written. That reading
   happens on your machine, through your agent's own tools, like any other file
   your agent reads.
+- **The session hook** prints a fixed text from the plugin's own files
+  (`hooks/session-context.md`) at the start of a session. It reads nothing from
+  your project; from your environment it reads only the variables that say which
+  tool is running it, to answer in that tool's format.
 
 ## What it does not do
 

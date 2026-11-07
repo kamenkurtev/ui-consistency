@@ -45,14 +45,15 @@ partner why it would be closed and what would need to change.
 - **Never commit to `main`.** Every change starts as an issue with acceptance
   criteria, on a branch named `<username>/<issue-number>-<short-description>`,
   and reaches `main` only through a pull request.
-- **`scripts/gate.sh`** is the bar — the checks of the skills, the manifests
-  and private names, the version check, the proof that each check fires,
-  plugin validate. Nothing is reviewed on a red gate.
+- **`scripts/gate.sh`** is the bar — the checks of the skills, the manifests,
+  the hook and private names, the version check, the proof that each check
+  fires, plugin validate. Nothing is reviewed on a red gate.
 - **A change that ships says so under `## Unreleased`** in `RELEASE-NOTES.md`,
-  in the same pull request, and leaves the version alone. Touching `skills/`,
-  `USING.md`, `GEMINI.md` or a manifest with nothing there fails the gate. A
-  release is a pull request of its own, cut with `scripts/bump.sh` when the
-  owner decides (`.claude/rules/uic-git.md`, *Versions*).
+  in the same pull request, and leaves the version alone. Touching `hooks/`,
+  `skills/`, `USING.md`, `GEMINI.md` or a manifest with nothing there fails the
+  gate. A release is a
+  pull request of its own, cut with `scripts/bump.sh` when the owner decides
+  (`.claude/rules/uic-git.md`, *Versions*).
 - **The reviews, in order, every time:** gate, simplification, gate again if it
   changed anything, correctness, security, the documents read against the
   change, the fresh read of a changed skill, gate again, and the directory's
@@ -90,7 +91,7 @@ evidence, and without the disclosure they look identical.
 
 The developer's agent does the reading. Every analysis program this project
 wrote became thousands of lines that kept being wrong, and the design rests on
-not writing another. The plugin runs no code.
+not writing another. The only code is the session hook.
 
 ### A technology's names in the skills
 
@@ -135,8 +136,9 @@ back are closed.
 A pull request that adds or changes how a harness loads the plugin includes a
 **transcript** of a clean session proving it works end to end.
 
-A real integration gives the session the skills, and the order they run in
-where the harness loads a context file, so the skills fire without being asked.
+A real integration gives the session the order the skills run in — the session
+hook, or the harness's own context file — so the skills fire without being
+asked.
 
 **The acceptance test.** In a clean session in the harness, in a project with
 pages already built, send exactly:

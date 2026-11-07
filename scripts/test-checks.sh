@@ -57,6 +57,8 @@ c=$(copy); echo 'Then `ui-consistency:nothing`.' >> "$c/skills/planning/SKILL.md
 expect fail "a skill name that points at nothing" check-skills.sh "$c"
 c=$(copy); edit "$c" USING.md 's/ui-consistency:accessibility/accessibility/g'
 expect fail "a USING.md that leaves a skill out" check-skills.sh "$c"
+c=$(copy); edit "$c" hooks/session-context.md 's/ui-consistency:accessibility/accessibility/'
+expect fail "session text that leaves a skill out" check-skills.sh "$c"
 c=$(copy); echo '[override](../decisions/override.md)' >> "$c/skills/planning/SKILL.md"
 expect fail "a link from another skill into decisions" check-skills.sh "$c"
 c=$(copy); echo 'See `../decisions/override.md`.' >> "$c/skills/planning/SKILL.md"
@@ -74,18 +76,24 @@ c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"version": "[^"]*"/"version": 
 expect fail "a manifest behind the version" check-packaging.sh "$c"
 c=$(copy); edit "$c" gemini-extension.json 's/"description": "/"description": "Other: /'
 expect fail "a manifest describing the plugin another way" check-packaging.sh "$c"
-c=$(copy); mkdir "$c/hooks"; echo '{"hooks": {}}' > "$c/hooks/hooks.json"
-expect fail "a hooks/ folder" check-packaging.sh "$c"
+c=$(copy); edit "$c" hooks/hooks.json 's/"timeout": \d+/"timeout": 30/'
+expect fail "a hook allowed more than 5 seconds" check-packaging.sh "$c"
 c=$(copy); edit "$c" .cursor-plugin/plugin.json 's/"license": "MIT"/"license": "ISC"/'
 expect fail "a manifest with another licence" check-packaging.sh "$c"
 c=$(copy); edit "$c" plugin.json 's/"version": "[^"]*"/"version": "9.9.9"/'
 expect fail "Copilot CLI's manifest behind the version" check-packaging.sh "$c"
+c=$(copy); edit "$c" plugin.json 's{^\{}{\{\n  "\$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",}'
+expect fail "Copilot CLI's manifest opted into Agent Plugins" check-packaging.sh "$c"
 c=$(copy); edit "$c" plugin.json 's/"description": "/"description": "Other: /'
 expect fail "Copilot CLI's manifest describing the plugin another way" check-packaging.sh "$c"
 c=$(copy); edit "$c" plugin.json 's/"license": "MIT"/"license": "ISC"/'
 expect fail "Copilot CLI's manifest with another licence" check-packaging.sh "$c"
 c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"skills": "\.\/skills\/"/"skills": ".\/skills\/",\n  "hooks": {}/'
 expect fail "a Codex manifest with a hooks entry" check-packaging.sh "$c"
+c=$(copy); edit "$c" scripts/version-check.sh "s/^SHIPPED='/SHIPPED='hooks\\/ /m"
+expect fail "a release that would carry hooks/" check-packaging.sh "$c"
+c=$(copy); edit "$c" .claude-plugin/plugin.json 's/"version": "/"hooks": ".\/hooks\/hooks.json",\n  "version": "/'
+expect fail "a Claude Code manifest with a hooks entry" check-packaging.sh "$c"
 c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"shortDescription": "/"shortDescription": "Much longer than thirty characters: /'
 expect fail "a listing subtitle over OpenAI's 30 characters" check-packaging.sh "$c"
 c=$(copy); edit "$c" .codex-plugin/plugin.json 's/"logo": "[^"]*"/"logo": ".\/assets\/gone.svg"/'
@@ -96,6 +104,22 @@ c=$(copy); mkdir "$c/bin"
 expect fail "a top-level bin/" check-packaging.sh "$c"
 c=$(copy); cp "$c/.claude/CLAUDE.md" "$c/CLAUDE.md"
 expect fail "a CLAUDE.md at the plugin root" check-packaging.sh "$c"
+
+# --- check-hook.sh -----------------------------------------------------------
+c=$(copy); expect pass "the repository as it is" check-hook.sh "$c"
+c=$(copy); printf '%s\n' "$(printf 'y%.0s' $(seq 1 60))" >> "$c/hooks/session-context.md"
+expect fail "session text of 1,750 characters or more" check-hook.sh "$c"
+c=$(copy); edit "$c" hooks/session-start 's/\{"additional_context": "%s"\}/{"additional_context": "%s", "additionalContext": "%s"}/'
+expect fail "an answer in two shapes at once" check-hook.sh "$c"
+c=$(copy); edit "$c" hooks/session-start 's/\[ -z "\$\{COPILOT_CLI:-\}" \]/true/'
+expect fail "Copilot answered in Claude Code's shape" check-hook.sh "$c"
+c=$(copy); edit "$c" hooks/session-start 's/\[ -z "\$\{COPILOT_CLI:-\}" \]/[ -z "\${COPILOT_CLI:-}" ] \&\& [ -z "\${PLUGIN_ROOT:-}" ]/'
+expect fail "Codex answered in another shape" check-hook.sh "$c"
+c=$(copy); edit "$c" hooks/session-start 's/^escaped=.*$/escaped=\$context/m'
+echo 'A "quoted" word.' >> "$c/hooks/session-context.md"
+expect fail "text that is not escaped for JSON" check-hook.sh "$c"
+c=$(copy); edit "$c" hooks/session-start 's/^set -euo pipefail$/set -euo pipefail\nexit 3/m'
+expect fail "a hook that exits non-zero" check-hook.sh "$c"
 
 # --- check-private-names.sh --------------------------------------------------
 repo_of() { (cd "$1" && git init -q && git add -A && git -c user.email=t@t -c user.name=t commit -qm copy) >/dev/null; }
@@ -154,6 +178,10 @@ r=$(vrepo); echo 'a' > "$r/USING.md"
 (cd "$r" && git add -A && git -c user.email=t@t -c user.name=t commit -qm using && git update-ref refs/remotes/origin/main "$(git rev-parse HEAD)")
 echo 'b' > "$r/USING.md"; printf "$empty" > "$r/RELEASE-NOTES.md"
 vexpect fail "USING.md changed, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
+r=$(vrepo); mkdir "$r/hooks"; echo a > "$r/hooks/session-context.md"
+(cd "$r" && git add -A && git -c user.email=t@t -c user.name=t commit -qm hook && git update-ref refs/remotes/origin/main "$(git rev-parse HEAD)")
+echo b > "$r/hooks/session-context.md"; printf "$empty" > "$r/RELEASE-NOTES.md"
+vexpect fail "the hook changed, which release leaves out, nothing under Unreleased" "$r" "says nothing under '## Unreleased'"
 r=$(vrepo); echo 'b' > "$r/skills/one.md"; printf "$unreleased" > "$r/RELEASE-NOTES.md"
 vexpect pass "a shipped change with its line under Unreleased" "$r" "under '## Unreleased'"
 
