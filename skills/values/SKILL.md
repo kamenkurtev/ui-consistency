@@ -47,6 +47,23 @@ what is particular to each.
   it.
 - Follow a value into the piece where its source is in the project. Where it is
   not, name what renders as unevaluated.
+- **Before recording any value from the classes a page writes, search every
+  stylesheet the page loads for a rule that can override it**:
+  - a rule that selects on those classes — the class name as a selector, or an
+    attribute selector matching part of a class list;
+  - if those classes' own rules sit in a cascade layer, a rule outside every
+    layer that sets the same property on the same element, whatever it selects
+    on.
+- Decide which rule wins by the cascade: layers decide before specificity, and
+  a rule outside every layer beats a layered one unless the layered one is
+  marked important.
+- If such a rule wins at a position, record there both the value written and
+  the value it renders, and report the rule with the positions it reaches.
+- If it wins where a piece stands in one place and not in another, record each
+  place as its own position: one piece rendering two ways is a finding.
+- If the code cannot tell whether such a rule wins at a position, read the
+  value there on the rendered page.
+- If no rendered page is at hand, name that value unevaluated.
 - **Carry no number the project did not produce.** A minimum size or a contrast
   threshold is a standard, and only `ui-consistency:accessibility` measures one,
   when it is asked for or the project requires it.
