@@ -47,8 +47,9 @@ what is particular to each.
   it.
 - Follow a value into the piece where its source is in the project. Where it is
   not, name what renders as unevaluated.
-- **Before recording any value from the classes a page writes, search every
-  stylesheet the page loads for a rule that can override it**:
+- **Before recording a value from the classes the family writes, search the
+  stylesheets its pages load, once for the whole family, for a rule that can
+  override it**:
   - a rule that selects on those classes — the class name as a selector, or an
     attribute selector matching part of a class list;
   - if those classes' own rules sit in a cascade layer, a rule outside every

@@ -25,11 +25,12 @@ in this repository.
   only once its skills were invoked and its files opened, and one left undone
   is reported. Where the harness has no task list, the list heads the scratch
   file the checklist goes to (#471).
-- Before a value is recorded from the classes a page writes, `values` and
-  `conventions` look for a stylesheet rule that selects on those classes and
-  rewrites them — a rule outside a cascade layer beats every layered one. The
-  value that renders is recorded, and the rule is reported, rather than a
-  convention nobody sees (#464).
+- Before a value is taken from the classes the pages write, `finding-patterns`
+  searches the stylesheets once for a rule that rewrites it — one that selects
+  on those classes, or one outside a cascade layer, which beats every layered
+  one. Where such a rule wins, `values` and `conventions` record the value that
+  renders beside the one written and report the rule, rather than a convention
+  nobody sees (#464).
 
 ## v1.9.0 (2026-11-07)
 
