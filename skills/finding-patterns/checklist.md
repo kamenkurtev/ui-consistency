@@ -6,14 +6,16 @@ against it (`implementing`) or walking it (`verifying`).
 A checklist is **the page's own tree turned into questions, in the order the
 page is read.**
 
-- It belongs to the task: put it into the task in the plan, or into the document
-  the process already running keeps.
-- **Where there is neither, write it to a file outside the working copy**, in a
-  newly created directory in the scratch location the harness gives, or in the
-  system's temporary directory, and say its path in one line. A compacted
-  conversation keeps only a summary of what was never written down.
-- Write every checklist of the work into that one file; `planning` writes its
-  plan into it.
+- If a plan already exists, put the checklist into its task; if the process
+  already running keeps a document, put it there.
+- **Otherwise write it to a file outside the working copy**, in a newly created
+  directory in the scratch location the harness gives, or in the system's
+  temporary directory, and say its path in one line. A compacted conversation
+  keeps only a summary of what was never written down.
+- Write every page's checklist of the work into that one file. `planning` writes
+  its plan into the same file.
+- If no write outside the working copy is allowed, keep the checklist in the
+  turn and say so in one line.
 - **Delete the file with the work.** Write nothing measured to a file that
   outlives the work.
 

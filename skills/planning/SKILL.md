@@ -102,11 +102,14 @@ the skill invoked.
 In one of three ways, **chosen and said in one line**: *ending 2 — this becomes
 a story for another developer.*
 
-1. **The work stays with us.** Write the plan into the file outside the working
-   copy that holds the checklists, and delete it with the work.
-   - If there is no such file, write the plan to a new one, in a newly created
-     directory in the scratch location the harness gives, or in the system's
-     temporary directory, and say its path in one line.
+1. **The work stays with us.** Write the plan into the file `finding-patterns`
+   wrote the checklists to, outside the working copy, and delete it with the
+   work.
+   - If they were written to none, write the plan to a new file, in a newly
+     created directory in the scratch location the harness gives, or in the
+     system's temporary directory, and say its path in one line.
+   - If no write outside the working copy is allowed, keep the plan in the turn
+     and say so in one line.
    - Then `ui-consistency:implementing`, and start the agents it names without
      waiting to be asked: asking for the work asks for them.
 2. **The work becomes a story for somebody else.** Attach the plan and what the
@@ -114,7 +117,8 @@ a story for another developer.*
    - It is finished when a developer who was not in the conversation, without the
      checkout open, could implement it from the attachment alone
      ([*The plan*](plan-file.md), *The story*).
-   - Delete the checklists' scratch file once the story holds them.
+   - Delete the file `finding-patterns` wrote the checklists to, once the story
+     holds them.
 3. **Another process is already running.** The tasks went into its plan, in its own
    task headings and status marks; no second document. Its loop executes them.
 
