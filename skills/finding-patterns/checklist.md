@@ -8,8 +8,14 @@ page is read.**
 
 - It belongs to the task: put it into the task in the plan, or into the document
   the process already running keeps.
-- Where there is neither, it lives in the turn and goes with it.
-- **Write nothing measured to a file that outlives the work.**
+- **Where there is neither, write it to a file outside the working copy**, in a
+  newly created directory in the scratch location the harness gives, or in the
+  system's temporary directory, and say its path in one line. A compacted
+  conversation keeps only a summary of what was never written down.
+- Write every checklist of the work into that one file; `planning` writes its
+  plan into it.
+- **Delete the file with the work.** Write nothing measured to a file that
+  outlives the work.
 
 ## Contents
 

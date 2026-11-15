@@ -79,9 +79,8 @@ file of the project is opened.
 Nothing. A plan, when no other process wrote one, lives as long as the work and
 never in the repository. Planning ends in one of three ways, and says which:
 
-1. **The work stays with us.** The plan lives in the session — or, if the
-   work outlives it, in a scratch file outside the working copy, deleted when the
-   work is done.
+1. **The work stays with us.** The plan lives in a scratch file outside the
+   working copy, beside the checklists, deleted when the work is done.
 2. **The work becomes a story for somebody else.** The plan is attached to the
    story, complete enough that a developer who was not in the conversation, and
    does not have the checkout, implements it from the attachment alone.

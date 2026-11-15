@@ -185,14 +185,16 @@ this plugin's own; with no such process, it is reported with the result.
 
 - **A checklist**, inside the task: the page's structure as questions, in reading
   order, each line carrying the project's own piece, how it is written and what
-  settled it. It goes when the task does.
+  settled it. Until a plan holds it, it is written to a scratch file outside the
+  working copy, so a compacted conversation does not lose it. It goes when the
+  task does.
 - **A plan** — only when no other process wrote one, only while the work runs,
   and **never in the project's repository**. Planning ends in one of three ways:
-  the work stays in one session, where the plan lives (a scratch file outside the
-  working copy if it must outlive the session, deleted with the work); the work
-  becomes a story, and the plan is attached to it, complete enough for a
-  developer without the conversation or the checkout; or another process is
-  running, and the tasks go into its plan. When the work is done, what a person
+  the work stays with us, and the plan goes into the checklists' scratch file
+  outside the working copy, deleted with the work; the work becomes a story, and
+  the plan is attached to it, complete enough for a developer without the
+  conversation or the checkout; or another process is running, and the tasks go
+  into its plan. When the work is done, what a person
   decided is reported and the plan goes.
 - **A drawing of the page-to-be**, only when somebody asks to see it: one
   self-contained document outside the working copy, drawn with the project's
