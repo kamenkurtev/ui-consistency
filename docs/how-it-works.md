@@ -48,7 +48,10 @@ flowchart LR
   A --> B --> C --> PL["planning"]
 ```
 
-Nothing but the checklist is written while this phase runs. The reference is the
+Nothing but the checklist is written while this phase runs. Before step 1 the
+steps and the three phases after become a task list, each task naming the skill
+or file its step opens, and none is marked done until those are invoked or
+opened. The reference is the
 page the request names, level 3 of the order, or, when nobody named one, the
 page the phase chooses and says it chose, level 7. It is read holder by holder,
 down into its children, including how a form is validated and how a failure is
