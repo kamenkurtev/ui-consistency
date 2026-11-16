@@ -223,17 +223,23 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 ## 8. Write the checklist
 
-- Turn the page's tree into the checklist — its shape, and where it goes, are
+- Turn the page's tree into the checklist; its shape is
   [*The checklist*](checklist.md).
+- **Write it to a file outside the working copy before going on**, in a newly
+  created directory in the harness's scratch location or the system's temporary
+  directory, and say its path in one line: compaction keeps only a summary of
+  the rest. Every page's checklist of the work goes into that one file; delete
+  it with the work.
+- If a plan already exists, put the checklist into its task; if the process
+  already running keeps a document, put it there.
+- If no write outside the working copy is allowed, keep the checklist in the
+  turn and say so in one line.
 - **A role the page already has that the work changes** keeps its line, as the
   position the task changes: *trail of links — the one in the header, now
   following the tree; no second one* (`ui-consistency:conventions`, *A position
   no member has*).
 - If a person asks to see the page-to-be, it is drawn by `ui-consistency:design`,
   step 4 — never unasked.
-- **Write nothing into the project's repository.** A plan this plugin writes
-  lives outside it and goes with the work
-  (`../planning/plan-file.md`).
 
 ## An example, from the request to the checklist
 
