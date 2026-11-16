@@ -185,9 +185,9 @@ this plugin's own; with no such process, it is reported with the result.
 
 - **A checklist**, inside the task: the page's structure as questions, in reading
   order, each line carrying the project's own piece, how it is written and what
-  settled it. Until a plan holds it, it is written to a scratch file outside the
-  working copy, so a compacted conversation does not lose it. It goes when the
-  task does.
+  settled it. Where no plan already holds it, it is written to a scratch file
+  outside the working copy, so a compacted conversation does not lose it. It
+  goes when the task does.
 - **A plan** — only when no other process wrote one, only while the work runs,
   and **never in the project's repository**. Planning ends in one of three ways:
   the work stays with us, and the plan goes into the checklists' scratch file
