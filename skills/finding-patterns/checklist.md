@@ -25,9 +25,8 @@ of <m> candidates in <the bound>, read <date>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
-- [ ] not copied from <reference>: <what is particular to it, with its count
-      over the family; and anything it hand-writes that the project has a
-      shared piece for>
+- [ ] not copied from <reference>: <what only it has among the members; and
+      anything it hand-writes that the project has a shared piece for>
 ````
 
 - One line per position, in the order the page is read: the outermost holder

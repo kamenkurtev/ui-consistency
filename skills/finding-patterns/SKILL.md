@@ -209,9 +209,9 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 - Where the reference and the rest of the project agree, **take the answer, say
   what you took, and move on.**
-- **Call a piece particular to the reference only if the family does not share
-  it**: read what it does in this project and count it over the members, never
-  go by what such a piece usually means.
+- **Call a piece particular to the reference only if no other member has it**,
+  counted by what it does in this project, never by what such a piece usually
+  means.
 - Where they disagree, **the order decides** — `ui-consistency:decisions`, *The
   order*. Report each decision with the level and the numbers that settled it,
   as *Say what settled it* there shows.
@@ -256,7 +256,8 @@ In this order; the rules are in `ui-consistency:conventions`:
   is removed. Each search finds orders' own use first, so it can see.
 - **Step 5.** The shared error helper is used in 28 files and by 3 of the 4
   members. Orders' own error box is not copied: the shared piece wins at level 4.
-- **Step 6.** The theme's spacing base is 4; orders' literal 18 is not copied.
+- **Step 6.** The theme's spacing base is 4; orders' literal 18 is not copied,
+  as no reference literal is.
 - **Step 7.** The filter row is there because orders has one, at level 3; it is
   written through the shared filter bar the other members use, at level 4.
 - **Step 8.** Each of these becomes a line with what settled it — the finished
