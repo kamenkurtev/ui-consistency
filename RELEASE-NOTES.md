@@ -15,6 +15,10 @@ in this repository.
   the working copy, whose path the agent says, and deleted when the work is
   done: a compacted conversation no longer leaves them as a summary. A running
   process's own plan or document still holds them where there is one (#465).
+- A piece of the reference page is left out of a new page, or reported as
+  wrong, only when the other pages of its kind do not share it, counted by what
+  it does in the project: a row's view icon is no longer dropped because such
+  an icon usually belongs to a show page (#467).
 
 ## v1.9.0 (2026-11-07)
 

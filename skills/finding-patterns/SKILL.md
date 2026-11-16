@@ -143,9 +143,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 **How to count, and how little:**
 
 - **Count yourself**, and write each count down once instead of re-opening the
-  files behind it. Only if members in more than one area
-  ([*What the words mean*](words.md)) must be read in full does the counting go
-  to one subagent per area
+  files behind it. Only if members in more than one area must be read in full
+  does the counting go to one subagent per area
   (`ui-consistency:conventions`, *Which pages are the family*).
 - **Measure a shared piece's reach yourself**, whatever it crosses, with one
   grouped search: that it exists, and how many files use it. Do not open those
@@ -210,6 +209,9 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 - Where the reference and the rest of the project agree, **take the answer, say
   what you took, and move on.**
+- **Mark *not copied* only what the family does not share**: read what the
+  reference's piece does in this project and count it over the members, never
+  go by what such a piece usually means.
 - Where they disagree, **the order decides** — `ui-consistency:decisions`, *The
   order*. Report each decision with the level and the numbers that settled it,
   as *Say what settled it* there shows.
@@ -254,8 +256,7 @@ In this order; the rules are in `ui-consistency:conventions`:
   is removed. Each search finds orders' own use first, so it can see.
 - **Step 5.** The shared error helper is used in 28 files and by 3 of the 4
   members. Orders' own error box is not copied: the shared piece wins at level 4.
-- **Step 6.** The theme's spacing base is 4. Orders' literal 18 is not copied —
-  a reference's literals never are — and it is off the base besides.
+- **Step 6.** The theme's spacing base is 4; orders' literal 18 is not copied.
 - **Step 7.** The filter row is there because orders has one, at level 3; it is
   written through the shared filter bar the other members use, at level 4.
 - **Step 8.** Each of these becomes a line with what settled it — the finished
