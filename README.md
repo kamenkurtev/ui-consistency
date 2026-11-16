@@ -60,6 +60,9 @@ phases:
    region, and then all the pages together. Before it checks any page, the check
    is proved to catch a difference planted on purpose.
 
+Each phase, and the order that settles a choice, is drawn in
+[docs/how-it-works.md](docs/how-it-works.md).
+
 A new page with nothing close enough to follow gets its shape agreed with you
 first, in words, as a tree of your own components. It is drawn, with your
 project's values, only if you ask to see it.
