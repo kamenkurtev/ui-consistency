@@ -6,12 +6,12 @@ skill it draws.
 ## The path of a request
 
 ```mermaid
-flowchart TB
-  R["A request for what the end user sees"] --> S{"Sized from the request alone"}
-  S -->|"a new page, a feature, a refactor"| FP["finding-patterns"]
+flowchart LR
+  R(["A request for what<br>the end user sees"]) --> S["Sized from the<br>request alone"]
+  S -->|"a new page, a feature,<br>a refactor"| FP["finding-patterns"]
   FP --> PL["planning"] --> IM["implementing"] --> VE["verifying"]
   S -->|"a fix or a small change"| AD["adjusting"] --> IM
-  S -->|"checking code already written"| VE
+  S -->|"checking code<br>already written"| VE
 ```
 
 The size is decided from the request alone, before any project file is opened
@@ -29,22 +29,22 @@ keeps a spec or a plan, the phases add to it instead of writing a second one.
 ## finding-patterns
 
 ```mermaid
-flowchart TB
+flowchart LR
+  S0["0 · Size the work<br>from the request alone"]
   subgraph A ["Steps 1–3"]
-    direction LR
-    S1["1 · The reference: named, or chosen and said"] --> S2["2 · Read it top to bottom, then left to right"] --> S3["3 · The bound and the theme"]
+    direction TB
+    S1["1 · The reference:<br>named, or chosen and said"] --> S2["2 · Read it top to bottom,<br>then left to right"] --> S3["3 · The bound<br>and the theme"]
   end
   subgraph B ["Steps 4–6"]
-    direction LR
-    S4["4 · The kind, the family, the proof, the counts"] --> S5["5 · What the other pages reuse"] --> S6["6 · Values, spacing, type, what can be read and used"]
+    direction TB
+    S4["4 · The kind, the family,<br>the proof, the counts"] --> S5["5 · What the other<br>pages reuse"] --> S6["6 · Values, spacing, type,<br>what can be read and used"]
   end
   subgraph C ["Steps 7–8"]
-    direction LR
-    S7["7 · Decide by the order, and say what settled it"] --> S8["8 · Write the checklist outside the working copy"]
+    direction TB
+    S7["7 · Decide by the order,<br>say what settled it"] --> S8["8 · Write the checklist<br>outside the working copy"]
   end
-  S0["0 · Size the work from the request alone"]
-  S0 -->|"a fix or a small change"| AD["adjusting"]
-  S0 -->|"a new page or a refactor"| A
+  S0 -->|"a new page<br>or a refactor"| A
+  S0 -->|"a fix or a<br>small change"| AD["adjusting"]
   A --> B --> C --> PL["planning"]
 ```
 
@@ -62,17 +62,18 @@ working copy, or into the plan or document of a process already running.
 ## The order of decisions
 
 ```mermaid
-flowchart TB
+flowchart LR
   subgraph P ["What a person said"]
-    direction LR
-    L1["1 · What the request asked for"] --> L2["2 · An override already recorded"] --> L3["3 · A page somebody named: what the page is"]
+    direction TB
+    L1["1 · What the request<br>asked for"] --> L2["2 · An override<br>already recorded"] --> L3["3 · A page somebody named:<br>what the page is"]
   end
   subgraph K ["What the code shows"]
-    direction LR
-    L4["4 · The shared piece, over a private copy"] --> L5["5 · The newest members, where no majority"] --> L6["6 · The majority, with its file spread"]
+    direction TB
+    L4["4 · The shared piece,<br>over a private copy"] --> L5["5 · The newest members,<br>where no majority"] --> L6["6 · The majority,<br>with its file spread"]
   end
   subgraph Z ["When nothing above settled it"]
-    L7["7 · The reference the phase chose"]
+    direction TB
+    L7["7 · The reference<br>the phase chose"]
   end
   P --> K --> Z
 ```
@@ -92,12 +93,12 @@ one is, after levels 1 to 3 and before any count.
 
 ```mermaid
 flowchart LR
-  Q{"Something to settle"}
-  Q -->|"a request that says two things, or leaves open what the page shows"| B["Reported first, as blocking"]
-  Q -->|"a component the request did not name with its place, or an extraction"| N["One question while finding-patterns runs, before any plan"]
-  Q -->|"a tie whose answer reaches outside the task"| T["Asked once, with the numbers and a proposal"]
-  Q -->|"the plan of a new page or a refactor"| Y["Shown with its checklists; no code before the yes"]
-  Q -->|"anything else"| O["Decided by the order and reported"]
+  Q(["Something<br>to settle"])
+  Q -->|"a request that says two things,<br>or leaves open what the page shows"| B["Reported first, as blocking"]
+  Q -->|"a component not named with its place,<br>or code extracted into one"| N["One question, while<br>finding-patterns runs"]
+  Q -->|"a tie whose answer reaches<br>outside the task"| T["Asked once, with the<br>numbers and a proposal"]
+  Q -->|"the plan of a new page<br>or a refactor"| Y["No code before the yes"]
+  Q -->|"anything else"| O["Decided by the order,<br>and reported"]
 ```
 
 Three things wait on a person: the plan's yes, a question about new components
@@ -115,18 +116,17 @@ plan's yes and settles that task only.
 ## planning
 
 ```mermaid
-flowchart TB
-  J{"Does a running process keep a plan?"}
-  J -->|"yes"| A["Add the tasks into that plan"]
-  J -->|"no"| W["Write a plan, never into the repository"]
+flowchart LR
+  J["Does a running<br>process keep a plan?"]
+  J -->|"yes"| A["Add the tasks<br>into that plan"]
+  J -->|"no"| W["Write a plan, never<br>into the repository"]
   A --> T
   W --> T
-  T["The tasks in order: prove the check, build the accepted extractions, one task per page"]
-  T --> Y["Show the plan with its checklists and proposals; wait for the yes"]
-  Y --> E{"One of three endings, said in one line"}
-  E -->|"the work stays with us"| E1["The plan goes into the scratch file; implementing starts"]
-  E -->|"a story for somebody else"| E2["The plan is attached to the story"]
-  E -->|"another process runs it"| E3["Its own loop executes the tasks"]
+  T["The tasks, in order:<br>prove the check,<br>accepted extractions,<br>one task per page"]
+  T --> Y["Show the plan;<br>wait for the yes"]
+  Y --> E1["Stays with us: the plan in<br>the scratch file, then implementing"]
+  Y --> E2["A story for somebody else:<br>the plan attached to it"]
+  Y --> E3["Another process runs it:<br>its loop executes the tasks"]
 ```
 
 Every page task carries its checklist in the task itself, the reference's path,
@@ -138,20 +138,21 @@ not reported the check is said to be blind for it. A page without a shape, from
 a design, a reference page or a tree agreed in `design`, goes back to
 `finding-patterns` before the plan is shown. A person's decision at the yes that
 goes against what the order produced is recorded as an override, in their own
-words. A fix or a small change has no plan and does not stop.
+words. The phase ends in one of three ways, said in one line. A fix or a small
+change has no plan and does not stop.
 
 ## implementing and verifying
 
 ```mermaid
-flowchart TB
-  P["Before the first page of a kind: prove the check on a planted copy"]
-  P --> W["One page per task, in a fresh context: re-read the checklist, write region by region"]
-  W --> C["The checker of the kind compares the page region by region"]
-  C -->|"differences"| F["Fix, and check again, twice at most"]
+flowchart LR
+  P["Prove the check on a<br>planted copy, once per kind"]
+  P --> W["One page per task, fresh:<br>re-read the checklist,<br>write region by region"]
+  W --> C["The checker of the kind<br>compares region by region"]
+  C -->|"differences"| F["Fix, and check again,<br>twice at most"]
   F --> C
-  C -->|"none left, or two rounds done"| M["Mark the task done, or parked with why"]
+  C -->|"none left,<br>or two rounds done"| M["Mark it done,<br>or parked with why"]
   M -->|"next page"| W
-  M -->|"last page of the kind"| S["The checker compares all the pages of the kind together"]
+  M -->|"last page<br>of the kind"| S["Compare all the pages<br>of the kind together"]
 ```
 
 The checker is one agent per kind of page, never the agent that wrote the page
@@ -168,14 +169,14 @@ proof: what was planted, and whether it was caught.
 ## adjusting
 
 ```mermaid
-flowchart TB
-  A1["The positions the request names, on the pages it names"]
-  A1 --> A2["What the family writes at those positions only, counted in the fixed bound"]
-  A2 --> B{"Under fifty files and fifty searches, and inside the pages it names?"}
-  B -->|"yes"| A7["A checklist for those positions, in a scratch file"]
-  B -->|"no"| FP["No longer a small change: finding-patterns, from step 1"]
-  A7 --> IM["implementing makes the change"]
-  IM --> VE["verifying, by an agent that did not write it"]
+flowchart LR
+  A1["The positions the request<br>names, on the pages it names"]
+  A1 --> A2["What the family writes there,<br>counted in the fixed bound"]
+  A2 --> B["Under fifty files and searches,<br>inside the pages it names?"]
+  B -->|"yes"| A7["A checklist for those<br>positions, in a scratch file"]
+  B -->|"no"| FP["No longer a small change:<br>finding-patterns, from step 1"]
+  A7 --> IM["implementing"]
+  IM --> VE["verifying, by an agent<br>that did not write it"]
 ```
 
 A small change reads about ten project files and ten searches before
