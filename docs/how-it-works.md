@@ -133,8 +133,8 @@ Every page task carries its checklist in the task itself, the reference's path,
 what is particular to the reference and must not be copied, and the shared
 pieces and theme values the page must use. The first task proves the check:
 `verifying` is run on a scratch copy of the reference with one role written
-differently, by an agent that will not check the pages, and if the difference is
-not reported the check is said to be blind for it. A page without a shape, from
+differently, by an agent that will not check the pages; if the difference is not
+reported, the work stops and the check is said to be blind for it. A page without a shape, from
 a design, a reference page or a tree agreed in `design`, goes back to
 `finding-patterns` before the plan is shown. A person's decision at the yes that
 goes against what the order produced is recorded as an override, in their own
@@ -186,7 +186,7 @@ small change. It skips every position the change does not touch, the plan, and
 the stop for a yes. It never skips the proof that a search can see, the order,
 or the check by an agent that did not write the change, whose proof is one plant
 at a changed position, once for the change. A new component in a page's own
-files that the request did not name is asked about first; one that would live
+files that the request did not name with its place is asked about first; one that would live
 outside the pages it names sends the work to `finding-patterns`. The checklist
 names the pages still writing a position the old way, and the change leaves them
 as they are.
