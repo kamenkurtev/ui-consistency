@@ -209,8 +209,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 - Where the reference and the rest of the project agree, **take the answer, say
   what you took, and move on.**
-- **Mark *not copied* only what the family does not share**: read what the
-  reference's piece does in this project and count it over the members, never
+- **Call a piece particular to the reference only if the family does not share
+  it**: read what it does in this project and count it over the members, never
   go by what such a piece usually means.
 - Where they disagree, **the order decides** — `ui-consistency:decisions`, *The
   order*. Report each decision with the level and the numbers that settled it,
