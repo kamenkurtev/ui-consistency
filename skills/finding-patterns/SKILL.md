@@ -36,10 +36,9 @@ Decide the branch **from the request alone, before any project file is opened**.
   runs**: the pages come from the tasks `ui-consistency:planning` writes.
 - **Sized as the whole phase, make a task list before step 1**, in the
   harness's task list:
-  - steps 1–8, each naming what it opens: 2 `words.md`; 3
-    `ui-consistency:conventions` and `ui-consistency:values`; 4
-    `ui-consistency:conventions`; 6 `ui-consistency:values`; 7
-    `ui-consistency:decisions`; 8 `checklist.md`;
+  - steps 1–8, each naming what it opens — `words.md` at 2,
+    `ui-consistency:values` at 2, 3 and 6, `ui-consistency:conventions` at 3
+    and 4, `ui-consistency:decisions` at 7, `checklist.md` at 8;
   - then `ui-consistency:planning`, `ui-consistency:implementing` and
     `ui-consistency:verifying`.
 - If the harness has no task list, write the list at the head of step 8's
