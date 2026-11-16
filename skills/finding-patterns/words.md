@@ -47,6 +47,9 @@ the theme are defined in `ui-consistency:values`, *Elements* and *The theme*.
 - **Member**, **candidate** — a page of the family; a page considered before
   non-members are removed (`ui-consistency:conventions`, *Which pages are the
   family*).
+- **Particular to the reference** — what the reference has and no other member
+  has, judged by what it does in this project. It goes on the checklist's *not
+  copied* line.
 - **Convention** — what the family writes at a position, by a majority with its
   spread (`ui-consistency:conventions`, *When a count is not a convention at
   all*).

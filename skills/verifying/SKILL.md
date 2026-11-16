@@ -207,6 +207,13 @@ page that deviates.
 
 - **Against something the user named or answered** — the reference, a decision —
   it is a deviation: report it, for whoever wrote the page to fix.
+- **Judge whether a piece the page took from the reference is particular to it
+  by what it does in this project and whether another member has it, never by
+  what such a piece usually means**, before reporting it as wrong for this page
+  or as copied against the checklist's *not copied*.
+- If another member has it, the page that copies it does not deviate.
+- If the checklist marks such a piece *not copied*, report that line as a
+  correction of the checklist.
 - **Against a count that is not a convention** — where the checklist says the
   family has no convention at that position — a page cannot deviate from it.
   Report nothing, and say the project has none there
