@@ -58,9 +58,9 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   wrong. It needs no Node and installs nothing.
   It has no off switch of its own: a harness disables a plugin its own way, and
   a switch in the hook could silence only the hook, never the skills.
-- **Nothing is written into a project's repository.** A plan lives in the
-  session, in a scratch file outside the working copy, attached to a story, or
-  inside another process's plan — the three endings of `planning` — and goes
+- **Nothing is written into a project's repository.** A checklist and a plan
+  live in a scratch file outside the working copy, attached to a story, or
+  inside another process's plan — the three endings of `planning` — and go
   with the work.
 
 **Nothing may assume a hook is running.** An install from this repository runs

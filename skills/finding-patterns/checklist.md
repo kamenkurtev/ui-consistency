@@ -6,10 +6,9 @@ against it (`implementing`) or walking it (`verifying`).
 A checklist is **the page's own tree turned into questions, in the order the
 page is read.**
 
-- It belongs to the task: put it into the task in the plan, or into the document
-  the process already running keeps.
-- Where there is neither, it lives in the turn and goes with it.
-- **Write nothing measured to a file that outlives the work.**
+- Where it is written is `finding-patterns` step 8: a file outside the working
+  copy, which `planning` writes its plan into and which is deleted with the
+  work. Write nothing measured to a file that outlives the work.
 
 ## Contents
 

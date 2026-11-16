@@ -122,6 +122,14 @@ reference — and the theme entries it uses.
   line each, with what settled them.
 - Its first line says which positions and which pages it covers, so nothing
   reads it as the checklist for a whole page.
+- **Write it to a file outside the working copy**, in a newly created directory
+  in the scratch location the harness gives, or in the system's temporary
+  directory; say its path in one line, and delete it once the change has passed
+  its check.
+- If the process already running keeps a document, put the checklist there
+  instead.
+- If no write outside the working copy is allowed, keep the checklist in the
+  turn and say so in one line.
 - **Name the pages the change leaves writing a position the old way** — from
   the count already taken, with no new search — and change none of them.
 - **Say what you did not read**: which positions you counted and which you did

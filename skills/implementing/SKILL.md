@@ -22,9 +22,9 @@ the skill invoked.
   the brief carries the checklist itself, the reference, and what is particular
   to the reference.
 - **Where it does not, one page per turn.** Re-read the task as the plan writes
-  it — wherever `ui-consistency:planning` left the plan: in the session, in a
-  file outside the working copy, or in another process's plan. Never work from
-  memory of it.
+  it — wherever `ui-consistency:planning` left the plan: in the plan's file outside
+  the working copy, in another process's plan, or in the turn where no file could
+  be written. Never work from memory of it.
 - **Start every agent this skill names — a page's, the one shown the planted
   copy, the checker — without waiting to be asked for it**: asking for the work
   asks for them.

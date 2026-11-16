@@ -191,15 +191,16 @@ means opening the page. An agent that did not write the page walks the checklist
 **Nothing is left behind.** The counts are true of the code as it was read, and
 code moves on: a file of them would be a thing to review, keep in step between
 branches, and find stale. The checklist belongs to the task and goes with it.
+Where no plan already holds it, it is written to a scratch file outside your
+working copy, so a compacted conversation does not lose it.
 
 **Plans** — when no other process wrote one, and **never in your repository**.
 Each task carries its own checklist, which is what makes it executable by
 somebody who was not in the conversation. Planning ends in one of three ways,
 and says which:
 
-1. **The work stays in one session.** The plan lives there — or, if the work
-   outlives the session, in a scratch file outside your working copy, deleted
-   when the work is done.
+1. **The work stays with us.** The plan lives in a scratch file outside your
+   working copy, beside the checklists, deleted when the work is done.
 2. **The work becomes a story for somebody else.** The plan is attached to the
    story, complete enough that a developer without the conversation or the
    checkout could implement it from the attachment alone.
