@@ -127,8 +127,7 @@ Before anything is counted, find both:
 
 - **the bound** — `ui-consistency:conventions`, *The bound the family is
   counted in*;
-- **the theme that applies** — `ui-consistency:values`, *The theme*, which also
-  says what is counted in the bound and what across the theme's applications.
+- **the theme that applies** — `ui-consistency:values`, *The theme*.
 
 ## 4. The kind, the family, the proof, the counts
 
@@ -190,11 +189,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **Invoke `ui-consistency:values` before writing a line of the checklist
   about a value** — colour, spacing, size, type, radius, breakpoints.
 - **Before taking a value from the family's classes, search the stylesheets
-  its pages load, once for the whole family, for a rule that can override
-  it**: one selecting on a class or on part of a class list, or, where those
-  classes' rules sit in a cascade layer, one outside every layer that sets the
-  same property on the same element. Record a rule found as
-  `ui-consistency:values`, *Every subject: the same rules*, says.
+  its pages load, once for the whole family, for a rule that can override it**,
+  as `ui-consistency:values`, *Every subject: the same rules*, says.
 - Record the colour pairings, focus and labels the family uses as conventions.
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — `ui-consistency:accessibility`.
@@ -250,8 +246,6 @@ In this order; the rules are in `ui-consistency:conventions`:
   position the task changes: *trail of links — the one in the header, now
   following the tree; no second one* (`ui-consistency:conventions`, *A position
   no member has*).
-- If a person asks to see the page-to-be, it is drawn by `ui-consistency:design`,
-  step 4 — never unasked.
 
 ## An example, from the request to the checklist
 
