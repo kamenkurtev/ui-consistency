@@ -230,8 +230,8 @@ In this order; the rules are in `ui-consistency:conventions`:
   directory, and say its path in one line: compaction keeps only a summary of
   the rest. Every page's checklist of the work goes into that one file; delete
   it with the work.
-- If a plan already exists, put the checklist into its task; if the process
-  already running keeps a document, put it there.
+- If a plan already exists, put the checklist into its task instead; if the
+  process already running keeps a document, put it there instead.
 - If no write outside the working copy is allowed, keep the checklist in the
   turn and say so in one line.
 - **A role the page already has that the work changes** keeps its line, as the

@@ -11,7 +11,7 @@ in this repository.
 - After a fix or a small change to a page, `adjusting` starts the separate check
   without waiting to be asked, as `implementing` and `verifying` already do: the
   check no longer stops at "I can run it if you want" (#462).
-- A page's checklist and the plan are always written to a scratch file outside
+- A page's checklist and the plan are written to a scratch file outside
   the working copy, whose path the agent says, and deleted when the work is
   done: a compacted conversation no longer leaves them as a summary. A running
   process's own plan or document still holds them where there is one (#465).
