@@ -30,7 +30,8 @@ in this repository.
   on those classes, or one outside a cascade layer, which beats every layered
   one. Where such a rule wins, `values` and `conventions` record the value that
   renders beside the one written and report the rule, rather than a convention
-  nobody sees (#464).
+  nobody sees. The checklist's second line says what was searched and what was
+  found (#464).
 
 ## v1.9.0 (2026-11-07)
 
