@@ -19,6 +19,11 @@ in this repository.
   or reported as wrong there — only when no other page of its kind has it,
   judged by what it does in the project: a row's view icon is no longer
   dropped because such an icon usually belongs to a show page (#467).
+- A new page or a refactor starts with a task list of eleven tasks: one per
+  `finding-patterns` step 1–8, each naming the skill or file it opens, then one
+  each for `planning`, `implementing` and `verifying`. A task is marked done only once its skills were invoked and
+  its files opened, and one left undone is reported. Where the harness has no
+  task list, the list heads the scratch file the checklist goes to (#471).
 
 ## v1.9.0 (2026-11-07)
 
