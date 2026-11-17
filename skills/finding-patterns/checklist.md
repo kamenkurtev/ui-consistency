@@ -22,8 +22,9 @@ page is read.**
 ````markdown
 <page> against <kind> (<what decided the kind>) — from <reference>, <n> members
 of <m> candidates in <the bound>, read <date>
-stylesheets: <the files searched, and for what> — <each rule that overrides a
-value written in classes, with the positions it reaches; or none>
+stylesheets: <the files searched> — <how many classes were searched as text,
+how many rules outside the layers were read> — <each rule that overrides a value
+written in classes, with the positions it reaches; or none>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
@@ -39,6 +40,8 @@ value written in classes, with the positions it reaches; or none>
 - **The second line is `finding-patterns` step 6's search of the stylesheets**
   (`ui-consistency:values`, *Every subject: the same rules*). Fill it before
   any line that takes a value from classes.
+- Write in it the searches that were run and the rules that were read, with
+  their counts, not what the search was for.
 - If the members write no value in classes, the second line says so.
 - A line's own count is over that position in the members — *4 of 4* pages, or
   *8 of 8* fields where each page has two. **A line whose region has a family of
@@ -51,8 +54,8 @@ An example, filled in:
 returns against list page (all five render a toolbar and a table of rows, and
 src/pages keeps them together) — from orders, 4 members of 5 candidates in the
 app, read 2026-09-17
-stylesheets: the 2 the members load, for the members' classes as selectors and
-for rules outside the layers — none
+stylesheets: the 2 the members load — 31 classes searched as text, 48 rules
+outside the layers read — none
 
 - [ ] page holder — the shared page holder, as its own landmark — 4 of 4, 4 files
 - [ ] toolbar in the header, title one level down — 4 of 4, 4 files

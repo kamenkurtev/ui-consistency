@@ -26,11 +26,13 @@ in this repository.
   is reported. Where the harness has no task list, the list heads the scratch
   file the checklist goes to (#471).
 - Before a value is taken from the classes the pages write, `finding-patterns`
-  searches the stylesheets once for a rule that rewrites it — one that selects
-  on those classes, or one outside a cascade layer, which beats every layered
-  one. Where such a rule wins, `values` and `conventions` record the value that
-  renders beside the one written and report the rule, rather than a convention
-  nobody sees. The checklist's second line says what was searched and what was
+  searches the stylesheets once for a rule that rewrites it: each class is
+  searched as plain text, which also finds it inside an attribute selector, and
+  where those classes sit in a cascade layer, every rule outside the layers is
+  read, since such a rule beats every layered one. Where such a rule wins,
+  `values` and `conventions` record the value that renders beside the one
+  written and report the rule, rather than a convention nobody sees. The
+  checklist's second line counts what was searched and read, and names what was
   found (#464).
 
 ## v1.9.0 (2026-11-07)

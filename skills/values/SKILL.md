@@ -50,11 +50,13 @@ what is particular to each.
 - **Before recording a value from the classes the family writes, search the
   stylesheets its pages load, once for the whole family, for a rule that can
   override it**:
-  - a rule that selects on those classes — the class name as a selector, or an
-    attribute selector matching part of a class list;
-  - if those classes' own rules sit in a cascade layer, a rule outside every
-    layer that sets the same property on the same element, whatever it selects
-    on.
+  - search each of those classes as plain text, without its dot, so that an
+    attribute selector matching part of a class list is found as well as the
+    class as a selector;
+  - if those classes' own rules sit in a cascade layer, list the selector of
+    every rule outside every layer, read each one, and keep each that reaches
+    an element the family writes: a search for the elements you expect misses a
+    rule on the one you left out.
 - Decide which rule wins by the cascade: layers decide before specificity, and
   a rule outside every layer beats a layered one unless the layered one is
   marked important.
