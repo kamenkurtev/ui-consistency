@@ -27,7 +27,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 | The work | Branch | May read | May write |
 |---|---|---|---|
 | a new page, a set of pages, a refactor of which pieces pages are built from | the whole phase, steps 1–8 | the family, in its bound | the checklist; the pages, through a plan |
-| a fix or a small change to pages that exist — the positions a request names, on one page or on the pages it names | `ui-consistency:adjusting` | those pages, and those positions across the family — its budget | those pages only — with the files only they use |
+| a fix or a small change to pages that exist — the positions a request names, on the pages it names | `ui-consistency:adjusting` | those pages, and those positions across the family — its budget | those pages only — with the files only they use |
 | checking code already written | `ui-consistency:verifying`, after this phase where no checklist exists | the checklist and the page | a report |
 
 - **Say it in one line** before anything else: *sized as a small change — a
@@ -38,13 +38,14 @@ Decide the branch **from the request alone, before any project file is opened**.
   in the harness's task list:
   - one per step 1–8, each naming what it opens — `words.md` at 2,
     `ui-consistency:values` at 2, 3 and 6, `ui-consistency:conventions` at 3
-    and 4, `ui-consistency:decisions` at 7, `checklist.md` at 8;
+    and 4, `ui-consistency:decisions` at 7, `checklist.md` at 8, and at 6 one
+    member opened in a browser, else the stylesheets searched;
   - then one each for `ui-consistency:planning`, `ui-consistency:implementing`
     and `ui-consistency:verifying`.
 - If the harness has no task list, write the list at the head of step 8's
   scratch file, created now.
-- Mark a task done only once every file its step sent you to was opened and
-  every skill invoked.
+- Mark a task done only once everything it names was opened, searched or
+  invoked.
 - If the plan's yes was given in advance, nobody waits for it; every task on
   the list still runs, in its order.
 - If what you read shows a small change is bigger than it was sized — it passes
@@ -97,8 +98,7 @@ Read in this order:
    level where the position is a heading — `ui-consistency:values`, *Elements*.
 4. **How each is written** — everything passed to it and everything that styles
    it.
-5. **Down into the children.** A page often only arranges child components; open
-   them.
+5. **Down into the children**: open each child component the page arranges.
 6. **What the user sees happen** — how a form is validated (a library, or the
    platform's own form attributes), how a field shows its error, when the submit
    is enabled, how a failure is caught and shown, loading and empty, how a
@@ -188,9 +188,9 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 - **Invoke `ui-consistency:values` before writing a line of the checklist
   about a value** — colour, spacing, size, type, radius, breakpoints.
-- **Before taking a value from the family's classes, read what it renders**:
-  open one member where its pages can be opened, else search the stylesheets
-  once, as `ui-consistency:values`, *Every subject: the same rules*, says.
+- **Before taking a value from the family's classes, read what it renders
+  now, never in a later phase**: open one member, else search the stylesheets,
+  as `ui-consistency:values`, *Every subject: the same rules*, says.
 - Record the colour pairings, focus and labels the family uses as conventions.
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — `ui-consistency:accessibility`.
@@ -260,8 +260,8 @@ In this order; the rules are in `ui-consistency:conventions`:
   is removed. Each search finds orders' own use first, so it can see.
 - **Step 5.** The shared error helper is used in 28 files and by 3 of the 4
   members. Orders' own error box is not copied: the shared piece wins at level 4.
-- **Step 6.** The theme's spacing base is 4; orders' literal 18 is not copied,
-  as no reference literal is.
+- **Step 6.** Orders, opened, renders what its classes write. The spacing base
+  is 4; orders' literal 18 is not copied.
 - **Step 7.** The filter row is there because orders has one, at level 3; it is
   written through the shared filter bar the other members use, at level 4.
 - **Step 8.** Each becomes a line with what settled it, as in

@@ -55,6 +55,8 @@ what is particular to each.
   your tools, the ones still to be loaded included, for one that opens a page or
   drives a browser, and at how the project says it is run. A session with no
   shell can still have one.
+- Read it when the value is recorded, never in a later phase: the value recorded
+  is the one a later phase checks against.
 - If a rendered value differs from the one the classes write, record both, and
   find the rule that rewrites it.
 - **If no page can be opened, search the stylesheets its pages load, once for
