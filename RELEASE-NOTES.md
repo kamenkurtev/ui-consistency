@@ -30,8 +30,9 @@ in this repository.
   reads the computed type, spacing and colour at each position before taking a
   value from classes, and `verifying` compares the new page with the reference
   by their rendered values and a screenshot of the same region of each. A
-  difference is a deviation whatever the code writes. Where no page can be
-  opened, the stylesheets are searched once for a rule that rewrites a value
+  difference is a deviation whatever the code writes. Whether a page can be
+  opened is found out among the session's tools, a browser tool not yet loaded
+  included, never assumed. Where no page can be opened, the stylesheets are searched once for a rule that rewrites a value
   written in classes, and the report names what was checked from the code only.
   Where such a rule wins, the value rendered is recorded beside the one written
   and the rule is reported (#464).

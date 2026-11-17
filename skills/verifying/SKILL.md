@@ -114,8 +114,10 @@ signed in, a flag, a mode, empty, loading — or name the states you did not
 compare. A pass covers only the states compared.
 
 **Where the pages can be opened in a browser, compare what renders as well as
-what the code writes.** Open the page and the reference in the same state, and
-at each position of the checklist compare:
+what the code writes.** Find out for yourself whether they can, as
+`ui-consistency:values`, *Every subject: the same rules*, says: a brief or a
+checklist that says no page was opened does not settle it. Open the page and the
+reference in the same state, and at each position of the checklist compare:
 
 - the computed values: the whole type bundle, spacing, heights, colour;
 - a screenshot of the same region of each, looked at side by side.

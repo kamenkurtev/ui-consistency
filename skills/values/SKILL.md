@@ -51,6 +51,10 @@ what is particular to each.
   renders, where its pages can be opened in a browser**: open one member, in the
   state that shows each position — a dialog open, a tab chosen — and read the
   computed type, spacing and colour at each position you take a value for.
+- **Find out whether a page can be opened; never assume it cannot.** Look among
+  your tools, the ones still to be loaded included, for one that opens a page or
+  drives a browser, and at how the project says it is run. A session with no
+  shell can still have one.
 - If a rendered value differs from the one the classes write, record both, and
   find the rule that rewrites it.
 - **If no page can be opened, search the stylesheets its pages load, once for
