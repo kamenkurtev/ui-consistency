@@ -38,10 +38,12 @@ Decide the branch **from the request alone, before any project file is opened**.
   in the harness's task list:
   - one per step 1–8, each naming what it opens — `words.md` at 2,
     `ui-consistency:values` at 2, 3 and 6, `ui-consistency:conventions` at 3
-    and 4, `ui-consistency:decisions` at 7, `checklist.md` at 8, and at 6 one
+    and 4, `ui-consistency:decisions` at 7, `checklist.md` at 8, and at 6 a
     member opened in a browser, else the stylesheets searched;
   - then one each for `ui-consistency:planning`, `ui-consistency:implementing`
     and `ui-consistency:verifying`.
+- **Load now, with the task list's tools, every tool listed by name only whose
+  name says it opens a page or drives a browser**: step 6 tries them.
 - If the harness has no task list, write the list at the head of step 8's
   scratch file, created now.
 - Mark a task done only once everything it names was opened, searched or
@@ -51,7 +53,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 - If what you read shows a small change is bigger than it was sized — it passes
   fifty files or fifty searches (`ui-consistency:adjusting`, *The budget*), or it
   would write outside the pages it names — **say so, and run the whole phase
-  from step 1** before anything more is written. Never widen silently.
+  from step 1** before anything more is written.
 - If a process running this work has a spec or a plan, or a plan or pattern
   file written before this work began is at hand:
   [*Joining a process*](joining-a-process.md).
@@ -80,8 +82,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 
 ## 2. Read the reference: top to bottom, then left to right
 
-- Open [*What the words mean*](words.md) first: what role, position, holder
-  and family mean here.
+- Open [*What the words mean*](words.md) first.
 - **If the work has a design for the page** — a picture, a screen described in
   the request, an older screen the work ports, a tree a person agreed with
   `ui-consistency:design` — read it first, in this same order, for **which roles
@@ -158,9 +159,9 @@ In this order; the rules are in `ui-consistency:conventions`:
   particular to the reference — and the position the task changes. The checklist
   keeps eight to twelve of them.
 - **One search per position**, an alternation of the exact names over every
-  member at once; run independent searches in the same turn; narrow one that
-  returns too much by position instead of paging through it. A grouped search
-  is one search, run here, never split across subagents.
+  member at once; narrow one that returns too much by position instead of
+  paging through it. A grouped search is one search, run here, never split
+  across subagents.
 - In a later phase, **do not count again what a checklist already carries**,
   unless a line is in doubt.
 
@@ -264,8 +265,7 @@ In this order; the rules are in `ui-consistency:conventions`:
   is 4; orders' literal 18 is not copied.
 - **Step 7.** The filter row is there because orders has one, at level 3; it is
   written through the shared filter bar the other members use, at level 4.
-- **Step 8.** Each becomes a line with what settled it, as in
-  [*The checklist*](checklist.md).
+- **Step 8.** Each becomes a line with what settled it.
 
 ## Say what you read, what it cost, and what you could not read
 

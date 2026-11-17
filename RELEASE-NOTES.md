@@ -8,6 +8,11 @@ in this repository.
 
 ## Unreleased
 
+- A new page starts by loading, with its task list's tools, every tool listed
+  by name only that opens a page or drives a browser, and its checklist names
+  each tool tried before it says no page could be opened: "no browser" with no
+  tool tried no longer passes as having looked, and the separate check reports
+  a checklist that missed a tool it has (#473).
 - After a fix or a small change to a page, `adjusting` starts the separate check
   without waiting to be asked, as `implementing` and `verifying` already do: the
   check no longer stops at "I can run it if you want" (#462).

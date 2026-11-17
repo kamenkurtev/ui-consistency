@@ -52,9 +52,13 @@ what is particular to each.
   state that shows each position — a dialog open, a tab chosen — and read the
   computed type, spacing and colour at each position you take a value for.
 - **Find out whether a page can be opened; never assume it cannot.** Look among
-  your tools, the ones still to be loaded included, for one that opens a page or
-  drives a browser, and at how the project says it is run. A session with no
-  shell can still have one.
+  your tools, the ones listed by name only and still to be loaded included, for
+  one that opens a page or drives a browser, and at how the project says it is
+  run. A session with no shell can still have one.
+- **Name that lookup wherever you say whether a page could be opened**: each
+  tool whose name says it opens a page or drives a browser, by name, and what
+  came of trying it — or that your tools have none.
+- Say that no page can be opened only after trying every such tool.
 - Read what renders before you record the value, in the same phase; never put
   the reading off to a later phase.
 - If a rendered value differs from the one the classes write, record both, and

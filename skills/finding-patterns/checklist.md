@@ -22,9 +22,9 @@ page is read.**
 ````markdown
 <page> against <kind> (<what decided the kind>) — from <reference>, <n> members
 of <m> candidates in <the bound>, read <date>
-rendered: <the member opened, in what state; or the tools looked for to open
-one, and the stylesheets searched> — <each value that renders other than
-written, with the rule and the positions it reaches; or none>
+rendered: <the member opened, in what state; or each tool tried to open one,
+by name, what came of it, and the stylesheets searched> — <each value that
+renders other than written, with the rule and the positions it reaches; or none>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
@@ -40,10 +40,12 @@ written, with the rule and the positions it reaches; or none>
 - **The second line is `finding-patterns` step 6's reading of what the family
   renders** (`ui-consistency:values`, *Every subject: the same rules*). Fill it
   before any line that takes a value from classes.
-- If no page could be opened, the second line says the values below were
-  checked from the code only.
-- A second line that names neither a member opened nor the stylesheets searched
-  is not filled: do step 6 first.
+- If no page could be opened, the second line names each tool tried, by name,
+  and what came of it, or that your tools have none that opens a page; then the
+  stylesheets searched. It says the values below were checked from the code
+  only.
+- A second line that names neither a member opened nor that lookup is not
+  filled: do step 6 first.
 - If the members write no value in classes, the second line says so.
 - A line's own count is over that position in the members — *4 of 4* pages, or
   *8 of 8* fields where each page has two. **A line whose region has a family of
