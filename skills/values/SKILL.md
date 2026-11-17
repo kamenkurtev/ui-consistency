@@ -47,6 +47,35 @@ what is particular to each.
   it.
 - Follow a value into the piece where its source is in the project. Where it is
   not, name what renders as unevaluated.
+- **Before recording a value from the classes the family writes, read what it
+  renders, where its pages can be opened in a browser**: open one member, in the
+  state that shows each position — a dialog open, a tab chosen — and read the
+  computed type, spacing and colour at each position you take a value for.
+- **Find out whether a page can be opened; never assume it cannot.** Look among
+  your tools, the ones still to be loaded included, for one that opens a page or
+  drives a browser, and at how the project says it is run. A session with no
+  shell can still have one.
+- Read what renders before you record the value, in the same phase; never put
+  the reading off to a later phase.
+- If a rendered value differs from the one the classes write, record both, and
+  find the rule that rewrites it.
+- **If no page can be opened, search the stylesheets its pages load, once for
+  the whole family, for a rule that can override a value written in classes**:
+  - search each of those classes as plain text, without its dot, so that an
+    attribute selector matching part of a class list is found as well as the
+    class as a selector;
+  - if those classes' own rules sit in a cascade layer, read the selector of
+    every rule outside every layer, and keep each that reaches an element the
+    family writes;
+  - decide which rule wins by the cascade: layers decide before specificity,
+    and a rule outside every layer beats a layered one unless the layered one
+    is marked important.
+- If such a rule wins at a position, record there both the value written and
+  the value it renders, and report the rule with the positions it reaches.
+- If it wins where a piece stands at one position and not at another, record
+  both positions: one piece rendering two ways is a finding.
+- If neither the rendered page nor the code can tell, name that value
+  unevaluated.
 - **Carry no number the project did not produce.** A minimum size or a contrast
   threshold is a standard, and only `ui-consistency:accessibility` measures one,
   when it is asked for or the project requires it.

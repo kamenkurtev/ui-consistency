@@ -21,9 +21,23 @@ in this repository.
   dropped because such an icon usually belongs to a show page (#467).
 - A new page or a refactor starts with a task list of eleven tasks: one per
   `finding-patterns` step 1–8, each naming the skill or file it opens, then one
-  each for `planning`, `implementing` and `verifying`. A task is marked done only once its skills were invoked and
-  its files opened, and one left undone is reported. Where the harness has no
-  task list, the list heads the scratch file the checklist goes to (#471).
+  each for `planning`, `implementing` and `verifying`. A task is marked done
+  only once its skills were invoked and its files opened, and one left undone
+  is reported. Where the harness has no task list, the list heads the scratch
+  file the checklist goes to (#471).
+- A value is read where it renders, not only where it is written. Where its
+  pages can be opened in a browser, `finding-patterns` opens one member and
+  reads the computed type, spacing and colour at each position before taking a
+  value from classes, and `verifying` compares the new page with the reference
+  by their rendered values and a screenshot of the same region of each. A
+  difference is a deviation whatever the code writes. Whether a page can be
+  opened is found out among the session's tools, a browser tool not yet loaded
+  included, never assumed, and step 6's task names the reading. Where no page
+  can be opened, the stylesheets are searched once for a rule that rewrites a
+  value written in classes, and the report names what was checked from the code
+  only.
+  Where such a rule wins, the value rendered is recorded beside the one written
+  and the rule is reported (#464).
 
 ## v1.9.0 (2026-11-07)
 

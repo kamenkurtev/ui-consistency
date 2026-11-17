@@ -50,14 +50,17 @@ flowchart LR
 
 Nothing but the checklist is written while this phase runs. Before step 1 the
 steps and the three phases after become a task list, one task each, each naming
-the skill or file its step opens, and none is marked done until those are
-invoked or opened. The reference is the page the request names, level 3 of the order, or, when nobody named one, the
-page the phase chooses and says it chose, level 7. It is read holder by holder,
+the skill or file its step opens — and step 6's, the page opened or the
+stylesheets searched — and none is marked done until those are invoked, opened
+or searched. The reference is the page the request names, level 3 of the order,
+or, when nobody named one, the page the phase chooses and says it chose, level 7. It is read holder by holder,
 down into its children, including how a form is validated and how a failure is
 shown. The family is counted within its bound, and every search is first run on
 the reference to prove it can see. What the other pages import is used, never
-rewritten, and values come through the theme. Where the project disagrees with
-itself, the order below decides, and each decision carries the level that
+rewritten, and values come through the theme. A value is read where it renders,
+on one member opened in a browser, or, where no page can be opened, from the
+stylesheets searched for a rule that rewrites it. Where the project disagrees
+with itself, the order below decides, and each decision carries the level that
 settled it and its numbers. The checklist goes to a scratch file outside the
 working copy, or into the plan or document of a process already running.
 
@@ -163,7 +166,9 @@ first, and the project only where they do not answer. It notes every difference
 first, the uncertain ones included, then judges each by the order the page was
 built from, and reports only what differs, with what the reference and the rest
 of the project do instead. A difference the request asked for is not a
-deviation. Every report names what the check could not see and the cost: no
+deviation. Where the pages can be opened in a browser, it also compares what
+renders: the computed values, and a screenshot of the same region of each, side
+by side. Every report names what the check could not see and the cost: no
 differences never means the page is right. What a second round still reports is
 listed in the checker's words, not fixed a third time. The final report names the
 proof: what was planted, and whether it was caught.
