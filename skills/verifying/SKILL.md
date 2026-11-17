@@ -116,8 +116,13 @@ compare. A pass covers only the states compared.
 **Where the pages can be opened in a browser, compare what renders as well as
 what the code writes.** Find out for yourself whether they can, as
 `ui-consistency:values`, *Every subject: the same rules*, says: a brief or a
-checklist that says no page was opened does not settle it. Open the page and the
-reference in the same state, and at each position of the checklist compare:
+checklist that says no page was opened does not settle it. If the checklist's
+second line says no page could be opened and does not name a tool you have that
+opens one, report that line at the top of the report, as a correction of the
+checklist, and open the pages yourself.
+
+Open the page and the reference in the same state, and at each position of the
+checklist compare:
 
 - the computed values: the whole type bundle, spacing, heights, colour;
 - a screenshot of the same region of each, looked at side by side.
@@ -255,8 +260,10 @@ page that deviates.
   unevaluated**: the size a region turns out at, overflow, which minimum or
   maximum wins, what scrolls, overlapping hit areas, gestures. The values the
   code writes are still checked.
-- If the pages could not be opened, name the values checked from the code only
-  — type, spacing, colour — and never report *no differences* for them.
+- If the pages could not be opened, name each tool tried, by name, and what
+  came of it, or that your tools have none that opens a page.
+- Then name the values checked from the code only — type, spacing, colour — and
+  never report *no differences* for them.
 - **Every report says what the check could not see**, even when it found no
   difference: *no differences* never means *the page is right*.
 - Before writing that nothing was left unevaluated, find **every stylesheet the
