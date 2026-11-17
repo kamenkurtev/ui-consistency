@@ -55,8 +55,8 @@ what is particular to each.
   your tools, the ones still to be loaded included, for one that opens a page or
   drives a browser, and at how the project says it is run. A session with no
   shell can still have one.
-- Read what renders in the phase that records the value, never a later one: a
-  later phase checks against the value recorded.
+- Read what renders before you record the value, in the same phase; never put
+  the reading off to a later phase.
 - If a rendered value differs from the one the classes write, record both, and
   find the rule that rewrites it.
 - **If no page can be opened, search the stylesheets its pages load, once for
@@ -72,8 +72,8 @@ what is particular to each.
     is marked important.
 - If such a rule wins at a position, record there both the value written and
   the value it renders, and report the rule with the positions it reaches.
-- If it wins where a piece stands in one place and not in another, record each
-  place as its own position: one piece rendering two ways is a finding.
+- If it wins where a piece stands at one position and not at another, record
+  both positions: one piece rendering two ways is a finding.
 - If neither the rendered page nor the code can tell, name that value
   unevaluated.
 - **Carry no number the project did not produce.** A minimum size or a contrast
