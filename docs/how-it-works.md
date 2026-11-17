@@ -50,8 +50,8 @@ flowchart LR
 
 Nothing but the checklist is written while this phase runs. Before step 1 the
 steps and the three phases after become a task list, one task each, each naming
-the skill or file its step opens — and step 6's, the page opened or the
-stylesheets searched — and none is marked done until those are invoked, opened
+the skill or file its step opens — and step 6's, the page opened, or the
+browser tools tried and the stylesheets searched — and none is marked done until those are invoked, opened
 or searched. A tool listed by name only that opens a page or drives a browser
 is loaded with the task list's tools. The reference is the page the request names, level 3 of the order,
 or, when nobody named one, the page the phase chooses and says it chose, level 7. It is read holder by holder,

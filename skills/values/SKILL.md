@@ -58,7 +58,8 @@ what is particular to each.
 - **Name that lookup wherever you say whether a page could be opened**: each
   tool whose name says it opens a page or drives a browser, by name, and what
   came of trying it — or that your tools have none.
-- Say that no page can be opened only after trying every such tool.
+- Say that no page can be opened only once every such tool was tried and none
+  opened it.
 - Read what renders before you record the value, in the same phase; never put
   the reading off to a later phase.
 - If a rendered value differs from the one the classes write, record both, and

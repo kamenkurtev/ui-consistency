@@ -39,7 +39,7 @@ Decide the branch **from the request alone, before any project file is opened**.
   - one per step 1–8, each naming what it opens — `words.md` at 2,
     `ui-consistency:values` at 2, 3 and 6, `ui-consistency:conventions` at 3
     and 4, `ui-consistency:decisions` at 7, `checklist.md` at 8, and at 6 a
-    member opened in a browser, else the stylesheets searched;
+    member opened, else the browser tools tried, the stylesheets searched;
   - then one each for `ui-consistency:planning`, `ui-consistency:implementing`
     and `ui-consistency:verifying`.
 - **Load now, with the task list's tools, every tool listed by name only whose

@@ -119,7 +119,7 @@ what the code writes.** Find out for yourself whether they can, as
 checklist that says no page was opened does not settle it. If the checklist's
 second line says no page could be opened and does not name a tool you have that
 opens one, report that line at the top of the report, as a correction of the
-checklist.
+checklist, and open the pages yourself.
 
 Open the page and the reference in the same state, and at each position of the
 checklist compare:
