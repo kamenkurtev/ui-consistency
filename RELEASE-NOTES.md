@@ -32,8 +32,10 @@ in this repository.
   by their rendered values and a screenshot of the same region of each. A
   difference is a deviation whatever the code writes. Whether a page can be
   opened is found out among the session's tools, a browser tool not yet loaded
-  included, never assumed. Where no page can be opened, the stylesheets are searched once for a rule that rewrites a value
-  written in classes, and the report names what was checked from the code only.
+  included, never assumed, and step 6's task names the reading. Where no page
+  can be opened, the stylesheets are searched once for a rule that rewrites a
+  value written in classes, and the report names what was checked from the code
+  only.
   Where such a rule wins, the value rendered is recorded beside the one written
   and the rule is reported (#464).
 

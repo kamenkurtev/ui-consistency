@@ -51,13 +51,15 @@ phases:
    the nearest one and says so, and reads it top to bottom and left to right:
    the holders, the components in each, how each is written, how forms validate
    and errors are shown. Then it searches how the other pages reuse those pieces.
-   Values come from your theme. Where your project disagrees with itself it
+   Values come from your theme, read where they render: on one page opened in
+   a browser, or in the stylesheets where none can be opened. Where your project disagrees with itself it
    decides by a written order and tells you what settled it, with the numbers.
 2. **Plan.** One task per page, each carrying its checklist and what not to copy
    from the reference. It shows you the plan and waits for a yes.
 3. **Implement.** One page at a time, from the checklist, in a fresh context.
 4. **Verify.** A separate agent compares each page with the reference, region by
-   region, and then all the pages together. Before it checks any page, the check
+   region — on the rendered pages too, where they can be opened — and then all
+   the pages together. Before it checks any page, the check
    is proved to catch a difference planted on purpose.
 
 Each phase, and the order that settles a choice, is drawn in
@@ -175,6 +177,7 @@ the page is read. Shown here with roles; yours carries your own component names.
 ~~~~markdown
 new form page against form page (all four render the same holder and a form)
 — from <the page you named>, 4 members of 5 candidates in <your app>, read 2026-08-30
+rendered: <the page you named> opened in a browser — none
 
 - [ ] page holder — <your holder>, as its own landmark — 4 of 4, 4 files
 - [ ] title one level down, in the toolbar — 4 of 4, 4 files
