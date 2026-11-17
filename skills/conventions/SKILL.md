@@ -120,9 +120,9 @@ must find what the reference writes.
 - **A missing prop is not yet a deviation.** The theme or one of the project's
   wrappers may set it already.
 - **A value written in a member's classes is not yet what renders.** Before
-  counting it, check it against the search for a rule that can override it,
-  run once for the whole family, as `ui-consistency:values`, *Every subject:
-  the same rules*, says.
+  counting it, check it against what one member renders, or where no page can
+  be opened, against the search for a rule that can override it, as
+  `ui-consistency:values`, *Every subject: the same rules*, says.
 - **Search for the exact name.** A container whose name starts with the
   component's once turned 18 uses into 25.
 - **If the task adds a position no member has** — a second control, a control

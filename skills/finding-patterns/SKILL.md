@@ -188,9 +188,9 @@ In this order; the rules are in `ui-consistency:conventions`:
 
 - **Invoke `ui-consistency:values` before writing a line of the checklist
   about a value** — colour, spacing, size, type, radius, breakpoints.
-- **Before taking a value from the family's classes, search the stylesheets
-  its pages load, once for the whole family, for a rule that can override it**,
-  as `ui-consistency:values`, *Every subject: the same rules*, says.
+- **Before taking a value from the family's classes, read what it renders**:
+  open one member where its pages can be opened, else search the stylesheets
+  once, as `ui-consistency:values`, *Every subject: the same rules*, says.
 - Record the colour pairings, focus and labels the family uses as conventions.
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — `ui-consistency:accessibility`.

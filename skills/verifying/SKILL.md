@@ -24,7 +24,8 @@ the skill invoked.
 2. A separate agent checks, never the author — *Never the author*.
 3. It reads the checklist and the page first, and the project only where they do
    not answer — *What the checker reads*.
-4. It compares region by region and notes every difference, the uncertain ones
+4. It compares region by region, in the code and, where it can open the pages,
+   on the rendered page, and notes every difference, the uncertain ones
    included; then it judges each as *Reading a difference* says, and reports
    what that keeps — *Compare region by region*.
 5. It names what it could not check, and the cost — *Say what was not checked*.
@@ -69,7 +70,8 @@ Give the checker:
 
 - the checklist for the page — its shape is
   `../finding-patterns/checklist.md`;
-- the page, or the list of pages that changed.
+- the page, or the list of pages that changed;
+- how the project is run and the pages opened, where the author knows it.
 
 Then:
 
@@ -110,6 +112,16 @@ open.
 **Compare each region in every state its own code branches on** — who is
 signed in, a flag, a mode, empty, loading — or name the states you did not
 compare. A pass covers only the states compared.
+
+**Where the pages can be opened in a browser, compare what renders as well as
+what the code writes.** Open the page and the reference in the same state, and
+at each position of the checklist compare:
+
+- the computed values: the whole type bundle, spacing, heights, colour;
+- a screenshot of the same region of each, looked at side by side.
+
+A rendered difference is a deviation whatever the code writes: report both
+values, then name the rule that causes it.
 
 Beyond the items, compare the same regions:
 
@@ -241,6 +253,8 @@ page that deviates.
   unevaluated**: the size a region turns out at, overflow, which minimum or
   maximum wins, what scrolls, overlapping hit areas, gestures. The values the
   code writes are still checked.
+- If the pages could not be opened, name the values checked from the code only
+  — type, spacing, colour — and never report *no differences* for them.
 - **Every report says what the check could not see**, even when it found no
   difference: *no differences* never means *the page is right*.
 - Before writing that nothing was left unevaluated, find **every stylesheet the

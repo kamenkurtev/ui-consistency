@@ -25,15 +25,16 @@ in this repository.
   only once its skills were invoked and its files opened, and one left undone
   is reported. Where the harness has no task list, the list heads the scratch
   file the checklist goes to (#471).
-- Before a value is taken from the classes the pages write, `finding-patterns`
-  searches the stylesheets once for a rule that rewrites it: each class is
-  searched as plain text, which also finds it inside an attribute selector, and
-  where those classes sit in a cascade layer, every rule outside the layers is
-  read, since such a rule beats every layered one. Where such a rule wins,
-  `values` and `conventions` record the value that renders beside the one
-  written and report the rule, rather than a convention nobody sees. The
-  checklist's second line counts what was searched and read, and names what was
-  found (#464).
+- A value is read where it renders, not only where it is written. Where its
+  pages can be opened in a browser, `finding-patterns` opens one member and
+  reads the computed type, spacing and colour at each position before taking a
+  value from classes, and `verifying` compares the new page with the reference
+  by their rendered values and a screenshot of the same region of each. A
+  difference is a deviation whatever the code writes. Where no page can be
+  opened, the stylesheets are searched once for a rule that rewrites a value
+  written in classes, and the report names what was checked from the code only.
+  Where such a rule wins, the value rendered is recorded beside the one written
+  and the rule is reported (#464).
 
 ## v1.9.0 (2026-11-07)
 
