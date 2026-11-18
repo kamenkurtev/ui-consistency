@@ -46,6 +46,12 @@ request that says two things at one of its positions — is
 `parked — waiting on <what>`; there is no list of open questions beside the
 tasks.
 
+## Agents
+
+Started by this work; the yes to this plan asks for them: <a page's, one per
+page task, where the harness has subagents>, the one shown the planted copy, and
+the checker of <each kind of page>.
+
 ## Decided
 
 What a person decided against what the order produced — their words, what it

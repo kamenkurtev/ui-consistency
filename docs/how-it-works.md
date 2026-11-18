@@ -118,7 +118,10 @@ touches, and what a no means, which is the page written the way the project
 writes it now. Where nobody can answer it, the page is written that way and the
 question is reported. A proposal, such as a theme entry a value needs, is shown
 with the plan and answered by its yes. A yes given in advance counts as the
-plan's yes and settles that task only.
+plan's yes and settles that task only. The plan names every agent the work will
+start, each page's, the one shown the planted copy and the checker of each kind,
+so the yes asks for them where the harness starts an agent only when the person
+asks.
 
 ## planning
 
@@ -163,7 +166,9 @@ flowchart LR
 ```
 
 The checker is one agent per kind of page, never the agent that wrote the page
-and never the one shown the planted copy. It reads the checklist and the page
+and never the one shown the planted copy. Where the harness starts an agent only
+when the person asks and nobody did, or no separate agent can be started, the
+author runs the check and says plainly that it checked its own work. It reads the checklist and the page
 first, and the project only where they do not answer. It notes every difference
 first, the uncertain ones included, then judges each by the order the page was
 built from, and reports only what differs, with what the reference and the rest
@@ -187,7 +192,7 @@ flowchart LR
   B -->|"yes"| A7["A checklist for those positions, in a scratch file"]
   B -->|"no"| FP["No longer a small change: finding-patterns, from step 1"]
   A7 --> IM["implementing"]
-  IM --> VE["verifying, by an agent that did not write it"]
+  IM --> VE["verifying, by an agent that did not write it, or by the author, who says so"]
 ```
 
 A small change reads about ten project files and ten searches before
@@ -195,8 +200,10 @@ A small change reads about ten project files and ten searches before
 included; each crossing is said when it happens, and past fifty it is no longer a
 small change. It skips every position the change does not touch, the plan, and
 the stop for a yes. It never skips the proof that a search can see, the order,
-or the check by an agent that did not write the change, whose proof is one plant
-at a changed position, once for the change. A new component in a page's own
+or the check, whose proof is one plant at a changed position, once for the
+change. It is run by an agent that did not write the change; where the harness
+starts an agent only when the person asks and nobody did, the author runs it and
+says so. A new component in a page's own
 files that the request did not name with its place is asked about first; one that would live
 outside the pages it names sends the work to `finding-patterns`. The checklist
 names the pages still writing a position the old way, and the change leaves them

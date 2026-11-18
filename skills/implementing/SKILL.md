@@ -26,10 +26,12 @@ the skill invoked.
   the working copy, in another process's plan, or in the turn where no file could
   be written. Never work from memory of it.
 - **Start every agent this skill names — a page's, the one shown the planted
-  copy, the checker — without waiting to be asked for it**: asking for the work
-  asks for them.
-- If the person said to start no agent, write one page per turn, and check each
-  yourself and say so (`ui-consistency:verifying`, *Never the author*).
+  copy, the checker — when the work reaches it.**
+- If the harness starts an agent only when the person asks, their yes to the
+  plan, which names the agents, is that ask.
+- If nobody asked where the harness needs it, or the person said to start no
+  agent, write one page per turn, run `ui-consistency:verifying` on each
+  yourself, and say so (`ui-consistency:verifying`, *Never the author*).
 - Execute a task from itself, not from what the plan says around it: every task
   carries what it needs (`../planning/plan-file.md`).
 - If another process is executing the plan, follow its loop; the steps below are
@@ -155,8 +157,9 @@ one owns what the end user sees.
   deliberately skipped.
 - Take the checklist it produced, re-read it, and make the change.
 - Before calling it done, hand the page to `ui-consistency:verifying`, run by an
-  agent that did not write it. The check is not the part that gets dropped
-  because the change was small.
+  agent that did not write it, or by you where `ui-consistency:adjusting`,
+  *Then*, says so. The check is not the part that gets dropped because the
+  change was small.
 - Its proof is one plant at the changed position, once for the change and not
   per round (`../verifying/calibration.md`).
 - Fix and check again twice at most, as in step 15.

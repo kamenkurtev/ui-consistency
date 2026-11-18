@@ -1,6 +1,6 @@
 ---
 name: verifying
-description: For what the end user sees — a separate agent checks written pages against their checklist and the rest of the project, and reports what differs. Use when UI has been written, before calling it done or opening a PR, or when asked whether pages match ("does this match", "did I miss a page", a page that looks or behaves unlike its neighbours).
+description: For what the end user sees — checks written pages against their checklist and the rest of the project, and reports what differs — by a separate agent where one can be started, else by the author, who says so. Use when UI has been written, before calling it done or opening a PR, or when asked whether pages match ("does this match", "did I miss a page", a page that looks or behaves unlike its neighbours).
 ---
 
 # Verifying against the checklist
@@ -48,12 +48,15 @@ the check on a copy with one planted difference, once per work and kind of page:
 - **The agent that wrote a page does not verify it.** The checker is a separate
   agent: a subagent where the harness has them, otherwise a new session given
   only what is below.
-- **Start the checker, and the agent shown the planted copy, without waiting to
-  be asked for them**: asking for the work asks for them.
+- **Start the checker, and the agent shown the planted copy**, when the work
+  reaches them.
+- If the harness starts an agent only when the person asks, their yes to a plan
+  that names the agents is that ask.
 - A fresh turn in the same session is the same agent with the same context, and
   does not count.
-- If no separate agent is available, or the person said to start no agent, **say
-  plainly that the author checked its own work**, and treat the result as that.
+- If nobody asked where the harness needs it, no separate agent is available, or
+  the person said to start no agent, run these steps yourself, **say plainly
+  that the author checked its own work**, and treat the result as that.
 - **One checker per work and kind of page**, never the agent shown the planted
   copy. It checks each page of that kind as the page is written, each fix after,
   and all the pages of that kind at the end. It is started at the first page of
