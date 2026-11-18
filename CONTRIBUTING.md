@@ -43,7 +43,8 @@ rule encodes the same assumption as the rule. So:
   against the unfixed check** — run it both ways;
 - a change to a skill comes from **real work** — a page built with the plugin
   that came out wrong — and is checked by feedback the next time the plugin is
-  used, not in a test run. Its issue closes on the merge;
+  used, not in a test run. Its issue closes on the merge, or with the release
+  that carries the fix if a user opened it;
 - a change to how a harness loads the plugin is run with the **shipped
   artifact**, installed, not from the clone (`AGENTS.md`, *New Harness
   Support*).
@@ -62,6 +63,11 @@ it was in if you know: finding-patterns, adjusting, design, planning,
 implementing, verifying, values, conventions, decisions or accessibility. The checklist it produced is the most useful thing
 to paste, with names made neutral. If the complaint is that nothing happened,
 say so, and say what the agent reported it could not read.
+
+**What happens next.** The first reply says what happens next: what was
+reproduced, the one thing still needed, or why it is not the plugin's. Your
+text is never edited. Once the fix merges, the issue stays open until the
+release that carries it, and that release's notes thank you by name.
 
 ## Before you open a pull request
 

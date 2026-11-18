@@ -48,9 +48,11 @@ Read before proposing anything: `docs/concept.md`, then `skills/`.
   harnesses that do not read this file.
 - `.claude/skills/` — skills for working **on** the plugin, which an installed
   plugin never loads: `uic-writing`, how a skill or document here is written and
-  what is checked after — loaded when one of those files is being changed; and
+  what is checked after — loaded when one of those files is being changed;
   `uic-auditing`, run when somebody asks for an audit or runs `/uic-auditing`,
-  which checks everything against the current guidance and proposes issues.
+  which checks everything against the current guidance and proposes issues; and
+  `uic-triaging`, which takes an issue from a user from its first reply to the
+  release that closes it.
 - `hooks/session-start` — a short bash script, run by the `SessionStart` hook
   (`hooks/hooks.json`, through `hooks/run-hook.cmd`, which finds bash on
   Windows). It prints `hooks/session-context.md`, which tells the session which
@@ -123,6 +125,8 @@ to this repository only — both trackers start at 1.
 
 - A skill change comes from real work: a page built with the plugin that came
   out wrong becomes an issue. The issue closes when its pull request merges.
+  If a user opened it, it closes with the release that carries the fix
+  (`uic-issues.md`).
   Whether the change works comes from feedback the next time the plugin is
   used, and whether that becomes a new issue is decided then. There are no
   dedicated test runs.
@@ -165,5 +169,6 @@ Detailed rules live in `.claude/rules/`, each prefixed `uic-`:
 
 @rules/uic-docs.md
 @rules/uic-git.md
+@rules/uic-issues.md
 @rules/uic-pr.md
 @rules/uic-subagents.md

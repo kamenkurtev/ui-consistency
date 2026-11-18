@@ -63,6 +63,8 @@ The template is `.github/pull_request_template.md`; every section is filled.
 - that open and closed pull requests were searched, and how the change stays
   inside what `docs/concept.md` says this is not;
 - the issue's acceptance criteria, ticked where met;
+- if the issue is from a user, the criteria written in the body instead
+  (`uic-issues.md`);
 - each of the three reviews and what it found — "found nothing" is a result;
 - the directory's validation and what it held, or that nothing `release` carries
   changed;
