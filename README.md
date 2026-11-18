@@ -60,7 +60,8 @@ phases:
 4. **Verify.** A separate agent compares each page with the reference, region by
    region — on the rendered pages too, where they can be opened — and then all
    the pages together. Before it checks any page, the check
-   is proved to catch a difference planted on purpose.
+   is proved to catch a difference planted on purpose. Where no separate agent
+   can be started, the author checks, and says so.
 
 Each phase, and the order that settles a choice, is drawn in
 [docs/how-it-works.md](docs/how-it-works.md).
@@ -160,7 +161,8 @@ The agent picks them up on its own. You don't need to name them.
 - **adjusting** — a fix or a small change to pages that exist, the way the others write it
 - **planning** — one checkable task per page
 - **implementing** — one page at a time, from the checklist
-- **verifying** — a separate agent compares each page with the reference
+- **verifying** — a separate agent compares each page with the reference, or
+  the author, who says so, where none can be started
 - **design** — reads a design for the page, or agrees its shape with you in
   words; draws it only when you ask
 - **values**, **conventions**, **decisions** — called by the others when a step

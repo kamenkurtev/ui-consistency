@@ -72,7 +72,8 @@ superpowers is running or not:
 2. **Plan** — one task per page, each carrying what makes it checkable.
 3. **Implement** — one page at a time, in a fresh context, from the checklist.
 4. **Verify** — a separate agent compares each page with the reference, region by
-   region, and then the whole set.
+   region, and then the whole set; where none can be started, the author does,
+   and says so.
 
 A fix or a small change to pages that exist takes a shorter phase of its own,
 which reads only the positions it touches across the pages. Three more skills
