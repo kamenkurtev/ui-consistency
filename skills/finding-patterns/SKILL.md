@@ -47,7 +47,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 - If the harness has no task list, write the list at the head of step 8's
   scratch file, created now.
 - Mark a task done only once everything it names was opened, searched or
-  invoked.
+  invoked; otherwise keep it open and say why in the final report of the work.
 - If the plan's yes was given in advance, nobody waits for it; every task on
   the list still runs, in its order.
 - If what you read shows a small change is bigger than it was sized — it passes
@@ -113,8 +113,7 @@ the project's answers into it:
 ```
 <page holder>               as <element>
   <header>                  as <element>
-    <toolbar>               as <element>
-      <title>               as <element>, <heading level>
+    <title>                 as <element>, <heading level>
   <content area>            as <element>
     <form>                  as <element>   <validation approach>
       <field> ×2            as <element>   <how fields are written here>
@@ -275,8 +274,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **If a gap outside this subject blocks the work** — the page needs an action
   with nothing to call, data with no source — put it at the top of the result as
   blocking, with what was searched and where.
-- Do not design or fill that gap: the process that keeps the logic owns it. Still
-  write the checklist for what the end user sees.
+- Do not design or fill that gap: the process that keeps the logic owns it.
+  Still write the checklist.
 - End with the cost: **how many project files were opened, how many searches were
   run, and which of this skill's files were read — the subagents' included, as
   one total**, and each task on the list left undone. Say that a number you did

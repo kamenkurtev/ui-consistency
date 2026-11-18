@@ -69,6 +69,9 @@ the skill invoked.
 - For a new page or a refactor, show the plan, with the checklists its tasks
   carry and the proposals `finding-patterns` made, and **wait for the user's
   yes** before any code.
+- **The plan shown names every agent the work will start** — each page's, the
+  one shown the planted copy, the checker of each kind of page — so the yes to
+  it, one given in advance included, asks for them.
 - If the person gave the yes in advance, before the plan was shown, it is the
   plan's yes: show the plan and go on to *How the phase ends* without waiting.
 - Show a drawing only if a person asked for one (`ui-consistency:design`,
@@ -110,8 +113,8 @@ a story for another developer.*
      system's temporary directory, and say its path in one line.
    - If no write outside the working copy is allowed, keep the plan in the turn
      and say so in one line.
-   - Then `ui-consistency:implementing`, and start the agents it names without
-     waiting to be asked: asking for the work asks for them.
+   - Then `ui-consistency:implementing`, and start the agents the plan's yes
+     asked for.
 2. **The work becomes a story for somebody else.** Attach the plan and what the
    implementation needs to the story.
    - It is finished when a developer who was not in the conversation, without the

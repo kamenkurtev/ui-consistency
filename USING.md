@@ -45,7 +45,8 @@ did not name with its place, or code extracted into one.
   copy, and a check by a separate agent; stops for a yes.
 - **implementing** — one page per task in a fresh context, from the checklist.
 - **verifying** — a separate agent compares each page with the reference region
-  by region, with a check first proved to catch a planted difference.
+  by region, with a check first proved to catch a planted difference; where none
+  can be started, the author does, and says so.
 - **design** — reads the design for a page where there is one; where there is
   none and no page is near enough to follow, agrees the page's shape in words, as
   a tree of the project's own pieces. Matches a design's values to the theme,

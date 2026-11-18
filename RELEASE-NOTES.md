@@ -8,14 +8,18 @@ in this repository.
 
 ## Unreleased
 
+- The plan shown for a yes names every agent the work will start, so the yes
+  asks for them in a harness that starts an agent only when the person asks.
+  Where nobody asked, the author runs `verifying` itself and says so, instead of
+  skipping the check, and a task on the list is left open, with why, until its
+  skill ran (#476).
 - A new page starts by loading, with its task list's tools, every tool listed
   by name only that opens a page or drives a browser, and its checklist names
   each tool tried before it says no page could be opened: "no browser" with no
   tool tried no longer passes as having looked, and the separate check reports
   a checklist that missed a tool it has (#473).
-- After a fix or a small change to a page, `adjusting` starts the separate check
-  without waiting to be asked, as `implementing` and `verifying` already do: the
-  check no longer stops at "I can run it if you want" (#462).
+- After a fix or a small change to a page, the check runs before the change is
+  called done: it no longer stops at "I can run it if you want" (#462).
 - A page's checklist and the plan are written to a scratch file outside
   the working copy, whose path the agent says, and deleted when the work is
   done: a compacted conversation no longer leaves them as a summary. A running
