@@ -47,7 +47,7 @@ Decide the branch **from the request alone, before any project file is opened**.
 - If the harness has no task list, write the list at the head of step 8's
   scratch file, created now.
 - Mark a task done only once everything it names was opened, searched or
-  invoked; leave any other open, and say why in the final report of the work.
+  invoked; otherwise keep it open and say why in the final report.
 - If the plan's yes was given in advance, nobody waits for it; every task on
   the list still runs, in its order.
 - If what you read shows a small change is bigger than it was sized — it passes

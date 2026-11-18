@@ -142,6 +142,7 @@ reference — and the theme entries it uses.
 
 - **Start the agents the check takes, as `ui-consistency:verifying` names them
   in *Never the author*.**
-- If the harness starts an agent only when the person asks and nobody asked, or
-  the person said to start no agent, run `ui-consistency:verifying` on the
-  change yourself and say so.
+- A small change has no plan whose yes asks for them. If the harness starts an
+  agent only when the person asks and they did not ask for the check, or they
+  said to start no agent, run `ui-consistency:verifying` on the change yourself
+  and say so.

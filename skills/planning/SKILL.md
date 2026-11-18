@@ -71,7 +71,7 @@ the skill invoked.
   yes** before any code.
 - **The plan shown names every agent the work will start** — each page's, the
   one shown the planted copy, the checker of each kind of page — so the yes to
-  it asks for them.
+  it, one given in advance included, asks for them.
 - If the person gave the yes in advance, before the plan was shown, it is the
   plan's yes: show the plan and go on to *How the phase ends* without waiting.
 - Show a drawing only if a person asked for one (`ui-consistency:design`,
