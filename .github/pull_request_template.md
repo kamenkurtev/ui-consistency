@@ -4,6 +4,8 @@ requests that leave sections blank, carry several unrelated changes, or show no
 real work behind them are closed without review.
 
 Link the issue: `Closes #<number>`, and one `Closes` per issue — `Closes #6 and #19` only parses the first.
+For an issue a user opened, write `Refs #<number>` instead: it closes with the
+release that carries the fix (`.claude/rules/uic-issues.md`).
 -->
 
 ## Who is submitting this pull request? (required)
@@ -52,6 +54,8 @@ Link the issue: `Closes #<number>`, and one `Closes` per issue — `Closes #6 an
 Copy the issue's criteria and tick each one. A criterion this pull request cannot
 meet is changed or dropped on the issue before the merge; the issue closes when
 this merges.
+For an issue a user opened, write the criteria here: they are not on the issue,
+and it closes with the release that carries the fix, not with this merge.
 
 ## Environment tested
 

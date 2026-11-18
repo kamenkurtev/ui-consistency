@@ -17,8 +17,12 @@
     later work, a later run, or feedback that has not come yet.
   - The PR says which criteria it meets. A criterion the work cannot meet is
     changed or dropped on the issue, visibly, before the merge.
+- If the issue is from a user (`uic-issues.md`), its criteria go in the pull
+  request instead.
 - **An issue closes, and goes to `Done`, when its PR merges.** It never stays
   open waiting on anything after that.
+- If the issue is from a user, it closes with the release that carries its fix,
+  and waits in `Awaiting release` until then (`uic-issues.md`).
 - **Whether a change works in practice comes from feedback** — the owner's or
   another user's. Whether that feedback becomes a new issue is decided when it
   arrives, never in advance.
@@ -62,6 +66,11 @@
     Do not edit the version by hand.
   - The gate fails on a moved version with no section, or with lines left under
     *Unreleased*.
+  - Its body has one `Closes #<n>` for each issue labelled `awaiting-release`
+    (`uic-issues.md`).
+  - After it merges, go through every issue it closed: the release comment,
+    the label off, and `Done` (`.claude/skills/uic-triaging/SKILL.md`,
+    *When a release is cut*).
 - Six files carry the version: the manifest of each harness and the
   marketplace entry. Only `.claude-plugin/plugin.json` is read when a plugin
   updates, so the other five drift with nothing to complain — which is why the
@@ -112,11 +121,14 @@
 - **Keep the local branch** — never run `git branch -d` locally for cleanup.
 
 ## Project board
-Work is tracked on GitHub Project #3 (`Todo` / `In Progress` / `Done`). Its
-`Test` column is not used: nothing waits there after a merge.
+Work is tracked on GitHub Project #3 (`Todo` / `In Progress` / `Awaiting release`
+/ `Done`). `Awaiting release` holds only an issue from a user whose fix merged,
+until the release that carries it (`uic-issues.md`).
 
 - **When you start working on an issue, move it to `In Progress`.** Do this before the first commit, not after.
 - **When its PR is merged, close the issue and move it to `Done`**, with the criteria as they stand on it. Both — a closed issue left in `Todo` is as misleading as an open one sitting in `Done`.
+- If the issue is from a user, move it to `Awaiting release` instead, and to
+  `Done` when the release closes it.
 - Every issue you open goes on the board, in `Todo`.
 - **Look an item up by repository as well as number.** The board also holds the
   archive repository's issues, and their numbers overlap with this one's.

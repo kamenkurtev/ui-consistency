@@ -15,8 +15,8 @@ closed anyway.
 
 Before you open a pull request against this repository, you MUST:
 
-1. **Read `.claude/CLAUDE.md` and the four rule files it imports** —
-   `.claude/rules/uic-docs.md`, `uic-git.md`, `uic-pr.md`,
+1. **Read `.claude/CLAUDE.md` and the five rule files it imports** —
+   `.claude/rules/uic-docs.md`, `uic-git.md`, `uic-issues.md`, `uic-pr.md`,
    `uic-subagents.md` — and `docs/concept.md`. They are how a change is made
    here.
 2. **Read the entire pull request template** at
@@ -164,7 +164,8 @@ Skills shape what an agent does. A change to a skill:
 - says **what the agent must now do** differently;
 - is checked **by feedback the next time the plugin is used for real work**.
   Its issue has closed on the merge; whether the feedback becomes a new issue is
-  decided when it arrives.
+  decided when it arrives. If a user opened the issue, it closes with the
+  release that carries the fix instead (`.claude/rules/uic-issues.md`).
 
 **There are no dedicated test runs**: no before/after runs, no sessions to check
 a description, no run as an acceptance criterion. One run cannot tell a change
@@ -190,6 +191,8 @@ says that is what it is.
 - Checking the plugin against the current guidance:
   `.claude/skills/uic-auditing/SKILL.md`, run when somebody asks for it
   (`/uic-auditing`, or in words).
+- An issue from a user: `.claude/skills/uic-triaging/SKILL.md`, from its first
+  reply to the release that closes it (`/uic-triaging`, or in words).
 - Read `.github/pull_request_template.md` before submitting.
 - One problem per pull request.
 - Report where the change was exercised in the template's table.
