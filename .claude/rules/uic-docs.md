@@ -2,9 +2,9 @@
 
 ## A wrong statement is corrected, not annotated
 
-Replace it with what is true now. Git and the private archive repository are
-the record; a document carries only the present. If the wrong version was
-copied elsewhere, fix the copies in the same change — search for them.
+Replace it with what is true now. Git is the record; a document carries only
+the present. If the wrong version was copied elsewhere, fix the copies in the
+same change — search for them.
 
 ## Evidence from a private repository keeps its numbers and loses its names
 

@@ -43,7 +43,7 @@
 
 ## Commits
 - Write clear, imperative messages: `Extract prop conventions from reference`, not `fixed stuff`.
-- Reference the issue when relevant — `#12`, and the number is this repository's.
+- Reference the issue when relevant — `#12`.
 - Commit and push on the issue branch as the work goes. Nothing reaches `main`
   except through a merged PR.
 
@@ -130,7 +130,5 @@ until the release that carries it (`uic-issues.md`).
 - If the issue is from a user, move it to `Awaiting release` instead, and to
   `Done` when the release closes it.
 - Every issue you open goes on the board, in `Todo`.
-- **Look an item up by repository as well as number.** The board also holds the
-  archive repository's issues, and their numbers overlap with this one's.
 - The board is GraphQL only. When the limit is exhausted, note the moves owed and
   make them when it resets.

@@ -81,10 +81,6 @@ from an organisation it has not verified.
 - Cursor has a session-hook manifest; not run end to end.
 - Gemini CLI loads `USING.md` through `GEMINI.md`; not run end to end.
 
-The private `kamenkurtev/ui-consistency-archive` holds the history before this
-repository's single root commit, and the old tracker. Issue numbers here point
-to this repository only — both trackers start at 1.
-
 ## What the design rests on
 
 1. **The developer's agent does the reading.** No scripts, parsers or commands
