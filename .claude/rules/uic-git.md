@@ -68,6 +68,12 @@
     *Unreleased*.
   - Its body has one `Closes #<n>` for each issue labelled `awaiting-release`
     (`uic-issues.md`).
+  - Before it merges, push the branch and validate the repository at that
+    branch in Anthropic's directory portal (claude.ai/directory/manage), without
+    submitting it. Fix a policy hold or a block on a file `release` carries,
+    then run the gate and validate again: the directory holds every version
+    that has one.
+  - Only a release moves `release`, so no other pull request is validated.
   - After it merges, go through every issue it closed: the release comment,
     the label off, and `Done` (`.claude/skills/uic-triaging/SKILL.md`,
     *When a release is cut*).
@@ -106,10 +112,11 @@
 - What happens before a PR is opened, and in what order, is `uic-pr.md`.
 - Open the PR against `main` with the template filled in.
 - **Merge it once `scripts/gate.sh` and the GitHub `gate` check pass**, the body
-  names the three reviews, and the directory's validation of a change to what
-  `release` carries found no hold or block on a file `release` carries
-  (`uic-pr.md`, step 9). The owner reads that as the review; do not stop to ask
-  for permission to merge. Squash, with the PR number in the subject.
+  names the three reviews and the run of a change to what an agent loads
+  (`uic-pr.md`, step 9), and, in a release, the directory's validation found no
+  hold or block on a file `release` carries (*Versions*). The owner reads that
+  as the review; do not stop to ask for permission to merge. Squash, with the
+  PR number in the subject.
 - `gh pr create` and `gh pr merge` go through GitHub's GraphQL API, whose limit is
   shared by every tool on the account. When it is exhausted, the REST API
   (`gh api repos/<owner>/<repo>/pulls`, `…/pulls/<n>/merge`) still works.
