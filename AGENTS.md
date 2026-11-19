@@ -56,9 +56,9 @@ partner why it would be closed and what would need to change.
   (`.claude/rules/uic-git.md`, *Versions*).
 - **The reviews, in order, every time:** gate, simplification, gate again if it
   changed anything, correctness, security, the documents read against the
-  change, the fresh read of a changed skill, gate again, and the directory's
-  validation of a change to what `release` carries. The pull request says what
-  each found — "found nothing" is a result. The full order is `uic-pr.md`.
+  change, the fresh read of a changed skill, gate again, and the run of a change
+  to what an agent loads. The pull request says what each found — "found
+  nothing" is a result. The full order is `uic-pr.md`.
 - **Names from private repositories.** This plugin is run against private
   repositories. **The numbers from those runs may be written down;
   the names may not** — not in a file, an issue, a pull request, a comment or a
@@ -162,18 +162,25 @@ Skills shape what an agent does. A change to a skill:
   it fixes: a contradiction, a reference to nothing, a rule the current guidance
   says is wrong;
 - says **what the agent must now do** differently;
-- is checked **by feedback the next time the plugin is used for real work**.
-  Its issue has closed on the merge; whether the feedback becomes a new issue is
-  decided when it arrives. If a user opened the issue, it closes with the
-  release that carries the fix instead (`.claude/rules/uic-issues.md`).
+- is **run before it merges**, below, and checked after by feedback the next
+  time the plugin is used for real work. Its issue has closed on the merge;
+  whether the feedback becomes a new issue is decided when it arrives. If a
+  user opened the issue, it closes with the release that carries the fix
+  instead (`.claude/rules/uic-issues.md`).
 
-**There are no dedicated test runs**: no before/after runs, no sessions to check
-a description, no run as an acceptance criterion. One run cannot tell a change
-from the run's own variance, and a run made to find defects always finds one.
-The one session this project asks for is a harness integration's transcript
-(*New Harness Support*): it proves the plugin loads, not how a skill behaves.
+**A change to what an agent loads — `skills/`, `USING.md`, `GEMINI.md`,
+`hooks/` — is run before it merges**: the plugin at the branch builds a new
+page. The owner runs it for a contribution from outside.
 
-**The one check before a pull request is a fresh read, once.** A subagent with no
+**The run checks the change; it is not a source of new ones.** A miss it shows
+is fixed before the merge only when two runs show it with a clear cause;
+otherwise the pull request names it, and it waits for real work. There is no
+before/after comparison and no run as an acceptance criterion: one run cannot
+tell a change from its own variance, and a run made to find defects always
+finds one. A harness integration's transcript (*New Harness Support*) is not a
+run: it proves the plugin loads, not how a skill behaves.
+
+**Before the run, a changed skill is read fresh, once.** A subagent with no
 other context reads the diff of the changed skill files, with those files as
 context, and names at most five changed lines that read two ways, disagree with
 another line, or use a word in a new sense (`.claude/skills/uic-writing/SKILL.md`, *After

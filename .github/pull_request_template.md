@@ -64,8 +64,8 @@ and it closes with the release that carries the fix, not with this merge.
 |         |                 |       |                  |              |
 
 ## Harness support (required if this changes how a harness loads the plugin)
-<!-- The one session this project asks for: it proves the plugin loads, not how
-     a skill behaves (AGENTS.md, *Skill Changes Come From Real Work*).
+<!-- This session proves the plugin loads, not how a skill behaves (AGENTS.md,
+     *Skill Changes Come From Real Work*).
      A manifest, the hook, `USING.md`, `GEMINI.md`: attach a
      **transcript** of a clean session in that harness, in a project with pages
      already built, sending exactly
@@ -93,15 +93,17 @@ paste the complete transcript here
 - If a skill changed: what the one fresh read of the changed lines found, what
   was fixed and what was only named (`.claude/skills/uic-writing/SKILL.md`,
   *After writing*) — "nothing" is a result.
-
-<!-- No test runs: a skill change is checked the next time the plugin is used
-     for real work (AGENTS.md, *Skill Changes Come From Real Work*). -->
+- If what an agent loads changed: what the run before the merge showed — the
+  misses fixed, and those named to wait for real work (AGENTS.md, *Skill
+  Changes Come From Real Work*). For a contribution from outside, the owner
+  adds it.
 
 ## Verification
 
 - [ ] `scripts/gate.sh` passes
 - [ ] A line under `## Unreleased` in `RELEASE-NOTES.md`, or nothing that ships changed (a release: `scripts/bump.sh`, and its own pull request)
-- [ ] Validated in Anthropic's directory portal with no policy hold or block on a file `release` carries, or nothing `release` carries changed (`.claude/rules/uic-pr.md`, step 9)
+- [ ] A change to what an agent loads was run before the merge, or nothing an agent loads changed (`.claude/rules/uic-pr.md`, step 9)
+- [ ] A release: validated in Anthropic's directory portal with no policy hold or block on a file `release` carries, or this is not a release (`.claude/rules/uic-git.md`, *Versions*)
 - [ ] **A changed check fails against the unfixed version** — a plant in `scripts/test-checks.sh`, run both ways — or no check changed
 - [ ] A change to the hook was run the way a harness runs it: `hooks/run-hook.cmd session-start`
 - [ ] No name from a private repository in the diff — numbers survive, names do

@@ -123,13 +123,14 @@ from an organisation it has not verified.
   out wrong becomes an issue. The issue closes when its pull request merges.
   If a user opened it, it closes with the release that carries the fix
   (`uic-issues.md`).
-  Whether the change works comes from feedback the next time the plugin is
-  used, and whether that becomes a new issue is decided then. There are no
-  dedicated test runs.
+  A change to what an agent loads is run before it merges, to check the change
+  and not to find new ones (`uic-pr.md`, step 9). Whether it works in real work
+  comes from feedback the next time the plugin is used, and whether that
+  becomes a new issue is decided then.
 - Designs and plans go on the issue, not into `docs/`.
 - The checks cover the hook, the manifests and the skills' structure — never
-  the skills' wording, which real work checks. They are bash and perl, which
-  come with git; nothing to install.
+  the skills' wording, which the run and real work check. They are bash and
+  perl, which come with git; nothing to install.
   - `scripts/check-skills.sh` fails on a skill outside the platform's limits or
     over 16,000 characters, a link, written-out path or skill name that points at
     nothing, a link that leaves its skill, a link or path from another skill into
