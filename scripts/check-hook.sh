@@ -11,11 +11,6 @@ say() { echo "$*" >&2; fail=1; }
 
 expected=$(cat hooks/session-context.md)
 
-# Short, because it is paid for on every session: a standing text that grows
-# without anybody noticing is the same failure as a scan.
-chars=$(printf '%s' "$expected" | LC_ALL=en_US.UTF-8 wc -m | tr -d ' ')
-[ "$chars" -lt 1750 ] || say "hooks/session-context.md: $chars characters, not under 1,750"
-
 # <environment, or -> <the one field the answer carries>
 while read -r line; do
   shape=${line##* }
@@ -44,4 +39,4 @@ PLUGIN_ROOT=/plugin CLAUDE_PLUGIN_ROOT=/plugin hookSpecificOutput
 CASES
 
 [ "$fail" = 0 ] || exit 1
-echo "hook: $chars characters, one shape per harness, through run-hook.cmd"
+echo "hook: one shape per harness, through run-hook.cmd"

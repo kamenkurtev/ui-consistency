@@ -56,7 +56,7 @@ Reads the current guidance from its source, checks every skill against it and ev
 |---|---|---|---|---|
 | 2 | <skill> | <what> | cut / to `<file>.md` | <n> |
 
-- `SKILL.md` sizes: <skill> <n>, …; the seven a new page invokes (`uic-writing`, *A `SKILL.md`*): <total> of 80,000.
+- `SKILL.md` sizes: <skill> <n>, …; the skills a new page invokes, together: <total>.
 
 ## Proposed issues
 | Issue | Findings | One logical change |

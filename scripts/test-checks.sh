@@ -45,8 +45,6 @@ c=$(copy); edit "$c" skills/values/SKILL.md 's/^(description: For what the end u
 expect fail "front matter YAML would not parse" check-skills.sh "$c"
 c=$(copy); edit "$c" skills/design/SKILL.md 's/^name: design$/name: drawing/m'
 expect fail "a name that is not its directory" check-skills.sh "$c"
-c=$(copy); printf '%s\n' "$(printf 'x%.0s' $(seq 1 16001))" >> "$c/skills/planning/SKILL.md"
-expect fail "a SKILL.md over 16,000 characters" check-skills.sh "$c"
 c=$(copy); for _ in $(seq 1 500); do echo >> "$c/skills/planning/SKILL.md"; done
 expect fail "a body of 500 lines or more" check-skills.sh "$c"
 c=$(copy); echo '[gone](missing.md)' >> "$c/skills/planning/SKILL.md"
@@ -107,8 +105,6 @@ expect fail "a CLAUDE.md at the plugin root" check-packaging.sh "$c"
 
 # --- check-hook.sh -----------------------------------------------------------
 c=$(copy); expect pass "the repository as it is" check-hook.sh "$c"
-c=$(copy); printf '%s\n' "$(printf 'y%.0s' $(seq 1 60))" >> "$c/hooks/session-context.md"
-expect fail "session text of 1,750 characters or more" check-hook.sh "$c"
 c=$(copy); edit "$c" hooks/session-start 's/\{"additional_context": "%s"\}/{"additional_context": "%s", "additionalContext": "%s"}/'
 expect fail "an answer in two shapes at once" check-hook.sh "$c"
 c=$(copy); edit "$c" hooks/session-start 's/\[ -z "\$\{COPILOT_CLI:-\}" \]/true/'

@@ -1,8 +1,9 @@
 ---
 name: uic-writing
-description: Writes and edits this plugin's skills and documents to Anthropic's skill authoring practices, then finds and fixes the stale references and contradictions the edit left. Use when changing a skill, USING.md, README.md, .claude/CLAUDE.md, AGENTS.md, CONTRIBUTING.md, docs/ or .claude/rules/ in this repository.
+description: Writes and edits this plugin's skills and documents to Anthropic's skill authoring practices, then finds and fixes the stale references and contradictions the edit left. Use when changing a skill, the session text, USING.md, README.md, .claude/CLAUDE.md, AGENTS.md, CONTRIBUTING.md, docs/ or .claude/rules/ in this repository.
 paths:
   - skills/**
+  - hooks/session-context.md
   - USING.md
   - README.md
   - .claude/CLAUDE.md
@@ -28,6 +29,7 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 - Only what the model does not already know: an instruction, a definition, a template or an example.
 - Remove an instruction the current models follow without being told: one written for an earlier model is often too prescriptive for a newer one (the model pages of the prompting guide, https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices).
 - When a change adds a line to a skill, remove what that line makes unnecessary in the same skill.
+- Keep the session text, `hooks/session-context.md`, as short as what it must say allows: every session pays for it before any work starts.
 - No story of an earlier run, no history of the plugin, no argument for its design, no maxim.
 - Keep a clause of why where it changes a judgment.
 - Keep a concrete failure where it shows a rule nobody would guess.
@@ -47,11 +49,11 @@ Anthropic's skill authoring guide (https://platform.claude.com/docs/en/agents-an
 **A `SKILL.md`**
 
 - Frontmatter, title, `## Overview` in one or two sentences, then the steps in order.
-- Under 500 lines and 16,000 characters: after compaction Claude Code re-attaches only the first 5,000 tokens of a skill (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
-- Put the instructions that matter most near the top, for the same reason.
+- Under 500 lines, as the authoring guide asks.
+- As short as what it asks allows, with no number of characters to meet: every word is paid for each time the skill loads, and after compaction Claude Code re-attaches only the beginning of each invoked skill, within a budget they share, past which the oldest is dropped whole (https://code.claude.com/docs/en/skills, *Skill content lifecycle*).
+- Put the instructions that matter most near the top: the beginning is what compaction keeps.
 - Keep in it what every run of the skill needs.
 - Move what only one case of the work needs to a reference file, linked from that case's step: the file costs nothing until that step opens it.
-- The skills one piece of work invokes share 25,000 tokens after compaction, the most recently invoked first, and an older one past the budget is dropped whole. A new page invokes `finding-patterns`, `conventions`, `values`, `decisions`, `planning`, `implementing` and `verifying`: when one grows, add up their `SKILL.md` sizes, each counted up to 16,000 characters, and keep the total under 80,000 characters (25,000 tokens at 3.2 characters a token). Over it, shorten one.
 
 **A reference file**
 
