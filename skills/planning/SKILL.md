@@ -55,6 +55,7 @@ the skill invoked.
 - the checklist for that page, in the task itself — it is short on purpose, and
   a path is no use to somebody who does not have the checkout;
 - the path of the reference;
+- `ui-consistency:implementing`, named as the skill that writes the page;
 - what is **particular to the reference** and must not be copied;
 - the reused pieces and theme values this page must use;
 - the three steps of a page task, written out as in [*The plan*](plan-file.md),

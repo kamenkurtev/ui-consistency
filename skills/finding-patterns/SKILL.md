@@ -39,7 +39,8 @@ Decide the branch **from the request alone, before any project file is opened**.
   - one per step 1–8, each naming what it opens — `words.md` at 2,
     `ui-consistency:values` at 2, 3 and 6, `ui-consistency:conventions` at 3
     and 4, `ui-consistency:decisions` at 7, `checklist.md` at 8, and at 6 a
-    member opened, else the browser tools tried, the stylesheets searched;
+    member opened, else the browser tools tried, the rules that style it
+    searched;
   - then one each for `ui-consistency:planning`, `ui-consistency:implementing`
     and `ui-consistency:verifying`.
 - **Load now, with the task list's tools, every tool listed by name only whose
@@ -189,8 +190,8 @@ In this order; the rules are in `ui-consistency:conventions`:
 - **Invoke `ui-consistency:values` before writing a line of the checklist
   about a value** — colour, spacing, size, type, radius, breakpoints.
 - **Before taking a value from the family's classes, read what it renders
-  now, never in a later phase**: open one member, else search the stylesheets,
-  as `ui-consistency:values`, *Every subject: the same rules*, says.
+  now, never in a later phase**: open one member, else search the rules that
+  style it, as `ui-consistency:values`, *Every subject: the same rules*, says.
 - Record the colour pairings, focus and labels the family uses as conventions.
   Measure them against a standard **only when the task asks for it or the project
   states a requirement** — `ui-consistency:accessibility`.

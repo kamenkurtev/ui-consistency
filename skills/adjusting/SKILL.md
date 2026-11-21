@@ -57,19 +57,18 @@ reference — and the theme entries it uses.
 - **Each named page past the first is not counted, nor its check**, in any count
   of this budget: opening, writing and checking it is the work. The counts hold
   what is read around the pages.
-- **Keep two running counts as you go**, files opened and searches run, every
+- **Keep two counts as you go**, files opened and searches run, every
   subagent's included — what the cost line counts. Each is held to the budget
   on its own.
-- **Say each crossing in one line when it happens**, with the count and the
-  budget — never only in the report:
-  - **Past ten of either in this phase** — its eleventh file or eleventh
-    search: say so, and go on.
-  - **Past twenty-five of either for the whole change** — whoever's work takes
-    it over, a checker's included: say so, and go on.
-  - **Past fifty of either for the whole change**, twice its budget: say it is
-    no longer a small change, and end this phase. The work runs as the whole
-    phase of `ui-consistency:finding-patterns`, from step 1, before anything
-    more is written.
+  - Give every agent you start what is left of the whole change's budget, files
+    and searches apart, and have its report end with its own two counts; add
+    them when the report comes back.
+- **End the change's report with both counts**, for this phase and for the
+  whole change, each against its budget.
+- **Past fifty of either for the whole change**, twice its budget: say it is no
+  longer a small change, and end this phase. The work runs as the whole phase
+  of `ui-consistency:finding-patterns`, from step 1, before anything more is
+  written.
 
 ## 4. What is deliberately skipped
 
@@ -122,6 +121,8 @@ reference — and the theme entries it uses.
   line each, with what settled them.
 - Its first line says which positions and which pages it covers, so nothing
   reads it as the checklist for a whole page.
+- **A line that cites a reference copies what the reference writes there from
+  its file** — every property at that position, never a summary from memory.
 - **Write it to a file outside the working copy**, in a newly created directory
   in the scratch location the harness gives, or in the system's temporary
   directory; say its path in one line, and delete it once the change has passed

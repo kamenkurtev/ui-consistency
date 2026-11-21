@@ -58,11 +58,16 @@ the check on a copy with one planted difference, once per work and kind of page:
   **say plainly that the author checked its own work**, and treat the result as
   that.
 - **One checker per work and kind of page**, never the agent shown the planted
-  copy. It checks each page of that kind as the page is written, each fix after,
-  and all the pages of that kind at the end. It is started at the first page of
-  the kind and kept for the rest.
+  copy. It checks each page of that kind as the page is written, every change
+  to it after its check — a fix, or a state a reviewer adds — and all the pages
+  of that kind at the end. It is started at the first page of the kind and kept
+  for the rest.
+  - If one agent cannot hold every page of a kind, split them into groups, each
+    with its own checker given the same brief; the kind's proof is not run again
+    for a group. One of those checkers compares the whole set at the end, given
+    every group's reports.
   - Where the harness can continue an agent, send that checker every page and
-    every check after a fix.
+    every check after a change.
   - Where it cannot, a new agent gets the same brief, the pages already checked,
     and the earlier checker's reports on them.
   - Where the running process already has each task reviewed, that reviewer
@@ -152,9 +157,14 @@ Beyond the items, compare the same regions:
 - **a piece beside another in the same role on the same page**, against that
   one: row height, type, hover, the selected state, indent;
 - **a value written that does not take effect** — one the piece in use ignores,
-  or one a flag or a wrapper replaces — and a limit inside a shared piece that the
+  one a flag or a wrapper replaces, or one a rule of the theme or of the shared
+  piece outranks in any state the page renders (`ui-consistency:values`,
+  *Every subject: the same rules*) — and a limit inside a shared piece that the
   checklist leaves out: name the value the page shows, and the file that gives it;
 - the reused pieces: the shared component, helper or class used, not rewritten;
+- **a state the piece in use already has** — busy, disabled, an icon's place —
+  written by hand beside it, whether the project or a library gives the piece:
+  report it with how the project's other uses of that piece write the state;
 - what the user sees happen: validation, field errors, submit state, how a
   failure is caught and shown, loading and empty;
 - **a region moved into another holder**, against that holder: children
@@ -178,6 +188,8 @@ Beyond the items, compare the same regions:
   - a value **on the base that no page writes yet** is not wrong — say it is on
     the base and new here, with what the family does write;
   - report a gap that differs with what the neighbouring pages use instead;
+  - report regions stacked in one holder whose side edges do not line up where
+    the family's do, with the offset;
   - if the checklist says the project has no base or no consistent rhythm,
     report nothing about it and say so;
 - **typography** (`ui-consistency:values`, *Type*), against
@@ -270,8 +282,8 @@ page that deviates.
 - **Every report says what the check could not see**, even when it found no
   difference: *no differences* never means *the page is right*.
 - Before writing that nothing was left unevaluated, find **every stylesheet the
-  page loads**, including any from outside the project, and look up every class
-  it uses.
+  page loads**, including any from outside the project, and the theme's and the
+  shared pieces' own rules for what it uses, and look up every class it uses.
 - A class with no rule in the project is not unstyled: its rule may live where
   you cannot read it, so its colours and spacing are unevaluated.
 - End with the cost: **how many pages were compared, how many project files were

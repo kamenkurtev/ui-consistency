@@ -65,9 +65,10 @@ with the result, since nothing else keeps it.
 ## Tasks
 
 - [ ] **Calibrate the check.** Make a copy of `<reference>` with one role
-      deliberately written differently — a temporary worktree outside the
-      checkout where the project is a git repository — and hand it to a
-      separate agent with `ui-consistency:verifying` and the checklist below,
+      deliberately written differently — in a git repository, the tracked
+      files with their uncommitted edits, copied outside the checkout with no
+      repository — and hand it to a separate agent with
+      `ui-consistency:verifying` and the checklist below,
       told only that the copy differs somewhere. Whoever plants does not check.
       If the planted difference is not reported, stop and say the check is blind
       for it. Once passed, record it here — for which kind, and what the plant
@@ -78,8 +79,8 @@ with the result, since nothing else keeps it.
       `<where it belongs>`, before any page that uses it.
 - [ ] **<the theme entry the plan's yes agreed>** — add `<entry>` with
       `<the design's value>` to `<the theme>`, before any page that uses it.
-- [ ] **<page>** — write `<path>`, following `<path to the reference>`, against
-      the checklist below.
+- [ ] **<page>** — write `<path>` with `ui-consistency:implementing`, following
+      `<path to the reference>`, against the checklist below.
       <the checklist's lines, one per position — checklist.md>
       Must not be copied from the reference: <what is particular to it>.
       Not in this task: <a line of the checklist left out on purpose, and why> — or
