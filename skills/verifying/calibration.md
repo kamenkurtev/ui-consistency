@@ -15,10 +15,15 @@ value, its own error message instead of the shared helper.
   never what or where — and not to open the original the copy was made from. An
   agent that plants and checks in one context proves only that it can find what
   it just wrote.
-- **Where the copy lives decides what it proves.** In a git repository, make it
-  a temporary worktree in a newly created directory outside the checkout, and
-  remove it afterwards: imports, the theme and child components resolve, so the
-  calibration proves what needs the project.
+- **Plant at a position a line of the checklist carries, and tell the agent
+  shown the copy to recount no line**: the plant is found against the line as
+  written, and every file it opens counts in the work's cost.
+- **Where the copy lives decides what it proves.** In a git repository, copy
+  the tracked files, with their uncommitted edits, into a newly created
+  directory outside the checkout, with no repository in it, and remove it
+  afterwards: imports, the theme and child components resolve, so the
+  calibration proves what needs the project. A worktree shows the plant in its
+  status, and a commit in its history.
 - Outside a git repository, copy the reference alone into a newly created
   temporary directory. It proves only what one file shows: a class, a literal,
   which helper is called.
@@ -49,6 +54,10 @@ value, its own error message instead of the shared helper.
 - **A plant counts only when the checker names it as a difference of the page**,
   against the checklist or the family. Found by comparing the copy with its
   original, or reported as something the reference does too, it does not count.
+- **Judge every other difference the agent shown the copy reports** as you
+  would the checker's ([SKILL.md](SKILL.md), *Reading a difference*): one the
+  change made goes to its author; one the file had before is reported apart, as
+  *True, but not this task's*.
 - If the planted difference is not reported, the check is blind for that kind of
   difference. **Say so before anything is built or passed**, and name the
   difference the plant tested as unchecked in every report that check makes.

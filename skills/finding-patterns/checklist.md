@@ -23,8 +23,8 @@ page is read.**
 <page> against <kind> (<what decided the kind>) — from <reference>, <n> members
 of <m> candidates in <the bound>, read <date>
 rendered: <the member opened, in what state; or each tool tried to open one,
-by name, what came of it, and the stylesheets searched> — <each value that
-renders other than written, with the rule and the positions it reaches; or none>
+by name, what came of it, and the rules that style its values searched> —
+<each value that renders other than written, with the rule and the positions it reaches; or none>
 
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
 - [ ] <role> — <the project's piece>, <how it is written> — <what settled it>
@@ -42,8 +42,8 @@ renders other than written, with the rule and the positions it reaches; or none>
   before any line that takes a value from classes.
 - If no page could be opened, the second line names each tool tried, by name,
   and what came of it, or that your tools have none that opens a page; then the
-  stylesheets searched. It says the values below were checked from the code
-  only.
+  rules that style its values searched. It says the values below were checked
+  from the code only.
 - A second line that names neither a member opened nor that lookup is not
   filled: do step 6 first.
 - If the members write no value in classes, the second line says so.

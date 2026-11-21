@@ -61,6 +61,9 @@ the skill invoked.
    - Build that one only on a yes. On a no, write the page the way the project writes
      it now.
    - Never write it privately into the page while the question is open.
+   - **Use a state the piece in use already has** — busy, disabled, an icon's
+     place — rather than writing it by hand, whether the project or a library
+     gives the piece: write it the way the project's other uses of that piece do.
 4. **What the user sees happen, as the checklist says**: validation, field
    errors, when the submit is enabled, how a failure is caught and shown, loading
    and empty.
@@ -140,6 +143,9 @@ the skill invoked.
       words. Do not fix it a third time.
     - Say a report that keeps changing is a problem with the checklist or the
       checker.
+    - **Send any change to a checked page after its check to that checker**,
+      whoever makes it — a reviewer of the running process included — before
+      the page is marked done.
 16. **Mark it** in the plan: ticked for `done`, or left unticked with
     `parked — <why>` (`../planning/plan-file.md`).
     - Where another process keeps the plan, mark it in that plan's own status

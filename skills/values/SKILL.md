@@ -60,18 +60,26 @@ what is particular to each.
   came of trying it — or that your tools have none.
 - Say that no page can be opened only once every such tool was tried and none
   opened it.
+- If the project builds to static files and the tool that opens pages refuses a
+  local file, serve the build on the loopback address only, open it there, and
+  stop the server afterwards.
 - Read what renders before you record the value, in the same phase; never put
   the reading off to a later phase.
 - If a rendered value differs from the one the classes write, record both, and
   find the rule that rewrites it.
-- **If no page can be opened, search the stylesheets its pages load, once for
-  the whole family, for a rule that can override a value written in classes**:
-  - search each of those classes as plain text, without its dot, so that an
-    attribute selector matching part of a class list is found as well as the
-    class as a selector;
-  - if those classes' own rules sit in a cascade layer, read the selector of
-    every rule outside every layer, and keep each that reaches an element the
-    family writes;
+- **If no page can be opened, search every rule that styles a value the pages
+  write, once for the whole family, for one that overrides it**:
+  - the stylesheets its pages load: search each class as plain text, without
+    its dot, so that an attribute selector matching part of a class list is
+    found as well as the class as a selector;
+  - the theme's own rules and defaults for the component at the position, and
+    for its neighbour where the value is a gap between them;
+  - the shared piece's own rules;
+  - each in every state the page renders — disabled, busy, selected, open —
+    not only at rest;
+  - if the rules of the classes the pages write sit in a cascade layer, read
+    the selector of every rule outside every layer, and keep each that reaches
+    an element the family writes;
   - decide which rule wins by the cascade: layers decide before specificity,
     and a rule outside every layer beats a layered one unless the layered one
     is marked important.
@@ -149,6 +157,9 @@ properties, preprocessor variables, a shared stylesheet, a config file.
 - **What separates two neighbouring regions** — a gap, a divider, a border, a
   heading's underline — per position, with spread. Two separators stacked where
   the family has one is how a page drifts.
+- **The side edges of regions stacked in one holder** — where each starts and
+  ends across it, from the padding and margins each writes: record where the
+  family lines them up.
 - **The space around a block of text stands on the base too.** A heading with a
   gap above it off the base is the common way a page drifts while every named
   value in it is correct.

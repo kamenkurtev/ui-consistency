@@ -51,7 +51,7 @@ flowchart LR
 Nothing but the checklist is written while this phase runs. Before step 1 the
 steps and the three phases after become a task list, one task each, each naming
 the skill or file its step opens — and step 6's, the page opened, or the
-browser tools tried and the stylesheets searched — and none is marked done until those are invoked, opened
+browser tools tried and the rules that style it searched — and none is marked done until those are invoked, opened
 or searched. A tool listed by name only that opens a page or drives a browser
 is loaded with the task list's tools. The reference is the page the request names, level 3 of the order,
 or, when nobody named one, the page the phase chooses and says it chose, level 7. It is read holder by holder,
@@ -60,8 +60,9 @@ shown. The family is counted within its bound, and every search is first run on
 the reference to prove it can see. What the other pages import is used, never
 rewritten, and values come through the theme. A value is read where it renders,
 on one member opened in a browser, or, where no page can be opened, from the
-stylesheets searched for a rule that rewrites it; the checklist then names each
-tool tried and what came of it. Where the project disagrees
+rules that style it searched for one that rewrites it, in every state the page
+renders; the checklist then names each tool tried and what came of it. Where
+the project disagrees
 with itself, the order below decides, and each decision carries the level that
 settled it and its numbers. The checklist goes to a scratch file outside the
 working copy, or into the plan or document of a process already running.
@@ -139,9 +140,10 @@ flowchart LR
   Y --> E3["Another process runs it: its loop executes the tasks"]
 ```
 
-Every page task carries its checklist in the task itself, the reference's path,
-what is particular to the reference and must not be copied, and the shared
-pieces and theme values the page must use. The first task proves the check:
+Every page task names `implementing` and carries its checklist in the task
+itself, the reference's path, what is particular to the reference and must not
+be copied, and the shared pieces and theme values the page must use. The first
+task proves the check:
 `verifying` is run on a scratch copy of the reference with one role written
 differently, by an agent that will not check the pages; if the difference is not
 reported, the work stops and the check is said to be blind for it. A page without a shape, from
@@ -165,8 +167,10 @@ flowchart LR
   M -->|"last page of the kind"| S["Compare all the pages of the kind together"]
 ```
 
-The checker is one agent per kind of page, never the agent that wrote the page
-and never the one shown the planted copy. Where the harness starts an agent only
+The checker is one agent per kind of page, or per group of a kind too large for
+one agent, never the agent that wrote the page and never the one shown the
+planted copy; any change to a checked page after its check, whoever makes it,
+goes back to it. Where the harness starts an agent only
 when the person asks and nobody did, or no separate agent can be started, the
 author runs the check and says plainly that it checked its own work. It reads the checklist and the page
 first, and the project only where they do not answer. It notes every difference
@@ -197,8 +201,9 @@ flowchart LR
 
 A small change reads about ten project files and ten searches before
 `implementing`, and about twenty-five of each for the whole change, the checks
-included; each crossing is said when it happens, and past fifty it is no longer a
-small change. It skips every position the change does not touch, the plan, and
+included; each agent is given the budget left and reports its own count, and
+past fifty it is no longer a small change. It skips every position the change
+does not touch, the plan, and
 the stop for a yes. It never skips the proof that a search can see, the order,
 or the check, whose proof is one plant at a changed position, once for the
 change. It is run by an agent that did not write the change; where the harness

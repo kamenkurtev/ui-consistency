@@ -8,6 +8,19 @@ in this repository.
 
 ## Unreleased
 
+- A check that cannot open a page now reads every rule that can outrank a value
+  — the theme's own rules and defaults for the component and its neighbour, the
+  shared piece's own rules — in every state the page renders, not only the
+  stylesheets, so a padding, fill or gap the theme overrides is reported. Pages
+  are also checked for regions whose side edges do not line up, and for a state
+  written by hand that the piece in use already has. The planted copy that
+  proves the check lives where git shows nothing, the agent shown it recounts
+  nothing, and the other differences it reports are judged. A small change no
+  longer announces each budget crossing: each agent is given what is left and
+  reports its own count. A plan's page task names `implementing`, any change to
+  a checked page after its check goes back to the checker, a kind too large for
+  one checker is split into groups, and a static build the browser refuses is
+  served locally (#487).
 - The plan shown for a yes names every agent the work will start, so the yes
   asks for them in a harness that starts an agent only when the person asks.
   Where nobody asked, the author runs `verifying` itself and says so, instead of
