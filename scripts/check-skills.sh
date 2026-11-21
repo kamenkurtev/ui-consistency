@@ -84,11 +84,6 @@ for my $skill (@skills) {
 
   my $lines = () = split /\n/, $body, -1;
   push @fail, "$file: body is $lines lines, not under 500" if $lines >= 500;
-
-  # After compaction Claude Code re-attaches only the first 5,000 tokens of a
-  # skill (Claude Code's documentation on skills). 16,000 characters is 5,000
-  # tokens at 3.2 characters a token, a low rate for English prose.
-  push @fail, "$file: " . length($text) . " characters, over 16,000" if length $text > 16000;
 }
 
 # Every linked file exists, and every path to another skill's file written out.

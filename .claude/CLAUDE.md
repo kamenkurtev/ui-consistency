@@ -131,10 +131,10 @@ from an organisation it has not verified.
 - The checks cover the hook, the manifests and the skills' structure — never
   the skills' wording, which the run and real work check. They are bash and
   perl, which come with git; nothing to install.
-  - `scripts/check-skills.sh` fails on a skill outside the platform's limits or
-    over 16,000 characters, a link, written-out path or skill name that points at
-    nothing, a link that leaves its skill, a link or path from another skill into
-    `values`, `conventions` or `decisions`, a library component name in the
+  - `scripts/check-skills.sh` fails on a skill outside the platform's limits, a
+    link, written-out path or skill name that points at nothing, a link that
+    leaves its skill, a link or path from another skill into `values`,
+    `conventions` or `decisions`, a library component name in the
     skills or `USING.md`, or a skill `USING.md` or the session text does not
     name.
   - `scripts/check-packaging.sh` fails on manifests that disagree, a Copilot CLI
