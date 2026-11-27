@@ -281,12 +281,12 @@ the values stay your theme's.
 - **Before, not after.** An agent that reads the pattern first sets out to write
   the right page once, rather than fix it afterwards.
 - **It decides, you are not interrogated.** A written order settles what a count
-  alone cannot, and every decision is reported with what settled it. Three
-  things wait on you: the plan, before any code; a tie whose answer changes code
-  outside the task; and a new component the request did not name with its
-  place, or code extracted into one, asked with what it touches. A request that
-  says two things in one place, or leaves open what a page shows, holds up only
-  that part until you answer.
+  alone cannot, and every decision is reported with what settled it. Four
+  things wait on you: the plan, before any code; a request that says two things
+  in one place, or leaves open what a page shows, which holds up only that part
+  until you answer; a tie whose answer changes code outside the task; and a new
+  component the request did not name with its place, or code extracted into
+  one, asked with what it touches.
 - **Silence is never success.** Where it could not read something, it says so.
 
 Read [docs/concept.md](docs/concept.md) for the reasoning.

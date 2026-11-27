@@ -1,6 +1,6 @@
 ---
 name: verifying
-description: For what the end user sees — checks written pages against their checklist and the rest of the project, and reports what differs, by a separate agent where one can be started, else by the author, who says so. Use when UI has been written, before calling it done or opening a PR, or when asked whether pages match ("does this match", "did I miss a page", a page that looks or behaves unlike its neighbours).
+description: For what the end user sees — checks written pages against their checklist and the rest of the project, and reports what differs. Use when UI has been written, before calling it done or opening a PR, also where no separate agent can be started, or when asked whether pages match ("does this match", "did I miss a page", a page that looks or behaves unlike its neighbours).
 ---
 
 # Verifying against the checklist
@@ -18,9 +18,9 @@ the skill invoked.
 
 ## Steps
 
-1. Before the checker of a kind is given its first page, the dispatcher — never
-   the checker — proves the check on a copy with one planted difference —
-   *First, prove it can see*.
+1. Before the checker of a kind is given its first page, the agent that starts
+   the checker — never the checker itself — proves the check on a copy with one
+   planted difference — *First, prove it can see*.
 2. A separate agent checks, never the author — *Never the author*.
 3. It reads the checklist and the page first, and the project only where they do
    not answer — *What the checker reads*.
@@ -34,14 +34,14 @@ the skill invoked.
 
 ## First, prove it can see
 
-**Before the checker of a kind is given its first page**, the dispatcher proves
-the check on a copy with one planted difference, once per work and kind of page:
-[*Proving the check can see*](calibration.md).
+**Before the checker of a kind is given its first page**, the agent that starts
+the checker proves the check on a copy with one planted difference, once per
+work and kind of page: [*Proving the check can see*](calibration.md).
 
 - A checker handed a page neither runs a calibration nor reasons about one.
-- **The final report of the work, to the person, names the proof**: where the
-  copy lived and what that left unproven, what was planted and whether it
-  counted, and what no plant tested.
+- **The final report of the work, to the person, names the proof**, even when
+  every page passed: where the copy lived and what that left unproven, what was
+  planted and whether it counted, and what no plant tested.
 
 ## Never the author
 
