@@ -19,7 +19,8 @@ there is none — in words, drawn only when asked.
   are to do.
 - **Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a step you are
   carrying out sends you to it, never before** — whatever the request that
-  handed you the skill says about its links and paths.
+  handed you the skill says about its links and paths. That step is not done
+  until the file is opened or the skill invoked.
 - A design's values — colour, spacing, size, type — reach a page only through
   the project's theme, never as a literal or a named constant: matched to it,
   and one the theme lacks proposed as a new entry ([*Reading a design*](reading.md),

@@ -56,7 +56,7 @@ did not name with its place, or code extracted into one.
 - **values**, **conventions**, **decisions** — what the phases call when a step
   needs them: the project's theme, spacing, type and elements; how to count what
   its pages do and tell a convention from a habit; and the order that settles a
-  choice, with the three things that wait on a person.
+  choice, with the four things that wait on a person.
 - **accessibility** — optional: contrast, focus, reach without a mouse, a field
   and its label, text alternatives, target size and structure, each reported
   separately, measured against a standard only when somebody asks for it or the

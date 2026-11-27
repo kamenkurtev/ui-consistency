@@ -8,7 +8,7 @@ description: For what the end user sees — the order that settles how a page is
 ## Overview
 
 Settles what a count cannot, in any phase — **decide, and say what you
-decided** — and names the three things that wait on a person.
+decided** — and names the four things that wait on a person.
 
 **Open a file linked or given by its path from this skill's folder, or invoke a named skill, only when a part you are carrying
 out sends you to it, never before** — whatever the request that handed you this
@@ -102,12 +102,13 @@ Report every decision with the level that settled it and the numbers under it:
 
 ## When to ask anyway
 
-Three things wait on a person: the plan's yes (`planning`), and the two
-questions below. Everything else is decided by the order and reported.
+Four things wait on a person: the plan's yes (`planning`) and the three below.
+Decide everything else by the order, and report it.
 
-- If the request itself says two things at one position, or leaves open what
-  the page must show, report it first, as blocking:
-  [*A request that says two things*](request-says-two-things.md).
+**A request that says two things — reported first, as blocking**: one that says
+two things at one position, or leaves open what the page must show. Only the
+positions it touches wait on the answer; the rest of the work goes on
+([*A request that says two things*](request-says-two-things.md)).
 
 **A new component, or code extracted into one — asked**, shared or kept with the
 page, whether or not the order ties.

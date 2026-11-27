@@ -1,16 +1,16 @@
 # Proving the check can see
 
-**Read when:** dispatching a check — the calibration task of a plan, the check of
-a page task, or a small change. It is the dispatcher's: a checker handed a page
-does not read it.
+**Read when:** starting a check — the calibration task of a plan, the check of a
+page task, or a small change. It is for the agent that starts the checker: a
+checker handed a page does not read it.
 
 Before the checker of a kind is given its first page, show another agent, given
 the same brief, **a copy of the reference with one role deliberately written
 differently** — a different size on a button, a literal instead of a theme
 value, its own error message instead of the shared helper.
 
-- **The one that plants is not the one that looks.** The dispatching agent — or
-  the author — makes the copy.
+- **The one that plants is not the one that looks.** The agent that starts the
+  checker — or the author — makes the copy.
 - Tell that agent only that the copy differs from the checklist somewhere —
   never what or where — and not to open the original the copy was made from. An
   agent that plants and checks in one context proves only that it can find what
@@ -61,12 +61,8 @@ value, its own error message instead of the shared helper.
 - If the planted difference is not reported, the check is blind for that kind of
   difference. **Say so before anything is built or passed**, and name the
   difference the plant tested as unchecked in every report that check makes.
-- **Name the proof in the final report of the work, to the person**, even
-  when every page passed:
-  - where the copy lived, and what that left unproven;
-  - what was planted, and whether it counted;
-  - what no plant tested: *a copy in the brief, one file only; the plant was a
-    heading's weight, counted; nothing tested sizes, scrolling or the words.*
+- **Name the proof in the final report of the work**, as [SKILL.md](SKILL.md),
+  *First, prove it can see*, says.
 
 ## A refactor
 
@@ -78,10 +74,10 @@ as unproven.
 
 - Where the running process sends each task to a reviewer that did not write it,
   put the checklist and `ui-consistency:verifying` into that reviewer's brief,
-  and dispatch no second checker for the tasks. One checker of the kind still
+  and start no second checker for the tasks. One checker of the kind still
   compares all its pages at the end.
 - Calibrate with the same brief. Plant a type role with only part of its bundle
   set — the weight changed, the typeface left as it was: the kind of difference
   a general review passes.
-- If the reviewer misses the plant, its check is blind to it: dispatch a
-  separate checker again.
+- If the reviewer misses the plant, its check is blind to it: start a separate
+  checker again.

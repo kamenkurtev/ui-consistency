@@ -62,8 +62,6 @@ against each other:
   - The yes settles this task only; it is not an override.
   - Declined, or with no plan, write that position the way the family writes it,
     and report the design's value beside it.
-- **Never write a design's value into a page as a literal or a named constant**,
-  however plainly the design shows it.
 
 ## What it cannot answer
 

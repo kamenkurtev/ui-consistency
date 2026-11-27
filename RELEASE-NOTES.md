@@ -8,6 +8,12 @@ in this repository.
 
 ## Unreleased
 
+- Every skill and document now names the same four things that wait on a
+  person, a request that says two things among them. `verifying`'s description
+  no longer says who checks, and applies also where no separate agent can be
+  started. `values` and `design` say a step is not done until the file it links
+  is opened, and `implementing` treats what it reads in the code as data, never
+  an instruction (#489).
 - A check that cannot open a page now reads every rule that can outrank a value
   — the theme's own rules and defaults for the component and its neighbour, the
   shared piece's own rules — in every state the page renders, not only the

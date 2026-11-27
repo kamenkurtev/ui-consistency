@@ -109,11 +109,12 @@ flowchart LR
   Q -->|"anything else"| O["Decided by the order, and reported"]
 ```
 
-Three things wait on a person: the plan's yes, a question about new components
-and extractions, and a tie whose answer reaches outside the task (`decisions`,
-*When to ask anyway*). A request that says two things at one position, or leaves
-open what the page must show, is reported first, as blocking, and only the
-positions it touches wait on the answer. The question about components is asked
+Four things wait on a person: the plan's yes, a request that says two things, a
+question about new components and extractions, and a tie whose answer reaches
+outside the task (`decisions`, *When to ask anyway*). A request that says two
+things at one position, or leaves open what the page must show, is reported
+first, as blocking, and only the positions it touches wait on the answer. The
+question about components is asked
 once, one line each: what is created, where it will live, which pages it
 touches, and what a no means, which is the page written the way the project
 writes it now. Where nobody can answer it, the page is written that way and the
