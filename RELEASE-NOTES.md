@@ -8,10 +8,10 @@ in this repository.
 
 ## Unreleased
 
-- A person who leaves the open choices to the agent — "you decide", "go with
-  your suggestions" — has answered them, not the plan: the plan is still shown
-  and waits for its yes. Only saying to go ahead without seeing the plan gives
-  that yes in advance (#491).
+- A person who answers the questions only by leaving them to the agent — "you
+  decide", "go with your suggestions" — has answered them, not the plan: the
+  plan is still shown and waits for its yes. Only saying to build without
+  waiting for the plan gives that yes in advance (#491).
 - Every skill and document now names the same four things that wait on a
   person, a request that says two things among them. `verifying`'s description
   no longer says who checks, and applies also where no separate agent can be

@@ -49,12 +49,13 @@ Decide the branch **from the request alone, before any project file is opened**.
   scratch file, created now.
 - Mark a task done only once everything it names was opened, searched or
   invoked; otherwise keep it open and say why in the final report of the work.
-- If the person said to go ahead without seeing the plan, that is the plan's
+- If the person said to build without waiting for the plan, that is the plan's
   yes, given in advance: nobody waits for it, and every task on the list still
   runs, in its order.
-- If the person left the open choices to you ("you decide", "go with your
-  suggestions"), they answered those, not the plan: `ui-consistency:planning`
-  still shows the plan and waits for its yes.
+- If the person answered the questions you asked only by leaving them to you
+  ("you decide", "go with your suggestions"), they answered those, not the
+  plan: for a new page or a refactor, `ui-consistency:planning` still shows the
+  plan and waits for its yes.
 - If what you read shows a small change is bigger than it was sized — it passes
   fifty files or fifty searches (`ui-consistency:adjusting`, *The budget*), or it
   would write outside the pages it names — **say so, and run the whole phase

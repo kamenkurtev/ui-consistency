@@ -119,10 +119,10 @@ once, one line each: what is created, where it will live, which pages it
 touches, and what a no means, which is the page written the way the project
 writes it now. Where nobody can answer it, the page is written that way and the
 question is reported. A proposal, such as a theme entry a value needs, is shown
-with the plan and answered by its yes. A person who says to go ahead without
-seeing the plan has given its yes in advance, which settles that task only. A
-person who leaves the open choices to the agent has answered them, not the
-plan, which is still shown and waits for its yes. The plan names every agent
+with the plan and answered by its yes. A person who says to build without
+waiting for the plan has given its yes in advance, which settles that task
+only. A person who answers the questions only by leaving them to the agent has
+answered them, not the plan, which is still shown and waits for its yes. The plan names every agent
 the work will start, each page's, the one shown the planted copy and the
 checker of each kind, so the yes asks for them where the harness starts an
 agent only when the person asks.

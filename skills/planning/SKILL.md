@@ -73,12 +73,12 @@ the skill invoked.
 - **The plan shown names every agent the work will start** — each page's, the
   one shown the planted copy, the checker of each kind of page — so the yes to
   it, one given in advance included, asks for them.
-- If the person said to go ahead without seeing the plan, that is the plan's
+- If the person said to build without waiting for the plan, that is the plan's
   yes, given in advance: show the plan and go on to *How the phase ends*
   without waiting.
-- If the person left the open choices to you ("you decide", "go with your
-  suggestions"), they answered those, not the plan: show the plan and wait for
-  its yes.
+- If the person answered the questions you asked only by leaving them to you
+  ("you decide", "go with your suggestions"), they answered those, not the
+  plan: show the plan and wait for its yes.
 - Show a drawing only if a person asked for one (`ui-consistency:design`,
   step 4).
 - If the person changes a page's shape at this stop, it goes back to
